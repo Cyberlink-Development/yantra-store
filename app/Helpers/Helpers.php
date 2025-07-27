@@ -2,7 +2,7 @@
 
 use App\Model\Brand;
 
-function categorySeperator($string = '', $size)
+function categorySeperator( $size, $string = '')
 {
     for ($i = 2; $i < $size; $i++) {
         $string .= $string;
