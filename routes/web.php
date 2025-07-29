@@ -183,6 +183,20 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
         Route::get('delete-description/{id?}', 'ProductController@delete_description')->name('delete-description');
 
     });
+    
+    //Custom Build PC
+    Route::group(['prefix' => 'componenttype'], function () {
+        //Component Types
+        Route::get('show', 'ComponentTypeController@view')->name('show-componenttype');
+        Route::get('add', 'ComponentTypeController@create')->name('add-componenttype');
+        Route::post('store', 'ComponentTypeController@store')->name('store-componenttype');
+        Route::get('edit/{id}', 'ComponentTypeController@edit')->name('edit-componenttype');
+        Route::post('update/{id}', 'ComponentTypeController@update')->name('update-componenttype');
+        Route::delete('delete/{id}', 'ComponentTypeController@destroy')->name('delete-componenttype');
+
+    });
+
+
 //Shipping
     Route::group(['prefix' => 'shipping'], function () {
         /* Old shipping route */
