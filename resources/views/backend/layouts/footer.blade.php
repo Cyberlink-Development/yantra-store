@@ -1,6 +1,6 @@
 <!-- Main Footer -->
 <footer class="main-footer">
-    <strong>Copyright &copy; 2022 <a target="_blank" href="https://cyberlink.com.np/">Cyberlink Pvt. Ltd</a>.</strong>
+    <strong>Copyright &copy; 2025 <a target="_blank" href="https://cyberlink.com.np/">Cyberlink Pvt. Ltd</a>.</strong>
     All rights reserved.
  
 </footer>

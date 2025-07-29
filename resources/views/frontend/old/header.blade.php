@@ -215,7 +215,7 @@
                animation="uk-animation-slide-top"
                cls-active="uk-navbar-sticky uk-box-shadow-small bg-white">
                <div class="uk-container">
-                  <nav class="uk-navbar" uk-navbar="uk-navbar">
+                  <nav class="uk-navbar" uk-navbar="uk-navbar"> 
                      <div class="uk-navbar-left">
                         <ul class="uk-navbar-nav">
                            <li>

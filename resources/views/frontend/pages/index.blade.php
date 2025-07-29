@@ -2,16 +2,24 @@
 @section('content')
 
   <!-- Hero slider start -->
-  <section class="cz-carousel cz-controls-lg">
-    <div class="cz-carousel-inner" data-carousel-options="{&quot;mode&quot;: &quot;gallery&quot;, &quot;responsive&quot;: {&quot;0&quot;:{&quot;nav&quot;:true, &quot;controls&quot;: false},&quot;992&quot;:{&quot;nav&quot;:false, &quot;controls&quot;: true}}}">
-      <div>
-        <img src="{{asset('theme-assets/img/ads/1.jpg')}}" alt="">
-      </div>
-      <div>
-        <img src="{{asset('theme-assets/img/ads/1.jpg')}}" alt="">
-      </div>
+<section class="cz-carousel cz-controls-lg">
+  <div class="cz-carousel-inner" data-carousel-options='{"mode": "gallery", "responsive": {"0":{"nav":true, "controls": true},"992":{"nav":false, "controls": true}}}'>
+    
+    <div>
+      <a href="list.php">
+        <img src="{{asset('theme-assets/img/index.webp')}}" alt="">
+      </a>
     </div>
-  </section>
+    
+    <div>
+      <a href="list.php">
+        <img src="{{asset('theme-assets/img/index2.webp')}}" alt="">
+      </a>
+    </div>
+
+  </div>
+</section>
+
   <!-- Hero slider end -->
 
   <!-- scrolling text start-->
@@ -19,26 +27,38 @@
     <div class="horizontal-scrolling-items">
 
       <div class="horizontal-scrolling-items__item mr-5">
-        🎉 Big Sale! Up to 50% OFF on Selected Items
+        <a href="list.php">
+          🎉 Big Sale! Up to 50% OFF on Selected Items
+        </a>
       </div>
 
       <div class="horizontal-scrolling-items__item mr-5">
-        🚚 Free Shipping on Orders Over $50!
+        <a href="list.php">
+          🚚 Free Shipping on Orders Over $50!
+        </a>
       </div>
 
       <div class="horizontal-scrolling-items__item mr-5">
-        💥 Flash Sale Ends Tonight – Hurry Up!
+        <a href="list.php">
+          💥 Flash Sale Ends Tonight – Hurry Up!
+        </a>
       </div>
       <div class="horizontal-scrolling-items__item mr-5">
-        🎉 Big Sale! Up to 50% OFF on Selected Items
+        <a href="list.php">
+          🎉 Big Sale! Up to 50% OFF on Selected Items
+        </a>
       </div>
 
       <div class="horizontal-scrolling-items__item mr-5">
-        🚚 Free Shipping on Orders Over $50!
+        <a href="list.php">
+          🚚 Free Shipping on Orders Over $50!
+        </a>
       </div>
 
       <div class="horizontal-scrolling-items__item mr-5">
-        💥 Flash Sale Ends Tonight – Hurry Up!
+        <a href="list.php">
+          💥 Flash Sale Ends Tonight – Hurry Up!
+        </a>
       </div>
 
     </div>
@@ -47,7 +67,7 @@
   <!-- scrolling text end -->
 
   <!-- Categories start-->
-  <section class="container  categories pt-md-3 pb-2 mt-5">
+  <section class="container-fluid  categories px-4 px-md-5 mt-5">
     <!-- Product carousel-->
     <div class="container-fluid">
       <div class="cz-carousel cz-controls-static cz-controls-outside p-0">
@@ -137,23 +157,48 @@
   <!-- Categories end-->
 
   <!-- Sales products start-->
-  <section class="container  mb-md-3 p-4 p-md-2">
-    <div class="row d-flex align-items-end  mb-3">
-      <div class="col-6 d-flex align-items-center">
-        🔥<h2 class="section-title mb-0 ml-1">On Sale Now</h2>
+  <section class="container-fluid px-4 px-md-5 mt-3">
+    <div class="row d-flex align-items-center  mb-3">
+      <div class="col-md-6 d-flex align-items-center justify-content-center justify-content-md-start">
+        🔥<span class="sales-badge mb-0 ml-1">Flash sale</span>
       </div>
-      <div class="col-6 d-flex justify-content-end">
-        <div class="text-center pt-3">
-          <a class="btn btn-primary btn-sm pl-2" href="list.php">View All Products<i class="czi-arrow-right ml-2"></i></a>
+      <div class="col-md-6 d-flex justify-content-center justify-content-md-end">
+         <div>
+          <div class="flash-sale mt-2 text-center text-md-right">
+            FLA<span class="bolt">&#9889</span>SH SALE
+          </div>
+
+          <div class="timer">
+              <div class="text-center">
+              <div class="time-box" id="days">00</div>
+               <span class="cz-handheld-toolbar-label">DAYS</span>
+            </div>
+            <div class="colon">:</div>
+            <div class="text-center">
+              <div class="time-box" id="hours">00</div>
+               <span class="cz-handheld-toolbar-label">HOURS</span>
+            </div>
+            <div class="colon">:</div>
+            <div class="text-center">
+              <div class="time-box" id="minutes">00</div>
+               <span class="cz-handheld-toolbar-label">MINUTE</span>
+            </div>
+            <div class="colon">:</div>
+            <div class="text-center">
+              <div class="time-box" id="seconds">00</div>
+               <span class="cz-handheld-toolbar-label">SECONDS</span>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
 
-    <div class="row pt-4 m-n3">
+    <div class="custom-cols-5 pt-4 m-n3">
       <!-- Product-->
-      <div class="col-lg col-md-4 col-6 px-1 mb-4">
+      <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
-          <span class="badge badge-border"> 🔥 8% OFF</span>
+          <div class="ribbon">🔥 8% <br> OFF</div>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -169,11 +214,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                 <del class="font-size-sm text-danger">RS. 5,50,000</del>
               </div>
             </div>
@@ -193,51 +243,9 @@
         </div>
       </div>
       <!-- Product-->
-      <div class="col-lg col-md-4  col-6 px-1 mb-4">
+      <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
-          <span class="badge badge-border"> 🔥 8% OFF</span>
-          <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
-            <i class="czi-cart"></i>
-          </button>
-          <a class="card-img-top d-block overflow-hidden" href="detail.php">
-            <div class="image-hover-box">
-              <img src="img/computer/computer3.webp" alt="Main" class="main-img img-fluid">
-              <img src="img/computer/computer4.webp" alt="Hover" class="hover-img img-fluid">
-            </div>
-          </a>
-            <div class="card-body py-2">
-              <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
-              <h3 class="product-title font-size-sm mb-2">
-                <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
-              </h3>
-              <div class="mb-2">
-                <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-                <span class="total-review">45 Reviews</span>
-              </div>
-              <div class="d-flex justify-content-between">
-                <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
-                  <del class="font-size-sm text-danger">RS. 5,50,000</del>
-                </div>
-              </div>
-            </div>
-            <a href="detail.php">
-              <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
-                <div>
-                  <h3 class=" font-size-md mb-2 text-white text-center pt-2">
-                    BUY NOW
-                  </h3>
-                </div>
-                <div>
-                  <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
-                </div>
-              </div>
-            </a>
-        </div>
-      </div>
-      <!-- Product-->
-      <div class="col-lg col-md-4 col-6 px-1 mb-4">
-        <div class="card product-card translate p-0">
-          <span class="badge badge-border"> 🔥 8% OFF</span>
+          <div class="ribbon">🔥 8% <br> OFF</div>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -253,11 +261,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                 <del class="font-size-sm text-danger">RS. 5,50,000</del>
               </div>
             </div>
@@ -277,9 +290,9 @@
         </div>
       </div>
       <!-- Product-->
-      <div class="col-lg col-md-4 col-6 px-1 mb-4">
+      <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
-          <span class="badge badge-border"> 🔥 8% OFF</span>
+          <div class="ribbon">🔥 8% <br> OFF</div>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -295,11 +308,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                 <del class="font-size-sm text-danger">RS. 5,50,000</del>
               </div>
             </div>
@@ -319,9 +337,9 @@
         </div>
       </div>
       <!-- Product-->
-      <div class="col-lg col-md-4 col-6 px-1 mb-4">
+      <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
-          <span class="badge badge-border"> 🔥 8% OFF</span>
+          <div class="ribbon">🔥 8% <br> OFF</div>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -337,11 +355,63 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
+                <del class="font-size-sm text-danger">RS. 5,50,000</del>
+              </div>
+            </div>
+          </div>
+          <a href="detail.php">
+            <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
+              <div>
+                <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                  BUY NOW
+                </h3>
+              </div>
+              <div>
+                <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <!-- Product-->
+      <div class="col-5th px-1 mb-4">
+        <div class="card product-card translate p-0">
+          <div class="ribbon">🔥 8% <br> OFF</div>
+          <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+            <i class="czi-cart"></i>
+          </button>
+          <a class="card-img-top d-block overflow-hidden" href="detail.php">
+            <div class="image-hover-box">
+              <img src="img/computer/computer3.webp" alt="Main" class="main-img img-fluid">
+              <img src="img/computer/computer4.webp" alt="Hover" class="hover-img img-fluid">
+            </div>
+          </a>
+          <div class="card-body py-2">
+            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+            <h3 class="product-title font-size-sm mb-2">
+              <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
+            </h3>
+            <div class="mb-2">
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                 <del class="font-size-sm text-danger">RS. 5,50,000</del>
               </div>
             </div>
@@ -365,7 +435,7 @@
   <!-- Sales products  end-->
 
   <!-- Ad section start-->
-  <section class="container">
+  <section class="container-fluid px-4 px-md-5">
     <div class="row">
       <div class="col-md-6 my-1 px-1">
         <a href="list.php">
@@ -382,12 +452,12 @@
   <!-- Ad section end -->
 
   <!-- Latest Launches / New Arrivals products start-->
-  <section class="container mb-md-3 p-4 p-md-2">
+  <section class="container-fluid mb-md-3 px-4 px-md-5">
     <div class="row d-flex align-items-end  mb-3">
-      <div class="col-6">
+      <div class="col-md-6 d-flex  flex-column align-items-center align-items-md-start">
         <h2 class="section-title mb-0">Latest Launches</h2>
       </div>
-      <div class="col-6 d-flex justify-content-end">
+      <div class="col-md-6 d-none d-md-flex justify-content-end">
         <div class="text-center pt-3">
           <a class="btn btn-primary btn-sm pl-2" href="list.php">View All Products<i class="czi-arrow-right ml-2"></i></a>
         </div>
@@ -398,6 +468,7 @@
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
+          <span class="badge new-badge"> New</span>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -413,11 +484,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -438,6 +514,7 @@
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
+          <span class="badge new-badge"> New</span>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -453,11 +530,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -478,6 +560,7 @@
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
+          <span class="badge new-badge"> New</span>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -493,11 +576,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -518,6 +606,7 @@
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
+          <span class="badge new-badge"> New</span>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -533,11 +622,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -558,6 +652,7 @@
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
+          <span class="badge new-badge"> New</span>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -573,11 +668,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -598,6 +698,7 @@
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
+          <span class="badge new-badge"> New</span>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -613,11 +714,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -638,6 +744,7 @@
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
+          <span class="badge new-badge"> New</span>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -653,11 +760,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -678,6 +790,7 @@
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
+          <span class="badge new-badge"> New</span>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -693,11 +806,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -718,6 +836,7 @@
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
+          <span class="badge new-badge"> New</span>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -733,11 +852,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -758,6 +882,7 @@
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
+          <span class="badge new-badge"> New</span>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -773,11 +898,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -796,11 +926,16 @@
         </div>
       </div>
     </div>
+    <div class="row d-flex  justify-content-center d-md-none mb-3">
+      <div class="text-center pt-3">
+        <a class="btn btn-primary btn-sm pl-2" href="list.php">View All Products<i class="czi-arrow-right ml-2"></i></a>
+      </div>
+    </div>
   </section>
   <!-- Latest Launches / New Arrivals products end-->
 
   <!-- category section start -->
-  <section class="container pb-5 p-4 p-md-2">
+  <section class="container-fluid px-4 px-md-5 mb-5">
     <div class="row mb-3">
       <div class="col-12 text-center">
         <h2 class="section-title mb-0">Categories</h2>
@@ -862,7 +997,7 @@
 
 
   <!-- Ad section start-->
-  <div class="container ad-section mb-md-3">
+  <div class="container-fluid ad-section mb-md-3 px-4 px-md-5">
     <div class="row">
       <div class="col-md-12 mb-4">
         <div class="d-sm-flex justify-content-between align-items-center bg-image overflow-hidden rounded-lg">
@@ -877,25 +1012,287 @@
   </div>
   <!--End of Ad section end-->
 
+  <!-- feature products start-->
+  <section class="container-fluid px-4 px-md-5">
+    <div class="row d-flex align-items-end  mb-3">
+      <div class="col-md-6 d-flex  flex-column align-items-center align-items-md-start">
+        <span class="feature-badge">Featured</span>
+        <h2 class="section-title mb-0 ml-1">Featured Products</h2>
+      </div>
+      <div class="col-md-6 d-none d-md-flex justify-content-end">
+        <div class="text-center pt-3">
+          <a class="btn btn-primary btn-sm pl-2" href="list.php">View All Products<i class="czi-arrow-right ml-2"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row pt-4 m-n3">
+      <!-- Product-->
+      <div class="col-lg col-md-4 col-6 px-1 mb-4">
+        <div class="card product-card translate p-0">
+
+          <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+            <i class="czi-cart"></i>
+          </button>
+          <a class="card-img-top d-block overflow-hidden" href="detail.php">
+            <div class="image-hover-box">
+              <img src="img/computer/computer1.webp" alt="Main" class="main-img img-fluid">
+              <img src="img/computer/computer2.webp" alt="Hover" class="hover-img img-fluid">
+            </div>
+          </a>
+          <div class="card-body py-2">
+            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+            <h3 class="product-title font-size-sm mb-2">
+              <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
+            </h3>
+            <div class="mb-2">
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
+
+              </div>
+            </div>
+          </div>
+          <a href="detail.php">
+            <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
+              <div>
+                <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                  BUY NOW
+                </h3>
+              </div>
+              <div>
+                <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <!-- Product-->
+      <div class="col-lg col-md-4  col-6 px-1 mb-4">
+        <div class="card product-card translate p-0">
+
+          <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+            <i class="czi-cart"></i>
+          </button>
+          <a class="card-img-top d-block overflow-hidden" href="detail.php">
+            <div class="image-hover-box">
+              <img src="img/computer/computer3.webp" alt="Main" class="main-img img-fluid">
+              <img src="img/computer/computer4.webp" alt="Hover" class="hover-img img-fluid">
+            </div>
+          </a>
+          <div class="card-body py-2">
+            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+            <h3 class="product-title font-size-sm mb-2">
+              <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
+            </h3>
+            <div class="mb-2">
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
+
+              </div>
+            </div>
+          </div>
+          <a href="detail.php">
+            <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
+              <div>
+                <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                  BUY NOW
+                </h3>
+              </div>
+              <div>
+                <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <!-- Product-->
+      <div class="col-lg col-md-4 col-6 px-1 mb-4">
+        <div class="card product-card translate p-0">
+
+          <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+            <i class="czi-cart"></i>
+          </button>
+          <a class="card-img-top d-block overflow-hidden" href="detail.php">
+            <div class="image-hover-box">
+              <img src="img/computer/computer3.webp" alt="Main" class="main-img img-fluid">
+              <img src="img/computer/computer4.webp" alt="Hover" class="hover-img img-fluid">
+            </div>
+          </a>
+          <div class="card-body py-2">
+            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+            <h3 class="product-title font-size-sm mb-2">
+              <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
+            </h3>
+            <div class="mb-2">
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
+
+              </div>
+            </div>
+          </div>
+          <a href="detail.php">
+            <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
+              <div>
+                <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                  BUY NOW
+                </h3>
+              </div>
+              <div>
+                <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <!-- Product-->
+      <div class="col-lg col-md-4 col-6 px-1 mb-4">
+        <div class="card product-card translate p-0">
+
+          <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+            <i class="czi-cart"></i>
+          </button>
+          <a class="card-img-top d-block overflow-hidden" href="detail.php">
+            <div class="image-hover-box">
+              <img src="img/computer/computer3.webp" alt="Main" class="main-img img-fluid">
+              <img src="img/computer/computer4.webp" alt="Hover" class="hover-img img-fluid">
+            </div>
+          </a>
+          <div class="card-body py-2">
+            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+            <h3 class="product-title font-size-sm mb-2">
+              <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
+            </h3>
+            <div class="mb-2">
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
+
+              </div>
+            </div>
+          </div>
+          <a href="detail.php">
+            <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
+              <div>
+                <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                  BUY NOW
+                </h3>
+              </div>
+              <div>
+                <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <!-- Product-->
+      <div class="col-lg col-md-4 col-6 px-1 mb-4">
+        <div class="card product-card translate p-0">
+
+          <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+            <i class="czi-cart"></i>
+          </button>
+          <a class="card-img-top d-block overflow-hidden" href="detail.php">
+            <div class="image-hover-box">
+              <img src="img/computer/computer3.webp" alt="Main" class="main-img img-fluid">
+              <img src="img/computer/computer4.webp" alt="Hover" class="hover-img img-fluid">
+            </div>
+          </a>
+          <div class="card-body py-2">
+            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+            <h3 class="product-title font-size-sm mb-2">
+              <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
+            </h3>
+            <div class="mb-2">
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
+
+              </div>
+            </div>
+          </div>
+          <a href="detail.php">
+            <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
+              <div>
+                <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                  BUY NOW
+                </h3>
+              </div>
+              <div>
+                <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="row d-flex  justify-content-center d-md-none">
+      <div class="text-center pt-3">
+        <a class="btn btn-primary btn-sm pl-2" href="list.php">View All Products<i class="czi-arrow-right ml-2"></i></a>
+      </div>
+    </div>
+  </section>
+  <!-- featured products  end-->
   <!-- Gone in seconds category start-->
-  <section class="container p-4 p-md-2">
+  <section class="container-fluid px-4 px-md-5 mt-4">
     <div class="row">
       <!-- Banner with controls-->
       <div class="col-md-4">
-        <div class="d-flex flex-column h-100 overflow-hidden rounded-lg" style="background-color: var(--secondary);">
-          <div class="d-flex justify-content-between px-grid-gutter py-grid-gutter">
-            <div>
-              <h2 class="mb-1 section-title text-white"> Gone in seconds</h2><a class="font-size-md text-white" href="shop-grid-ls.php">Shop More<i class="czi-arrow-right font-size-xs align-middle ml-1"></i></a>
-            </div>
-            <div class="cz-custom-controls" id="hoodie-day">
-              <button type="button"><i class="czi-arrow-left"></i></button>
-              <button type="button"><i class="czi-arrow-right"></i></button>
-            </div>
-          </div><a class="d-none d-md-block mt-auto" href="shop-grid-ls.php"><img class="d-block w-100" src="img/ads/promo.png" alt="For Women"></a>
+        <div>
+          <div><a class=" mt-auto" href="list.php"><img class="d-block w-100 rounded-lg" src="img/ads/promo.png" alt=""></a></div>
+          <div class="mt-2"><a class=" mt-2" href="list.php"><img class="d-block w-100 rounded-lg" src="https://i.imgur.com/LDzCEGE.jpeg" alt=""></a></div>
         </div>
       </div>
       <!-- Product grid (carousel)-->
       <div class="col-md-8 pt-4 pt-md-0">
+        <div class="d-flex justify-content-between mb-3">
+          <div>
+            <h2 class="section-title mb-0 ml-1">Gone in seconds</h2>
+          </div>
+          <div>
+            <div class="cz-custom-controls" id="hoodie-day">
+              <button type="button"><i class="czi-arrow-left"></i></button>
+              <button type="button"><i class="czi-arrow-right"></i></button>
+            </div>
+          </div>
+        </div>
         <div class="cz-carousel">
           <div class="cz-carousel-inner" data-carousel-options="{&quot;nav&quot;: false, &quot;controlsContainer&quot;: &quot;#hoodie-day&quot;}">
             <!-- Carousel item-->
@@ -918,11 +1315,16 @@
                         <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
                       </h3>
                       <div class="mb-2">
-                        <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-                        <span class="total-review">45 Reviews</span>
+                        <div class="star-list d-flex">
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                        </div>
                       </div>
                       <div class="d-flex justify-content-between">
-                        <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+                        <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                         </div>
                       </div>
                     </div>
@@ -946,11 +1348,16 @@
                         <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
                       </h3>
                       <div class="mb-2">
-                        <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-                        <span class="total-review">45 Reviews</span>
+                        <div class="star-list d-flex">
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                        </div>
                       </div>
                       <div class="d-flex justify-content-between">
-                        <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+                        <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                         </div>
                       </div>
                     </div>
@@ -974,11 +1381,16 @@
                         <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
                       </h3>
                       <div class="mb-2">
-                        <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-                        <span class="total-review">45 Reviews</span>
+                        <div class="star-list d-flex">
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                        </div>
                       </div>
                       <div class="d-flex justify-content-between">
-                        <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+                        <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                         </div>
                       </div>
                     </div>
@@ -1002,11 +1414,16 @@
                         <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
                       </h3>
                       <div class="mb-2">
-                        <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-                        <span class="total-review">45 Reviews</span>
+                        <div class="star-list d-flex">
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                        </div>
                       </div>
                       <div class="d-flex justify-content-between">
-                        <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+                        <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                         </div>
                       </div>
                     </div>
@@ -1030,11 +1447,16 @@
                         <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
                       </h3>
                       <div class="mb-2">
-                        <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-                        <span class="total-review">45 Reviews</span>
+                        <div class="star-list d-flex">
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                        </div>
                       </div>
                       <div class="d-flex justify-content-between">
-                        <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+                        <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                         </div>
                       </div>
                     </div>
@@ -1046,7 +1468,7 @@
                     <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
                       <i class="czi-cart"></i>
                     </button>
-                   <a class="card-img-top d-block overflow-hidden" href="detail.php">
+                    <a class="card-img-top d-block overflow-hidden" href="detail.php">
                       <div class="image-hover-box">
                         <img src="img/computer/computer10.jpeg" alt="" class="main-img img-fluid">
                         <img src="img/computer/computer11.jpeg" alt="" class="hover-img img-fluid">
@@ -1058,11 +1480,16 @@
                         <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
                       </h3>
                       <div class="mb-2">
-                        <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-                        <span class="total-review">45 Reviews</span>
+                        <div class="star-list d-flex">
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                        </div>
                       </div>
                       <div class="d-flex justify-content-between">
-                        <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+                        <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                         </div>
                       </div>
                     </div>
@@ -1091,11 +1518,16 @@
                         <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
                       </h3>
                       <div class="mb-2">
-                        <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-                        <span class="total-review">45 Reviews</span>
+                        <div class="star-list d-flex">
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                        </div>
                       </div>
                       <div class="d-flex justify-content-between">
-                        <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+                        <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                         </div>
                       </div>
                     </div>
@@ -1119,11 +1551,16 @@
                         <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
                       </h3>
                       <div class="mb-2">
-                        <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-                        <span class="total-review">45 Reviews</span>
+                        <div class="star-list d-flex">
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                        </div>
                       </div>
                       <div class="d-flex justify-content-between">
-                        <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+                        <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                         </div>
                       </div>
                     </div>
@@ -1147,11 +1584,16 @@
                         <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
                       </h3>
                       <div class="mb-2">
-                        <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-                        <span class="total-review">45 Reviews</span>
+                        <div class="star-list d-flex">
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                        </div>
                       </div>
                       <div class="d-flex justify-content-between">
-                        <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+                        <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                         </div>
                       </div>
                     </div>
@@ -1175,11 +1617,16 @@
                         <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
                       </h3>
                       <div class="mb-2">
-                        <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-                        <span class="total-review">45 Reviews</span>
+                        <div class="star-list d-flex">
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                        </div>
                       </div>
                       <div class="d-flex justify-content-between">
-                        <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+                        <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                         </div>
                       </div>
                     </div>
@@ -1203,11 +1650,16 @@
                         <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
                       </h3>
                       <div class="mb-2">
-                        <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-                        <span class="total-review">45 Reviews</span>
+                        <div class="star-list d-flex">
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                        </div>
                       </div>
                       <div class="d-flex justify-content-between">
-                        <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+                        <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                         </div>
                       </div>
                     </div>
@@ -1219,7 +1671,7 @@
                     <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
                       <i class="czi-cart"></i>
                     </button>
-                   <a class="card-img-top d-block overflow-hidden" href="detail.php">
+                    <a class="card-img-top d-block overflow-hidden" href="detail.php">
                       <div class="image-hover-box">
                         <img src="img/computer/computer10.jpeg" alt="" class="main-img img-fluid">
                         <img src="img/computer/computer11.jpeg" alt="" class="hover-img img-fluid">
@@ -1231,11 +1683,16 @@
                         <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
                       </h3>
                       <div class="mb-2">
-                        <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-                        <span class="total-review">45 Reviews</span>
+                        <div class="star-list d-flex">
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled active-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                          <i class="sr-star czi-star-filled inactive-star"></i>
+                        </div>
                       </div>
                       <div class="d-flex justify-content-between">
-                        <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+                        <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
                         </div>
                       </div>
                     </div>
@@ -1252,98 +1709,98 @@
   <!-- Gone in seconds category end-->
 
   <!-- shop by brand start -->
-  <section class="container categories   mb-3 ">
+  <section class="container-fluid categories mt-3 mt-md-0  mb-3  px-4 px-md-5">
     <!-- Product carousel-->
     <div class="container ">
       <div class="row d-flex justify-content-center mb-4">
         <h2 class="section-title mb-0 text-center">Shop By Brands</h2>
       </div>
       <div class="cz-carousel cz-controls-static cz-controls-outside p-0">
-          <div class="cz-carousel-inner" data-carousel-options='{"items": 2, "controls": true, "nav": false, "autoHeight": true, "responsive": {"0":{"items":2},"500":{"items":3, "gutter": 10},"768":{"items":4, "gutter": 0}, "1100":{"items":6, "gutter": 0}}}'>
+        <div class="cz-carousel-inner" data-carousel-options='{"items": 2, "controls": true, "nav": false, "autoHeight": true, "responsive": {"0":{"items":2},"500":{"items":3, "gutter": 10},"768":{"items":4, "gutter": 0}, "1100":{"items":6, "gutter": 0}}}'>
           <div>
             <div class="  d-flex  rounded align-items-center">
-              <div class="card product-card translate w-100">
+              <div class="card product-card translate w-100 p-0">
                 <a class="card-img-top d-block overflow-hidden" href="list.php">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFzTFbgoLfNcWe-f24Qy_AfNUnBN3UnvX9kw&s" alt="Product" style="height: 80px;">
+                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFzTFbgoLfNcWe-f24Qy_AfNUnBN3UnvX9kw&s" alt="Product" style="height: 55px;">
                 </a>
               </div>
             </div>
           </div>
           <div>
             <div class="  d-flex  rounded align-items-center">
-              <div class="card product-card translate w-100">
+              <div class="card product-card translate w-100 p-0">
                 <a class="card-img-top d-block overflow-hidden" href="list.php">
-                  <img src="https://1000logos.net/wp-content/uploads/2016/09/Acer-Logo.png" alt="Product" style="height: 80px;"></a>
+                  <img src="https://1000logos.net/wp-content/uploads/2016/09/Acer-Logo.png" alt="Product" style="height: 55px;"></a>
               </div>
             </div>
           </div>
           <div>
             <div class="  d-flex  rounded align-items-center">
-              <div class="card product-card translate w-100">
+              <div class="card product-card translate w-100 p-0">
                 <a class="card-img-top d-block overflow-hidden w-100" href="list.php">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXDFh6WJwMiPvxMt3gibuppGzu_p5PkwYucg&s" alt="Product" style="height: 80px;">
+                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXDFh6WJwMiPvxMt3gibuppGzu_p5PkwYucg&s" alt="Product" style="height: 55px;">
                 </a>
               </div>
             </div>
           </div>
           <div>
             <div class="  d-flex  rounded align-items-center">
-              <div class="card product-card translate w-100">
+              <div class="card product-card translate w-100 p-0">
                 <a class="card-img-top d-block overflow-hidden w-100" href="list.php">
-                  <img src="https://dmassets.micron.com/is/image/microntechnology/logo-intel-color?ts=1746204044637&dpr=off" alt="Product" style="height: 80px;">
+                  <img src="https://dmassets.micron.com/is/image/microntechnology/logo-intel-color?ts=1746204044637&dpr=off" alt="Product" style="height: 55px;">
                 </a>
               </div>
             </div>
           </div>
           <div>
             <div class="  d-flex  rounded align-items-center">
-              <div class="card product-card translate w-100">
+              <div class="card product-card translate w-100 p-0">
                 <a class="card-img-top d-block overflow-hidden" href="list.php">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFzTFbgoLfNcWe-f24Qy_AfNUnBN3UnvX9kw&s" alt="Product" style="height: 80px;">
+                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFzTFbgoLfNcWe-f24Qy_AfNUnBN3UnvX9kw&s" alt="Product" style="height: 55px;">
                 </a>
               </div>
             </div>
           </div>
           <div>
             <div class="  d-flex  rounded align-items-center">
-              <div class="card product-card translate w-100">
+              <div class="card product-card translate w-100 p-0">
                 <a class="card-img-top d-block overflow-hidden" href="list.php">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFzTFbgoLfNcWe-f24Qy_AfNUnBN3UnvX9kw&s" alt="Product" style="height: 80px;">
+                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFzTFbgoLfNcWe-f24Qy_AfNUnBN3UnvX9kw&s" alt="Product" style="height: 55px;">
                 </a>
               </div>
             </div>
           </div>
           <div>
             <div class="  d-flex  rounded align-items-center">
-              <div class="card product-card translate w-100">
+              <div class="card product-card translate w-100 p-0">
                 <a class="card-img-top d-block overflow-hidden" href="list.php">
-                  <img src="https://1000logos.net/wp-content/uploads/2016/09/Acer-Logo.png" alt="Product" style="height: 80px;"></a>
+                  <img src="https://1000logos.net/wp-content/uploads/2016/09/Acer-Logo.png" alt="Product" style="height: 55px;"></a>
               </div>
             </div>
           </div>
           <div>
             <div class="  d-flex  rounded align-items-center">
-              <div class="card product-card translate w-100">
+              <div class="card product-card translate w-100 p-0">
                 <a class="card-img-top d-block overflow-hidden" href="list.php">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXDFh6WJwMiPvxMt3gibuppGzu_p5PkwYucg&s" alt="Product" style="height: 80px;">
+                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXDFh6WJwMiPvxMt3gibuppGzu_p5PkwYucg&s" alt="Product" style="height: 55px;">
                 </a>
               </div>
             </div>
           </div>
           <div>
             <div class="  d-flex  rounded align-items-center">
-              <div class="card product-card translate w-100">
+              <div class="card product-card translate w-100 p-0">
                 <a class="card-img-top d-block overflow-hidden" href="list.php">
-                  <img src="https://dmassets.micron.com/is/image/microntechnology/logo-intel-color?ts=1746204044637&dpr=off" alt="Product" style="height: 80px;">
+                  <img src="https://dmassets.micron.com/is/image/microntechnology/logo-intel-color?ts=1746204044637&dpr=off" alt="Product" style="height: 55px;">
                 </a>
               </div>
             </div>
           </div>
           <div>
             <div class="  d-flex  rounded align-items-center">
-              <div class="card product-card translate w-100">
+              <div class="card product-card translate w-100 p-0">
                 <a class="card-img-top d-block overflow-hidden" href="list.php">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFzTFbgoLfNcWe-f24Qy_AfNUnBN3UnvX9kw&s" alt="Product" style="height: 80px;">
+                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFzTFbgoLfNcWe-f24Qy_AfNUnBN3UnvX9kw&s" alt="Product" style="height: 55px;">
                 </a>
               </div>
             </div>
@@ -1355,11 +1812,11 @@
   <!-- shop by brand end -->
 
   <!-- Ad section start-->
-  <div class=" container  mb-md-3">
+  <div class=" container-fluid px-4 px-md-5 mb-md-3">
     <div class="row">
       <div class="col-md-12">
         <a href="list.php">
-          <img src="img/ads/banner.webp" class="img-fluid" alt="" class="rounded" >
+          <img src="img/index3.webp" class="img-fluid" alt="" class="rounded-lg">
         </a>
       </div>
     </div>
@@ -1367,7 +1824,7 @@
   <!--Ad section end -->
 
   <!-- Product for you start-->
-  <section class="container p-4 p-md-2">
+  <section class="container-fluid px-4 px-md-5  mt-3 mt-md-0">
     <div class="row d-flex align-items-center justify-content-center  mb-3">
       <div class="col-12 text-center">
         <h2 class="section-title mb-0">Products for You</h2>
@@ -1392,11 +1849,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1432,11 +1894,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1472,11 +1939,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1512,11 +1984,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1552,11 +2029,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1574,7 +2056,7 @@
           </a>
         </div>
       </div>
-       <!-- Product-->
+      <!-- Product-->
       <div class="col-5th px-1 mb-2">
         <div class="card product-card translate p-0">
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
@@ -1592,11 +2074,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1632,11 +2119,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1672,11 +2164,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1712,11 +2209,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1752,11 +2254,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1774,7 +2281,7 @@
           </a>
         </div>
       </div>
-       <!-- Product-->
+      <!-- Product-->
       <div class="col-5th px-1 mb-2">
         <div class="card product-card translate p-0">
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
@@ -1792,11 +2299,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1832,11 +2344,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1872,11 +2389,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1912,11 +2434,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1952,11 +2479,16 @@
               <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
             </h3>
             <div class="mb-2">
-              <span class="rating">3.9 <i class="sr-star czi-star-filled active"></i></span>
-              <span class="total-review">45 Reviews</span>
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
             </div>
             <div class="d-flex justify-content-between">
-              <div class="product-price"><span class="font-secondary">RS. 4,50,000</span>
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
               </div>
             </div>
           </div>
@@ -1976,12 +2508,301 @@
       </div>
     </div>
     <div class="col-12 d-flex justify-content-center mt-3">
-        <div class="text-center pt-3">
-          <a class="btn btn-primary  " href="list.php">More Products <span><i style="font-size: 12px;" class="czi-arrow-right ml-1 mr-1 font-weight-bold "></i></span></a></div>
+      <div class="text-center pt-3">
+        <a class="btn btn-primary  " href="list.php">More Products <span><i style="font-size: 12px;" class="czi-arrow-right ml-1 mr-1 font-weight-bold "></i></span></a>
       </div>
+    </div>
   </section>
   <!-- Product for you end-->
 
+  <!--service section start-->
+  <section class="container-fluid px-4 px-md-5 mt-4">
+    <div class="row d-flex align-items-center justify-content-center">
+      <div class="col-12 text-center">
+        <h2 class="section-title mb-0">Services we Provide</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
+        <div class="bg-white rounded-lg">
+          <div class="p-2 h-320">
+            <a href="service.php">
+              <img src="img/service/cloud.png" class="service-list-img">
+            </a>
+            <a href="service.php" class="text-center">
+              <p class="services-span">Cloud Computing</p>
+            </a>
+            <p class="services-p text-center">By accessing this website or placing an order, you agree to accept all the terms listed below.</p>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-12 p-0">
+                <div class="price-badge text-center">Rs. 40,000</div>
+              </div>
+              <div class="col-12 p-0">
+                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
+        <div class="bg-white rounded-lg">
+          <div class="p-2 h-320">
+            <a href="service.php">
+              <img src="img/service/azure.png" class="service-list-img">
+            </a>
+            <a href="service.php" class="text-center">
+              <p class="services-span">Azure</p>
+            </a>
+            <p class="services-p text-center">
+              By accessing this website or placing an order, you agree to accept all the terms listed below.
+            </p>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-12 p-0">
+                <div class="price-badge text-center">Rs. 40,000</div>
+              </div>
+              <div class="col-12 p-0">
+                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
+        <div class="bg-white rounded-lg">
+          <div class="p-2 h-320">
+            <a href="service.php">
+              <img src="img/service/vps.png" class="service-list-img">
+            </a>
+            <a href="service.php" class="text-center">
+              <p class="services-span">VPS</p>
+            </a>
+            <p class="services-p text-center">
+              By accessing this website or placing an order, you agree to accept all the terms listed below.
+            </p>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-12 p-0">
+                <div class="price-badge text-center">Rs. 40,000</div>
+              </div>
+              <div class="col-12 p-0">
+                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
+        <div class="bg-white rounded-lg">
+          <div class="p-2 h-320">
+            <a href="service.php">
+              <img src="img/service/colocation.png" class="service-list-img">
+            </a>
+            <a href="service.php" class="text-center">
+              <p class="services-span">Colocation</p>
+            </a>
+            <p class="services-p text-center">
+              By accessing this website or placing an order, you agree to accept all the terms listed below.
+            </p>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-12 p-0">
+                <div class="price-badge text-center">Rs. 4,00,000</div>
+              </div>
+              <div class="col-12 p-0">
+                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
+        <div class="bg-white rounded-lg">
+          <div class="p-2 h-320">
+            <a href="service.php">
+              <img src="img/service/it.png" class="service-list-img">
+            </a>
+            <a href="service.php" class="text-center">
+              <p class="services-span">IT Consulting</p>
+            </a>
+            <p class="services-p text-center">
+              By accessing this website or placing an order, you agree to accept all the terms listed below.
+            </p>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-12 p-0">
+                <div class="price-badge text-center">Rs. 40,000</div>
+              </div>
+              <div class="col-12 p-0">
+                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
+        <div class="bg-white rounded-lg">
+          <div class="p-2 h-320">
+            <a href="service.php">
+              <img src="img/service/implementation.png" class="service-list-img">
+            </a>
+            <a href="service.php" class="text-center">
+              <p class="services-span">Implementation Service</p>
+            </a>
+            <p class="services-p text-center">
+              By accessing this website or placing an order, you agree to accept all the terms listed below.
+            </p>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-12 p-0">
+                <div class="price-badge text-center">Rs. 40,000</div>
+              </div>
+              <div class="col-12 p-0">
+                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
+        <div class="bg-white rounded-lg">
+          <div class="p-2 h-320">
+            <a href="service.php">
+              <img src="img/service/audit.png" class="service-list-img">
+            </a>
+            <a href="service.php" class="text-center">
+              <p class="services-span">Audit Support</p>
+            </a>
+            <p class="services-p text-center">
+              By accessing this website or placing an order, you agree to accept all the terms listed below.
+            </p>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-12 p-0">
+                <div class="price-badge text-center">Rs. 40,000</div>
+              </div>
+              <div class="col-12 p-0">
+                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
+        <div class="bg-white rounded-lg">
+          <div class="p-2 h-320">
+            <a href="service.php">
+              <img src="img/service/server.png" class="service-list-img">
+            </a>
+            <a href="service.php" class="text-center">
+              <p class="services-span">Server Support</p>
+            </a>
+            <p class="services-p text-center">
+              By accessing this website or placing an order, you agree to accept all the terms listed below.
+            </p>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-12 p-0">
+                <div class="price-badge text-center">Rs. 40,000</div>
+              </div>
+              <div class="col-12 p-0">
+                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="col-12 d-flex justify-content-center mt-3 ">
+      <div class="text-center pt-3 large-top">
+        <a class="btn btn-primary  " href="service-list.php">View All Services <span><i style="font-size: 12px;" class="czi-arrow-right ml-1 mr-1 font-weight-bold "></i></span></a>
+      </div>
+    </div>
+
+  </section>
+  <!--quote modal-->
+  <div class="modal fade" id="quote" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="h3 m-0">Get a Quote</h2>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body tab-content py-4">
+          <form>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="quote-name">Full Name</label>
+                  <input class="form-control" type="text" id="quote-name" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="quote-email">Email address</label>
+                  <input class="form-control" type="email" id="quote-email" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="quote-phone">Phone</label>
+                  <input class="form-control" type="number" id="quote-phone" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="quote-address">Address</label>
+                  <input class="form-control" type="text" id="quote-address" required>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="quote-service">Service</label>
+                  <select class="custom-select">
+                    <option value="1">Cloud Computing</option>
+                    <option value="2">Coloaction</option>
+                    <option value="3">Audit Support</option>
+                    <option value="4">It Sercives</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="mb-3" for="message">Message</label>
+                  <textarea class="form-control" rows="4" id="messasge"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary btn-block btn-shadow" type="submit">Send the quote</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <script>
     document.querySelectorAll('.image-hover-box').forEach(box => {
       const mainImg = box.querySelector('.main-img');
@@ -1993,4 +2814,36 @@
     });
   </script>
 
+   <script>
+const targetDate = new Date("2025-07-30T00:00:00");
+
+  const updateTimer = () => {
+    const now = new Date();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      document.getElementById("days").textContent = "00";
+      document.getElementById("hours").textContent = "00";
+      document.getElementById("minutes").textContent = "00";
+      document.getElementById("seconds").textContent = "00";
+      clearInterval(timerInterval);
+      return;
+    }
+
+    const totalSeconds = Math.floor(diff / 1000);
+
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    document.getElementById("days").textContent = String(days).padStart(2, "0");
+    document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+    document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+    document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+  };
+
+  const timerInterval = setInterval(updateTimer, 1000);
+  updateTimer();
+  </script>
 @stop

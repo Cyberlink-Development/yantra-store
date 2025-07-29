@@ -6,6 +6,7 @@
 
 @include('frontend/include/flash-message')
 @yield('content')
+@include('frontend.include.toolbar')
 @include('frontend.include.footer')
 @stack('scripts')
 

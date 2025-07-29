@@ -6,7 +6,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Mountain Handicraft</title>
+    <title>Yantra Store</title>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{asset('backend/css/fontawesome-free/css/all.min.css')}}">
@@ -14,15 +14,15 @@
     <link rel="stylesheet" href="{{asset('backend/css/OverlayScrollbars.min.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('backend/css/dist/css/adminlte.min.css')}}">
-<!-Datatable css -->
+<!-- <!-Datatable css --> -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 
-{{--<select 2 css></select>--}}
+<!-- {{--<select 2 css></select>--}} -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
-    {{--    {{toastr css}}--}}
+    <!-- {{--    {{toastr css}}--}} -->
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
 
 

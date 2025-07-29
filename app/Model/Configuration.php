@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Configuration extends Model
 {
-    protected $fillable=['configuration_key','configuration_value'];
+    protected $fillable=['configuration_key','configuration_value']; 
 
 }

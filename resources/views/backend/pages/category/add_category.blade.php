@@ -30,7 +30,7 @@
                                                 @include('backend.pages.category.category_dropdown',['category'=>$value])
                                             @endforeach
 
-                                        </select>
+                                        </select> 
 
                                     </div>
                                     <div class="form-group">

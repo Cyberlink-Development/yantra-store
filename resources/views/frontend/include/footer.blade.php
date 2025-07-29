@@ -24,37 +24,34 @@
                <div class="col-md-4 mb-5">
                   <h5 class="text-secondary text-uppercase mb-4">LINKS</h5>
                   <div class="d-flex flex-column justify-content-start">
-                     <a class="text-secondary mb-2" href="#">Home</a>
-                     <a class="text-secondary mb-2" href="#">Our Shop</a>
-                     <a class="text-secondary mb-2" href="#">Shop Detail</a>
-                     <a class="text-secondary mb-2" href="#">Shopping Cart</a>
-                     <a class="text-secondary mb-2" href="#">Checkout</a>
-                     <a class="text-secondary" href="#">Contact Us</a>
+                     <a class="text-secondary mb-2" href="index.php">Home</a>
+                     <a class="text-secondary mb-2" href="wishlist.php">Wishlist</a>
+                     <a class="text-secondary mb-2" href="profile.php">Profile</a>
+                     <a class="text-secondary mb-2" href="cart.php">Shopping Cart</a>
+                     <a class="text-secondary mb-2" href="service-list.php">Services</a>
+                     <a class="text-secondary" href="contact.php">Contact Us</a>
                   </div>
                </div>
                <div class="col-md-4 mb-5">
                   <h5 class="text-secondary text-uppercase mb-4">CATEGORIES</h5>
                   <div class="d-flex flex-column justify-content-start">
-                     <a class="text-secondary mb-2" href="#">Home</a>
-                     <a class="text-secondary mb-2" href="#">Our Shop</a>
-                     <a class="text-secondary mb-2" href="#">Shop Detail</a>
-                     <a class="text-secondary mb-2" href="#">Shopping Cart</a>
-                     <a class="text-secondary mb-2" href="#">Checkout</a>
-                     <a class="text-secondary" href="#">Contact Us</a>
+                     <a class="text-secondary mb-2" href="list.php">Laptop</a>
+                     <a class="text-secondary mb-2" href="list.php">Desktop</a>
+                     <a class="text-secondary mb-2" href="list.php">Mobile</a>
+                     <a class="text-secondary mb-2" href="list.php">Tablet</a>
+                     <a class="text-secondary mb-2" href="list.php">Processor</a>
                   </div>
                </div>
                <div class="col-md-4 mb-5">
                   <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
-                  <p class="mb-2"><i class="czi-location text-primary mr-3"></i>123 Street, New York, USA</p>
-                  <p class="mb-2"><i class="czi-mail text-primary mr-3"></i>info@example.com</p>
-                  <p class="mb-0"><i class="czi-phone text-primary mr-3"></i>+012 345 67890</p>
+                  <p class="mb-2"><i class="czi-location text-white mr-3"></i>123 Street, New York, USA</p>
+                  <p class="mb-2"><i class="czi-mail text-white mr-3"></i>info@example.com</p>
+                  <p class="mb-0"><i class="czi-phone text-white mr-3"></i>+012 345 67890</p>
                   <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
                   <div class="widget mt-4 text-md-nowrap   ">
                     <a class="social-btn sb-light sb-twitter mr-2 mb-2" href="#"><i class="czi-twitter"></i></a>
                     <a class="social-btn sb-light sb-facebook mr-2 mb-2" href="#"><i class="czi-facebook"></i></a>
-                    <a class="social-btn sb-light sb-dribbble mr-2 mb-2" href="#"><i class="czi-dribbble"></i></a>
-                    <a class="social-btn sb-light sb-behance mr-2 mb-2" href="#"><i class="czi-behance"></i></a>
-                    <a class="social-btn sb-light sb-pinterest mr-2 mb-2" href="#"><i class="czi-pinterest"></i></a>
+                    <a class="social-btn sb-light sb-dribbble mr-2 mb-2" href="#"><i class="czi-instagram"></i></a>
                     </div>
                </div>
             </div>
@@ -63,9 +60,8 @@
       <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
          <div class="col-md-6 px-xl-0">
             <div class="mb-md-0 text-center text-md-left text-secondary d-flex ">
-                <div class="mr-2">Privacy Policy</div>
-               <div class="mr-2">Terms & Conditions</div>
-              <div class="mr-2"> FAQ's</div>
+               <div class="mr-2"><a href="terms.php" class="text-white">Terms & Conditions</a></div>
+              <div class="mr-2"><a href="faq.php" class="text-white"> FAQ's</a></div>
             </div>
          </div>
          <div class="col-md-6 px-xl-0 text-center text-md-right">
