@@ -166,6 +166,22 @@
                             </div>
                         </div>
                     </div>
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h6 class="box-title">Component Type</h6>
+                        </div>
+                        
+                         <div class="box-body">
+                            <div class="form-group mb-none">
+                                <select class="form-control" name="component_type">
+                                    <option selected="selected" value="">Select Component Type</option>
+                                    @foreach($comp_type as $value)
+                                        <option value="{{$value->id}}">{{$value->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div> 
 
                     <div class="form-group special-link">
                         <label for="name" class="col-sm-2 col-md-3 control-label">Special:</label>

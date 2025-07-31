@@ -50,17 +50,12 @@
                         </tfoot>
                     </table>
                 </div>
-                <!-- /.box-body -->
-
-                <!-- /.box -->
             </div>
         </div>
     </div>
 
 @stop
 @push('scripts')
-   
-
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script>
         $('#package_table').DataTable({

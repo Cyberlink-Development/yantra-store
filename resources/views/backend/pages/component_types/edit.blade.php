@@ -36,13 +36,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- /.box -->
+            </div>
         </form>
-
-
+    </div>
 @stop
-
-@push('scripts')
-
-@endpush

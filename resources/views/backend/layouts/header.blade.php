@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{asset('backend/css/OverlayScrollbars.min.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('backend/css/dist/css/adminlte.min.css')}}">
-<!-- <!-Datatable css --> -->
+<!--Datatable css -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 
 <!-- {{--<select 2 css></select>--}} -->
