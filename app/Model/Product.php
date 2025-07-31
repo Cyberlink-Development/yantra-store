@@ -35,6 +35,10 @@ class Product extends Model
     {
         return $this->belongsTo('App\Model\Brand','brand_id');
     }
+    public function componenttypes()
+    {
+        return $this->belongsTo('App\Model\ComponentType','component_type');
+    }
 
     public function stocks(){
         return $this->hasMany(Stock::class,'product_id');

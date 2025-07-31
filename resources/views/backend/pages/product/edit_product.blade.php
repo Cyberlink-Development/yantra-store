@@ -106,9 +106,9 @@
                             </div>
 
                             <div class="box box-default">
-                                <div class="box-header with-border">
+                                <!-- <div class="box-header with-border">
                                     <h6 class="box-title">Featured/Unfeatured:</h6>
-                                </div>
+                                </div> -->
                                 <!-- /.box-header -->
                                 <!--<div class="box-body">-->
                                 <!--    <div class="form-group mb-none">-->
@@ -147,8 +147,8 @@
                                 <div class="box-header with-border">
                                     <h6 class="box-title">Brands</h6>
                                 </div>
-                                </.box-header -->
-                                <!-- <div class="box-body">
+                                
+                                <div class="box-body">
                                     <div class="form-group mb-none">
                                         <select class="form-control" name="brand">
                                             @foreach($brand as $value)
@@ -156,10 +156,27 @@
                                                         @endif value="{{$value->id}}">{{$value->brand_name}}</option>
                                             @endforeach
                                         </select>
-
                                     </div>
                                 </div>
-                            </div> --> 
+                            </div> -->
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h6 class="box-title">Brands</h6>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="form-group mb-none">
+                                        <select class="form-control" name="brand">
+                                            <option value="">Select Brand</option>
+                                            @foreach($brand as $value)
+                                                <option value="{{ $value->id }}" {{ $product->brand_id == $value->id ? 'selected' : '' }}>
+                                                    {{ $value->brand_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="box box-default">
                                 <div class="box-header with-border">
@@ -183,6 +200,25 @@
                                            @endforeach
                                         </select>
 
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h6 class="box-title">Component Type</h6>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="form-group mb-none">
+                                        <select class="form-control" name="component_type">
+                                            <option value="">Select Component Type</option>
+                                            @foreach($comp_type as $value)
+                                                <option value="{{ $value->id }}" {{ $product->component_type == $value->id ? 'selected' : '' }}>
+                                                    {{ $value->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>

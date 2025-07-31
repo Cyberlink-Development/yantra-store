@@ -17,14 +17,14 @@
                                 <div class="box-body">
                                     <div class="form-group">
                                         <label>Name</label>
-                                        <input name="name" rows="3" class="form-control" />
+                                        <input name="name" rows="3" class="form-control" value="{{old('name')}}" />
                                     </div>
 
                                     <div class="form-group special-link">
-                                        <label for="name" class="control-label">status:</label>
+                                        <label for="name" class="control-label">Status:</label>
                                         <select class="form-control" name="status" >
-                                            <option value="0" selected>Off</option>
-                                            <option value="1">On</option>
+                                            <option value="1" selected>On</option>
+                                            <option value="0" >Off</option>
                                         </select>
                                     </div>
                                 </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Model\Brand;
 use App\Model\Color;
+use App\Model\ComponentType;
 use App\Model\Image;
 use App\Model\Product;
 use App\Model\Size;
@@ -36,14 +37,16 @@ class ProductController extends BackendController
             $size = Size::all();
             $brand = Brand::all();
             $color = Color::all();
-            return view($this->backendproductPath . 'add_product', compact('size', 'brand', 'color'));
+            $comp_type = ComponentType::all();
+            // dd($comp_type);
+            return view($this->backendproductPath . 'add_product', compact('size', 'brand', 'color','comp_type'));
         }
     }
 
     public function store_product(Request $request)
     {
         if ($request->ajax()) {
-            
+            // dd($request->all());
             $validator = Validator::make($request->all(), [
                 'product_name' => 'required|unique:products,product_name',
                 'price' => 'required|numeric',
@@ -83,6 +86,7 @@ class ProductController extends BackendController
 //            $product->color = $color;
                 $product->video = $request->video;
                 $product->brand_id = $request->brand;
+                $product->component_type = $request->component_type;
                 $product->size_variation = $request->size_type;
                 if ($request->hasFile('audio')) {
                     $image = $request->file('audio');
@@ -230,7 +234,8 @@ class ProductController extends BackendController
             $brand = Brand::all();
             $color = Color::all();
             $category=Category::all();
-            return view($this->backendproductPath . 'edit_product', compact('category','product', 'size', 'brand', 'color'));
+            $comp_type = ComponentType::all();
+            return view($this->backendproductPath . 'edit_product', compact('category','product', 'size', 'brand', 'color','comp_type'));
         }
         if ($request->isMethod('post')) {
             if ($request->ajax()) {
@@ -263,7 +268,8 @@ class ProductController extends BackendController
                 $product->sku = $request->sku;
                 $product->video = $request->video;
                 $product->brand_id = $request->brand;
-                $product->size_variation = $product->size_variation;
+                $product->component_type = $request->component_type;
+                // $product->size_variation = $request->size_variation;
                 $product->weight = $request->weight;
                if ($request->hasFile('audio')) {
                    $this->delete_file($request->id);

@@ -192,7 +192,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
         Route::post('store', 'ComponentTypeController@store')->name('store-componenttype');
         Route::get('edit/{id}', 'ComponentTypeController@edit')->name('edit-componenttype');
         Route::post('update/{id}', 'ComponentTypeController@update')->name('update-componenttype');
-        Route::delete('delete/{id}', 'ComponentTypeController@destroy')->name('delete-componenttype');
+        Route::get('delete/{id}', 'ComponentTypeController@destroy')->name('delete-componenttype');
 
     });
 
