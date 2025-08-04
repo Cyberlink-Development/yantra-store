@@ -199,8 +199,8 @@
 
                 
                 <li class="nav-header">BUILD CUSTOM PC</li>
-                <li class="nav-item has-treeview">
-                    <a href="" class="nav-link">
+                <li class="nav-item has-treeview {{ in_array($currentRoute, ['show-active-componenttype']) ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ in_array($currentRoute, ['show-active-componenttype']) ? 'active' : '' }}">
                         <i class="nav-icon fa fa-microchip"></i>
                         <p>
                             Component
@@ -209,16 +209,9 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('add-componenttype') }}" class="nav-link ml-3">
-                                <i class="fa fa-plus nav-icon"></i>
-                                <p>Add Component</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('show-componenttype') }}" class="nav-link ml-3">
+                            <a href="{{ route('show-active-componenttype') }}" class="nav-link ml-3 {{ $currentRoute == 'show-active-componenttype' ? 'active' : '' }}" >
                                 <i class="fa fa-list nav-icon"></i>
-                                <p>View Components</p>
+                                <p>View Component </p>
                             </a>
                         </li>
 

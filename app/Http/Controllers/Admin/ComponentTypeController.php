@@ -11,7 +11,7 @@ class ComponentTypeController extends BackendController
     public function view()
     {
         $data = ComponentType::all();
-        return view($this->backendComponentPath.'index',compact('data'));
+        return view($this->backendComponentTypePath.'index',compact('data'));
     }
 
     public function create()

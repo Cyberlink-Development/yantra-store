@@ -195,7 +195,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
         Route::get('delete/{id}', 'ComponentTypeController@destroy')->name('delete-componenttype');
 
     });
+    Route::group(['prefix' => 'component'], function () {
+        Route::get('show-componenttype', 'ComponentController@view')->name('show-active-componenttype');
+        Route::get('show-component/{id}', 'ComponentController@viewComponent')->name('view-component');
+        Route::get('create-component/{id}', 'ComponentController@create')->name('create-component');
+        Route::post('store-component', 'ComponentController@store')->name('store-component');
 
+    });
 
 //Shipping
     Route::group(['prefix' => 'shipping'], function () {

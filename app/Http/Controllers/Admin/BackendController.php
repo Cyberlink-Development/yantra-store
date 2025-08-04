@@ -15,6 +15,7 @@ class BackendController extends Controller
     protected $backendslidePath = 'null';
     protected $backendsetupPath = 'null';
     protected $backendComponentPath = 'null';
+    protected $backendComponentTypePath = 'null';
 
 
 
@@ -28,7 +29,8 @@ class BackendController extends Controller
         $this->backendslidePath = $this->backendPath . '/' . 'pages.' . '/' . 'slide.';
         $this->backendbrandPath = $this->backendPath . '/' . 'pages.' . '/' . 'brand.';
         $this->backendsetupPath = $this->backendPath . '/' . 'pages.' . '/' . 'setup.';
-        $this->backendComponentPath = $this->backendPath . '/' . 'pages.' . '/' . 'component_types.';
+        $this->backendComponentTypePath = $this->backendPath . '/' . 'pages.' . '/' . 'component_types.';
+        $this->backendComponentPath = $this->backendPath . '/' . 'pages.' . '/' . 'component.';
 
 
     }
