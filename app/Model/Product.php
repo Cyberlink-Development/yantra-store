@@ -50,7 +50,7 @@ class Product extends Model
     }
 
     public function seo(){
-        return $this->hasOne(Seo::Class,'product_id');
+        return $this->hasOne(Seo::class,'product_id');
     }
 
     public function images()

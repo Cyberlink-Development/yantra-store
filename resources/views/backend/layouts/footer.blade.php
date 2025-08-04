@@ -11,7 +11,7 @@
 <script src="{{asset('backend/js/jquery.min.js')}}"></script>
 <!-- Bootstrap -->
 <script src="{{asset('backend/js/bootstrap.bundle.min.js')}}"></script>
-<!-- overlayScrollbars -->/
+<!-- overlayScrollbars -->
 <script src="{{asset('backend/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('backend/js/adminlte.js')}}"></script>
@@ -30,7 +30,7 @@
 
 <!-- PAGE SCRIPTS -->
 <script src="{{asset('backend/js/dashboard2.js')}}"></script>
-ti
+
 <script src="https://cdn.ckeditor.com/ckeditor5/22.0.0/classic/ckeditor.js"></script>
 
 <link rel="stylesheet"

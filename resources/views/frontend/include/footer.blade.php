@@ -80,7 +80,7 @@
    });
    </script> -->
 <!-- Vendor scrits: js libraries and plugins-->
-<script src="{{asset('theme-assets/vendor/jquery/dist/jquery.slim.min.js')}}"></script>
+
 <script src="{{asset('theme-assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('theme-assets/vendor/bs-custom-file-input/dist/bs-custom-file-input.min.js')}}"></script>
 <script src="{{asset('theme-assets/vendor/simplebar/dist/simplebar.min.js')}}"></script>
@@ -95,3 +95,8 @@
 <script src="{{asset('theme-assets/vendor/nouislider/distribute/nouislider.min.js')}}"></script>
 <!-- Main theme script-->
 <script src="{{asset('theme-assets/js/theme.min.js')}}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+</body>
+</html>

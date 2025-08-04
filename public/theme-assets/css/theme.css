@@ -5347,7 +5347,7 @@ input[type="button"].btn-block {
     background: var(--secondary);
     text-transform: uppercase;
     color: white;
-    padding: 3px 13px;
+    padding: 9px 15px;
     font-size: 17px;
 }
 .price-badge,.quote-badge{
@@ -5437,7 +5437,7 @@ a.badge:hover, a.badge:focus {
     background: var(--secondary);
     color: white;
     padding: 9px 8px 14px 8px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
     text-align: center;
     clip-path: polygon(0 0, 100% 0, 100% 80%, 90% 100%, 80% 80%, 70% 100%, 60% 80%, 50% 100%, 40% 80%, 30% 100%, 20% 80%, 10% 100%, 0 80%);
@@ -5451,12 +5451,18 @@ a.badge:hover, a.badge:focus {
     background: var(--secondary);
     color: white;
     padding: 9px 8px 14px 8px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
     text-align: center;
     clip-path: polygon(0 0, 100% 0, 100% 80%, 90% 100%, 80% 80%, 70% 100%, 60% 80%, 50% 100%, 40% 80%, 30% 100%, 20% 80%, 10% 100%, 0 80%);
     z-index: 2;
     line-height: 1.2;
+}
+@media (max-width: 991px){
+.ribbon-detail{
+    top: 21px;
+    right: 79px;
+}
 }
 .badge-pill {
   padding-right: 0.6em;
@@ -13233,9 +13239,10 @@ a.nav-link:hover .media-tab-media {
     }
 
     .timer {
-      margin-top: 10px;
+      margin-top: 15px;
       display: flex;
       gap: 3px;
+      justify-content: center;
     }
 
     .time-box {
@@ -16616,6 +16623,17 @@ border: 1px solid #ebebeb;
 
 .star-rating .sr-star.active {
   color: var(--primary);
+}
+.hot-rating{
+    border-radius: 100%;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hot-rating img{
+    height: 32px;
+    object-fit: contain;
 }
 
 .product-review .btn-like,

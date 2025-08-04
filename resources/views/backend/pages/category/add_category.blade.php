@@ -34,6 +34,7 @@
 
                                     </div>
                                     <div class="form-group">
+                                        
                                         <label for="formGroupExampleInput">Thumbnail:</label>
                                         <input type="file" name="image" class="form-control" id="formGroupExampleInput">
                                     </div>

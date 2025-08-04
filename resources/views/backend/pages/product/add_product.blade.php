@@ -45,6 +45,15 @@
                                        class="form-control" id="formGroupExampleInput" value="{{old('selling_price')}}"
                                        placeholder="Enter selling price">
                             </div>
+                                  <div class="form-group">
+                                <h4>
+                                    <span style="color: red;">*</span> <label>Stock Availability:</label>
+                                </h4>
+
+                                <input type="number" min="0" id="stock" name="stock"
+                                       class="form-control" id="formGroupExampleInput" value="{{old('stock')}}"
+                                       placeholder="Enter stock availability">
+                            </div>
                             <div class="form-group">
                                 <h4>
                                     <span style="color: red;">*</span> <label>Weight:</label>

@@ -1,6 +1,5 @@
 @extends('frontend.include.master')
 @section('content')
-
   <!-- Hero slider start -->
 <section class="cz-carousel cz-controls-lg">
   <div class="cz-carousel-inner" data-carousel-options='{"mode": "gallery", "responsive": {"0":{"nav":true, "controls": true},"992":{"nav":false, "controls": true}}}'>
@@ -28,36 +27,36 @@
 
       <div class="horizontal-scrolling-items__item mr-5">
         <a href="list.php">
-          🎉 Big Sale! Up to 50% OFF on Selected Items
+          ðŸŽ‰ Big Sale! Up to 50% OFF on Selected Items
         </a>
       </div>
 
       <div class="horizontal-scrolling-items__item mr-5">
         <a href="list.php">
-          🚚 Free Shipping on Orders Over $50!
+          ðŸšš Free Shipping on Orders Over $50!
         </a>
       </div>
 
       <div class="horizontal-scrolling-items__item mr-5">
         <a href="list.php">
-          💥 Flash Sale Ends Tonight – Hurry Up!
+          ðŸ’¥ Flash Sale Ends Tonight â€“ Hurry Up!
         </a>
       </div>
       <div class="horizontal-scrolling-items__item mr-5">
         <a href="list.php">
-          🎉 Big Sale! Up to 50% OFF on Selected Items
-        </a>
-      </div>
-
-      <div class="horizontal-scrolling-items__item mr-5">
-        <a href="list.php">
-          🚚 Free Shipping on Orders Over $50!
+          ðŸŽ‰ Big Sale! Up to 50% OFF on Selected Items
         </a>
       </div>
 
       <div class="horizontal-scrolling-items__item mr-5">
         <a href="list.php">
-          💥 Flash Sale Ends Tonight – Hurry Up!
+          ðŸšš Free Shipping on Orders Over $50!
+        </a>
+      </div>
+
+      <div class="horizontal-scrolling-items__item mr-5">
+        <a href="list.php">
+          ðŸ’¥ Flash Sale Ends Tonight â€“ Hurry Up!
         </a>
       </div>
 
@@ -157,18 +156,13 @@
   <!-- Categories end-->
 
   <!-- Sales products start-->
-  <section class="container-fluid px-4 px-md-5 mt-3">
-    <div class="row d-flex align-items-center  mb-3">
-      <div class="col-md-6 d-flex align-items-center justify-content-center justify-content-md-start">
-        🔥<span class="sales-badge mb-0 ml-1">Flash sale</span>
-      </div>
-      <div class="col-md-6 d-flex justify-content-center justify-content-md-end">
-         <div>
-          <div class="flash-sale mt-2 text-center text-md-right">
-            FLA<span class="bolt">&#9889</span>SH SALE
-          </div>
-
-          <div class="timer">
+  <section class="container-fluid px-4 px-md-5 mt-4">
+    <div class="row d-flex align-items-center justify-content-center mb-4">
+      <div class="col-md-12 text-center">
+        <div>
+            <span class="sales-badge mb-0 ml-1">Fla<span class="bolt">&#9889</span>h sale</span>
+        </div>
+        <div class="timer">
               <div class="text-center">
               <div class="time-box" id="days">00</div>
                <span class="cz-handheld-toolbar-label">DAYS</span>
@@ -189,16 +183,15 @@
                <span class="cz-handheld-toolbar-label">SECONDS</span>
             </div>
           </div>
-        </div>
-
       </div>
+      
     </div>
 
     <div class="custom-cols-5 pt-4 m-n3">
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
-          <div class="ribbon">🔥 8% <br> OFF</div>
+          <div class="ribbon"> 8% <br> OFF</div>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -245,7 +238,7 @@
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
-          <div class="ribbon">🔥 8% <br> OFF</div>
+          <div class="ribbon"> 8% <br> OFF</div>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -292,7 +285,7 @@
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
-          <div class="ribbon">🔥 8% <br> OFF</div>
+          <div class="ribbon"> 8% <br> OFF</div>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -339,7 +332,7 @@
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
-          <div class="ribbon">🔥 8% <br> OFF</div>
+          <div class="ribbon"> 8% <br> OFF</div>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -386,7 +379,259 @@
       <!-- Product-->
       <div class="col-5th px-1 mb-4">
         <div class="card product-card translate p-0">
-          <div class="ribbon">🔥 8% <br> OFF</div>
+          <div class="ribbon"> 8% <br> OFF</div>
+          <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+            <i class="czi-cart"></i>
+          </button>
+          <a class="card-img-top d-block overflow-hidden" href="detail.php">
+            <div class="image-hover-box">
+              <img src="img/computer/computer3.webp" alt="Main" class="main-img img-fluid">
+              <img src="img/computer/computer4.webp" alt="Hover" class="hover-img img-fluid">
+            </div>
+          </a>
+          <div class="card-body py-2">
+            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+            <h3 class="product-title font-size-sm mb-2">
+              <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
+            </h3>
+            <div class="mb-2">
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
+                <del class="font-size-sm text-danger">RS. 5,50,000</del>
+              </div>
+            </div>
+          </div>
+          <a href="detail.php">
+            <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
+              <div>
+                <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                  BUY NOW
+                </h3>
+              </div>
+              <div>
+                <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Sales products  end-->
+  
+    <!-- hot deals start-->
+  <section class="container-fluid px-4 px-md-5 mt-4">
+    <div class="row  mb-4">
+      <div class="col-md-12">
+        <div>
+            <h class=" h3 mb-0 ml-1 text-uppercase font-weight-bold font-secondary"> H<img src="img/hot.png" alt="fire" border="0" style="height:30px;     margin-bottom: 10px;">t Deals</h2>
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="custom-cols-5 pt-4 m-n3">
+      <!-- Product-->
+      <div class="col-5th px-1 mb-4">
+       
+        <div class="card product-card translate p-0">
+        <span class="badge hot-rating"><img src="img/hot.png" alt="fire" border="0"></span>
+          <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+            <i class="czi-cart"></i>
+          </button>
+          <a class="card-img-top d-block overflow-hidden" href="detail.php">
+            <div class="image-hover-box">
+              <img src="img/computer/computer1.webp" alt="Main" class="main-img img-fluid">
+              <img src="img/computer/computer2.webp" alt="Hover" class="hover-img img-fluid">
+            </div>
+          </a>
+          <div class="card-body py-2">
+            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+            <h3 class="product-title font-size-sm mb-2">
+              <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
+            </h3>
+            <div class="mb-2">
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
+                <del class="font-size-sm text-danger">RS. 5,50,000</del>
+              </div>
+            </div>
+          </div>
+          <a href="detail.php">
+            <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
+              <div>
+                <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                  BUY NOW
+                </h3>
+              </div>
+              <div>
+                <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <!-- Product-->
+      <div class="col-5th px-1 mb-4">
+        <div class="card product-card translate p-0">
+             <span class="badge hot-rating"><img src="img/hot.png" alt="fire" border="0"></span>
+          <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+            <i class="czi-cart"></i>
+          </button>
+          <a class="card-img-top d-block overflow-hidden" href="detail.php">
+            <div class="image-hover-box">
+              <img src="img/computer/computer3.webp" alt="Main" class="main-img img-fluid">
+              <img src="img/computer/computer4.webp" alt="Hover" class="hover-img img-fluid">
+            </div>
+          </a>
+          <div class="card-body py-2">
+            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+            <h3 class="product-title font-size-sm mb-2">
+              <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
+            </h3>
+            <div class="mb-2">
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
+                <del class="font-size-sm text-danger">RS. 5,50,000</del>
+              </div>
+            </div>
+          </div>
+          <a href="detail.php">
+            <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
+              <div>
+                <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                  BUY NOW
+                </h3>
+              </div>
+              <div>
+                <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <!-- Product-->
+      <div class="col-5th px-1 mb-4">
+        <div class="card product-card translate p-0">
+             <span class="badge hot-rating"><img src="img/hot.png" alt="fire" border="0"></span>
+          <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+            <i class="czi-cart"></i>
+          </button>
+          <a class="card-img-top d-block overflow-hidden" href="detail.php">
+            <div class="image-hover-box">
+              <img src="img/computer/computer3.webp" alt="Main" class="main-img img-fluid">
+              <img src="img/computer/computer4.webp" alt="Hover" class="hover-img img-fluid">
+            </div>
+          </a>
+          <div class="card-body py-2">
+            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+            <h3 class="product-title font-size-sm mb-2">
+              <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
+            </h3>
+            <div class="mb-2">
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
+                <del class="font-size-sm text-danger">RS. 5,50,000</del>
+              </div>
+            </div>
+          </div>
+          <a href="detail.php">
+            <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
+              <div>
+                <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                  BUY NOW
+                </h3>
+              </div>
+              <div>
+                <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <!-- Product-->
+      <div class="col-5th px-1 mb-4">
+        <div class="card product-card translate p-0">
+             <span class="badge hot-rating"><img src="img/hot.png" alt="fire" border="0"></span>
+          <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+            <i class="czi-cart"></i>
+          </button>
+          <a class="card-img-top d-block overflow-hidden" href="detail.php">
+            <div class="image-hover-box">
+              <img src="img/computer/computer3.webp" alt="Main" class="main-img img-fluid">
+              <img src="img/computer/computer4.webp" alt="Hover" class="hover-img img-fluid">
+            </div>
+          </a>
+          <div class="card-body py-2">
+            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+            <h3 class="product-title font-size-sm mb-2">
+              <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
+            </h3>
+            <div class="mb-2">
+              <div class="star-list d-flex">
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled active-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+                <i class="sr-star czi-star-filled inactive-star"></i>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
+                <del class="font-size-sm text-danger">RS. 5,50,000</del>
+              </div>
+            </div>
+          </div>
+          <a href="detail.php">
+            <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
+              <div>
+                <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                  BUY NOW
+                </h3>
+              </div>
+              <div>
+                <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <!-- Product-->
+      <div class="col-5th px-1 mb-4">
+        <div class="card product-card translate p-0">
+             <span class="badge hot-rating"><img src="img/hot.png" alt="fire" border="0"></span>
           <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
             <i class="czi-cart"></i>
           </button>
@@ -2846,4 +3091,5 @@ const targetDate = new Date("2025-07-30T00:00:00");
   const timerInterval = setInterval(updateTimer, 1000);
   updateTimer();
   </script>
+
 @stop
