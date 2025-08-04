@@ -1,6 +1,8 @@
 <?php
 
 use App\Model\Brand;
+use App\Model\ComponentType;
+use App\Model\Product;
 
 function categorySeperator( $size, $string = '')
 {
@@ -43,6 +45,18 @@ function get_brand_name($id)
 {
     $data=Brand::where('id',$id)->first();
     return $data->brand_name;
+}
+
+function get_componenttype_by_id($id)
+{
+    $data= ComponentType::find($id);
+    return $data ? $data->name : '';
+}
+function get_product_by_componenttype_id($id)
+{
+    $data= Product::where(['component_type' => $id, 'status'=> 1])->get();
+    // dd($data);
+    return $data ? $data : '';
 }
 
 //function deal_date($date)
