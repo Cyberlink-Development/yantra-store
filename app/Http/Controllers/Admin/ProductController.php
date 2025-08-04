@@ -71,6 +71,7 @@ class ProductController extends BackendController
                 $product = new Product();
                 $product->product_name = $request->product_name;
                 $product->price = $request->price;
+                $product->stock = $request->stock;
                 $product->discount_price = $request->selling_price;
                 $product->wholesale_price = $request->wholesale_price;
                 $product->short_description = $request->description;
@@ -257,6 +258,7 @@ class ProductController extends BackendController
                 $product = Product::findorfail($request->id);
                 $product->product_name = $request->product_name;      
                 $product->price = $request->price;
+                $product->stock = $request->stock;
                 $product->discount_price = $request->selling_price;
                 $product->short_description = $request->short_description;
                 $product->long_description = $request->long_description;

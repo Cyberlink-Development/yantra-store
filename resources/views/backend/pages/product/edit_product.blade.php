@@ -47,6 +47,15 @@
                                        value="{{$product->discount_price}}"
                                        placeholder="enter selling price">
                             </div>
+                                <div class="form-group">
+                                <h4>
+                                    <span style="color: red;">*</span> <label>Stock Availability:</label>
+                                </h4>
+
+                                <input type="number" min="0" id="stock" name="stock"
+                                       class="form-control" id="formGroupExampleInput" value="{{$product->stock}}"
+                                       placeholder="Enter stock availability">
+                            </div>
                             <div class="form-group">
                                 <h4>
                                     <span style="color: red;">*</span> <label>Weight:</label>

@@ -1,863 +1,640 @@
 @extends('frontend.include.master')
 
-@section('meta-keywords') @if($product->seo){!! strip_tags($product->seo->seo_keyword) !!}@endif @endsection
-@section('meta-description') @if($product->seo){!! strip_tags($product->seo->seo_description) !!}@endif @endsection
+@section('meta-keywords') @if ($product->seo)
+    {!! strip_tags($product->seo->seo_keyword) !!}
+@endif @endsection
+@section('meta-description') @if ($product->seo)
+    {!! strip_tags($product->seo->seo_description) !!}
+@endif @endsection
 
 @section('title', $product->product_name)
-@section('image', asset('images/products/'.$product->images->where('is_main', 1)->first()->image))
+@section('image', asset('images/products/' . $product->images->where('is_main', 1)->first()->image))
 @section('short_description', strip_tags($product->short_description))
 
 @section('content')
-<!-- breadcrumb -->
-<section class="uk-section-xsmall"> 
-   <div class="uk-container">
-      <ul class="uk-breadcrumb">
-         <li><a href="{{ route('index') }}">Home </a></li>
-         <li><a href="{{route('product-list',$product->categories->first()->slug)}}">{{$product->categories->first()->name}}</a></li>
-         <li><span>{{$product->product_name}}</span></li> 
-      </ul>
-   </div>
-</section>
-<!-- breadcrumb -->
-<!-- product  -->
-<section class="uk-section uk-padding-remove-top">
-   <div class="uk-container">
-   
-   <!-- start -->
-   <div uk-slideshow="ratio: 10:15; minHeight: 300; "  class="uk-grid-expand uk-grid-column-large uk-margin-large" uk-grid>
-      <div class="uk-width-2-5@m">
-         <div class="uk-margin uk-position-relative">
-            <ul class="uk-slideshow-items"  uk-lightbox="animation: slide">
-               <li class="uk-item uk-zoom-image">
-                  <img class="uk-image" uk-cover uk-img="target: !.uk-slideshow-items"  
-                   data-srcset="{{asset('images/products/'.$product->images->where('is_main','=',1)->first()->image)}}">       
-               </li>
-                @foreach($product->images->where('is_main',0) as $key=>$img)
-               <li class="uk-item uk-zoom-image">
-                  <img class="uk-image" uk-cover uk-img="target: !.uk-slideshow-items"  data-srcset="{{asset('images/products/'.$img->image)}}">       
-               </li>
-               @endforeach
-                
-            </ul>
+    <!-- Page Title-->
+    <div class="bg-primary page-title-overlap   pt-4 ">
+        <div class="container d-flex justify-content-center align-items-center text-center py-2 py-lg-3">
+            <div>
+                <div class="mb-3 mb-lg-0 pt-lg-2">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb  flex-lg-nowrap justify-content-center">
+                            <li class="breadcrumb-item"><a class="text-nowrap text-white" href="{{ route('index') }}"><i
+                                        class="czi-home"></i>Home</a></li>
 
-            <a class="uk-slider-btn uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
-            <a class="uk-slider-btn uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
+                            <li class="breadcrumb-item text-nowrap active text-white" aria-current="page">
+                                {{ $product->categories->first()->name }}</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class=" pr-lg-4 text-center">
+                    <h1 class="h3  mb-0 text-white">{{ $product->product_name }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page Content-->
+    <div class="container-fluid px-4 px-md-5">
+        <!-- Gallery + details-->
+        <div class="bg-light box-shadow-lg rounded-lg px-4 py-3 mb-5">
+            <div class="px-lg-3">
+                <div class="row">
+                    <!-- Product gallery-->
+                    @if ($product->images->count() > 0)
+                        @php
+                            $images = $product->images->sortByDesc('is_main')->values();
+                        @endphp
 
-            <!-- audio video -->
-            <div class="uk-position-bottom-right uk-margin-small-right uk-margin-small-bottom">
-               <!-- audio -->
-               @if($product->audio)
-               <a   href="avoide:javascript;" class="uk-product-btn uk-audio-btn uk-flex uk-flex-middle uk-flex-center " id="audio-btn"></a>
-               <audio id="audio" src="{{asset('audio/'.$product->audio)}}" preload="metadata" type="audio/mpeg">
-                  Your browser does not support the audio element.
-               </audio>
-               @endif
-               <!-- end -->
-               <!-- video -->
-               @if($product->video)
-               <a  data-youtube-id="{{$product->video}}" class="uk-product-btn uk-flex uk-flex-middle uk-flex-center  open-video" uk-tooltip="Watch Video">
-                <i class="fa fa-video-camera"></i>
-               </a>  
-               @endif                   
-               <!-- end -->
-            </div>
-            <!-- end audio video -->
-            <!-- <div class="uk-hidden-hover uk-hidden-touch uk-visible@s">
-               <a class="uk-slidenav uk-slider-btn uk-slidenav-large uk-position-medium uk-position-center-left" href="#" uk-slidenav-previous uk-slideshow-item="previous">
-               </a>
-               <a class="uk-slidenav uk-slider-btn uk-slidenav-large uk-position-medium uk-position-center-right" href="#" uk-slidenav-next uk-slideshow-item="next">
-               </a>
-               </div> -->
-         </div>
-         <ul class="uk-nav uk-thumbnav uk-flex-left uk-margin-small-top" uk-margin>
-            <li uk-slideshow-item="0">
-               <a href="#">
-               <img alt data-src="{{asset('images/products/'.$product->images->where('is_main','=',1)->first()->image)}}" data-sizes="(min-width: 70px) 70px" width="70" height="70" uk-img>
-               </a>
-            </li>
-            @php $i = 1; @endphp
-            @foreach($product->images->where('is_main',0) as $key=>$img)
-            <li uk-slideshow-item="{{$i}}">
-               <a href="#">
-               <img alt data-src="{{asset('images/products/'.$img->image)}}" data-sizes="(min-width: 70px) 70px" width="70" height="70" uk-img>
-               </a>
-            </li>
-            @php $i++; @endphp
-            @endforeach
-         </ul>
-      </div>
-      <div class="uk-grid-item-match uk-width-expand@m">
-         <div class="uk-panel uk-width-1-1">
-            <h1 class="uk-h2 uk-margin uk-width-xlarge f-w-600">{{ $product->product_name }}</h1>
-            <div class="uk-margin">
-                {!! $product->short_description !!}
-            </div>
-            <div class="uk-margin">
-               <div class="uk-h2 uk-margin-remove f-w-600 text-secondary">${{$product->discount_price}} <del class="uk-h4">$ {{$product->price}}</del></div>
-            </div>
-            <form class="mb-grid-gutter" id="add_to_cart">
-            <input type="hidden" name="product_id" value="{{$product->id}}">
-            <div class="uk-margin">
-               <label class="uk-margin-remove f-w-600 f-12" for="colour">Select Colour:</label>
-               <ul class="uk-color uk-nav uk-thumbnav uk-flex-left uk-margin-small-top" id="colour" uk-margin>
-                  <input type="hidden" name="color" id="hidden-color">
-                  @if($product->size_variation==0)
-                  @foreach($product->colorstocks as $color)
-                  <li class="color-item">
-                     <a href="#" data-color-stock="{{$product->totalStock($color->id)}}" uk-tooltip="{{$color->title}}">
-                        <div class="uk-product-color" style="background:{{$color->title}};">
+                        <div class="col-lg-7 pr-lg-0 pt-lg-4">
+                            <div class="cz-product-gallery">
+
+                                {{-- Preview Images --}}
+                                <div class="cz-preview order-sm-2">
+                                    @foreach ($images as $index => $img)
+                                        <div class="cz-preview-item {{ $index === 0 ? 'active' : '' }}"
+                                            id="preview-{{ $index }}">
+                                            <img class="cz-image-zoom" src="{{ asset('images/products/' . $img->image) }}"
+                                                data-zoom="{{ asset('images/products/' . $img->image) }}"
+                                                alt="{{ $product->product_name }}">
+                                            <div class="cz-image-zoom-pane"></div>
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                {{-- Thumbnail Navigation --}}
+                                <div class="cz-thumblist order-sm-1">
+                                    @foreach ($images as $index => $img)
+                                        <a class="cz-thumblist-item {{ $index === 0 ? 'active' : '' }}"
+                                            href="#preview-{{ $index }}">
+                                            <img src="{{ asset('images/products/' . $img->image) }}"
+                                                alt="{{ $product->product_name }}">
+                                        </a>
+                                    @endforeach
+                                </div>
+
+                            </div>
                         </div>
-                     </a>
-                  </li>
-                  @endforeach
-                  @else
-                  @foreach($product->uniqueStockColor() as $stock)
-                  <li class="color-item-variation">
-                     <a href="#"
-                      data-color-id="{{$stock->colors->id}}"
-                      uk-tooltip="{{$stock->colors->title}}">
-                        <div class="uk-product-color" style="background:{{$stock->colors->title}};">
+                    @endif
+
+                    <!-- Product details-->
+                    <div class="col-lg-5 pt-4 pt-lg-0">
+                        <div class="product-details ml-auto pb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <p class="text-weight-bold text-uppercase m-0">Laptop</p>
+                                    <div class="mb-2">
+                                        <div class="star-list d-flex">
+                                            <i class="sr-star czi-star-filled active-star"></i>
+                                            <i class="sr-star czi-star-filled active-star"></i>
+                                            <i class="sr-star czi-star-filled active-star"></i>
+                                            <i class="sr-star czi-star-filled inactive-star"></i>
+                                            <i class="sr-star czi-star-filled inactive-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="ribbon-detail"> ðŸ”¥ 8% <br> OFF</div>
+                                    <button class="btn-wishlist mr-0 mr-lg-n3 " type="button" data-toggle="tooltip"
+                                        title="Add to wishlist"><i class="czi-heart"></i></button>
+                                </div>
+                            </div>
+                            <h3>{{ $product->product_name }}</h3>
+                            <hr>
+                            <div class="d-flex justify-content-between mt-3">
+                                <div style="font-size:25px;"><span
+                                        class="font-midnight">Rs.{{ $product->discount_price }}</span>
+                                    <del class="font-size-sm text-danger">Rs. {{ $product->price }}</del>
+                                </div>
+                            </div>
+
+                            <div class="font-size-sm mb-4">
+                                <span class="text-muted" id="colorOption">**Price is inclusive of VAT**</span>
+                            </div>
+                            <div class="position-relative mr-n4 mb-3" style="top:-4px;">
+                                <div class="product-badge product-available mt-n1"><i class="czi-security-check"></i>In
+                                    Stock Avaliable</div>
+                            </div>
+                            <form class="mb-grid-gutter" id="add_to_cart">
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <div class="form-group d-flex align-items-center">
+                                    <label>Quantity : </label>
+                                    <select name="quantity" class="custom-select mr-3 ml-3" style="width: 5rem;"> 
+                                        @for($i=1; $i<= $product->stock; $i++)
+                                        <option value="{{$i}}">{{$i}}</option>
+                                        @endfor
+                        
+                                    </select>
+
+                                </div>
+                                <div class="form-group d-flex align-items-center" style="gap:5px;">
+                                    <a class="btn btn-primary btn-shadow btn-block mt-0" href="checkout.php"><i
+                                            class="czi-bag font-size-lg mr-2"></i>Buy Now</a>
+                                    <a class="btn btn-secondary btn-shadow btn-block mt-0" id="cart_btn">
+                                        <i class="czi-cart font-size-lg mr-2"></i>Add to Cart</a>
+                                </div>
+                            </form>
+
+                            <!-- Sharing-->
+                            <h6 class="d-inline-block align-middle font-size-base my-2 mr-2">Share:</h6><a
+                                class="share-btn sb-twitter mr-2 my-2" href="#"><i
+                                    class="czi-twitter"></i>Twitter</a><a class="share-btn sb-instagram mr-2 my-2"
+                                href="#"><i class="czi-instagram"></i>Instagram</a><a
+                                class="share-btn sb-facebook my-2" href="#"><i class="czi-facebook"></i>Facebook</a>
                         </div>
-                     </a>
-                  </li>
-                  @endforeach
-                  @endif
-               </ul>
+                    </div>
+                </div>
             </div>
-            <div class="uk-margin">
-               <div class="uk-grid-small uk-child-width-1-2 uk-child-width-1-3@m" uk-grid>
-                  @if($product->size_variation==1)
-                  <div>
-                     <label class="uk-margin-remove f-w-600 f-12 uk-display-block" for="size">Select Size:</label>
-                     <select name="size" id="size" class="uk-select  uk-margin-small-top">
-                        <option value="0" option-id="{{$product->totalStock()}}" hidden>Choose an Option...</option>
-                        @foreach($product->uniqueStockSize() as $data)
-                        <option value="{{$data->size->title}}" data-size-id="{{$data->size->id}}" data-size-stock="{{$product->totalStock(null, $data->size->id)}}">{{$data->size->title}}</option>
-                        @endforeach
-                     </select>
-                     <a href="" class="f-w-600 f-12 uk-margin-small-top uk-display-block text-secondary" uk-toggle="target: #SizeGuide">Size Guide</a>
-                  </div>
-                  @endif
-                  <div>
-                     <div>
-                        <label class="uk-margin-remove f-w-600 f-12 uk-display-block" for="size">Qty:</label>
-                        <div class="number-input  uk-margin-small-top">
-                           <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
-                           <input class="quantity" id="quantity" readonly min="1" max="{{$product->totalStock()}}" name="quantity" value="1" type="number">
-                           <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               </form>
-               @if($product->totalStock()<=0)
-                  <div class="f-w-600 f-12 uk-margin-small-top uk-display-block text-secondary">
-                     <h4 class="uk-alert-danger" id="outofstock">Out of Stock !!</h4>
-                  </div>
-                  @endif
-               <div class="uk-margin-medium uk-padding bg-grey uk-border-rounded">
-                  
-                  <div class="uk-grid-small" uk-grid>
-                     <div>
-                        <a class="uk-content uk-button uk-btn-primary uk-width-1-1" id="cart_btn">
-                        <span uk-icon="icon:cart;"></span> Add to Cart
+        </div>
+
+    </div>
+
+    <!-- Product description-->
+    <div class="container ">
+        <!-- Product panels-->
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a href="#tab1" class="nav-link active tab-font" data-toggle="tab" role="tab">
+                            Specification
                         </a>
-                     </div>
-                     <div>
-                        <form action="{{route('order-now')}}" id="order-now-form" method="GET">
-
-                           <input type="hidden" name="product_slug" value="{{$product->slug}}" />
-                           <input type="hidden" name="color" id="hidden-color-order-now" value="" />
-                           <input type="hidden" name="quantity" id="hidden-quantity-order-now" value="" />
-                           <input type="hidden" name="size" id="hidden-size-order-now" value="" />
-
-                           <button class="uk-content uk-button uk-btn-black uk-width-1-1">
-                              Order Now
-                           </button>
-                        </form>
-                     </div>
-                     <div>
-                        <a class="uk-content uk-button uk-btn-secondary uk-width-1-1" href="#quotation" uk-toggle>
-                        Get Quotation  
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tab2" class="nav-link" data-toggle="tab" role="tab">
+                            Description
                         </a>
-                     </div>
-                  </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tab3" class="nav-link" data-toggle="tab" role="tab">
+                            Review
+                        </a>
+                    </li>
 
-                  <div class="f-10 uk-margin-small uk-margin-remove-bottom"><i><b> NOTE: </b> The actual color of the product may slightly differ due to photographic effects.</i></div>
-                  <div class="uk-margin-small f-12 uk-flex uk-flex-middle">
-                     <span class="uk-margin-small-right ">We accept</span>
-                     <ul class="uk-grid-small" uk-grid>
-                        <li>
-                           <div class="uk-box-shadow-small uk-payment-getway">
-                              <img src="{{asset('images/payments/esewa.svg')}}" alt="">
-                           </div>
-                        </li>
-                        <li>
-                           <div class="uk-box-shadow-small uk-payment-getway">
-                              <img src="{{asset('images/payments/khalti.svg')}}" alt="">
-                           </div>
-                        </li>
-                        <li>
-                           <div class="uk-box-shadow-small uk-payment-getway">
-                              <img src="{{asset('images/payments/visa.svg')}}" alt="">
-                           </div>
-                        </li>
-                        <li>
-                           <div class="uk-box-shadow-small uk-payment-getway">
-                              <img src="{{asset('images/payments/master-card.svg')}}" alt="">
-                           </div>
-                        </li>
-                        <li>
-                           <div class="uk-box-shadow-small uk-payment-getway">
-                              <img src="{{asset('images/payments/american-express.svg')}}" alt="">
-                           </div>
-                        </li>
-                        <li>
-                           <div class="uk-box-shadow-small uk-payment-getway">
-                              <img src="{{asset('images/payments/discover.svg')}}" alt="">
-                           </div>
-                        </li>
-                     </ul>
-                  </div>
-                  <div class="uk-margin-small-bottom f-12 uk-flex uk-flex-middle">
-                     <div class="uk-margin-small-right">Share</div>
-                     <div class="sharethis-inline-share-buttons"></div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <!-- end  -->
-   </div>
-    <div class="uk-container">
-      <!-- tab start -->
-      <div class=" ">
-         <div class="uk-width-1-1">
-            <div class="uk-grid-large uk-grid-match" uk-height-match="target: > div > ul" uk-grid>
-               <div class="uk-width-1-4@m">
-                  <ul class="uk-tab uk-tab-left f-w-600" uk-tab="connect: #uk-pd-tab; animation: uk-animation-slide-right-medium" >
-                     <li><a href="/">Description</a></li>
-                     <li><a href="/">Review</a></li>
-                     @foreach($product->descriptions as $description)
-                     <li><a href="/">{{$description->title}}</a></li>
-                     @endforeach
-                  </ul>
-               </div>
-               <div class="uk-width-expand@m">
-                  <ul id="uk-pd-tab" class="uk-switcher">
-                     <li>
-                        <div class="uk-panel uk-margin-medium-bottom">
-                         {!! $product->long_description !!}
+                </ul>
+
+                <!-- Tabs content -->
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+
+                        <div class="accordion mb-4" id="productPanels">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="accordion-heading"><a href="#productInfo" role="button"
+                                            data-toggle="collapse" aria-expanded="true" aria-controls="productInfo"><i
+                                                class="czi-announcement text-muted font-size-lg align-middle mt-n1 mr-2"></i>Specification
+                                            Info<span class="accordion-indicator"></span></a></h3>
+                                </div>
+                                <div class="collapse show" id="productInfo" data-parent="#productPanels">
+                                    <div class="card-body p-0">
+                                        {!! $product->short_description !!}
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                     </li>
-                     <li>
-                        <div class="uk-panel uk-margin-medium-bottom">
-                           <h4 class="uk-margin-remove-top uk-flex">Ratings and reviews <a href="#review" uk-toggle class=""> <span class="material-icons-outlined">arrow_forward</span></a></h4>
-                           <div class="uk-flex uk-flex-middle uk-grid" uk-grid>
-                              <!--  -->
-                              <div class="uk-width-auto@m uk-text-center">
-                                 <h1 class="uk-margin-remove f-w-600">{{$average}}</h1>
-                                 <div class="uk-star">
-                                    @for($i=0; $i<(int)$average; $i++)
-                                    <span class="material-icons-outlined uk-active">star</span>
-                                    @endfor
-                                    @for($i=(int)$average; $i<5; $i++)
-                                    <span class="material-icons-outlined">star</span>
-                                    @endfor
-                                 </div>
-                                 <div class="f-12">{{$allreviews->count()}} reviews</div>
-                              </div>
-                              <!--  -->
-                              <!--  -->
-                              <div class="uk-width-expand@m">
-                                 <!-- progress -->
-                                 <div class="uk-flex uk-flex-middle uk-grid-collapse" uk-grid>
-                                    <div class="uk-margin-small-right uk-width-auto">5</div>
-                                    <div class="uk-width-expand">
-                                       <progress value="{{$fivestar->count()}}" max="{{$allreviews->count()}}" class="bg-primary"></progress>
+                    </div>
+                    <div class="tab-pane fade" id="tab2" role="tabpanel">
+                        {!! $product->long_description !!}
+                    </div>
+                    <div class="tab-pane fade" id="tab3" role="tabpanel">
+                        <div class="container pt-md-2" id="reviews">
+                            <div class="row">
+                                <!-- Reviews list-->
+                                <div class="col-md-7">
+                                    <div class="d-flex justify-content-between pb-4">
+                                        <div class="mb-2">
+                                            <div class="star-list d-flex">
+                                                <i class="sr-star czi-star-filled active-star"></i>
+                                                <i class="sr-star czi-star-filled active-star"></i>
+                                                <i class="sr-star czi-star-filled active-star"></i>
+                                                <i class="sr-star czi-star-filled inactive-star"></i>
+                                                <i class="sr-star czi-star-filled inactive-star"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-inline flex-nowrap">
+                                            <label class="text-muted text-nowrap mr-2 d-none d-sm-block"
+                                                for="sort-reviews">Sort by:</label>
+                                            <select class="custom-select custom-select-sm" id="sort-reviews">
+                                                <option>Newest</option>
+                                                <option>Oldest</option>
+                                                <option>Popular</option>
+                                                <option>High rating</option>
+                                                <option>Low rating</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                 </div>
-                                 <!-- progress -->
-                                 <!-- progress -->
-                                 <div class="uk-flex uk-flex-middle uk-grid-collapse" uk-grid>
-                                    <div class="uk-margin-small-right uk-width-auto">4</div>
-                                    <div class="uk-width-expand">
-                                       <progress value="{{$fourstar->count()}}" max="{{$allreviews->count()}}" class="bg-primary"></progress>
-                                    </div>
-                                 </div>
-                                 <!-- progress -->
-                                 <!-- progress -->
-                                 <div class="uk-flex uk-flex-middle uk-grid-collapse" uk-grid>
-                                    <div class="uk-margin-small-right uk-width-auto">3</div>
-                                    <div class="uk-width-expand">
-                                       <progress value="{{$threestar->count()}}" max="{{$allreviews->count()}}" class="bg-primary"></progress>
-                                    </div>
-                                 </div>
-                                 <!-- progress -->
-                                 <!-- progress -->
-                                 <div class="uk-flex uk-flex-middle uk-grid-collapse" uk-grid>
-                                    <div class="uk-margin-small-right uk-width-auto">2</div>
-                                    <div class="uk-width-expand">
-                                       <progress value="{{$twostar->count()}}" max="{{$allreviews->count()}}" class="bg-primary"></progress>
-                                    </div>
-                                 </div>
-                                 <!-- progress -->
-                                 <!-- progress -->
-                                 <div class="uk-flex uk-flex-middle uk-grid-collapse" uk-grid>
-                                    <div class="uk-margin-small-right uk-width-auto">1</div>
-                                    <div class="uk-width-expand">
-                                       <progress value="{{$onestar->count()}}" max="{{$allreviews->count()}}" class="bg-primary"></progress>
-                                    </div>
-                                 </div>
-                                 <!-- progress -->
-                              </div>
-                              <!--  -->
-                           </div>
-                           <ul class="uk-list uk-review-list uk-margin-medium-top">
-                              @foreach($allreviews as $data)
-                              <li>
-                                 <div class="uk-flex uk-flex-middle">
-                                    <div>
-                                       <p class="f-w-600 uk-margin-remove">{{$data->name}}</p>
-                                    </div>
-                                 </div>
-                                 <div class="uk-margin-top">
-                                    <div class="uk-flex">
-                                       <div>
-                                          <div class="uk-star uk-margin-small-right">
-                                             @for($i=0; $i<(int)$data->rating; $i++)
-                                             <span class="material-icons-outlined uk-active">star</span>
-                                             @endfor
-                                             @for($i=(int)$data->rating; $i<5; $i++)
-                                             <span class="material-icons-outlined">star</span>
-                                             @endfor
-                                          </div>
-                                       </div>
-                                       <div>
-                                          <span>{{$data->created_at->format('M d Y')}}</span>
-                                       </div>
-                                    </div>
-                                    <p>{{$data->review}}</p>
-                                 </div>
-                              </li>
-                              @endforeach
-                           </ul>
-                           <div class="uk-flex uk-flex-middle uk-flex-between" uk-grid>
-                              <div>
-                                 <a href="#review" uk-toggle class="uk-button uk-button-link f-w-600">See all reviews</a>
-                              </div>
-                              <div>
-                              <a class="uk-button uk-btn-primary uk-flex uk-flex-middle togglecontent" href="#togglecontent" uk-toggle="target: .togglecontent; animation: uk-animation-fade"  >Write a review  <span class="material-icons-outlined">expand_more</span></a>
-                	            <a class="uk-button uk-button-danger uk-flex uk-flex-middle togglecontent" href="#togglecontent" uk-toggle="target: .togglecontent; animation: uk-animation-fade"  hidden>Cancel review <span class="material-icons-outlined">expand_less</span></a>
-                               </div>
-                           </div>
+                                    <!-- Review-->
+                                    <div class="product-review pb-4 mb-4 border-bottom">
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <div class="media media-ie-fix align-items-center mr-4 pr-2"><img
+                                                    class="rounded-circle" width="50" src="img/shop/reviews/01.jpg"
+                                                    alt="Rafael Marquez" />
+                                                <div class="media-body pl-3">
+                                                    <h6 class="font-size-sm mb-0">Rafael Marquez</h6><span
+                                                        class="font-size-ms text-muted">June 28, 2019</span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-2">
+                                                <div class="star-list d-flex">
+                                                    <i class="sr-star czi-star-filled active-star"></i>
+                                                    <i class="sr-star czi-star-filled active-star"></i>
+                                                    <i class="sr-star czi-star-filled active-star"></i>
+                                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="font-size-md mb-2">Nam libero tempore, cum soluta nobis est eligendi
+                                            optio cumque nihil impedit quo minus id quod maxime placeat facere possimus,
+                                            omnis voluptas assumenda estNam libero tempore, cum soluta nobis est eligendi
+                                            optio cumque nihil impedit quo minus id quod maxime placeat facere possimus,
+                                            omnis voluptas assumenda est Nam libero tempore, cum soluta nobis est eligendi
+                                            optio cumque nihil impedit quo minus id quod maxime placeat facere possimus,
+                                            omnis voluptas assumenda estNam libero tempore, cum soluta nobis est eligendi
+                                            optio cumque nihil impedit quo minus id quod maxime placeat facere possimus,
+                                            omnis voluptas assumenda est</p>
 
-                           <div class="togglecontent uk-margin-medium-top" id="togglecontent" hidden>
-                        <form id="review-form" class="uk-grid-small uk-grid" uk-grid="">
-                           <input type="hidden" value="{{$product->id}}" name="product_id">
-                           <div class="uk-width-1-2@s">
-                              <label>Full Name</label>
-                              <input class="uk-input" type="text" name="name" value="@if(Auth::user()){{Auth::user()->first_name}} {{Auth::user()->last_name}}@endif" placeholder=" " spellcheck="false" data-ms-editor="true"> 
-                           </div>
-                           <div class="uk-width-1-2@s  ">
-                              <label>Email Address</label>
-                              <input class="uk-input" type="email" name="email" value="@if(Auth::user()){{Auth::user()->email}}@endif"  placeholder=" "> 
-                           </div>
-                           
-                           <div class="uk-width-1-1@s uk-margin-small uk-grid-margin">
-                              <label>Rating</label>
-                              <div class="uk-rating">
-                                 <input id="radio1" type="radio" name="rating" value="5" class="uk-star">
-                                 <label for="radio1">★</label>
-                                 <input id="radio2" type="radio" name="rating" value="4" class="uk-star">
-                                 <label for="radio2">★</label>
-                                 <input id="radio3" type="radio" name="rating" value="3" class="uk-star">
-                                 <label for="radio3">★</label>
-                                 <input id="radio4" type="radio" name="rating" value="2" class="uk-star">
-                                 <label for="radio4">★</label>
-                                 <input id="radio5" type="radio" name="rating" value="1" class="uk-star">
-                                 <label for="radio5">★</label>
-                              </div>
-                           </div>
-                           <div class="uk-width-1-1@s uk-margin-small uk-grid-margin">
-                              <label>Review </label>
-                              <textarea name="review" class="uk-textarea" rows="5" placeholder="Write Review" spellcheck="false" data-ms-editor="true"> </textarea>
-                           </div>
-                           <div class="uk-width-1-1@s uk-margin-top uk-grid-margin">
-                              <button class="uk-button uk-btn-black">Submit Review </button>
-                           </div>
-                        </form>
-                       </div>
-                     </div>
-                     </li>
-                     @foreach($product->descriptions as $description)
-                     <li>
-                        <div class="uk-panel uk-margin-medium-bottom ck-desc">
-                           {!!$description->description!!}
+                                    </div>
+                                    <div class="product-review pb-4 mb-4 border-bottom">
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <div class="media media-ie-fix align-items-center mr-4 pr-2"><img
+                                                    class="rounded-circle" width="50" src="img/shop/reviews/02.jpg"
+                                                    alt="Rafael Marquez" />
+                                                <div class="media-body pl-3">
+                                                    <h6 class="font-size-sm mb-0">Rafael Marquez</h6><span
+                                                        class="font-size-ms text-muted">June 28, 2019</span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-2">
+                                                <div class="star-list d-flex">
+                                                    <i class="sr-star czi-star-filled active-star"></i>
+                                                    <i class="sr-star czi-star-filled active-star"></i>
+                                                    <i class="sr-star czi-star-filled active-star"></i>
+                                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="font-size-md mb-2">Nam libero tempore, cum soluta nobis est eligendi
+                                            optio cumque nihil impedit quo minus id quod maxime placeat facere possimus,
+                                            omnis voluptas assumenda estNam libero tempore, cum soluta nobis est eligendi
+                                            optio cumque nihil impedit quo minus id quod maxime placeat facere possimus,
+                                            omnis voluptas assumenda est Nam libero tempore, cum soluta nobis est eligendi
+                                            optio cumque nihil impedit quo minus id quod maxime placeat facere possimus,
+                                            omnis voluptas assumenda estNam libero tempore, cum soluta nobis est eligendi
+                                            optio cumque nihil impedit quo minus id quod maxime placeat facere possimus,
+                                            omnis voluptas assumenda est</p>
+
+                                    </div>
+                                </div>
+                                <!-- Leave review form-->
+                                <div class="col-md-5 mt-2 pt-4 mt-md-0 pt-md-0">
+                                    <div class="bg-light-grey py-grid-gutter px-grid-gutter rounded-lg">
+                                        <h3 class="h4 pb-2">Write a review</h3>
+                                        <form class="needs-validation" method="post" novalidate>
+                                            <div class="form-group">
+                                                <label for="review-name">Your name<span
+                                                        class="text-danger">*</span></label>
+                                                <input class="form-control" type="text" required id="review-name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="review-email">Your email<span
+                                                        class="text-danger">*</span></label>
+                                                <input class="form-control" type="email" required id="review-email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="review-rating">Rating<span
+                                                        class="text-danger">*</span></label>
+                                                <select class="custom-select" required id="review-rating">
+                                                    <option value="">Choose rating</option>
+                                                    <option value="5">5 stars</option>
+                                                    <option value="4">4 stars</option>
+                                                    <option value="3">3 stars</option>
+                                                    <option value="2">2 stars</option>
+                                                    <option value="1">1 star</option>
+                                                </select>
+                                                <div class="invalid-feedback">Please choose rating!</div>
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label for="message">Message</label>
+                                                <textarea class="form-control" rows="4" placeholder="Write a Review" id="message"></textarea>
+                                            </div>
+                                            <button class="btn btn-primary btn-shadow btn-block" type="submit">Submit a
+                                                Review</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                     </li>
-                     @endforeach
-                  </ul>
-               </div>
+                    </div>
+
+                </div>
             </div>
-         </div>
-      </div>
-      <!-- tab end -->
-   </div>
-   <hr class="uk-margin-remove-top uk-margin">
-</section>
-<!-- end product  -->
-<!-- related products -->
-<section class="uk-section uk-padding-remove-top bg-white">
-   <div class="uk-container">
-      <div class="uk-title uk-margin-large-bottom uk-display-block">
-         <h2 class="uk-h3 f-w-600 uk-text-uppercase uk-text-center uk-margin-remove">Related Products</h2>
-         <div class="uk-divider-small uk-text-center"></div>
-      </div>
-      <ul class="uk-child-width-1-2 uk-child-width-1-4@m  uk-grid-small" uk-height-match="target: .uk-product-list" uk-grid="uk-grid">
-      @foreach($related_products->take(8) as $data)
-         <li>
-            <div class="uk-product-list">
-               <a href="{{route('product-single', $data->slug)}}" class="uk-inline-clip uk-transition-toggle">
-                  <figure class="uk-product-img">
-                     <div class="uk-position-top uk-position-z-index uk-padding-small">
-                        <!-- <div class="uk-label f-10 bg-primary uk-magin">New</div> -->
-                     </div>
-                     <img src="{{asset('images/products/'.$data->get_main_image($data->id))}}" alt="Product">
-                     <!--{{---->
-                     <!--<img src="@if($data->images->count()>1){{asset('images/products/'.$data->images->where('is_main', 0)->first()->image)}}@else{{asset('images/products/'.$data->get_main_image($data->id))}}@endif" class="uk-position-cover uk-transition-scale-up" alt="Product">-->
-                        <!-- <div class="uk-hover-hide-show">
-                           <a  class="uk-addtocart uk-flex uk-flex-middle" onclick="UIkit.notification({message: '<span uk-icon=\'icon: cart\'></span> Added to cart <a  uk-toggle=\'target: #cart\'>Check </a>', pos: 'bottom-center', status: 'primary'})">
-                                 <span uk-icon="icon:cart;" class="uk-icon"></span> <span>Add to cart</span>
-                           </a>
-                        </div> -->
-                        <!----}}-->
-                  </figure>
-               </a>
-               <div class="uk-product-description">
-                  <div class="uk-grid-small uk-flex uk-flex-middle uk-text-center" uk-grid>
-                     <div class="uk-width-1-1">
-                        <h5 class="uk-margin-remove"><a href="{{route('product-single', $data->slug)}}">{{$data->product_name}} </a></h5>
-                     </div>
-                     <div class="uk-width-expand">
-                        <div>
-                           <h5 class="uk-margin-remove text-primary">${{$data->price}} <del class="f-12">${{$data->discount_price}}</del></h5>
+        </div>
+    </div>
+
+    <!-- Product  (Style with)-->
+    <div class="">
+        <div class="container ">
+            <div class="row d-flex align-items-end  mb-3">
+                <div class="col-6">
+                    <h2 class="section-title mb-0">Similar Products</h2>
+                </div>
+                <div class="col-6 d-flex justify-content-end">
+                    <div class="text-center pt-3">
+                        <a class="btn btn-primary btn-sm pl-2" href="list.php">View All Products<i
+                                class="czi-arrow-right ml-2"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="custom-cols-5">
+                <!-- Product-->
+                <div class="col-5th col-lg px-1  mb-4">
+                    <div class="card product-card translate p-0">
+                        <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+                            <i class="czi-cart"></i>
+                        </button>
+                        <a class="card-img-top d-block overflow-hidden" href="detail.php">
+                            <div class="image-hover-box">
+                                <img src="img/computer/computer1.webp" alt="" class="main-img img-fluid">
+                                <img src="img/computer/computer4.webp" alt="" class="hover-img img-fluid">
+                            </div>
+                        </a>
+                        <div class="card-body py-2">
+                            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+                            <h3 class="product-title font-size-sm mb-2">
+                                <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5
+                                    12450HX Processor)</a>
+                            </h3>
+                            <div class="mb-2">
+                                <div class="star-list d-flex">
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
+                                </div>
+                            </div>
                         </div>
-                     </div>
-                  
-                  </div>
-               </div>
-               
-            </div>
-         </li>
-         @endforeach
-</ul>
-   </div>
-</section>
-<!-- end related products -->
-<!-- Size Guide  -->
-<div id="SizeGuide" uk-modal>
-   <div class="uk-modal-dialog">
-   <div class="uk-modal-header uk-flex uk-flex-between uk-flex-middle">     
-      <h4 class="uk-margin-remove">Size guide</h4> 
-      <button class="uk-modal-close" type="button" uk-close></button>
-      </div>
-      <div class=" uk-modal-body">
-        
-      <div class="uk-overflow-auto">
-         <table class="uk-table uk-table-striped">
-            <thead>
-               <tr>
-                  <th>Size</th>
-                  <th>US</th>
-                  <th>Bust</th>
-                  <th>Waist</th>
-                  <th>Low Hip</th>
-               </tr>
-            </thead>
-            <tbody>
-               <tr>
-                  <td>XS</td>
-                  <td>2</td>
-                  <td>32</td>
-                  <td>24 - 25</td>
-                  <td>33 - 34</td>
-               </tr>
-               <tr>
-                  <td>S</td>
-                  <td>4</td>
-                  <td>34 - 35</td>
-                  <td>26 - 27</td>
-                  <td>35 - 26</td>
-               </tr>
-               <tr>
-                  <td>M</td>
-                  <td>6</td>
-                  <td>36 - 37</td>
-                  <td>28 - 29</td>
-                  <td>38 - 40</td>
-               </tr>
-               <tr>
-                  <td>L</td>
-                  <td>8</td>
-                  <td>38 - 29</td>
-                  <td>30 - 31</td>
-                  <td>42 - 44</td>
-               </tr>
-               <tr>
-                  <td>XL</td>
-                  <td>10</td>
-                  <td>40 - 41</td>
-                  <td>32 - 33</td>
-                  <td>45 - 47</td>
-               </tr>
-               <tr>
-                  <td>XXL</td>
-                  <td>12</td>
-                  <td>42 - 43</td>
-                  <td>34 - 35</td>
-                  <td>48 - 50</td>
-               </tr>
-            </tbody>
-         </table>
-      </div>
-      <hr>
-      <div class="uk-grid" uk-grid>
-         <div class="uk-width-expand@m">
-            <h4 class="f-w-600">Measuring Tips</h4>
-            <h5 class="uk-margin-remove f-w-600">Bust</h5>
-            <p class="uk-margin-small">Measure around the fullest part of your bust.</p>
-            <h5 class="uk-margin-remove f-w-600">Waist</h5>
-            <p class="uk-margin-small">Measure around the narrowest part of your torso.</p>
-            <h5 class="uk-margin-remove f-w-600">Low Hip</h5>
-            <p class="uk-margin-small">With your feet together measure around the fullest part of your hips/rear.</p>
-         </div>
-         <div class="uk-width-auto@m">
-            <img src="assets/images/products/sizechart.jpg" alt="">
-         </div>
-          
-      </div>
-      </div>
-   </div>
-</div>
-<!-- end Size Guide-->
-<!-- all review -->
-<div id="review" uk-modal>
-   <div class="uk-modal-dialog">
-      <div class="uk-modal-header">
-         <div class="uk-flex uk-grid-small" uk-grid>
-            <div class="uk-width-auto">
-               <div class="uk-product-img-review">
-                  <img src="{{asset('images/products/'.$product->images->where('is_main','=',1)->first()->image )}}" alt="">
-               </div>
-            </div>
-            <div class="uk-width-expand">
-               <h4 class="uk-margin-remove">{{$product->product_name}}</h4>
-               <span class="text-secondary">Ratings and reviews</span>
-            </div>
-            <div class="uk-width-auto">
-               <button class="uk-modal-close-default uk-position-relative" type="button" uk-close></button>
-            </div>
-         </div>
-      </div>
-      <div class="uk-modal-body" uk-overflow-auto>
-         <ul class="uk-list uk-review-list">
-            @foreach($allreviews as $data)
-            <li>
-               <div class="uk-flex uk-flex-middle">
-                  <div>
-                     <p class="f-w-600 uk-margin-remove">{{$data->name}}</p>
-                  </div>
-               </div>
-               <div class="uk-margin-top">
-                  <div class="uk-flex">
-                     <div>
-                        <div class="uk-star uk-margin-small-right">
-                           @for($i=0; $i<(int)$data->rating; $i++)
-                           <span class="material-icons-outlined uk-active">star</span>
-                           @endfor
-                           @for($i=(int)$data->rating; $i<5; $i++)
-                           <span class="material-icons-outlined">star</span>
-                           @endfor
+                        <a href="detail.php">
+                            <div class=" py-1 px-3 book-btn d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                                        BUY NOW
+                                    </h3>
+                                </div>
+                                <div>
+                                    <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-5th col-lg px-1  mb-4">
+                    <div class="card product-card translate p-0">
+                        <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+                            <i class="czi-cart"></i>
+                        </button>
+                        <a class="card-img-top d-block overflow-hidden" href="detail.php">
+                            <div class="image-hover-box">
+                                <img src="img/computer/computer1.webp" alt="" class="main-img img-fluid">
+                                <img src="img/computer/computer4.webp" alt="" class="hover-img img-fluid">
+                            </div>
+                        </a>
+                        <div class="card-body py-2">
+                            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+                            <h3 class="product-title font-size-sm mb-2">
+                                <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5
+                                    12450HX Processor)</a>
+                            </h3>
+                            <div class="mb-2">
+                                <div class="star-list d-flex">
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
+                                </div>
+                            </div>
                         </div>
-                     </div>
-                     <div>
-                        <span>{{$data->created_at->format('M d Y')}}</span>
-                     </div>
-                  </div>
-                  <p>{{$data->review}}</p>
-               </div>
-            </li>
-            @endforeach
-         </ul>
-      </div>
-      <div class="uk-padding">
-      </div>
-   </div>
-</div>
-<!-- end review -->
-
-<!-- Quotation popup -->
-<div id="quotation" uk-modal>
-   <div class="uk-modal-dialog uk-modal-border-rounded">
-      <button class="uk-modal-close-default" type="button" uk-close></button>
-      <div class="uk-modal-header uk-background-muted uk-text-center uk-padding">
-         <h3 class="uk-margin-remove">Get Quotation</h3>
-         <h5 class="uk-margin-remove text-primary">{{$product->product_name}}</h5>
-      </div>
-      <div class="uk-modal-body uk-padding">
-         <form id="quotation-form" action="POST" uk-grid>
-            <input type="hidden" name="product_id" value="{{$product->id}}">
-             <div class="uk-width-1-2@s">
-               <label>Full Name <span class="text-red">*</span></label>
-               <input class="uk-input" type="text" name="full_name" placeholder="Full Name"> 
+                        <a href="detail.php">
+                            <div class=" py-1 px-3 book-btn d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                                        BUY NOW
+                                    </h3>
+                                </div>
+                                <div>
+                                    <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-5th col-lg px-1  mb-4">
+                    <div class="card product-card translate p-0">
+                        <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+                            <i class="czi-cart"></i>
+                        </button>
+                        <a class="card-img-top d-block overflow-hidden" href="detail.php">
+                            <div class="image-hover-box">
+                                <img src="img/computer/computer1.webp" alt="" class="main-img img-fluid">
+                                <img src="img/computer/computer4.webp" alt="" class="hover-img img-fluid">
+                            </div>
+                        </a>
+                        <div class="card-body py-2">
+                            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+                            <h3 class="product-title font-size-sm mb-2">
+                                <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5
+                                    12450HX Processor)</a>
+                            </h3>
+                            <div class="mb-2">
+                                <div class="star-list d-flex">
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="product-price"><span class="font-midnight">Rs. 4,50,000</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="detail.php">
+                            <div class=" py-1 px-3 book-btn d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                                        BUY NOW
+                                    </h3>
+                                </div>
+                                <div>
+                                    <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-5th col-lg px-1  mb-4">
+                    <div class="card product-card translate p-0">
+                        <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+                            <i class="czi-cart"></i>
+                        </button>
+                        <a class="card-img-top d-block overflow-hidden" href="detail.php">
+                            <div class="image-hover-box">
+                                <img src="img/computer/computer1.webp" alt="" class="main-img img-fluid">
+                                <img src="img/computer/computer4.webp" alt="" class="hover-img img-fluid">
+                            </div>
+                        </a>
+                        <div class="card-body py-2">
+                            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+                            <h3 class="product-title font-size-sm mb-2">
+                                <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5
+                                    12450HX Processor)</a>
+                            </h3>
+                            <div class="mb-2">
+                                <div class="star-list d-flex">
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="product-price"><span class="font-midnight">Rs. 4,50,000</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="detail.php">
+                            <div class=" py-1 px-3 book-btn d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                                        BUY NOW
+                                    </h3>
+                                </div>
+                                <div>
+                                    <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-5th col-lg px-1 mb-4">
+                    <div class="card product-card translate p-0">
+                        <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
+                            <i class="czi-cart"></i>
+                        </button>
+                        <a class="card-img-top d-block overflow-hidden" href="detail.php">
+                            <div class="image-hover-box">
+                                <img src="img/computer/computer1.webp" alt="" class="main-img img-fluid">
+                                <img src="img/computer/computer4.webp" alt="" class="hover-img img-fluid">
+                            </div>
+                        </a>
+                        <div class="card-body py-2">
+                            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+                            <h3 class="product-title font-size-sm mb-2">
+                                <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5
+                                    12450HX Processor)</a>
+                            </h3>
+                            <div class="mb-2">
+                                <div class="star-list d-flex">
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="product-price"><span class="font-midnight">Rs. 4,50,000</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="detail.php">
+                            <div class=" py-1 px-3 book-btn d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                                        BUY NOW
+                                    </h3>
+                                </div>
+                                <div>
+                                    <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
             </div>
-            
-            <div class="uk-width-1-2@s">
-               <label>Email Address <span class="text-red">*</span></label>
-               <input class="uk-input" type="email" placeholder="E-mail" name="email"> 
-            </div>
-            <div class="uk-width-1-2@s">
-               <label>Country <span class="text-red">*</span></label>
-               <input class="uk-input" name="country" type="text" placeholder="Country"> 
-            </div>
-            <div class="uk-width-1-2@s">
-               <label>Contact Number</label>
-               <input class="uk-input" type="text" name="phone" placeholder="Contact Number"> 
-            </div>
-            <div class="uk-width-1-1@s">
-               <label>Your Message/Questions <span class="text-red">*</span></label>
-               <textarea name="message" class="uk-textarea" rows="5" placeholder="Let us know all your enquiries and we will get back to you shortly.."> </textarea>
-            </div>
-            <div class="uk-width-1-1@s uk-text-center">
-               <button class="uk-button uk-btn-primary">Submit </button>
-            </div>
-         </form>
-      </div>
-   </div>
-</div>
-<!-- Quotation popup -->
-
-@stop
-
-@push('scripts')
+        </div>
+    </div>
     <script>
+        document.querySelectorAll('.image-hover-box').forEach(box => {
+            const mainImg = box.querySelector('.main-img');
+            const hoverImg = box.querySelector('.hover-img');
 
-        let selectedColor = 0;
-        let selectedSize = 0;
-        let max = 0;
-
-        $(document).ready(function(){
-            if({{$product->totalStock()}} <= 0){
-               $("#quantity").val(0);
+            if (mainImg && hoverImg && hoverImg.getAttribute('src')) {
+                box.classList.add('has-hover');
             }
-        });
-
-        $("#order-now-form").submit(function(){
-         $("#hidden-quantity-order-now").val($("#quantity").val());
-         $("#hidden-size-order-now").val(selectedSize);
-        });
-
-        // Quotation Form
-        $("#quotation-form").submit(function( event ) {
-            event.preventDefault();
-            let myform = document.getElementById('quotation-form');
-            let formData = new FormData(myform);
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                type: 'POST',
-                url: '{{route('quotation-submit')}}',
-                data: formData,
-                contentType: false,
-                cache: false,
-                processData: false,
-
-                success: function (data) {
-                    // console.log(data);
-                    if (!data.errors) {
-                        toastr.success(data.success);
-                        $('#quotation-form').trigger("reset");
-                    }
-                    jQuery.each(data.errors, function (key, value) {
-
-                        toastr.error(value);
-                        // hideLoading();
-                    })
-                },
-                error: function (a) {//if an error occurs
-                    // hideLoading();
-                    alert("An error occured while uploading data.\n error code : " + a.statusText);
-                }
-            });
-
-         });
-
-         // Review Form
-         $("#review-form").submit(function( event ) {
-            event.preventDefault();
-            let myform = document.getElementById('review-form');
-            let formData = new FormData(myform);
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                type: 'POST',
-                url: '{{route('add-review')}}',
-                data: formData,
-                contentType: false,
-                cache: false,
-                processData: false,
-
-                success: function (data) {
-                    // console.log(data);
-                    if (!data.errors) {
-                        toastr.success(data.message);
-                        $('#review-form').trigger("reset");
-                    }
-                    jQuery.each(data.errors, function (key, value) {
-
-                        toastr.error(value);
-                        // hideLoading();
-                    })
-                },
-                error: function (a) {//if an error occurs
-                    // hideLoading();
-                    alert("An error occured while uploading data.\n error code : " + a.statusText);
-                }
-            });
-
-         });
-
-        $("#size").change(function() {
-
-            selectedSize = $(this).children(":selected").attr("data-size-id");
-            ajaxCall();
-
-         });
-
-         // If both size and color field exists
-         $(".color-item-variation a").click(function(event){
-            
-            event.preventDefault()
-            $(this).addClass("uk-active");
-            let colorName = $(this).attr("uk-tooltip");
-            $("#hidden-color").val(colorName);
-
-            selectedColor = $(this).attr("data-color-id");
-            ajaxCall();
-
-            // For order now
-            let selectedcolor = $(this).attr("uk-tooltip");
-            $("#hidden-color-order-now").val(selectedcolor);
-
-         });
-
-         function ajaxCall(){
-            let productId = {{$product->id}};
-
-            $.ajax({
-                type: 'GET',
-                url: "/product-stock/{id}/{color_id}/{size_id}",
-                data:{id:productId, color_id:selectedColor, size_id:selectedSize},
-                success: function (data) {
-                    // console.log(data);
-                    if (!data.errors) {
-
-                     $("#quantity").attr("max", data);
-                     max = data;
-                     adjustVal(data);
-                    }
-                    jQuery.each(data.errors, function (key, value) {
-                        toastr.error(value);
-                        // hideLoading();
-                    })
-                },
-                error: function (a) {//if an error occurs
-                    // hideLoading();
-                    alert("An error occured while uploading data.\n error code : " + a.statusText);
-                }
-            });
-
-         }
-
-         function adjustVal(stockSize){
-            if($("#quantity").val() > parseInt(stockSize)){
-               $("#quantity").val(stockSize);
-            }
-            if(parseInt(stockSize)>0 && $("#quantity").val()==0){
-               $("#quantity").val(1);
-            }
-         }
-
-         $(".color-item a").click(function(event){
-            event.preventDefault();
-
-            $(this).addClass("uk-active");
-            let selectedColor = $(this).attr("uk-tooltip");
-            $("#hidden-color").val(selectedColor);
-            let maxStock = $(this).attr("data-color-stock");
-            $("#quantity").attr("max",maxStock);
-            max = maxStock;
-            adjustVal(maxStock);
-
-            // For order now
-            $("#hidden-color-order-now").val(selectedColor);
-         });
-
-         
-
-         $('#cart_btn').on('click', function (e) {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            e.preventDefault();
-
-               let myform = document.getElementById('add_to_cart');
-               let formData = new FormData(myform);
-               $.ajax({
-                type: 'POST',
-                url: '{{route('cart-add')}}',
-                data: formData,
-                contentType: false,
-                cache: false,
-                processData: false,
-
-                success: function (data) {
-                    // console.log(data);
-                    if (!data.errors) {
-
-                        $('.mini-cart').replaceWith($('.mini-cart')).html(data);
-                        toastr.success('Item added to cart');
-                        // alert({{Gloudemans\Shoppingcart\Facades\Cart::count();}});
-                        // $(".uk-cart-count").replaceWith($(".uk-cart-count")).html("c");
-
-                    }
-                    jQuery.each(data.errors, function (key, value) {
-
-                        toastr.error(value);
-                        // hideLoading();
-
-                    })
-                },
-                error: function (a) {//if an error occurs
-                    // hideLoading();
-                    alert("An error occured while uploading data.\n error code : " + a.statusText);
-                }
-            });
-
-
         });
     </script>
-@endpush 
+    @include('frontend.include.toolbar')
+@stop
+@push('scripts')
+    <script type="text/javascript">
+        $('#cart_btn').on('click', function(e) {
+            e.preventDefault();
+            // Setup CSRF token
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            // Get form data
+            let myform = document.getElementById('add_to_cart');
+            let formData = new FormData(myform);
+
+            // Send AJAX request
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('cart-add') }}",
+                data: formData,
+                contentType: false,
+                processData: false,
+                cache: false,
+
+                success: function(data) {
+                    if (!data.errors) {
+                        // Replace both cart blocks with updated cart HTML
+                        $('.mini-cart').html(data);
+                        $('.mini2-cart').html(data);
+
+                        toastr.success('Item added to cart');
+                    } else {
+                        // Loop through and show validation errors
+                        $.each(data.errors, function(key, value) {
+                            toastr.error(value);
+                        });
+                    }
+                },
+
+                error: function(xhr) {
+                    alert("An error occurred while uploading data.\nError code: " + xhr.statusText);
+                }
+            });
+        });
+    </script>
+
+@endpush

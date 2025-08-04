@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Yantra Network</title>
+    <title>{{getConfiguration('site_title')}}</title>
     <!-- SEO Meta Tags-->
     <meta name="description" content="YantraNetwork">
     <meta name="keywords" content="YantraNetwork">
@@ -22,10 +22,15 @@
     <link rel="stylesheet" media="screen"
         href="{{ asset('theme-assets/vendor/nouislider/distribute/nouislider.min.css') }}" />
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Main Theme Styles + Bootstrap-->
     <link rel="stylesheet" media="screen" href="{{ asset('theme-assets/css/theme.min.css') }}">
     <link rel="stylesheet" media="screen" href="{{ asset('theme-assets/css/theme.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
+
+
 </head>
 <!-- Body-->
 
@@ -138,8 +143,9 @@
                     </a>
 
                     <a class="navbar-brand d-sm-none mr-2" href="{{ route('index') }}"
-                        style="min-width: 4.625rem;"><img width="74" src="img/logo.jpg" alt="Cyberlink"
-                            style="    height: 60px; object-fit: contain;" /></a>
+                        style="min-width: 4.625rem;"><img width="74"
+                            src="{{ asset('theme-assets/img/logo.jpg') }}" alt="Cyberlink"
+                            style="height: 60px; object-fit: contain;" /></a>
 
                     <div class="input-group-overlay d-none d-lg-flex mx-4">
                         <input class="form-control appended-form-control" type="text"
@@ -165,14 +171,17 @@
                   <i class="navbar-tool-icon czi-heart"></i>
                   </div>
                 </a> -->
-                        <div class="navbar-tool dropdown mr-3">
-                            <a class="navbar-tool-icon-box bg-secondary dropdown-toggle" href="cart.php">
-                                <span class="navbar-tool-label">4</span>
+                        <div class="mini-cart navbar-tool dropdown mr-3">
+                            <a class="navbar-tool-icon-box bg-secondary dropdown-toggle "
+                                href="{{ route('cart-item') }}">
+                                <span
+                                    class="navbar-tool-label uk-cart-count">{{ Gloudemans\Shoppingcart\Facades\Cart::count() }}</span>
                                 <i class="navbar-tool-icon czi-cart"></i>
                             </a>
-                            <a class="navbar-tool-text" href="cart.php"><small>My Cart</small>$265.00</a>
+                            <a class="navbar-tool-text" href="{{ route('cart-item') }}" id="sub-total"><small>My
+                                    Cart</small>Rs.{{ \Gloudemans\Shoppingcart\Facades\Cart::subtotal() }}</a>
                             <!-- Cart dropdown-->
-                            <div class="dropdown-menu dropdown-menu-right" style="width: 20rem;">
+                            {{-- <div class="dropdown-menu dropdown-menu-right" style="width: 20rem;">
                                 <div class="widget widget-cart px-3 pt-2 pb-3">
                                     <div style="height: 15rem;" data-simplebar data-simplebar-auto-hide="false">
                                         <div class="widget-cart-item pb-2 border-bottom">
@@ -190,51 +199,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="widget-cart-item py-2 border-bottom">
-                                            <button class="close text-danger" type="button"
-                                                aria-label="Remove"><span aria-hidden="true">&times;</span></button>
-                                            <div class="media align-items-center"><a class="d-block mr-2"
-                                                    href="detail.php"><img width="64"
-                                                        src="img/computer/computer2.webp" alt="Product" /></a>
-                                                <div class="media-body">
-                                                    <h6 class="widget-product-title"><a href="detail.php">Dell XPS 16
-                                                            9640 2024</a></h6>
-                                                    <div class="widget-product-meta"><span
-                                                            class="text-accent mr-2">Rs. 10,000</span><span
-                                                            class="text-muted">x 1</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="widget-cart-item py-2 border-bottom">
-                                            <button class="close text-danger" type="button"
-                                                aria-label="Remove"><span aria-hidden="true">&times;</span></button>
-                                            <div class="media align-items-center"><a class="d-block mr-2"
-                                                    href="detail.php"><img width="64"
-                                                        src="img/computer/computer3.webp" alt="Product" /></a>
-                                                <div class="media-body">
-                                                    <h6 class="widget-product-title"><a href="detail.php">Dell XPS 16
-                                                            9640 2024</a></h6>
-                                                    <div class="widget-product-meta"><span
-                                                            class="text-accent mr-2">Rs. 10,000</span><span
-                                                            class="text-muted">x 1</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="widget-cart-item py-2 border-bottom">
-                                            <button class="close text-danger" type="button"
-                                                aria-label="Remove"><span aria-hidden="true">&times;</span></button>
-                                            <div class="media align-items-center"><a class="d-block mr-2"
-                                                    href="detail.php"><img width="64"
-                                                        src="img/computer/computer4.webp" alt="Product" /></a>
-                                                <div class="media-body">
-                                                    <h6 class="widget-product-title"><a href="detail.php">Dell XPS 16
-                                                            9640 2024</a></h6>
-                                                    <div class="widget-product-meta"><span
-                                                            class="text-accent mr-2">Rs. 10,000</span><span
-                                                            class="text-muted">x 1</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                      
                                     </div>
                                     <div class="d-flex flex-wrap justify-content-between align-items-center py-3">
                                         <div class="font-size-sm mr-2 py-2"><span
@@ -245,7 +210,7 @@
                                     </div><a class="btn btn-primary btn-sm btn-block" href="checkout.php"><i
                                             class="czi-card mr-2 font-size-base align-middle"></i>Checkout</a>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <a class="navbar-tool ml-2 ml-lg-0 mr-n1 mr-lg-2" href="#signin-modal" data-toggle="modal">
                             <div class="navbar-tool-icon-box bg-secondary"><i class="navbar-tool-icon czi-user"></i>
@@ -313,7 +278,7 @@
                                                                         @if ($child->subCategory->isNotEmpty())
                                                                             @foreach ($child->subCategory as $child2)
                                                                                 <a class="dropdown-item pl-0 pb-0"
-                                                                                    href="{{route('product-list',$child2->slug)}}">{{ $child2->name }}</a>
+                                                                                    href="{{ route('product-list', $child2->slug) }}">{{ $child2->name }}</a>
                                                                             @endforeach
                                                                         @endif
 

@@ -1,130 +1,98 @@
 @extends('frontend.include.master')
 @section('content')
-
-<!-- section -->
-<section class="uk-section-small bg-white">
-    <div class="uk-container">  
-        <div class="uk-width-1-1"> <h3>Shopping Cart</h3></div>
-        <div uk-grid  class="uk-grid">
-            <div class="uk-width-expand@m">
-                <ul class="uk-cart-list-large bg-white uk-border-rounded uk-box-shadow-small">
-                    <form id="update-form" method="POST">
-                        @foreach($cartItem as $data)
-                        <!-- -->
-                        <li id="{{$data->rowId}}">
-                        <input type="hidden" name="id[]" value="{{$data->rowId}}">
-                            <div class="uk-width-1-1">
-                                <div class="uk-grid-medium uk-flex-middle" uk-grid="uk-grid">
-                                    <div class="uk-width-auto@m">
-                                        <div class="uk-cart-img-lg">
-                                            <a href="{{route('product-single', $data->options->slug)}}">
-                                                <img src="{{asset('images/products/'.$data->options->image)}}" alt="">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="uk-width-expand">
-                                        <div class="uk-margin-remove">
-                                            <a href="{{route('product-single', $data->options->slug)}}" class="text-black uk-h4 uk-oneline-text uk-margin-small">{{$data->name}}
-                                            </a>
-                                        </div>
-                                        <div class="f-w-600 f-13">
-                                            @if($data->options->size)
-                                            Size:{{$data->options->size}}
-                                            @endif
-                                            Color: {{$data->options->color}}
-                                        </div>
-                                    </div>
-                                    <div class="uk-width-1-1 uk-hidden@m"></div>
-
-                                    <div class="uk-width-auto">
-                                        <span class="uk-margin-small text-black uk-h5 uk-display-block">Price per Unit</span>
-                                        <div class="uk-margin-remove text-secondary uk-h5">${{$data->price}}
-                                        </div>
-                                    </div>
-                                    <div class="uk-width-auto">
-                                        <div class="  uk-flex-middle">
-                                            <label class="uk-margin-small text-black uk-h5 uk-display-block" for="size">Qty:</label>
-                                            <div class="number-input-small">
-                                                <button type="button"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-                                                    class="minus small quantity-button" data-row-id="{{$data->rowId}}" data-row-price="{{$data->price}}"></button>
-                                                @php
-                                                $color_id = App\Model\Color::where('title', $data->options->color)->pluck('id')->first();
-                                                $size_id = App\Model\Size::where('title', $data->options->size)->pluck('id')->first();
-                                                @endphp 
-                                                <input class="quantity" readonly id="qt{{$data->rowId}}" min="1" max="{{App\Model\Product::find($data->id)->totalStock($color_id, $size_id)}}" name="quantity[]" value="{{$data->qty}}" type="number">
-                                                <button type="button"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-                                                    class="plus small quantity-button" data-row-id="{{$data->rowId}}" data-row-price="{{$data->price}}"></button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="uk-width-auto">
-                                        <span class="uk-margin-small text-black uk-h5 uk-display-block">Total</span>
-                                        <span class="uk-margin-small text-secondary uk-h5" id="mintotal{{$data->rowId}}">${{$data->qty * $data->price}}
-                                        </span>
-                                    </div>
-
-                                    <div class="uk-width-auto">
-                                        <a
-                                            class="uk-text-danger uk-flex delete-btn"
-                                            href="#"
-                                            uk-tooltip="Remove"
-                                            data-row-id="{{$data->rowId}}"
-                                            title=""
-                                            aria-expanded="false">
-                                            <span class="material-icons-outlined">close</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <!-- -->
-                        @endforeach
-
-                        
-                    </ul>
-                    @if(count($cartItem)>0)
-                    <button class="uk-button uk-btn-primary uk-width-1-1" id="update-button" style="margin-top:20px;">Update</button>
-                    @endif
-                    </form>
-             </div>
-            <div class="uk-width-1-3@m">
-                <div class="uk-summary bg-white uk-border-rounded uk-box-shadow-small">
-                    <div class="uk-summary-header"> 
-                        <h4 class="uk-margin-remove">Order Summary</h4>
-                    </div> 
-                    <div class="uk-summary-body"> 
-                     <ul class="uk-calculation uk-margin-small-top uk-margin-small-bottom">
-                        <li class="uk-flex uk-flex-between">
-                            <div>
-                            Sub-Total  
-                            </div>
-                            <div id="sub-total">
-                            ${{Gloudemans\Shoppingcart\Facades\Cart::subtotal();}}
-                            </div>
-                        </li>
-                     </ul>
+    <!-- Page Title-->
+    <div class=" bg-primary pt-4 pb-4">
+        <div class="container py-2 py-lg-3">
+            <div class="row">
+                <div class="col-lg-12 d-flex justify-content-center align-item-center  mb-3 mb-lg-0 pt-lg-2 ">
+                    <div>
+                        <nav aria-label="breadcrumb text-center">
+                            <ol class="breadcrumb  flex-lg-nowrap justify-content-center">
+                                <li class="breadcrumb-item"><a class="text-nowrap text-white" href="{{ route('index') }}"><i
+                                            class="czi-home"></i>Home</a></li>
+                                <li class="breadcrumb-item text-nowrap active text-white" aria-current="page">Cart</li>
+                            </ol>
+                        </nav>
+                        <div class=" pr-lg-4 text-center">
+                            <h1 class="h3 mb-0 text-white">Your Cart</h1>
+                        </div>
                     </div>
-                    @if(Gloudemans\Shoppingcart\Facades\Cart::count() > 0)
-                    <div class="uk-summary-footer">  
-                    <a href="{{route('checkout-address')}}" class="uk-button uk-btn-primary uk-width-1-1">Proceed to Checkout</a>
-                    </div>
-                    @endif                                    
                 </div>
             </div>
         </div>
     </div>
-</div>
-</section>
-<!-- section -->
-
+    <!-- Page Content-->
+    <div class="container pb-5 mb-2 mb-md-4">
+        <div class="row">
+            <!-- Sidebar-->
+            <aside class="col-lg-4 pt-4 pt-lg-0 mt-n5">
+                <div class="cz-sidebar-static rounded-lg box-shadow-lg sticky">
+                    <div class="text-center mb-4 pb-3 border-bottom">
+                        <h2 class="h4 mb-0">Summary </h2>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4">
+                        <div>
+                            <div class="font-weight-semibold text-dark"><b>Subtotal:</b></div>
+                        </div>
+                        <div>Rs.{{ \Gloudemans\Shoppingcart\Facades\Cart::subtotal() }}</div>
+                    </div>
+                    <a class="btn btn-primary btn-shadow btn-block mt-4" href="checkout.php"><i
+                            class="czi-card font-size-lg mr-2"></i>Proceed to Checkout</a>
+                </div>
+            </aside>
+            <!-- List of items-->
+            <section class="col-lg-8">
+                <div class="d-none d-md-flex justify-content-between align-items-center mt-5">
+                    <h2 class="h4 mb-0">Your Cart Products</h2><a class="btn btn-primary btn-sm pl-2" href="list.php"><i
+                            class="czi-arrow-left mr-2"></i>Continue shopping</a>
+                </div>
+                <!-- Item-->
+                <form id="update-form" method="POST">
+                    @csrf
+                    @foreach ($cartItem as $value)
+                        <div
+                            class="d-sm-flex justify-content-between align-items-center pt-4 pt-md-3 p-3  my-4  border-bottom bg-white rounded">
+                            <div class="media media-ie-fix d-block d-sm-flex align-items-center text-center text-sm-left">
+                                <a class="d-inline-block mx-auto mr-sm-4"
+                                    href="{{ route('product-single', $value->options->slug) }}" style="width: 10rem;">
+                                    <img src="{{ asset('images/products/' . $value->options->image) }}"
+                                        alt="{{ $value->name }}">
+                                </a>
+                                <div class="media-body pt-2">
+                                    <h3 class="product-title font-size-base mb-2"><a
+                                            href="{{ route('product-single', $value->options->slug) }}">{{ $value->name }}</a>
+                                    </h3>
+                                    <div class="font-size-sm"><span class="text-muted mr-2">Brand:</span>Lenevo</div>
+                                    <div class="font-size-lg font-secondary pt-2">Rs.{{ $value->price }}</div>
+                                </div>
+                            </div>
+                            <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left"
+                                style="max-width: 9rem;">
+                                <div class="form-group mb-0">
+                                    <label class="font-weight-medium" for="quantity1">Quantity</label>
+                                    <input class="form-control" type="number" min="1"
+                                        max="{{ App\Model\Product::find($value->id)->stock }}" id="quantity1"
+                                        value="{{ $value->qty }}">
+                                </div>
+                                <button class="btn btn-link px-0 text-danger delete-btn" type="button"
+                                    data-row-id="{{ $value->rowId }}"><i class="czi-close-circle mr-2"></i><span
+                                        class="font-size-sm">Remove</span></button>
+                            </div>
+                        </div>
+                    @endforeach
+                    @if (count($cartItem) > 0)
+                        <div class="d-flex justify-content-center">
+                            <button href="{{ route('index') }}" id="update-button" class="btn btn-outline-accent "><i
+                                    class="czi-loading font-size-base mr-2"></i>Update Cart</button>
+                        </div>
+                    @endif
+                </form>
+            </section>
+        </div>
+    </div>
 @endsection
 @push('scripts')
-
     <script>
-
         $("#update-form").submit(function(event) {
             event.preventDefault();
 
@@ -139,30 +107,30 @@
 
             $.ajax({
                 type: 'POST',
-                url: '{{route('cart-update')}}',
+                url: '{{ route('cart-update') }}',
                 data: formData,
                 contentType: false,
                 cache: false,
                 processData: false,
 
-                success: function (data) {
+                success: function(data) {
                     // console.log(data);
                     if (!data.errors) {
 
                         toastr.success(data.message);
-                        // alert({{Gloudemans\Shoppingcart\Facades\Cart::count();}});
+                        // alert({{ Gloudemans\Shoppingcart\Facades\Cart::count() }});
                         $(".uk-cart-count").replaceWith($(".uk-cart-count")).html(data.count);
-                        $("#sub-total").replaceWith($("#sub-total")).html("$"+data.subTotal);
+                        $("#sub-total").replaceWith($("#sub-total")).html("$" + data.subTotal);
 
                     }
-                    jQuery.each(data.errors, function (key, value) {
+                    jQuery.each(data.errors, function(key, value) {
 
                         toastr.error(value);
                         // hideLoading();
 
                     })
                 },
-                error: function (a) {//if an error occurs
+                error: function(a) { //if an error occurs
                     // hideLoading();
                     alert("An error occured while uploading data.\n error code : " + a.statusText);
                 }
@@ -171,20 +139,20 @@
 
         $(".quantity").keyup(function(event) {
             event.preventDefault();
-            alert($(this).val()); 
+            alert($(this).val());
         });
 
-        $(".quantity-button").click(function(event){
+        $(".quantity-button").click(function(event) {
             event.preventDefault();
             let cartId = $(this).attr("data-row-id");
-            let quantity = $("#qt"+cartId).val();
+            let quantity = $("#qt" + cartId).val();
             let price = $(this).attr("data-row-price");
 
-            $("#mintotal"+cartId).html("$"+quantity*price);
+            $("#mintotal" + cartId).html("$" + quantity * price);
 
         });
 
-        $(".delete-btn").click(function(event){
+        $(".delete-btn").click(function(event) {
             event.preventDefault();
             let cartId = $(this).attr("data-row-id");
 
@@ -196,34 +164,35 @@
 
             $.ajax({
                 type: 'GET',
-                url: '{{route('cart-remove')}}',
-                data: {'id':cartId},
-                success: function (data) {
+                url: '{{ route('cart-remove') }}',
+                data: {
+                    'id': cartId
+                },
+                success: function(data) {
                     // console.log(data);
                     if (!data.errors) {
-                        $("#"+cartId).remove();
-                        //$('.mini-cart').replaceWith($('.mini-cart')).html(data);
+                        $("#" + cartId).remove();
+                        // $('.mini-cart').replaceWith($('.mini-cart')).html(data);
                         $('.uk-cart-count').replaceWith($('.uk-cart-count')).html(data.count);
-                        $("#sub-total").replaceWith($("#sub-total")).html("$"+data.subTotal);
+                        $("#sub-total").replaceWith($("#sub-total")).html("$" + data.subTotal);
                         toastr.success(data.message);
-                        if(data.count==0){
+                        if (data.count == 0) {
                             $("#update-button").remove();
                         }
 
                     }
-                    jQuery.each(data.errors, function (key, value) {
+                    jQuery.each(data.errors, function(key, value) {
 
                         toastr.error(value);
                         // hideLoading();
 
                     })
                 },
-                error: function (a) {//if an error occurs
+                error: function(a) { //if an error occurs
                     // hideLoading();
                     alert("An error occured while uploading data.\n error code : " + a.statusText);
                 }
             });
-         });
+        });
     </script>
-
 @endpush
