@@ -2,16 +2,16 @@
     $currentRoute = Route::currentRouteName();
 @endphp
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4 position-relative" style="width:19rem; overflow-x:hidden;">
     <!-- Brand Logo -->
-    <a href="{{ url('/') }}" target="_blank" class="brand-link" style="background-color: #ffffff;">
+    <a href="{{ url('/') }}" target="_blank" class="brand-link" style="background-color: #ffffff; position: relative;">
         <img src="{{ asset('images/logo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8;"><br>
         <!--<span class="brand-text font-weight-light"> {{ config('app.name') }}</span>-->
     </a>
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" style="margin-top:0;">
         <!-- Sidebar user panel (optional) -->
         <?php /*?> ?>
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -39,7 +39,7 @@
                     </a>
                 </li>
 
-                <li class="nav-header">PRODUCTS</li>
+                <li class="nav-header" style="padding-top:.5rem!important;">PRODUCTS</li>
                 <li class="nav-item has-treeview {{ in_array($currentRoute, ['add-size', 'add-color']) ? 'menu-open' : '' }}">
                     <a href="" class="nav-link {{ in_array($currentRoute, ['add-size', 'add-color']) ? 'active' : '' }}">
                         <i class="nav-icon fa fa-sliders"></i>
@@ -94,8 +94,8 @@
                 </li>
 
 
-                <li class="nav-item has-treeview {{ in_array($currentRoute, ['add-category', 'category.index']) ? 'menu-open' : '' }}">
-                    <a href="" class="nav-link {{ in_array($currentRoute, ['add-category', 'category.index']) ? 'active' : '' }}">
+                <li class="nav-item has-treeview {{ in_array($currentRoute, ['category.create', 'category.index']) ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ in_array($currentRoute, ['category.create', 'category.index']) ? 'active' : '' }}">
                         <i class="nav-icon fa fa-tags"></i>
                         <p>
                             Category
@@ -104,7 +104,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('add-category') }}" class="nav-link ml-3 {{ $currentRoute == 'add-category' ? 'active' : '' }}">
+                            <a href="{{ route('category.create') }}" class="nav-link ml-3 {{ $currentRoute == 'category.create' ? 'active' : '' }}">
                                 <i class="fa fa-plus nav-icon"></i>
                                 <p>Add Category</p>
                             </a>
@@ -197,8 +197,8 @@
                 {{--                    </ul> --}}
                 {{--                </li> --}}
 
-                
-                <li class="nav-header">BUILD CUSTOM PC</li>
+
+                <li class="nav-header" style="padding-top:.5rem!important;">BUILD CUSTOM PC</li>
                 <li class="nav-item has-treeview {{ in_array($currentRoute, ['show-active-componenttype']) ? 'menu-open' : '' }}">
                     <a href="" class="nav-link {{ in_array($currentRoute, ['show-active-componenttype']) ? 'active' : '' }}">
                         <i class="nav-icon fa fa-microchip"></i>
@@ -218,7 +218,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-header">ORDERS</li>
+                <li class="nav-header" style="padding-top:.5rem!important;">ORDERS</li>
 
                 <!-- <li class="nav-item has-treeview">
                     <a href="" class="nav-link">
@@ -314,7 +314,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-header">MISCELLANEOUS</li>
+                <li class="nav-header" style="padding-top:.5rem!important;">MISCELLANEOUS</li>
 
                 <li class="nav-item has-treeview">
                     <a href="" class="nav-link">

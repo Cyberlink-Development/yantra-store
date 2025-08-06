@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Model\Category;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Exception;
+use Log;
 
 class CategoryController extends BackendController
 {
@@ -16,30 +19,33 @@ class CategoryController extends BackendController
         $this->category = $category;
     }
 
-    public function add_category(Request $request)
+    public function index(Request $request)
     {
-        if ($request->isMethod('get')) {
-            $category = $this->category->getCategories();
-            $table = $this->category->getAll();
-            // dd($table->take(10));
-            return view($this->backendcategoryPath . 'add_category', compact('category', 'table'));
-        }
-        if ($request->isMethod('post')) {
+        $table = Category::all();
+
+        return view($this->backendcategoryPath . 'index', compact('table'));
+
+    }
+
+    public function create(){
+        $category = $this->category->getCategories();
+        $table = $this->category->getAll();
+        return view($this->backendcategoryPath . 'store', compact('category', 'table'));
+    }
+
+    public function store(Request $request)
+    {
+        try{
             $request->validate([
-                'name' => 'required|unique:categories',
-                'is_special'=>'required',
-//                'image'=>'required'
+                'name' => 'required|unique:categories'
             ]);
-            
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $name =rand(1, 1000000). time() . '.' . $image->getClientOriginalExtension();
                 $destinationPath = public_path('/images/categories/');
-
                 $image->move($destinationPath, $name);
                 $data['image'] = $name;
             }
-            
             if ($request->hasFile('banner')) {
                 $banner = $request->file('banner');
                 $bname =rand(1, 1000000). time() . '.' . $banner->getClientOriginalExtension();
@@ -48,25 +54,91 @@ class CategoryController extends BackendController
                 $banner->move($destinationPath, $bname);
                 $data['banner'] = $bname;
             }
-//            if (isset($request->is_special) && $request->is_special == 1) {
-//                $special = Category::where('is_special', 1)->get();
-//                if (!empty($special)) {
-//                    foreach ($special as $value) {
-//                        $find = Category::where('is_special', $value->is_special)->update(['is_special' => 0]);
-//                    }
-//                }
-//
-//            }
             $data['name'] = $request->name;
-            $data['seo_keyword'] = $request->seo_keyword;
-            $data['seo_description'] = $request->seo_description;
+            $data['meta_title'] = $request->meta_title;
+            $data['meta_description'] = $request->meta_description;
             $data['parent_id'] = $request->parent_id;
-            $data['is_special'] = $request->is_special;
-            $data['status'] = $request->status;
             $data['description'] = $request->description;
-//           dd($request->all());
+            $data['status'] = $request->has('status') ? '1' : '0';
+            $data['is_header'] = $request->has('is_header') ? '1' : '0';
+            $data['in_home'] = $request->has('in_home') ? '1' : '0';
+            $data['is_footer'] = $request->has('is_footer') ? '1' : '0';
             $category = Category::create($data);
-            return back()->with('success', 'Category added successfully');
+            return back()->with([
+                'success' => true,
+                'message' => 'Category was added successfully'
+            ]);
+        }catch (ValidationException $e) {
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => $e->validator->errors()->all()
+            ]);
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
+        }
+    }
+
+    public function edit($id){
+        $data = Category::where('id',$id)->first();
+        $category = $this->category->getCategories();
+        return view($this->backendcategoryPath . 'edit',compact('category','data'));
+    }
+
+    public function update(Request $request)
+    {
+        try{
+            $request->validate([
+                'name' => 'required|unique:categories,name,'.$request->id
+            ]);
+            $id = $request->id;
+            $data['name'] = $request->name;
+            $data['parent_id'] = $request->parent_id;
+            $data['meta_title'] = $request->meta_title;
+            $data['meta_description'] = $request->meta_description;
+            $data['description'] = $request->description;
+            $data['status'] = $request->has('status') ? '1' : '0';
+            $data['is_header'] = $request->has('is_header') ? '1' : '0';
+            $data['in_home'] = $request->has('in_home') ? '1' : '0';
+            $data['is_footer'] = $request->has('is_footer') ? '1' : '0';
+            if ($request->hasFile('image')) {
+                $this->delete_file($id);
+                $image = $request->file('image');
+                $name = rand(1, 1000000).time() . '.' . $image->getClientOriginalExtension();
+                $destinationPath = public_path('/images/categories/');
+                $image->move($destinationPath, $name);
+                $data['image'] = $name;
+            }
+
+            if ($request->hasFile('banner')) {
+                $this->delete_banner($id);
+                $image = $request->file('banner');
+                $name = rand(1, 1000000).time() . '.' . $image->getClientOriginalExtension();
+                $destinationPath = public_path('/images/categories/');
+                $image->move($destinationPath, $name);
+                $data['banner'] = $name;
+            }
+            $new = Category::findorfail($id);
+            if ($new->update($data)) {
+                return redirect()->back()->with([
+                    'success' => true,
+                    'message' => 'Category successfully updated'
+                ]);
+            }
+        }catch (ValidationException $e) {
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => $e->validator->errors()->all()
+            ]);
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
         }
     }
 
@@ -99,78 +171,19 @@ class CategoryController extends BackendController
 
     }
 
-    public function edit_category(Request $request)
-    {
-        if ($request->isMethod('get')) {
-            $value = Category::where('id',$request->id)->first();
-             $category = $this->category->getCategories();
-            return view($this->backendcategoryPath . 'edit',compact('category','value'));
-        }
-        if ($request->isMethod('post')) {
-            $id = $request->id;
 
-            $data['name'] = $request->name;
-            $data['parent_id'] = $request->parent_id;
-            $data['seo_keyword'] = $request->seo_keyword;
-            $data['seo_description'] = $request->seo_description;
-            $data['description'] = $request->description;
-//            if (isset($request->is_special) && $request->is_special == 1) {
-//                $special = Category::where('is_special', 1)->get();
-//                if (!empty($special)) {
-//                    foreach ($special as $value) {
-//                        $find = Category::where('is_special', $value->is_special)->update(['is_special' => 0]);
-//                    }
-//                }
-//            }
-            $data['is_special'] = $request->is_special;
-            if ($request->hasFile('image')) {
-                $this->delete_file($id);
-                $image = $request->file('image');
-                $name = rand(1, 1000000).time() . '.' . $image->getClientOriginalExtension();
-                $destinationPath = public_path('/images/categories/');
-                $image->move($destinationPath, $name);
-                $data['image'] = $name;
-            }
-            
-            $data['status'] = $request->status;
-            
-            
-            if ($request->hasFile('banner')) {
-                $this->delete_banner($id);
-                $image = $request->file('banner');
-                $name = rand(1, 1000000).time() . '.' . $image->getClientOriginalExtension();
-                $destinationPath = public_path('/images/categories/');
-                $image->move($destinationPath, $name);
-                $data['banner'] = $name;
-            }
-            
-            $new = Category::findorfail($id);
 
-            if ($new->update($data)) {
-                return redirect()->back()->with('success', 'Category successfully updated');
-            }
 
-        }
 
-    }
-    
-    public function index(Request $request)
-    {
-        $table = Category::all();
-       
-        return view($this->backendcategoryPath . 'index', compact('table'));
-       
-    }
-    
     public function category_image_delete($id){
         $category = Category::find($id);
         $category->image = null;
         $this->delete_file($id);
         $category->save();
-        
+
         return response()->json(['status' => 'success', 'message' => 'Image deleted successfully']);
     }
-    
+
     public function delete_banner($id)
     {
         $findData = Category::findorfail($id);
@@ -181,13 +194,13 @@ class CategoryController extends BackendController
         }
         return true;
     }
-    
+
     public function category_banner_delete($id){
         $category = Category::find($id);
         $category->banner = null;
         $this->delete_banner($id);
         $category->save();
-        
+
         return response()->json(['status' => 'success', 'message' => 'Image deleted successfully']);
     }
 

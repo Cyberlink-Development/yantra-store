@@ -199,7 +199,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                      
+
                                     </div>
                                     <div class="d-flex flex-wrap justify-content-between align-items-center py-3">
                                         <div class="font-size-sm mr-2 py-2"><span
@@ -252,7 +252,7 @@
                       <span class="navbar-toggler-icon"></span>
                     </button> -->
                                     <div class="collapse navbar-collapse" id="navbar">
-                                        <ul class="navbar-nav mr-auto">
+                                        <ul class="navbar-nav mr-auto flex-wrap">
                                             <li class="nav-item"><a class="nav-link"
                                                     href="{{ route('index') }}">Home</a></li>
                                             <li class="nav-item"><a class="nav-link" href="about.php">About Us</a>

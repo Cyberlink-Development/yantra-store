@@ -18,7 +18,7 @@
                         <div class="icon">
                             <i class="fa fa-list-alt"></i>
                         </div>
-                        <a href="{{route('add-category')}}" class="small-box-footer">More info <i
+                        <a href="{{route('category.create')}}" class="small-box-footer">More info <i
                                 class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>

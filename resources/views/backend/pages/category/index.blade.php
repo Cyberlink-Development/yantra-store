@@ -1,84 +1,59 @@
 @extends('backend.layouts.master')
-@section('content') 
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'Categories List','actionLabel'=>'Create',
+      'actionLink'=>route('category.create'),'backLabel'=>'','backLink'=>''])
+@endsection
+@section('content')
     <div class="col-md-12">
         <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">All Categories</h4>
+            </div>
             <div class="card-body">
-                <div class="box-header">
-                    <h3 class="box-title">All Categories</h3>
-                </div>
-                <div class="box-body">
-                    <table id="package_table" class="table table-bordered datatable123">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Parent</th>
-                           
-                            <th>Show in Home</th>
-                            <th>Status</th>
-                            <th class="sorting-false">Action</th>
-                        </tr>
+                <div class="table-responsive">
+                    <table id="package_table" class="table table-bordered table-striped datatable123">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Parent</th>
+                                <th>In Home?</th>
+                                <th>Status</th>
+                                <th class="sorting-false">Action</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @foreach($table as $key=>$value)
-                            <tr>
-                            <td>{{$key+=1}}</td>
-                            <td>{{$value->name}}</td>
-                            <td>{{App\Model\Category::where('id','=',$value->parent_id)->first() ? App\Model\Category::where('id','=',$value->parent_id)->first()->name : '-'}}</td>
-                            
-                            <td>
-                                @if(($value->is_special)==0)
-                                    <button class="btn btn-danger btn btn-sm" name="inactive"><i
-                                            class="fa fa-times"></i>
-                                    </button>
-                                @else
-                                    <button class="btn btn-success btn btn-sm" name="active"><i
-                                            class="fa fa-check"></i>
-                                    </button>
-                                @endif
-                            </td>
-                            <td>
-                                 @if(($value->status)==0)
-                                    <button class="btn btn-sm btn-danger btn btn-sm" name="inactive"><i
-                                            class="fa fa-times"></i>
-                                    </button>
-                                @else
-                                    <button class="btn btn-sm btn-success btn btn-sm" name="active"><i
-                                            class="fa fa-check"></i>
-                                    </button>
-                                @endif
-                            </td>
-                            <td>
-                                <a class="btn btn-danger btn btn-sm confirm" href="{{route('delete-category',$value->id)}}"  onclick="return confirm('Confirm Delete?')"><i class="fa fa fa-trash"></i> </a>
-                                <a class="btn btn-outline-primary btn btn-sm confirm"  href="{{route('edit-category',$value->id)}}"><i class="fa fa fa-edit"></i> </a>
-                            </td>
-                          </tr>
-                            
-                        @endforeach
+                            @foreach($table as $key => $row)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $row->name }}</td>
+                                    <td>
+                                        {{ optional(App\Model\Category::find($row->parent_id))->name ?? '-' }}
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" class="toggle-home" data-id="{{ $row->id }}" {{ $row->in_home == '1' ? 'checked' : '' }}>
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" class="toggle-status" data-id="{{ $row->id }}" {{ $row->status == '1' ? 'checked' : '' }}>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('category.edit', $row->id) }}" class="btn btn-sm btn-primary" title="Edit">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a href="{{ route('delete-category', $row->id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Confirm Delete?')" title="Delete">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th class="sorting-false">Parent</th>
-                           
-                            <th>Show in Home</th>
-                            <th class="sorting-false">Action</th>
-                        </tr>
-                        </tfoot>
                     </table>
                 </div>
-                <!-- /.box-body -->
-
-                <!-- /.box -->
             </div>
         </div>
     </div>
-
 @stop
 @push('scripts')
-   
-
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script>
         $('#package_table').DataTable({
