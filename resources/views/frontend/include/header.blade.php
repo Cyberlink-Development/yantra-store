@@ -51,18 +51,18 @@
                             aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body tab-content py-4">
-                    <form class="needs-validation tab-pane fade show active" autocomplete="off" novalidate
-                        id="signin-tab">
+                    <form method="post" action="{{route('login')}}" class="needs-validation tab-pane fade show active" autocomplete="off" novalidate id="signin-tab">
+                        @csrf 
                         <div class="form-group">
                             <label for="si-email">Email address</label>
-                            <input class="form-control" type="email" id="si-email" placeholder="johndoe@example.com"
+                            <input class="form-control" type="email" id="si-email" name="email" placeholder="johndoe@example.com"
                                 required>
                             <div class="invalid-feedback">Please provide a valid email address.</div>
                         </div>
                         <div class="form-group">
                             <label for="si-password">Password</label>
                             <div class="password-toggle">
-                                <input class="form-control" type="password" id="si-password" required>
+                                <input class="form-control" type="password" id="si-password" name="password" required>
                                 <label class="password-toggle-btn">
                                     <input class="custom-control-input" type="checkbox"><i
                                         class="czi-eye password-toggle-indicator"></i><span class="sr-only">Show
@@ -87,23 +87,24 @@
                         </div>
                         <button class="btn btn-primary btn-block btn-shadow" type="submit">Sign in</button>
                     </form>
-                    <form class="needs-validation tab-pane fade" autocomplete="off" novalidate id="signup-tab">
+                    <form action="{{route('user-registration')}}" method="POST" class="needs-validation tab-pane fade" autocomplete="off" novalidate id="signup-tab">
+                        @csrf
                         <div class="form-group">
                             <label for="su-name">Full name</label>
-                            <input class="form-control" type="text" id="su-name" placeholder="John Doe"
+                            <input class="form-control" type="text" id="su-name" placeholder="John Doe" name="first_name"
                                 required>
                             <div class="invalid-feedback">Please fill in your name.</div>
                         </div>
                         <div class="form-group">
                             <label for="su-email">Email address</label>
-                            <input class="form-control" type="email" id="su-email"
+                            <input class="form-control" type="email" id="su-email" name="email"
                                 placeholder="johndoe@example.com" required>
                             <div class="invalid-feedback">Please provide a valid email address.</div>
                         </div>
                         <div class="form-group">
                             <label for="su-password">Password</label>
                             <div class="password-toggle">
-                                <input class="form-control" type="password" id="su-password" required>
+                                <input class="form-control" type="password" id="su-password" name="password" required>
                                 <label class="password-toggle-btn">
                                     <input class="custom-control-input" type="checkbox"><i
                                         class="czi-eye password-toggle-indicator"></i><span class="sr-only">Show
@@ -114,7 +115,7 @@
                         <div class="form-group">
                             <label for="su-password-confirm">Confirm password</label>
                             <div class="password-toggle">
-                                <input class="form-control" type="password" id="su-password-confirm" required>
+                                <input class="form-control" type="password" id="su-password-confirm" name="password_confirmation" required>
                                 <label class="password-toggle-btn">
                                     <input class="custom-control-input" type="checkbox"><i
                                         class="czi-eye password-toggle-indicator"></i><span class="sr-only">Show

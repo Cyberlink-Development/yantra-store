@@ -72,7 +72,7 @@ Route::group(['namespace' => 'Front'], function () {
 
 //checkout details//
     Route::get('/checkout-address', 'CheckoutController@checkout_address')->name('checkout-address');
-    Route::post('/checkout-address', 'CheckoutController@checkout_address')->name('checkout-address');
+    Route::post('/checkout-page', 'CheckoutController@checkout_address')->name('checkout-page');
     Route::get('/checkout-shipping', 'CheckoutController@shipping_page')->name('shipping-page');
     Route::get('/checkout-payment/{id?}', 'CheckoutController@checkout_payment')->name('checkout-payment');
     Route::post('/checkout-payment', 'CheckoutController@checkout_payment')->name('checkout-payment');
