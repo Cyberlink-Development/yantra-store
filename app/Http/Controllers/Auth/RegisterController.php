@@ -86,13 +86,13 @@ class RegisterController extends Controller
     protected function store(Request $request)
     {
 
-//        dd($request->all());
+    //    dd($request->all());
         $request->validate([
             'first_name' => 'required',
-            'last_name'=>'required',
+            // 'last_name'=>'required',
             'email' => 'required|unique:users,email',
             'password' => 'min:6|required_with:password_confirmation|same:password_confirmation',
-            'phone_number'=>'required|max:10',
+            // 'phone_number'=>'required|max:10',
 
         ]);
 
@@ -109,12 +109,12 @@ class RegisterController extends Controller
             'user_id' => $user->id,
             'token' => Str::random(20)
         ]);
-        if ($user && $verifyUser) {
-            //return new VerifyMail($verifyUser->token, $user->id, $user->name);
-            Mail::send(new VerifyMail($verifyUser->token, $user->id, $user->name));
-            return "sent mail";
+        // if ($user && $verifyUser) {
+        //     return new VerifyMail($verifyUser->token, $user->id, $user->name);
+        //     Mail::send(new VerifyMail($verifyUser->token, $user->id, $user->name));
+        //     return "sent mail";
 
-        }
+        // }
 
         Session::flash('success', 'Please verify your email to complete registration process');
         return redirect()->intended(route('index'));

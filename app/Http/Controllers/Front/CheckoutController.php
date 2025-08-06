@@ -28,7 +28,7 @@ class CheckoutController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['checkout_address']);
     }
 
     // Function to get cities using ajax, when country field changes
@@ -128,8 +128,8 @@ class CheckoutController extends Controller
     public function checkout_address(Request $request)
     {
 
-        //dd($request->all);
         if ($request->isMethod('get')) {
+            // dd($request->all());
 
             // Cart empty validation
             if(Cart::count()<1){
@@ -140,13 +140,14 @@ class CheckoutController extends Controller
             foreach (Cart::content() as $cartItem) {
                 $product = Product::find($cartItem->id);
                 $color = Color::where('title', $cartItem->options->color)->first();
-
-                if($product->size_variation==1){
-                    $size = Size::where('title', $cartItem->options->size)->first();
-                    $totalStock = $product->totalStock($color->id, $size->id);
-                }else{
-                    $totalStock = $product->totalStock($color->id);
-                }
+// dd($color,'testt',$product);
+                // if($product->size_variation==1){
+                //     $size = Size::where('title', $cartItem->options->size)->first();
+                //     $totalStock = $product->totalStock($color->id, $size->id);
+                // }else{
+                    // $totalStock = $product->totalStock($color->id);
+                    $totalStock = 10;
+                // }
                 if($totalStock < $cartItem->qty){
                     //Cart::destroy();
 
@@ -177,13 +178,13 @@ class CheckoutController extends Controller
             $weight_category = $this->weight_category($weight);
 
             // Shipping option
-            $shipping_option = $this->shipping_option($weight_category);
+            // $shipping_option = $this->shipping_option($weight_category);
+            $shipping_option = '';
 
            return view('frontend/pages/checkout/checkout-details', compact('user', 'cartItem', 'countries', 'shipping', 'final', 'weight', 'weight_category', 'shipping_option'));
         }
-        if ($request->isMethod('post')) {
 
-            
+        if ($request->isMethod('post')) {
 
 //            dd((new \Gloudemans\Shoppingcart\Cart)->instance(Auth::user()->id));
 //            dd(Cart::content());
@@ -194,14 +195,14 @@ class CheckoutController extends Controller
             // dd($request->country);
             $request->validate([
                 'first_name' => 'required',
-                'last_name' => 'required',
+                // 'last_name' => 'required',
                 'email' => 'required',
-                'phone' => 'required',
-                'shipping_option'=>'required',
+                // 'phone' => 'required',
+                // 'shipping_option'=>'required',
                 // 'zip_code' => 'required',
-                'address_1' => 'required',
-                'country'=>'required',
-                'city'=>'required',
+                // 'address_1' => 'required',
+                // 'country'=>'required',
+                // 'city'=>'required',
                 // 'address_2' => 'required',
             ]);
 
@@ -216,6 +217,7 @@ class CheckoutController extends Controller
             $data['status']=0;
             $data['order_note'] = $request->order_note;
             $data['weight'] = $request->weight;
+            dd($data);
             $order = Order::create($data);
 
             $order_id = $order->id;

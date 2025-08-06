@@ -53,6 +53,7 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        // dd($request->all());
         if ($request->isMethod('post')) {
             $request->validate([
                 'email' => 'required',

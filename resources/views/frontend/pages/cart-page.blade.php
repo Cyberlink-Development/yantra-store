@@ -36,7 +36,7 @@
                         </div>
                         <div>Rs.{{ \Gloudemans\Shoppingcart\Facades\Cart::subtotal() }}</div>
                     </div>
-                    <a class="btn btn-primary btn-shadow btn-block mt-4" href="checkout.php"><i
+                    <a class="btn btn-primary btn-shadow btn-block mt-4" href="{{route('checkout-address')}}"><i
                             class="czi-card font-size-lg mr-2"></i>Proceed to Checkout</a>
                 </div>
             </aside>
