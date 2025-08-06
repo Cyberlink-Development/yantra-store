@@ -6,10 +6,11 @@ use App\Model\Product;
 
 function categorySeperator( $size, $string = '')
 {
+    dd($size, $string);
     for ($i = 2; $i < $size; $i++) {
         $string .= $string;
     }
-
+    // dd($size, $string);
     return $string;
 }
 

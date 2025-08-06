@@ -3,6 +3,9 @@
 use App\Http\Controllers\Admin\BrandDiscountController;
 use Illuminate\Support\Facades\Route;
 
+/******************** By Sangam Starts ***********/
+// use App\Http\Controllers\Admin\CategoryController;
+/******************** By Sangam Ends ***********/
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,7 +49,7 @@ Route::group(['namespace' => 'Front'], function () {
     Route::get('/category/{slug?}', 'CategoryController@product_list')->name('product-list');
     Route::get('/brand/{slug?}', 'CategoryController@brand_list')->name('brand-list');
     Route::get('/popular-products', 'CategoryController@popular_products')->name('popular-products');
-    
+
     Route::post('/cart', 'CartController@add_cart')->name('cart-add');
     Route::get('/cart-filter', 'CartController@cart_filter')->name('cart-filter');
     Route::get('/cart-page', 'CartController@cart_item')->name('cart-item');
@@ -92,7 +95,7 @@ Route::group(['namespace' => 'Front'], function () {
     Route::post('/payment-method','PaymentController@payment_method')->name('payment.method');
     //user dashboard
     Route::group(['prefix' => 'user','middleware' => ['auth']], function () {
-    Route::get('/account-dashboard', 'UserController@user_dashboard')->name('user-dashboard');  
+    Route::get('/account-dashboard', 'UserController@user_dashboard')->name('user-dashboard');
     Route::get('/account-address', 'UserController@address')->name('user-address');
     Route::get('/order-details-modal/{id?}', 'UserController@order_details')->name('order-detail-modal');
     Route::post('/account-address', 'UserController@address')->name('user-address');
@@ -126,7 +129,7 @@ Route::group(['namespace' => 'Auth'], function () {
     Route::post('/recovery-mail', 'ForgotPasswordController@recovery_mail')->name('recovery-mail');
     Route::any('/reset-password/{token}', 'ForgotPasswordController@reset_password')->name('reset-password');
 });
- 
+
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'usercheck']], function () {
     Route::get('all-user', 'AdminController@all_user')->name('all-user');
@@ -137,17 +140,20 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::post('/admin-password', 'AdminController@admin_password')->name('admin-password');
 
 
+    // Route::resource('category',CategoryController::class);
+
     Route::group(['prefix' => 'category'], function () {
-        Route::get('category/{id?}', 'CategoryController@add_category')->name('add-category');
-        Route::post('category', 'CategoryController@add_category')->name('add-category');
         Route::get('index', 'CategoryController@index')->name('category.index');
+        Route::get('create/{id?}', 'CategoryController@create')->name('category.create');
+        Route::post('store', 'CategoryController@store')->name('category.store');
         Route::any('show-category', 'CategoryController@show_category')->name('show-category');
-        Route::any('edit-category/{id?}', 'CategoryController@edit_category')->name('edit-category');
+        Route::get('edit/{id?}', 'CategoryController@edit')->name('category.edit');
+        Route::any('update/{id?}', 'CategoryController@update')->name('category.update');
         Route::any('delete-category/{id}', 'CategoryController@delete_category')->name('delete-category');
         Route::any('update-category', 'CategoryController@update_category')->name('update-category');
         Route::get('category-image-delete/{id}', 'CategoryController@category_image_delete')->name('category-image-delete');
         Route::get('category-banner-delete/{id}', 'CategoryController@category_banner_delete')->name('category-banner-delete');
-    }); 
+    });
 
     Route::group(['prefix' => 'product'], function () {
         Route::get('add-product', 'ProductController@add_product')->name('add-product');
@@ -183,7 +189,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
         Route::get('delete-description/{id?}', 'ProductController@delete_description')->name('delete-description');
 
     });
-    
+
     //Custom Build PC
     Route::group(['prefix' => 'componenttype'], function () {
         //Component Types
@@ -218,7 +224,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
         // Route::post('edit-city/{id?}', 'ShippingController@edit_city')->name('edit-city');
         // Route::get('delete-city/{id}', 'ShippingController@delete_city')->name('delete-city');
         // Route::any('shipping-status', 'ShippingController@deal_status')->name('shipping-status');
-        
+
         Route::get('/add-medium', 'ShippingController@add_medium')->name('add-medium');
         Route::post('/add-medium', 'ShippingController@add_medium')->name('add-medium');
         Route::get('delete-medium/{id}', 'ShippingController@delete_medium')->name('delete-medium');
