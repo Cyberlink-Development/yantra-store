@@ -26,7 +26,7 @@
                   <div class="d-flex flex-column justify-content-start">
                      <a class="text-secondary mb-2" href="index.php">Home</a>
                      <a class="text-secondary mb-2" href="wishlist.php">Wishlist</a>
-                     <a class="text-secondary mb-2" href="profile.php">Profile</a>
+                     <a class="text-secondary mb-2" href="{{ route('user-dashboard') }}">Profile</a>
                      <a class="text-secondary mb-2" href="cart.php">Shopping Cart</a>
                      <a class="text-secondary mb-2" href="service-list.php">Services</a>
                      <a class="text-secondary" href="contact.php">Contact Us</a>

@@ -95,26 +95,27 @@ Route::group(['namespace' => 'Front'], function () {
     Route::post('/payment-method','PaymentController@payment_method')->name('payment.method');
     //user dashboard
     Route::group(['prefix' => 'user','middleware' => ['auth']], function () {
-    Route::get('/account-dashboard', 'UserController@user_dashboard')->name('user-dashboard');
-    Route::get('/account-address', 'UserController@address')->name('user-address');
-    Route::get('/order-details-modal/{id?}', 'UserController@order_details')->name('order-detail-modal');
-    Route::post('/account-address', 'UserController@address')->name('user-address');
-    Route::get('/change-password', 'UserController@change_password')->name('change-password');
-    Route::post('/change-password', 'UserController@change_password')->name('change-password');
-    Route::get('/account-orders/{id?}', 'UserController@orders')->name('user-orders');
-    Route::get('/account-password-recovery', 'UserController@password_recovery')->name('password-recovery');
-//    Route::get('/account-payment', function () {return view('frontend/pages/account-payment');});
-    Route::get('/account-profile', 'UserController@user_profile')->name('user-profile');
-    Route::post('/account-profile', 'UserController@user_profile')->name('user-profile');
-//Route::get('/account-signin', function () {return view('frontend/pages/account-signin');});
-//    Route::get('/account-signup', function () {return view('frontend/pages/account-signup');});
-    Route::get('/account-tickets', function () {
-        return view('frontend/pages/account-tickets');
+        Route::get('/account-dashboard', 'UserController@user_dashboard')->name('user-dashboard');
+        Route::get('/account-address', 'UserController@address')->name('user-address');
+        Route::get('/order-details-modal/{id?}', 'UserController@order_details')->name('order-detail-modal');
+        Route::post('/account-address', 'UserController@address')->name('user-address');
+        Route::get('/change-password', 'UserController@change_password')->name('change-password');
+        Route::post('/change-password', 'UserController@change_password')->name('change-password');
+        Route::get('/account-orders/{id?}', 'UserController@orders')->name('user-orders');
+        Route::get('/account-wishlist/{id?}', 'UserController@wishlist')->name('user-wishlist');
+        Route::get('/account-password-recovery', 'UserController@password_recovery')->name('password-recovery');
+    //    Route::get('/account-payment', function () {return view('frontend/pages/account-payment');});
+        Route::get('/account-profile', 'UserController@user_profile')->name('user-profile');
+        Route::post('/account-profile', 'UserController@user_profile')->name('user-profile');
+    //Route::get('/account-signin', function () {return view('frontend/pages/account-signin');});
+    //    Route::get('/account-signup', function () {return view('frontend/pages/account-signup');});
+        Route::get('/account-tickets', function () {
+            return view('frontend/pages/account-tickets');
+        });
+        // Route::get('/account-wishlist', function () {
+        //     return view('frontend/pages/account-wishlist');
+        // });
     });
-    Route::get('/account-wishlist', function () {
-        return view('frontend/pages/account-wishlist');
-    });
-});
 
 });
 
