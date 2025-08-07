@@ -2,3 +2,8 @@
 1. Remove the is_special status from categories table, category model, category controller
 2. Category rename slug field into uri and make the uri unique instead of name and update the validation in both store and update function
 3. Add image validation in category controller
+
+
+## New task
+1. When user tries to register without verification after registration instead asking to re-register, ask user to verify their account
+
