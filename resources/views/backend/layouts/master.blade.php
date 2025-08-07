@@ -26,8 +26,8 @@
     <div class="content" style="padding:0;">
         @yield('breadcrum')
         @yield('content')
+        @include('backend.layouts.footer')
     </div>
-
 </div>
 <!-- /.content-wrapper -->
 
@@ -36,5 +36,4 @@
     <!-- Control sidebar content goes here -->
 </aside>
 <!-- /.control-sidebar -->
-@include('backend.layouts.footer')
 @stack('scripts')

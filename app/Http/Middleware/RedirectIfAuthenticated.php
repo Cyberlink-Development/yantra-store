@@ -23,7 +23,10 @@ class RedirectIfAuthenticated
                 return redirect()->route('index')->with('success', 'Logged in');
             }
             if (Auth::user()->verified == '1' && Auth::user()->roles == 'admin')  {
-                return redirect()->route('dashboard')->with('success', 'Welcome to Dashboard');
+                return redirect()->route('dashboard')->with([
+                    'success' => true,
+                    'message'=>'Welcome to Dashboard'
+                ]);
             }
             if (Auth::user()->verified == '1' && Auth::user()->roles == 'wholeseller')  {
                 return redirect()->route('index')->with('success', 'You are logged in as wholeseller');
