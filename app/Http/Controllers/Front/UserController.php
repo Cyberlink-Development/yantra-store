@@ -29,6 +29,13 @@ class UserController extends Controller
         return view('frontend/pages/account-orders', compact('order','wishlist','user'));
     }
 
+    public function wishlist()
+    {
+        $wishlist = Wishlist::where('user_id',Auth::user()->id)->get();
+        // dd($wishlist);
+        return view('frontend/pages/account-wishlist', compact('wishlist'));
+    }
+
     public function order_details(Request $request)
     {
         $order_id = $request->id;
