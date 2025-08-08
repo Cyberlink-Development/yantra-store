@@ -1,9 +1,9 @@
 <div class="cz-sidebar-static rounded-lg box-shadow-lg px-0 pb-0 mb-5 mb-lg-0 sticky">
     <div class="px-4 mb-4">
         <div class="media align-items-center">
-            <div class="img-thumbnail rounded-circle position-relative" style="width: 6.375rem;"><img class="rounded-circle" src="img/team/01.jpg" alt="John Doe"></div>
+            <div class="img-thumbnail rounded-circle position-relative" style="width: 6.375rem;"><img class="rounded-circle" src="{{$user->image ? asset('storage/'.$user->image) : asset('theme-assets/img/team/01.jpg')}}" alt="{{ $user->first_name }}"></div>
             <div class="media-body pl-3">
-                <h3 class="font-size-base mb-0">John Doe</h3><span class="text-accent font-size-sm">admin@gmail.com</span>
+                <h3 class="font-size-base mb-0">{{ $user->first_name }}</h3><span class="text-accent font-size-sm">{{ $user->email }}</span>
             </div>
         </div>
     </div>
