@@ -23,22 +23,27 @@ class UserController extends Controller
     {
         if (Auth::check())
         {
-            $order = Order::where('user_id',Auth::user()->id)->orderby('updated_at','desc')->paginate(6);
+            $allorders = Order::where('user_id',Auth::id())->orderby('updated_at','desc');
+            $orders = $allorders->paginate(6);
+            $order = $allorders->count();
         }else{
             return view('frontend.pages.account-signin');
         }
-        $wishlist = Wishlist::where('user_id',Auth::user()->id)->get();
-         $user=User::where('id',Auth::user()->id)->first();
+        $wishlist = Wishlist::where('user_id',Auth::id())->count();
+        $user = User::where('id',Auth::user()->id)->first();
 
-        return view('frontend/pages/account-orders', compact('order','wishlist','user'));
+        return view('frontend/pages/account-orders', compact('order','wishlist','user','orders'));
     }
 
     public function wishlist()
     {
-        $wishlist = Wishlist::where('user_id',Auth::user()->id)->get();
-        $user=User::where('id',Auth::user()->id)->first();
+        $order = Order::where('user_id',Auth::id())->orderby('updated_at','desc')->count();
+        $allwishlist = Wishlist::with('products')->where('user_id',Auth::id());
+        $wishlists = $allwishlist->paginate(6);
+        $wishlist = $allwishlist->count();
+        $user = User::where('id',Auth::user()->id)->first();
         // dd($wishlist);
-        return view('frontend/pages/account-wishlist', compact('wishlist','user'));
+        return view('frontend/pages/account-wishlist', compact('wishlists','wishlist','user','order'));
     }
 
     public function order_details(Request $request)
@@ -55,9 +60,9 @@ class UserController extends Controller
         if ($request->isMethod('get')) 
         {
             $address = Address::all();
-            $wishlist = Wishlist::where('user_id',Auth::user()->id)->get();
-            $order = Auth::user()->orders;
-            $user=User::where('id',Auth::user()->id)->first();
+            $wishlist = Wishlist::where('user_id',Auth::user()->id)->count();
+            $order = Auth::user()->orders->count();
+            $user = User::where('id',Auth::user()->id)->first();
             // dd($user,$address,$wishlist,$order);
             return view('frontend/pages/account-dashboard', compact('address','wishlist','order','user'));
         }
@@ -111,8 +116,8 @@ class UserController extends Controller
     public function user_profile(Request $request)
     {
         if ($request->isMethod('get')) {
-            $wishlist = Wishlist::where('user_id',Auth::user()->id)->get();
-            $order = Auth::user()->orders;
+            $wishlist = Wishlist::where('user_id',Auth::user()->id)->count();
+            $order = Auth::user()->orders->count();
             $user = User::where('id',Auth::user()->id)->first();
             return view('frontend/pages/account-profile',compact('wishlist','order','user'));
         }

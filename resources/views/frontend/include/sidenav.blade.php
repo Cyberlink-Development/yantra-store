@@ -17,12 +17,12 @@
         </li>
         <li class="border-bottom mb-0">
             <a href="{{ route('user-orders') }}" class="nav-link-style d-flex align-items-center px-4 py-3" href="orders.php">
-                <i class="czi-bag opacity-60 mr-2"></i>Orders<span class="font-size-sm text-muted ml-auto">1</span>
+                <i class="czi-bag opacity-60 mr-2"></i>Orders<span class="font-size-sm text-muted ml-auto">{{ $order }}</span>
             </a>
         </li>
         <li class="border-bottom mb-0">
             <a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ route('user-wishlist') }}">
-                <i class="czi-heart opacity-60 mr-2"></i>Wishlist<span class="font-size-sm text-muted ml-auto">3</span>
+                <i class="czi-heart opacity-60 mr-2"></i>Wishlist<span class="font-size-sm text-muted ml-auto">{{ $wishlist }}</span>
             </a>
         </li>
         <li class=" border-top mb-0">
