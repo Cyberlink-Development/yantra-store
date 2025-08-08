@@ -58,7 +58,7 @@
                 <!-- Form Side -->
                 <div class="col-md-6 form-side">
                     <div class="w-75">
-                        <h2 class="mb-4">Login {{ $settings}} </h2>
+                        <h2 class="mb-4">Login </h2>
                         <form action={{ route('admin.authenticate') }} method="post">
                             @csrf
                             <div class="mb-3">

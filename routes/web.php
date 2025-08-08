@@ -120,14 +120,17 @@ Route::group(['namespace' => 'Front'], function () {
 });
 
 Route::group(['namespace' => 'Auth'], function () {
+    /************************* By Sangam Starts ************************/
     Route::get('/adminisclient', 'LoginController@adminLogin')->name('admin.login');
     Route::post('/adminisclient', 'LoginController@adminAuthenticate')->name('admin.authenticate');
+    /************************* By Sangam Ends ************************/
+    Route::post('/login', 'LoginController@login')->name('login');
+
 
     Route::get('/register-page', 'RegisterController@register_page')->name('register');
     Route::post('/register', 'RegisterController@store')->name('user-registration');
     Route::get('/login', 'LoginController@login_page')->name('login-page');
 
-    Route::post('/login', 'LoginController@login')->name('login');
     Route::any('/logout', 'LoginController@logout')->name('logout');
     Route::get('/user/verify/{token}', 'RegisterController@verifyUser')->name('verify-user');
     Route::get('/forgot-password', 'ForgotPasswordController@forgot_password_page')->name('forgot-password');

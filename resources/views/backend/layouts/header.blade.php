@@ -35,13 +35,16 @@
             min-height: 400px;
         }
     </style>
+    <!--------------- Toaster by sangam starts  -------------------->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"/>
-
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <!--------------- Toaster by sangam ends  -------------------->
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <!--------------- Toaster by sangam starts  -------------------->
     @include('toastr.response')
+    <!--------------- Toaster by sangam ends  -------------------->
     <div class="wrapper position-realtive d-flex">
     <!-- Navbar -->
 {{--    <nav class="main-header navbar navbar-expand navbar-white navbar-light">--}}
