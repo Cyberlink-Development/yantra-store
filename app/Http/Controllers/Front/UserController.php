@@ -11,7 +11,11 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+use Exception;
+use Log;
 
 class UserController extends Controller
 {
@@ -32,8 +36,9 @@ class UserController extends Controller
     public function wishlist()
     {
         $wishlist = Wishlist::where('user_id',Auth::user()->id)->get();
+        $user=User::where('id',Auth::user()->id)->first();
         // dd($wishlist);
-        return view('frontend/pages/account-wishlist', compact('wishlist'));
+        return view('frontend/pages/account-wishlist', compact('wishlist','user'));
     }
 
     public function order_details(Request $request)
@@ -47,11 +52,13 @@ class UserController extends Controller
 
     public function user_dashboard(Request $request)
     {
-      if ($request->isMethod('get')) {
+        if ($request->isMethod('get')) 
+        {
             $address = Address::all();
             $wishlist = Wishlist::where('user_id',Auth::user()->id)->get();
             $order = Auth::user()->orders;
             $user=User::where('id',Auth::user()->id)->first();
+            // dd($user,$address,$wishlist,$order);
             return view('frontend/pages/account-dashboard', compact('address','wishlist','order','user'));
         }
 
@@ -106,28 +113,55 @@ class UserController extends Controller
         if ($request->isMethod('get')) {
             $wishlist = Wishlist::where('user_id',Auth::user()->id)->get();
             $order = Auth::user()->orders;
-             $user=User::where('id',Auth::user()->id)->first();
+            $user = User::where('id',Auth::user()->id)->first();
             return view('frontend/pages/account-profile',compact('wishlist','order','user'));
         }
         if ($request->isMethod('post')) {
-            $request->validate([
-                'first_name' => 'required',
-               'last_name' => 'required',
-               'email'=>'required|email',
-               'phone'=>'required'
-            ]);
-            $id = $request->user_id;
-            $find = User::find($id)->update([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'roles' => 'user',
-            ]);
-        }
-        if ($find) {
-            return redirect()->back()->with('success', 'User profile updated');
+            try{
+                $request->validate([
+                    'first_name' => 'required',
+                    // 'last_name' => 'required',
+                    // 'email'=>'required|email',
+                    'phone'=>'required',
+                    'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                ]);
+                
+                $user =Auth::user();
+                $data = [
+                    'first_name' => $request->first_name,
+                    // 'last_name' => $request->last_name,
+                    // 'email' => $request->email,
+                    'phone' => $request->phone,
+                ];
 
+                if ($request->hasFile('profile_image')) {
+                    if ($user->image && Storage::disk('public')->exists($user->image)) {
+                        Storage::disk('public')->delete($user->image);
+                    }
+
+                    $file = $request->file('profile_image');
+                    $path = $file->store('profile_images', 'public');
+                    $data['image'] = $path;
+                }
+
+                $user->update($data);
+                
+                return redirect()->back()->with([
+                    'success' => true,
+                    'message' => 'Profile Updated Successfully'
+                ]);
+            } catch (ValidationException $e) {
+                return back()->with([
+                    'error' => true,
+                    'message' => $e->validator->errors()->all()
+                ]);
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+                return back()->with([
+                    'error' => true,
+                    'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                ]);
+            }
         }
     }
 

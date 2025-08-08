@@ -8,7 +8,7 @@
                 <div>
                     <nav aria-label="breadcrumb text-center">
                         <ol class="breadcrumb  flex-lg-nowrap justify-content-center">
-                            <li class="breadcrumb-item"><a class="text-nowrap text-white" href="index.php"><i class="czi-home"></i>Home</a></li>
+                            <li class="breadcrumb-item"><a class="text-nowrap text-white" href="{{url('/')}}"><i class="czi-home"></i>Home</a></li>
                             <li class="breadcrumb-item text-nowrap active text-white" aria-current="page">Profile</li>
                         </ol>
                     </nav>
@@ -30,44 +30,47 @@
         <section class="col-lg-9">
 
           <!-- Profile form-->
-          <form class="mt-5">
+          <form class="mt-5" action="{{ route('user-profile') }}" method="POST" enctype="multipart/form-data">
+            @csrf
             <div class="bg-primary rounded-lg p-4 mb-4">
-              <div class="media align-items-center"><img src="img/team/01.jpg" width="90" alt="John Doe" class="img-thumbnail rounded-circle">
+              <div class="media align-items-center"><img src="{{ $user->image ? asset('storage/'.$user->image) : asset('theme-assets/img/team/01.jpg')}}" width="90" alt="{{ $user->first_name }}" class="img-thumbnail rounded-circle">
                 <div class="media-body pl-3">
-                  <button class="btn btn-light btn-shadow btn-sm mb-2" type="button"><i class="czi-loading mr-2"></i>Change Your Profile Image</button>
-                  <div class="p mb-0 font-size-ms text-white">Upload JPG, GIF or PNG image. 300 x 300 required.</div>
+                  <label for="profileImage" class="btn btn-light btn-shadow btn-sm mb-2"><i class="czi-loading mr-2"></i>Change Your Profile Image</label>
+                  <input type="file" id="profileImage" name="profile_image" accept="image/png, image/jpeg, image/gif" style="display: none;">
+                  <div class="p mb-0 font-size-ms text-white">Upload JPG, GIF or PNG image.</div>
                 </div>
               </div>
             </div>
             <div class="row bg-white rounded shadow p-3">
+              <input type="hidden" name="user_id" value="{{ $user->id }}">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="account-fn">First Name </label>
-                  <input class="form-control" type="text" id="account-fn" value="John">
+                  <label for="account-fn">Full Name </label>
+                  <input class="form-control" type="text" id="account-fn" name="first_name" value="{{ $user->first_name }}">
                 </div>
               </div>
-              <div class="col-sm-6">
+              <!-- <div class="col-sm-6">
                 <div class="form-group">
                   <label for="account-ln">Last Name</label>
                   <input class="form-control" type="text" id="account-ln" value="Gardner">
                 </div>
-              </div>
+              </div> -->
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="account-email">Email Address</label>
-                  <input class="form-control" type="email" id="account-email" value="s.gardner@example.com" disabled>
+                  <input class="form-control" type="email" id="account-email" name="email" value="{{ $user->email }}" readonly>
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="account-phone">Phone Number</label>
-                  <input class="form-control" type="text" id="account-phone" value="+7 (805) 348 95 72" required>
+                  <input class="form-control" type="text" id="account-phone" name="phone" value="{{$user->phone}}" required>
                 </div>
               </div>
               <div class="col-12">
                 <hr class="mt-2 mb-3">
                 <div class="d-flex flex-wrap justify-content-between align-items-center">
-                  <button class="btn btn-primary mt-3 mt-sm-0" type="button">Update profile</button>
+                  <button class="btn btn-primary mt-3 mt-sm-0" type="submit">Update profile</button>
                 </div>
               </div>
             </div>
