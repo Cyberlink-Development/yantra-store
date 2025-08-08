@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Exception;
+use Log;
 
 
 
@@ -60,7 +61,8 @@ class CartController extends FrontController
                 'color' => $request->color,
                 'size' =>  $request->size,
                 'slug' =>   $product->slug,
-                'stock' =>  $product->stock
+                'stock' =>  $product->stock,
+                'brand' =>  $product->brands
             ],
         ]);
         return view($this->frontendPagePath . 'filter/cart_mini');
@@ -68,43 +70,91 @@ class CartController extends FrontController
 
     public function cart_item()
     {
-        $cartItem = Cart::content();
-
-        return view('frontend/pages/cart-page', compact('cartItem'));
+        return view('frontend.pages.cart-page');
     }
 
     public function cart_remove(Request $request)
     {
-        $rowId = $request->get("id");
-        Cart::remove($rowId);
+        try{
+            $rowId = $request->get("id");
+            Cart::remove($rowId);
 
-        //return view($this->frontendPagePath . 'filter/cart_mini');
+            //return view($this->frontendPagePath . 'filter/cart_mini');
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Successfully removed from Cart ',
-            'count' => Cart::count(),
-            'subTotal' => Cart::subtotal(),
-        ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfully removed from cart ',
+                'count' => Cart::count(),
+                'subTotal' => Cart::subtotal(),
+            ]);
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return response()->json([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong'
+            ]);
+        }
         // return back()->with('success', 'Item removed from cart');
     }
 
     public function cart_update(Request $request)
     {
-        if (!empty($request->id && $request->quantity)) {
-            $id = $request->id;
-            $quantity = $request->quantity;
-            for ($i = 0; $i < count($quantity); $i++) {
-                Cart::update($id[$i], $quantity[$i]);
+        try{
+            $ids = $request->id;
+            $quantities  = $request->quantity;
+            if (empty($ids) || empty($quantities) || count($ids) !== count($quantities)) {
+                return response()->json([
+                    'error' => true,
+                    'message' => app()->isLocal() ? 'Invalid request data' : 'Something went wrong',
+                ]);
             }
+            $failedItems = [];
+            foreach($ids as $index => $rowId){
+                $cartItem = Cart::get($rowId);
+                if (!$cartItem) {
+                    $failedItems[] = "An item in your cart was not found or has been removed";
+                    continue;
+                }
+                $qty = intval($quantities[$index]);
+                if ($qty < 1) {
+                    $failedItems[] = "Invalid quantity for item {$cartItem->name}. Quantity must be at least 1.";
+                    continue;
+                }
+                $stockAvailable = $cartItem->options->stock ?? 0;
+
+                if ($stockAvailable >= $qty) {
+                    Cart::update($rowId, $qty);
+                } else {
+                    $failedItems[] = "Stock not sufficient for item {$cartItem->name}.";
+                }
+            }
+            if (count($failedItems) > 10) {
+                $failedItems = array_slice($failedItems, 0, 10);
+                $failedItems[] = 'More errors omitted...';
+            }
+
+            if (count($failedItems) > 0) {
+                return response()->json([
+                    'error' => true,
+                    'message' => $failedItems,
+                    'count' => Cart::count(),
+                    'subTotal' => Cart::subtotal(),
+                ]);
+            }
+
             return response()->json([
-                'status' => 'success',
-                'message' => 'Successfully updated Cart ',
+                'success' => true,
+                'message' => 'Cart updated successfully',
                 'count' => Cart::count(),
                 'subTotal' => Cart::subtotal(),
+                'view' => view('components.cart.cart_list')->render()
             ]);
-        } else {
-            return response()->json(['status' => 'errors', 'message' => 'Error in updating cart']);
+        }catch(Exception $e){
+            Log::error("Cart update failed: " .$e->getMessage());
+            return response()->json([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong'
+            ]);
         }
     }
 

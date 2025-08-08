@@ -7,3 +7,4 @@
 ## New task
 1. When user tries to register without verification after registration instead asking to re-register, ask user to verify their account
 
+2. In cart-list page there is countinue shopping button which needs to take to list page. Since, we don't know which product list page, we would be creating a new page which shows all the products in the list.
