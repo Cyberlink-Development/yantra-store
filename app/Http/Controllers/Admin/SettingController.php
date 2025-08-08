@@ -17,11 +17,18 @@ class SettingController extends BackendController
             return view($this->backendPagePath . 'setting');
         }
         if ($request->isMethod('post')) {
-
-//            dd($request->all());
             $inputs = $request->only(
-                'about','refund','privacy','twitter_link', 'googleplus_link', 'instagram_link', 'facebook_link', 'contact_no', 'address', 'website', 'email', 'site_title', 'site_description','regulation','recognition','price','link', 'google_map', 'opening_hours', 'terms_and_conditions'
+                'about','refund','privacy','twitter_link', 'googleplus_link', 'instagram_link', 'facebook_link', 'contact_no', 'address', 'website', 'email', 'site_title', 'site_description','regulation','recognition','price','link', 'google_map', 'opening_hours', 'terms_and_conditions',
             );
+            if ($request->hasfile('logo')) {
+                $this->delete_file('logo');
+                $imageFile = $request->file('logo');
+                $imageName = 'logo'. '.' . $imageFile->getClientOriginalExtension();
+                $destinationPath = public_path('/backend/images/');
+                $imageFile->move($destinationPath, $imageName);
+                $data = $imageName;
+                Configuration::updateorcreate(['configuration_key' => 'logo'], ['configuration_value' => $data]);
+            }
 
             if ($request->hasfile('about_image_1')) {
                 $this->delete_file('about_image_1');

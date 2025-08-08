@@ -20,7 +20,10 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             if (Auth::user()->verified == '1' && Auth::user()->roles == 'user') {
-                return redirect()->route('index')->with('success', 'Logged in');
+                return redirect()->route('index')->with([
+                    'success' => true,
+                    'message' => 'User already logged in'
+                ]);
             }
             if (Auth::user()->verified == '1' && Auth::user()->roles == 'admin')  {
                 return redirect()->route('dashboard')->with([
@@ -29,15 +32,20 @@ class RedirectIfAuthenticated
                 ]);
             }
             if (Auth::user()->verified == '1' && Auth::user()->roles == 'wholeseller')  {
-                return redirect()->route('index')->with('success', 'You are logged in as wholeseller');
+                return redirect()->route('index')->with([
+                    'success' => true,
+                    'message' => 'User already logged in as wholeseller'
+                ]);
             }
             if (Auth::user()->verified == '0') {
                 Auth::logout();
-                return back()->with('error', 'Please verify first');
+                return back()->with([
+                    'error' => true,
+                    'messag' => 'Please verify first'
+                ]);
             }
             //return redirect(RouteServiceProvider::HOME);
         }
-
         return $next($request);
     }
 }

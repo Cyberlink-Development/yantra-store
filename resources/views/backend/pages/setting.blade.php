@@ -132,6 +132,19 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <label for="opening_hours" class="col-sm-2 control-label">Logo</label>
+                                                <div class="col-sm-10">
+                                                    <input type="file" name="logo" class="form-control" />
+                                                </div>
+                                                @if(getConfiguration('logo'))
+                                                <div class="col-sm-2">
+                                                    <img src="{{ asset('backend/images/'.getConfiguration('logo')) }}" height="200px" width="200px" />
+                                                </div>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="tab-pane fade" id="home" name="home" role="tabpanel">
 

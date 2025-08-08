@@ -93,9 +93,7 @@ class LoginController extends Controller
             Log::error($e->getMessage());
             return back()->with([
                 'error' => true,
-                'message' => app()->isLocal()
-                    ? $e->getMessage()
-                    : 'Something went wrong. Please try again.'
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
             ]);
         }
     }
@@ -109,34 +107,60 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        // dd($request->all());
-        if ($request->isMethod('post')) {
-            $request->validate([
-                'email' => 'required',
-                'password' => 'required'
-            ]);
-            $email = $request->email;
-            $password = $request->password;
+        try{
 
-            $remember = $request->has('remember') ? true : false;
-
-            if (Auth::attempt(['email' => $email, 'password' => $password],$remember)) {
-                if (Auth::user()->verified == '1' && Auth::user()->roles == 'user') {
-                    return redirect()->route('index')->with('success', 'Logged in');
+            // if ($request->isMethod('post')) {
+                $request->validate([
+                    'email' => 'required',
+                    'password' => 'required'
+                ]);
+                $credentials = $request->only('email', 'password');
+                $remember = $request->has('remember') ? true : false;
+                $user = User::where('email', $credentials['email'])->first();
+                if (!$user) {
+                    return back()->with([
+                        'error' => true,
+                        'message' => "User doesn't exist."
+                    ]);
                 }
-                // if (Auth::user()->verified == '1' && Auth::user()->roles == 'admin')  {
-                //     return redirect()->route('dashboard')->with('success', 'Welcome to Dashboard');
-                // }
-                if (Auth::user()->verified == '1' && Auth::user()->roles == 'wholeseller')  {
-                    return redirect()->route('index')->with('success', 'You are logged in as wholeseller');
+                if (!Auth::attempt($credentials, $remember)) {
+                    return back()->with([
+                        'error' => true,
+                        'message' => "Incorrect password"
+                    ]);
                 }
-                if (Auth::user()->verified == '0') {
+                $authUser = Auth::user();
+                if ($authUser->verified != '1') {
                     Auth::logout();
-                    return back()->with('error', 'Please verify first');
+                    return back()->with([
+                        'error' => true,
+                        'message' => "Please verify your email first"
+                    ]);
                 }
-            } else {
-                return back()->with('error', 'Please register first');
-            }
+                if ($authUser->roles == 'user') {
+                    return redirect()->route('index')->with([
+                        'success' => true,
+                        'message' => 'User login successfull'
+                    ]);
+                }
+                if ($authUser->roles == 'wholeseller') {
+                    return redirect()->route('index')->with([
+                        'success' => true,
+                        'message' => 'User login successfull'
+                    ]);
+                }
+            // }
+        }catch(ValidationException $e){
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => $e->validator->errors()->all()
+            ]);
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
         }
     }
 

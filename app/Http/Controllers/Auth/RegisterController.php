@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
+use Exception;
+use Log;
 
 
 class RegisterController extends Controller
@@ -85,39 +88,49 @@ class RegisterController extends Controller
 
     protected function store(Request $request)
     {
+        try{
+            $request->validate([
+                'first_name' => 'required',
+                // 'last_name'=>'required',
+                'email' => 'required|unique:users,email',
+                'password' => 'min:6|required_with:password_confirmation|same:password_confirmation',
+                // 'phone_number'=>'required|max:10',
 
-    //    dd($request->all());
-        $request->validate([
-            'first_name' => 'required',
-            // 'last_name'=>'required',
-            'email' => 'required|unique:users,email',
-            'password' => 'min:6|required_with:password_confirmation|same:password_confirmation',
-            // 'phone_number'=>'required|max:10',
+            ]);
 
-        ]);
+            $user = User::create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'phone' => $request->phone_number,
+                'roles' => 'user'
+            ]);
 
-        $user = User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'phone' => $request->phone_number,
-            'roles' => 'user'
-        ]);
+            $verifyUser = VerifyUser::create([
+                'user_id' => $user->id,
+                'token' => Str::random(20)
+            ]);
+            // if ($user && $verifyUser) {
+            //     return new VerifyMail($verifyUser->token, $user->id, $user->name);
+            //     Mail::send(new VerifyMail($verifyUser->token, $user->id, $user->name));
+            //     return "sent mail";
 
-        $verifyUser = VerifyUser::create([
-            'user_id' => $user->id,
-            'token' => Str::random(20)
-        ]);
-        // if ($user && $verifyUser) {
-        //     return new VerifyMail($verifyUser->token, $user->id, $user->name);
-        //     Mail::send(new VerifyMail($verifyUser->token, $user->id, $user->name));
-        //     return "sent mail";
+            // }
 
-        // }
-
-        Session::flash('success', 'Please verify your email to complete registration process');
-        return redirect()->intended(route('index'));
+            Session::flash('success', 'Please verify your email to complete registration process');
+            return redirect()->intended(route('index'));
+        }catch(ValidationException $e){
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => $e->validator->errors()->all()
+            ]);
+        }catch(Exception $e){
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
+        }
     }
 
     public function verifyUser($token)
