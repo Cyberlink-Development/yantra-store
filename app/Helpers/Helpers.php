@@ -69,3 +69,15 @@ function get_product_by_componenttype_id($id)
 //    return null;
 //
 //}
+
+
+/************************ By Sangam Starts ******************************/
+function getAllCategoryChildrenIds($category)
+{
+    $ids = [$category->id];
+    foreach ($category->children()->active()->get() as $child) {
+        $ids = array_merge($ids, getAllCategoryChildrenIds($child));
+    }
+    return $ids;
+}
+/************************ By Sangam Ends ********************************/

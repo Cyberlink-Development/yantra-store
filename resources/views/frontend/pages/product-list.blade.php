@@ -24,12 +24,12 @@
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item text-nowrap active text-white" aria-current="page">
-                                    {{ $category->first()->name }}
+                                    {{ $category->name }}
                                 </li>
                             </ol>
                         </nav>
                         <div class=" pr-lg-4 text-center">
-                            <h1 class="h3 mb-0 text-white"> {{ $category->first()->name }}</h1>
+                            <h1 class="h3 mb-0 text-white"> {{ $category->name }}</h1>
                         </div>
                     </div>
                 </div>
@@ -81,8 +81,49 @@
             });
         }
         function sorting(sorting){
-            // e.preventDefault();
-            console.log('test -', sorting.value);
+            const url = new URL(window.location.href);
+            url.searchParams.set('sort', $(sorting).val());
+            url.searchParams.delete('page'); // reset to first page on sorting change
+            loadProducts(url.toString());
         }
+        function loadProducts(url){
+            $.ajax({
+                url: url,
+                success: function(data){
+                    ajax_response(data);
+                    $('#productList').html(data.view);
+                    if(data.success == true){
+                        history.pushState(null,'',url);
+                    }
+                }
+            })
+        }
+        $(document).on('click', '.pagination a', function(e){
+            e.preventDefault();
+            const url = $(this).attr('href');
+            loadProducts(url);
+        });
+        window.addEventListener('popstate', function() {
+            loadProducts(window.location.href);
+        });
+        // $('.filter-input').on('change', function() {
+        //     const url = new URL(window.location.href);
+        //     $('.filter-input').each(function(){
+        //         const name = $(this).attr('name');
+        //         if(this.type === 'checkbox' || this.type === 'radio'){
+        //             if(this.checked){
+        //                 url.searchParams.append(name, this.value);
+        //             } else {
+        //                 url.searchParams.delete(name);
+        //             }
+        //         } else {
+        //             url.searchParams.set(name, $(this).val());
+        //         }
+        //     });
+
+        //     url.searchParams.delete('page');
+        //     loadProducts(url.toString());
+        // });
+
     </script>
 @stop

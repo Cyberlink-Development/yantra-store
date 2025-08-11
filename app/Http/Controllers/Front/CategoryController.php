@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
+use Session;
 
 
 class CategoryController extends FrontController
@@ -31,106 +32,152 @@ class CategoryController extends FrontController
         }else{
             $average=0;
         }
- 
+
         return view($this->frontendPagePath . 'product-details', compact('product',  'count', 'fivestar', 'fourstar', 'threestar', 'twostar', 'onestar', 'average'));
     }
 
     public function product_list(Request $request)
     {
-        $category = Category::where('slug', $request->slug)->where('status', 1);
-        $children = Category::where('parent_id', $category->first()->id)->where('status', 1)->get();
-        if ($category->first() != null) {
-            foreach ($category->get() as $main) {
-                $mai_id[] = $main->id;
-
-            }
+        $category = Category::where('slug', $request->slug)->active()->first();
+        if(!$category){
+            return $request->ajax()
+            ? response()->json(['error' => true, 'message' => 'Category not found'])
+            : redirect()->back()->with(['error' => true, 'message' => 'Category not found']);
         }
-        if ($children->first() != Null) {
-            foreach ($children as $child) {
-                if ($child->first() != Null) {
-                    foreach ($child->children as $grandChild) {
-                        $cat_id[] = $grandChild->id;
-                    }
-                }
-                $cat_id[] = $child->id; 
-            }
-            if (isset($mai_id)) {
-                $cat_id = array_unique(array_merge($mai_id, $cat_id));
-            }
-            $query = Product::join('product_categories', 'product_categories.product_id', '=', 'products.id')
-                ->whereIn('product_categories.category_id', $cat_id)
-                ->select('products.*');
-        } else {
-            $query = Product::join('product_categories', 'product_categories.product_id', '=', 'products.id')
-                ->where('product_categories.category_id', $category->first()->id)
-                ->select('products.*');
-
+        $categoryIds = getAllCategoryChildrenIds($category);
+        $query = Product::whereHas('categories', function($q) use ($categoryIds){
+            $q->whereIn('categories.id',$categoryIds);
+        })->active();
+        // Apply filters (also do the validation for filters if possible)
+        // $this->applyFilters($query, $request);
+        $validSorts = ['latest', 'low-to-high', 'high-to-low','a-z','z-a'];
+        $sort = $request->input('sort', 'latest');
+        if (!in_array($sort, $validSorts)) {
+            return $request->ajax()
+            ? response()->json(['error' => true, 'message' => 'Invalid sorting type'])
+            : redirect()->back()->with(['error' => true, 'message' => 'Invalid sorting type']);
         }
-        $products = $query->paginate(12);
-
-        if ($request->ajax()) {
-            if ($request->slug) {
-                $category = Category::where('slug', $request->slug);
-                $children = Category::where('parent_id', $category->first()->id)->get();
-                if ($category->first() != null) {
-                    foreach ($category->get() as $main) {
-                        $mai_id[] = $main->id;
-
-                    }
-                }
-                if ($children->first() != Null) {
-                    foreach ($children as $child) {
-                        if ($child->first() != Null) {
-                            foreach ($child->children as $grandChild) {
-                                $cat_id[] = $grandChild->id;
-                            }
-                        }
-                        $cat_id[] = $child->id;
-                    }
-                    if (isset($mai_id)) {
-                        $cat_id = array_unique(array_merge($mai_id, $cat_id));
-                    }
-                    $query = Product::join('product_categories', 'product_categories.product_id', '=', 'products.id')
-                        ->whereIn('product_categories.category_id', $cat_id)
-                        ->select('products.*');
-                } else {
-                    $query = Product::join('product_categories', 'product_categories.product_id', '=', 'products.id')
-                        ->where('product_categories.category_id', $category->first()->id)
-                        ->select('products.*');
-
-                }
-
-                if ($request->has('value')) {
-                    if ($request->value == 'recent') {
-                        $query->orderby('products.updated_at', 'desc');
-                    }
-                    if ($request->value == 'low_to_high') {
-                        $query->orderby('products.price', 'asc');
-                    }
-                    if ($request->value == 'high_to_low') {
-                        $query->orderby('products.price', 'desc');
-                    }
-                    if ($request->value == 'a_to_z') {
-                        $query->orderby('products.product_name', 'asc');
-                    }
-                    if ($request->value == 'z_to_a') {
-                        $query->orderby('products.product_name', 'desc');
-                    }
-                    if ($request->value == 'older') {
-                        $query->orderby('products.updated_at', 'asc');
-                    }
-                }
-                $products = $query->get();
-                return view($this->frontendPagePath . 'filter/product_filter', compact('products'));
+        $this->applySorting($query, $sort);
+        $products = $query->paginate(12)->appends($request->query());
+        if ($request->has('page') && $request->page > $products->lastPage()) {
+            return redirect()->route('product-list', ['slug' => $category->slug])->with([
+                'info' => true,
+                'message' => 'Invalid page request'
+            ]);
+        }
+        if($request->ajax()){
+            $message = [];
+            if($request->has('sort') && !$request->has('page')){
+                $message = "Product sorted by {$sort} successfully";
             }
-
-        } 
-        $size = Size::all();
-        $brand = Brand::all();
-        $category_slug = $request->slug;
-        return view($this->frontendPagePath . 'product-list', compact( 'category', 'products', 'size', 'brand', 'category_slug', 'children'));
-
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'view' => view('components.product.product_list',['products'=>$products])->render()
+            ]);
+        }
+        return view($this->frontendPagePath . 'product-list', compact( 'category', 'products'));
     }
+
+
+    // public function product_list(Request $request)
+    // {
+    //     $category = Category::where('slug', $request->slug)->where('status', 1);
+    //     $children = Category::where('parent_id', $category->first()->id)->where('status', 1)->get();
+    //     if ($category->first() != null) {
+    //         foreach ($category->get() as $main) {
+    //             $mai_id[] = $main->id;
+
+    //         }
+    //     }
+    //     if ($children->first() != Null) {
+    //         foreach ($children as $child) {
+    //             if ($child->first() != Null) {
+    //                 foreach ($child->children as $grandChild) {
+    //                     $cat_id[] = $grandChild->id;
+    //                 }
+    //             }
+    //             $cat_id[] = $child->id;
+    //         }
+    //         if (isset($mai_id)) {
+    //             $cat_id = array_unique(array_merge($mai_id, $cat_id));
+    //         }
+    //         $query = Product::join('product_categories', 'product_categories.product_id', '=', 'products.id')
+    //             ->whereIn('product_categories.category_id', $cat_id)
+    //             ->select('products.*');
+    //     } else {
+    //         $query = Product::join('product_categories', 'product_categories.product_id', '=', 'products.id')
+    //             ->where('product_categories.category_id', $category->first()->id)
+    //             ->select('products.*');
+
+    //     }
+    //     $products = $query->paginate(12);
+
+    //     if ($request->ajax()) {
+    //         if ($request->slug) {
+    //             $category = Category::where('slug', $request->slug);
+    //             $children = Category::where('parent_id', $category->first()->id)->get();
+    //             if ($category->first() != null) {
+    //                 foreach ($category->get() as $main) {
+    //                     $mai_id[] = $main->id;
+
+    //                 }
+    //             }
+    //             if ($children->first() != Null) {
+    //                 foreach ($children as $child) {
+    //                     if ($child->first() != Null) {
+    //                         foreach ($child->children as $grandChild) {
+    //                             $cat_id[] = $grandChild->id;
+    //                         }
+    //                     }
+    //                     $cat_id[] = $child->id;
+    //                 }
+    //                 if (isset($mai_id)) {
+    //                     $cat_id = array_unique(array_merge($mai_id, $cat_id));
+    //                 }
+    //                 $query = Product::join('product_categories', 'product_categories.product_id', '=', 'products.id')
+    //                     ->whereIn('product_categories.category_id', $cat_id)
+    //                     ->select('products.*');
+    //             } else {
+    //                 $query = Product::join('product_categories', 'product_categories.product_id', '=', 'products.id')
+    //                     ->where('product_categories.category_id', $category->first()->id)
+    //                     ->select('products.*');
+
+    //             }
+
+    //             if ($request->has('value')) {
+    //                 if ($request->value == 'recent') {
+    //                     $query->orderby('products.updated_at', 'desc');
+    //                 }
+    //                 if ($request->value == 'low_to_high') {
+    //                     $query->orderby('products.price', 'asc');
+    //                 }
+    //                 if ($request->value == 'high_to_low') {
+    //                     $query->orderby('products.price', 'desc');
+    //                 }
+    //                 if ($request->value == 'a_to_z') {
+    //                     $query->orderby('products.product_name', 'asc');
+    //                 }
+    //                 if ($request->value == 'z_to_a') {
+    //                     $query->orderby('products.product_name', 'desc');
+    //                 }
+    //                 if ($request->value == 'older') {
+    //                     $query->orderby('products.updated_at', 'asc');
+    //                 }
+    //             }
+    //             $products = $query->get();
+    //             return view($this->frontendPagePath . 'filter/product_filter', compact('products'));
+    //         }
+
+    //     }
+    //     $size = Size::all();
+    //     $brand = Brand::all();
+    //     $category_slug = $request->slug;
+    //     return view($this->frontendPagePath . 'product-list', compact( 'category', 'products', 'size', 'brand', 'category_slug', 'children'));
+
+    // }
+
+
 
     public function brand_list(Request $request)
     {
@@ -231,4 +278,47 @@ class CategoryController extends FrontController
         return view($this->frontendPagePath . 'popular_products', compact('size', 'brand', 'popular'));
 
     }
+
+    private function applySorting($query,$sort){
+        switch($sort){
+            case 'latest':
+                $query->latest();
+                break;
+            case 'low-to-high':
+                $query->orderByRaw("CASE WHEN discount_price IS NULL  OR discount_price = 0 OR discount_price = '' THEN price ELSE discount_price END ASC");
+                break;
+            case 'high-to-low':
+                $query->orderByRaw("CASE WHEN discount_price IS NULL  OR discount_price = 0 OR discount_price = '' THEN price ELSE discount_price END DESC");
+                break;
+            case 'a-z':
+                $query->orderby('product_name','asc');
+                break;
+            case 'z-a':
+                $query->orderby('product_name','desc');
+                break;
+            default:
+                $query->latest();
+        }
+    }
+
+    // protected function applyFilters($query, Request $request)
+    // {
+    //     // Brand filter
+    //     if ($request->filled('brand')) {
+    //         $query->where('brand_id', $request->brand);
+    //     }
+
+    //     // Price range filter
+    //     if ($request->filled('min_price') && $request->filled('max_price')) {
+    //         $query->whereBetween('price', [$request->min_price, $request->max_price]);
+    //     }
+
+    //     // Processor filter (example)
+    //     if ($request->filled('processor')) {
+    //         $query->where('processor', $request->processor);
+    //     }
+
+    //     // Add more filters here as needed...
+    // }
+
 }
