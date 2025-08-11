@@ -94,7 +94,7 @@
                                 </div>
 
                                 <div>
-                                    <div class="ribbon-detail"> ðŸ”¥ 8% <br> OFF</div>
+                                    <div class="ribbon-detail"> 🔥 8% <br> OFF</div>
                                     <button class="btn-wishlist mr-0 mr-lg-n3 " type="button" data-toggle="tooltip"
                                         title="Add to wishlist"><i class="czi-heart"></i></button>
                                 </div>
@@ -119,19 +119,19 @@
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <div class="form-group d-flex align-items-center">
                                     <label>Quantity : </label>
-                                    <select name="quantity" class="custom-select mr-3 ml-3" style="width: 5rem;"> 
+                                    <select name="quantity" class="custom-select mr-3 ml-3" style="width: 5rem;">
                                         @for($i=1; $i<= $product->stock; $i++)
                                         <option value="{{$i}}">{{$i}}</option>
                                         @endfor
-                        
+
                                     </select>
 
                                 </div>
                                 <div class="form-group d-flex align-items-center" style="gap:5px;">
-                                    <a class="btn btn-primary btn-shadow btn-block mt-0" href="checkout.php"><i
-                                            class="czi-bag font-size-lg mr-2"></i>Buy Now</a>
+                                    <a class="btn btn-primary btn-shadow btn-block mt-0" href="checkout.php"><i class="czi-bag font-size-lg mr-2"></i>Buy Now</a>
                                     <a class="btn btn-secondary btn-shadow btn-block mt-0" id="cart_btn">
-                                        <i class="czi-cart font-size-lg mr-2"></i>Add to Cart</a>
+                                        <i class="czi-cart font-size-lg mr-2"></i>Add to Cart
+                                    </a>
                                 </div>
                             </form>
 
@@ -616,18 +616,8 @@
                 cache: false,
 
                 success: function(data) {
-                    if (!data.errors) {
-                        // Replace both cart blocks with updated cart HTML
-                        $('.mini-cart').html(data);
-                        $('.mini2-cart').html(data);
-
-                        toastr.success('Item added to cart');
-                    } else {
-                        // Loop through and show validation errors
-                        $.each(data.errors, function(key, value) {
-                            toastr.error(value);
-                        });
-                    }
+                    ajax_response(data);
+                    $('#cartNav').html(data.view);
                 },
 
                 error: function(xhr) {

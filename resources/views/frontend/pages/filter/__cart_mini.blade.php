@@ -5,5 +5,4 @@
            </a>
            <a class="navbar-tool-text" href="{{ route('cart-item') }}"><small>My
                    Cart</small>${{ \Gloudemans\Shoppingcart\Facades\Cart::subtotal() }}</a>
-
        </div>
