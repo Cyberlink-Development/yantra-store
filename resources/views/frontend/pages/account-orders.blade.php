@@ -43,8 +43,11 @@
               </thead>
               <tbody>
                 @foreach($orders as $value)
+                  @php
+                    $orderJson = json_encode($value->getOrderDataForModal(), JSON_HEX_APOS | JSON_HEX_QUOT);
+                  @endphp
                   <tr>
-                    <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm" href="#order-details" data-toggle="modal">{{$value->order_track}}</a></td>
+                    <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm order-detail-link" href="#order-details" data-toggle="modal" data-value="{{ $orderJson }}">{{$value->order_track}}</a></td>
                     <td class="py-3">{{$value->created_at->format('d M Y')}}</td>
                     <td class="py-3">
                         @if($value->status==0)
@@ -69,11 +72,70 @@
           </div>
           <hr class="pb-4">
           <!-- Pagination-->
+          {!! $orders->links('frontend.include.pagination') !!}
         </section>
     </div>
 </div>
+<div class="modal fade" id="order-details" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Order No - <span id="order-track"></span></h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+              <div id="order-products-list">
+                  <!-- Products will be appended here by JS -->
+              </div>
 
+              <hr>
+              <div class="order-summary">
+                  <p><strong>Subtotal:</strong> $<span id="order-subtotal"></span></p>
+                  <p><strong>Shipping:</strong> $<span id="order-shipping"></span></p>
+                  <p><strong>Tax:</strong> $<span id="order-tax"></span></p>
+                  <p><strong>Total:</strong> $<span id="order-total"></span></p>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
+<script>
+$(document).ready(function() {
+    $('.order-detail-link').on('click', function() {
+        const jsonString = $(this).attr('data-value');
+        const orderData = JSON.parse(jsonString);
+
+        // Set order tracking number
+        $('#order-track').text(orderData.order_track);
+
+        // Clear previous products list
+        $('#order-products-list').empty();
+
+        // Append each product with detailed info
+        orderData.products.forEach(product => {
+            let productHtml = `
+                <div class="product-item mb-3">
+                    <h5>Product: ${product.name}</h5>
+                    ${product.brand ? `<p>Brand: ${product.brand}</p>` : ''}
+                    ${product.size ? `<p>Size: ${product.size}</p>` : ''}
+                    ${product.color ? `<p>Color: ${product.color}</p>` : ''}
+                    <p>Price: $${parseFloat(product.price).toFixed(2)}</p>
+                    <p>Quantity: ${product.quantity}</p>
+                    <p>Subtotal: $${parseFloat(product.subtotal).toFixed(2)}</p>
+                </div>
+                <hr>
+            `;
+            $('#order-products-list').append(productHtml);
+        });
+
+        // Set order summary
+        $('#order-subtotal').text(parseFloat(orderData.summary.subtotal).toFixed(2));
+        $('#order-shipping').text(parseFloat(orderData.summary.shipping).toFixed(2));
+        $('#order-tax').text(parseFloat(orderData.summary.tax).toFixed(2));
+        $('#order-total').text(parseFloat(orderData.summary.total).toFixed(2));
+    });
+});
+</script>
 
 @endsection
 

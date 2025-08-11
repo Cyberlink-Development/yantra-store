@@ -44,8 +44,8 @@ function generateReview($slug)
 
 function get_brand_name($id)
 {
-    $data=Brand::where('id',$id)->first();
-    return $data->brand_name;
+    $data = Brand::find($id);
+    return $data ? $data->brand_name : '';
 }
 
 function get_componenttype_by_id($id)

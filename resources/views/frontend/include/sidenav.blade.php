@@ -26,7 +26,7 @@
             </a>
         </li>
         <li class=" border-top mb-0">
-            <a class="nav-link-style d-flex align-items-center px-4 py-3" href="index.php">
+            <a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ route('logout') }}">
                 <i class="czi-sign-out opacity-60 mr-2"></i>Sign out
             </a>
         </li>

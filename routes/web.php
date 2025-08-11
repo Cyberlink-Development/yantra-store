@@ -103,6 +103,7 @@ Route::group(['namespace' => 'Front'], function () {
         Route::post('/change-password', 'UserController@change_password')->name('change-password');
         Route::get('/account-orders/{id?}', 'UserController@orders')->name('user-orders');
         Route::get('/account-wishlist/{id?}', 'UserController@wishlist')->name('user-wishlist');
+        Route::delete('/account-remove-wishlist/{id?}', 'UserController@wishlist_remove')->name('remove-wishlist');
         Route::get('/account-password-recovery', 'UserController@password_recovery')->name('password-recovery');
     //    Route::get('/account-payment', function () {return view('frontend/pages/account-payment');});
         Route::get('/account-profile', 'UserController@user_profile')->name('user-profile');

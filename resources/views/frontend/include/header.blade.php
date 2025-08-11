@@ -29,6 +29,7 @@
         <link rel="stylesheet" media="screen" href="{{ asset('theme-assets/css/theme.css') }}">
 
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <!--------------- Toaster by sangam starts  -------------------->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
