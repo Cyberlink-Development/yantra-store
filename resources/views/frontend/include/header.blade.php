@@ -183,15 +183,16 @@
                     <i class="navbar-tool-icon czi-heart"></i>
                     </div>
                     </a> -->
-                            <div class="mini-cart navbar-tool dropdown mr-3">
-                                <a class="navbar-tool-icon-box bg-secondary dropdown-toggle "
+                            <div class="navbar-tool dropdown mr-3" id="cartNav">
+                                <x-cart.cart_nav />
+                                <!-- <a class="navbar-tool-icon-box bg-secondary dropdown-toggle "
                                     href="{{ route('cart-item') }}">
                                     <span
                                         class="navbar-tool-label uk-cart-count">{{ Gloudemans\Shoppingcart\Facades\Cart::count() }}</span>
                                     <i class="navbar-tool-icon czi-cart"></i>
                                 </a>
                                 <a class="navbar-tool-text" href="{{ route('cart-item') }}" id="sub-total"><small>My
-                                        Cart</small>Rs.{{ \Gloudemans\Shoppingcart\Facades\Cart::subtotal() }}</a>
+                                        Cart</small>Rs.{{ \Gloudemans\Shoppingcart\Facades\Cart::subtotal() }}</a> -->
                                 <!-- Cart dropdown-->
                                 {{-- <div class="dropdown-menu dropdown-menu-right" style="width: 20rem;">
                                     <div class="widget widget-cart px-3 pt-2 pb-3">

@@ -13,59 +13,80 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 use Log;
-
+use Illuminate\Validation\ValidationException;
 
 
 class CartController extends FrontController
 {
     public function add_cart(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'quantity' => 'required|numeric|min:1'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()->all()
+        try{
+            Validator::make($request->all(), [
+                'quantity' => 'required|numeric|min:1'
             ]);
-        }
-        $product = Product::where('id', $request->product_id)->first();
-        $quantity = $request->quantity;
+            // $validator = Validator::make($request->all(), [
+            //     'quantity' => 'required|numeric|min:1'
+            // ]);
+            // if ($validator->fails()) {
+            //     return response()->json([
+            //         'errors' => $validator->errors()->all()
+            //     ]);
+            // }
+            $product = Product::where('id', $request->product_id)->first();
+            $quantity = $request->quantity;
 
-        // Check if demand exceeds available stock
-        foreach (Cart::content() as $cartItem) {
-            $productStock = $product->stock;
-            try {
-                if ($cartItem->id == $product->id) {
-                    if ($quantity + $cartItem->qty > $productStock) {
-                        $quantity = $productStock - $cartItem->qty;
+            // Check if demand exceeds available stock
+            foreach (Cart::content() as $cartItem) {
+                $productStock = $product->stock;
+                try {
+                    if ($cartItem->id == $product->id) {
+                        if ($quantity + $cartItem->qty > $productStock) {
+                            $quantity = $productStock - $cartItem->qty;
+                        }
                     }
+                } catch (Exception $e) {
+                    echo $e;
                 }
-            } catch (Exception $e) {
-                echo $e;
             }
-        }
-        if ($quantity == 0) {
+            if ($quantity == 0) {
+                return response()->json([
+                    'error' => true,
+                    'message' => "Stock not available"
+                ]);
+            }
+
+            Cart::add([
+                'id' => $request->product_id,
+                'name' => $product->product_name,
+                'qty' => $quantity,
+                'price' => Auth::check() && Auth::user()->roles == 'wholeseller' ? $product->wholesale_price : $product->discount_price,
+                'options' =>
+                [
+                    'image' => $product->images->where('is_main', '=', 1)->first()->image,
+                    'color' => $request->color,
+                    'size' =>  $request->size,
+                    'slug' =>   $product->slug,
+                    'stock' =>  $product->stock,
+                    'brand' =>  $product->brands
+                ],
+            ]);
             return response()->json([
-                'errors' => ["Stock not available"]
+                'success' => true,
+                'message' => 'Item added in cart successfullys',
+                'view' => view('components.cart.cart_nav')->render()
+            ]);
+        }catch(ValidationException $e){
+            return response()->json([
+                'error' => true,
+                'message' => $e->validator->errors()->all()
+            ]);
+        }catch(Exception $e){
+            Log::error("Item add in cart failed: " .$e->getMessage());
+            return response()->json([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong'
             ]);
         }
-
-        Cart::add([
-            'id' => $request->product_id,
-            'name' => $product->product_name,
-            'qty' => $quantity,
-            'price' => Auth::check() && Auth::user()->roles == 'wholeseller' ? $product->wholesale_price : $product->discount_price,
-            'options' =>
-            [
-                'image' => $product->images->where('is_main', '=', 1)->first()->image,
-                'color' => $request->color,
-                'size' =>  $request->size,
-                'slug' =>   $product->slug,
-                'stock' =>  $product->stock,
-                'brand' =>  $product->brands
-            ],
-        ]);
-        return view($this->frontendPagePath . 'filter/cart_mini');
     }
 
     public function cart_item()
@@ -147,7 +168,8 @@ class CartController extends FrontController
                 'message' => 'Cart updated successfully',
                 'count' => Cart::count(),
                 'subTotal' => Cart::subtotal(),
-                'view' => view('components.cart.cart_list')->render()
+                'view' => view('components.cart.cart_list')->render(),
+                'view2' => view('components.cart.cart_nav')->render()
             ]);
         }catch(Exception $e){
             Log::error("Cart update failed: " .$e->getMessage());

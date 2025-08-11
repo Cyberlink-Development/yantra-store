@@ -47,7 +47,8 @@
                 success: function (data) {
                     ajax_response(data);
                     $('#cartList').html(data.view);
-                    $(".uk-cart-count").replaceWith($(".uk-cart-count")).html(data.count);
+                    $('#cartNav').html(data.view2);
+                    // $(".uk-cart-count").replaceWith($(".uk-cart-count")).html(data.count);
                     // $("#sub-total").replaceWith($("#sub-total")).html("$" + data.subTotal);
                 }
             });
