@@ -169,6 +169,7 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->intended(route('login-page'));
+        return redirect('/');
+        // return redirect()->intended(route('login-page'));
     }
 }

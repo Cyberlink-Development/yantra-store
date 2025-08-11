@@ -21,17 +21,16 @@ class UserController extends Controller
 {
     public function orders()
     {
-        if (Auth::check())
+        if (!Auth::check())
         {
-            $allorders = Order::where('user_id',Auth::id())->orderby('updated_at','desc');
-            $orders = $allorders->paginate(6);
-            $order = $allorders->count();
-        }else{
             return view('frontend.pages.account-signin');
         }
+        $allorders = Order::with('details.products')->where('user_id',Auth::id())->orderby('updated_at','desc');
+        $orders = $allorders->paginate(6);
+        $order = $allorders->count();
         $wishlist = Wishlist::where('user_id',Auth::id())->count();
-        $user = User::where('id',Auth::user()->id)->first();
-
+        $user = Auth::user();
+// dd($orders);
         return view('frontend/pages/account-orders', compact('order','wishlist','user','orders'));
     }
 
@@ -44,6 +43,23 @@ class UserController extends Controller
         $user = User::where('id',Auth::user()->id)->first();
         // dd($wishlist);
         return view('frontend/pages/account-wishlist', compact('wishlists','wishlist','user','order'));
+    }
+
+    public function wishlist_remove($id)
+    {
+        try{
+            Wishlist::where('id', $id)->where('user_id', Auth::id())->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Item removed from the wishlist successfully'
+            ]);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return back()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
+        }
     }
 
     public function order_details(Request $request)

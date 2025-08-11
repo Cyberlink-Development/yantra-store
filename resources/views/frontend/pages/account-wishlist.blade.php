@@ -35,25 +35,82 @@
             @foreach ($wishlists as $wishlist)
                 @php $product = $wishlist->products; @endphp
                 @if($product)
-                    <div class="d-sm-flex justify-content-between pt-4 pt-md-3 p-3  my-4  border-bottom bg-white rounded border-bottom">
-                        {{-- <div class="media media-ie-fix d-block d-sm-flex text-center text-sm-left"><a class="d-inline-block mx-auto mr-sm-4" href="detail.php" style="width: 10rem;"><img src="{{ $product->options->image ? asset('images/products/' . $product->options->image) : asset('theme-assets/img/computer/computer1.webp')}}" alt="{{ $product->product_name }}"></a> --}}
-                        <div class="media media-ie-fix d-block d-sm-flex text-center text-sm-left"><a class="d-inline-block mx-auto mr-sm-4" href="detail.php" style="width: 10rem;"><img src="{{ asset('theme-assets/img/computer/computer1.webp') }}" alt="{{ $product->product_name }}"></a>
+                    <div class="d-sm-flex justify-content-between pt-4 pt-md-3 p-3  my-4  border-bottom bg-white rounded border-bottom" id="wishlist-{{ $wishlist->id }}">
+                        <div class="media media-ie-fix d-block d-sm-flex text-center text-sm-left">
+                            <a class="d-inline-block mx-auto mr-sm-4" href="{{route('product-single',$product->slug)}}" style="width: 10rem;">
+                                <img src="{{ asset('images/products/' . $product->images->where('is_main', '=', 1)->first()->image)}}" alt="{{$product->product_name}}">
+
+                                <!-- <img src="{{ asset('theme-assets/img/computer/computer1.webp') }}" alt="{{ $product->product_name }}"> -->
+                            </a>
                             <div class="media-body pt-2">
                                 <h3 class="product-title font-size-base mb-2">
-                                    <a href="detail.php">{{ $product->product_name }}</a>
+                                    <a href="{{route('product-single',$product->slug)}}">{{ $product->product_name }}</a>
                                 </h3>
-                                <div class="font-size-sm"><span class="text-muted mr-2">Model:</span>{{ $product->model }}</div>
-                                <div class="font-size-sm"><span class="text-muted mr-2">Brand:</span>{{get_brand_name($product->brand_id) }}</div>
-                                <div class="font-size-lg font-secondary pt-2">Rs. {{ $product->price }}</div>
+                                @if($product->model)
+                                    <div class="font-size-sm"><span class="text-muted mr-2">Model:</span>{{ $product->model }}</div>
+                                @endif
+                                @if(get_brand_name($product->brand_id))
+                                    <div class="font-size-sm"><span class="text-muted mr-2">Brand:</span>{{get_brand_name($product->brand_id) }}</div>
+                                @endif
+                                <div class="font-size-lg font-secondary pt-2">Rs. {{ $product->discount_price }}</div>
+                                <del class="font-size-sm text-danger">Rs. {{ $product->price }}</del>
                             </div>
                         </div>
-                        <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center">
-                            <button class="btn btn-outline-danger btn-sm" type="button"><i class="czi-trash mr-2"></i>Remove</button>
+                        <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center wishlist-item" >
+                            <button class="btn btn-outline-danger btn-sm" type="button" onclick="removeWishlist({{ $wishlist->id }})">
+                                <i class="czi-trash mr-2"></i>Remove
+                            </button>
                         </div>
                     </div>
                 @endif
             @endforeach
+          {!! $wishlists->links('frontend.include.pagination') !!}
         </section>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+function removeWishlist(id) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This will remove the item from your wishlist.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, remove it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "{{ route('remove-wishlist', '') }}/" + id,
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    _method: 'DELETE'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $("#wishlist-" + id).fadeOut(300, function() {
+                            $(this).remove();
+
+                            if ($(".wishlist-item").length === 0) {
+                                $(".wishlist-container").html("<p>Your wishlist is empty.</p>");
+                            }
+                        });
+
+                        toastr.success(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function() {
+                    toastr.error('Something went wrong.');
+                }
+            });
+        }
+    });
+}
+</script>
+@endpush

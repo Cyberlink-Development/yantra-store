@@ -30,4 +30,33 @@ class Order extends Model
     {
         return $this->belongsTo(User::class,'user_id');
     }
+
+    public function getOrderDataForModal()
+    {
+        $productsArray = $this->details->map(function($detail) {
+            $product = $detail->products;
+            return [
+                'name' => $product->product_name ?? 'N/A',
+                'brand' => $product->brand ?? null,
+                'size' => $detail->size ?? null,
+                'color' => $detail->color ?? null,
+                'price' => $product->price ?? 0,
+                'quantity' => $detail->quantity ?? 1,
+                'subtotal' => $detail->subtotal ?? ($product->price * $detail->quantity),
+            ];
+        })->toArray();
+
+        $orderSummary = [
+            'subtotal' => $this->subtotal ?? 0,
+            'shipping' => $this->shipping_cost ?? 0,
+            'tax' => $this->tax ?? 0,
+            'total' => $this->grand_total ?? 0,
+        ];
+
+        return [
+            'order_track' => $this->order_track,
+            'products' => $productsArray,
+            'summary' => $orderSummary,
+        ];
+    }
 }
