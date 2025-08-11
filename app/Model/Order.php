@@ -43,6 +43,7 @@ class Order extends Model
                 'price' => $product->price ?? 0,
                 'quantity' => $detail->quantity ?? 1,
                 'subtotal' => $detail->subtotal ?? ($product->price * $detail->quantity),
+                'slug' => $product->slug,
             ];
         })->toArray();
 
