@@ -8,7 +8,7 @@
                 <label class="text-light opacity-75 text-nowrap mr-2 d-none d-sm-block" for="sorting">Sort by:</label>
                 @php
                     $sort = [
-                        'None' => 'none',
+                        'All' => 'latest',
                         'Low - High Price' => 'low-to-high',
                         'High - Low Price' => 'high-to-low',
                         'A - Z Order' => 'a-z',
@@ -17,7 +17,7 @@
                 @endphp
                 <select class="form-control custom-select" id="sorting" onChange="sorting(this)">
                     @foreach($sort as $key => $value)
-                        <option value="{{ $value }}" {{ $value === 'none' ? 'selected' : '' }}>{{ $key }}</option>
+                        <option value="{{ $value }}" {{ $value == request('sort')  ? 'selected' : '' }}>{{ $key }}</option>
                     @endforeach
                 </select>
             </div>
@@ -85,5 +85,5 @@
 </div>
 <!-- Pagiantion -->
 <div>
-    {!! $products->links('frontend.include.pagination') !!}
+    {!! $products->appends(request()->query())->links('frontend.include.pagination') !!}
 </div>
