@@ -113,9 +113,10 @@ $(document).ready(function() {
 
         // Append each product with detailed info
         orderData.products.forEach(product => {
+            let productUrl = `/product-${product.slug}`;
             let productHtml = `
                 <div class="product-item mb-3">
-                    <h5>Product: ${product.name}</h5>
+                    <a href="${productUrl}"><h5>Product: ${product.name}</h5></a>
                     ${product.brand ? `<p>Brand: ${product.brand}</p>` : ''}
                     ${product.size ? `<p>Size: ${product.size}</p>` : ''}
                     ${product.color ? `<p>Color: ${product.color}</p>` : ''}
