@@ -80,4 +80,45 @@ function getAllCategoryChildrenIds($category)
     }
     return $ids;
 }
+function roundUpMaxPrice($maxPrice, $roundTo = 100) {
+    return ceil($maxPrice / $roundTo) * $roundTo;
+}
+
+function isFilterChecked(string $category, string $value)
+{
+    $filterby = request()->query('filterby', '');
+    if (!$filterby) {
+        return false;
+    }
+    $filters = [];
+    $pairs = explode(';', $filterby);
+    foreach ($pairs as $pair) {
+        $parts = explode(':', $pair);
+        if (count($parts) !== 2) {
+            continue;
+        }
+        [$key, $values] = $parts;
+        $filters[$key] = explode(',', $values);
+    }
+    return isset($filters[$category]) && in_array($value, $filters[$category]);
+}
+function isFilterByCategory(string $category): bool
+{
+    $filterby = request()->query('filterby', '');
+    if (!$filterby) {
+        return false;
+    }
+    $pairs = explode(';', $filterby);
+    foreach ($pairs as $pair) {
+        $parts = explode(':', $pair);
+        if (count($parts) !== 2) {
+            continue;
+        }
+        [$key, $values] = $parts;
+        if ($key === $category && !empty($values)) {
+            return true;
+        }
+    }
+    return false;
+}
 /************************ By Sangam Ends ********************************/
