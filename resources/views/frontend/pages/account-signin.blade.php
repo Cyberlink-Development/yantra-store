@@ -34,36 +34,41 @@
                                 <div class="invalid-feedback">Please enter a password.</div>
                             </div>
                         </div>
-                        <!--<div class="form-group d-flex flex-wrap justify-content-between">-->
-                        <!--  <div class="custom-control custom-checkbox mb-2">-->
-                        <!--    <input class="custom-control-input" type="checkbox" id="si-remember">-->
-                        <!--    <label class="custom-control-label" for="si-remember">Remember me</label>-->
-                        <!--  </div><a class="font-size-sm" href="#">Forgot password?</a>-->
-                        <!--</div>-->
+                        <!-- <div class="form-group d-flex flex-wrap justify-content-between">
+                         <div class="custom-control custom-checkbox mb-2">
+                           <input class="custom-control-input" type="checkbox" id="si-remember">
+                           <label class="custom-control-label" for="si-remember">Remember me</label>
+                         </div><a class="font-size-sm" href="#">Forgot password?</a>
+                        </div> -->
                         <div>
                             <p class="login-text">Or</p>
                         </div>
                         <div class="form-group d-flex justify-content-center">
-                            <div class="d-inline-block align-middle">Login With: <a class="social-btn sb-google mr-2 mb-2"
-                                    href="#" data-toggle="tooltip" title="" data-original-title="Sign in with Google"><i
-                                        class="czi-google"></i></a>
+                            <div class="d-inline-block align-middle">Login With: 
+                                <a class="social-btn sb-google mr-2 mb-2" href="{{ url('auth/google') }}" data-toggle="tooltip" title="" data-original-title="Sign in with Google"><i class="czi-google"></i></a>
                             </div>
                         </div>
                         <button class="btn btn-primary btn-block btn-shadow" type="submit">Sign in</button>
                     </form>
-                    <form class="needs-validation tab-pane fade" autocomplete="off" novalidate id="signup-tab-2">
+
+                    <form action="{{route('user-registration')}}" method="POST" class="needs-validation tab-pane fade" autocomplete="off" novalidate id="signup-tab-2">
+                        @csrf
                         <div class="form-group">
                             <label for="su-name">Full name</label>
-                            <input class="form-control" type="text" id="su-name" placeholder="John Doe" required>
+                            <input class="form-control" type="text" name="full_name" id="su-name" placeholder="Enter Full Name" required>
                             <div class="invalid-feedback">Please fill in your name.</div>
                         </div>
                         <div class="form-group">
                             <label for="su-email">Email address</label>
-                            <input class="form-control" type="email" id="su-email" placeholder="johndoe@example.com"
+                            <input class="form-control" type="email" name="email" id="su-email" placeholder="Enter Valid Email"
                                 required>
-                            <div class="invalid-feedback">Please provide a valid email address.</div>
+                            <div class="invalid-feedback"> Please provide a valid email address.</div>
                         </div>
-                        <div class="form-group">
+                        
+                        <small style="color:#d9534f">
+                            Note: Please enter a valid email address. Your password will be sent to the email you provide, so make sure it is correct.
+                        </small>
+                        <!-- <div class="form-group">
                             <label for="su-password">Password</label>
                             <div class="password-toggle">
                                 <input class="form-control" type="password" id="su-password" required>
@@ -84,6 +89,14 @@
                                         class="czi-eye password-toggle-indicator"></i><span class="sr-only">Show
                                         password</span>
                                 </label>
+                            </div>
+                        </div> -->
+                        <div>
+                            <p class="login-text">Or</p>
+                        </div>
+                        <div class="form-group d-flex justify-content-center">
+                            <div class="d-inline-block align-middle">Sign up With: 
+                                <a class="social-btn sb-google mr-2 mb-2" href="{{ url('auth/google') }}" data-toggle="tooltip" title="" data-original-title="Sign up with Google"><i class="czi-google"></i></a>
                             </div>
                         </div>
                         <button class="btn btn-primary btn-block btn-shadow" type="submit">Sign up</button>

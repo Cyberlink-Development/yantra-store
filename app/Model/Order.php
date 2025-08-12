@@ -38,22 +38,24 @@ class Order extends Model
             $mainImage = $product->images->where('is_main', 1)->first();
             return [
                 'name' => $product->product_name ?? 'N/A',
-                'brand' => $product->brand ?? null,
+                'brand' => get_brand_name($product->brand_id) ?? null,
+                'model' => $product->model_name ?? null,
                 'image' => $mainImage ? $mainImage->image : null,
                 'size' => $detail->size ?? null,
                 'color' => $detail->color ?? null,
-                'price' => $product->price ?? 0,
+                'price' => $detail->price ?? 0,
                 'quantity' => $detail->quantity ?? 1,
-                'subtotal' => $detail->subtotal ?? ($product->price * $detail->quantity),
+                'subtotal' => $detail->total ?? ($detail->price * $detail->quantity),
                 'slug' => $product->slug,
             ];
         })->toArray();
+        $calculatedSubtotal = collect($productsArray)->sum('subtotal');
 
         $orderSummary = [
-            'subtotal' => $this->subtotal ?? 0,
+            'subtotal' => $calculatedSubtotal,
             'shipping' => $this->shipping_cost ?? 0,
             'tax' => $this->tax ?? 0,
-            'total' => $this->grand_total ?? 0,
+            'total' => $calculatedSubtotal + ($this->shipping_cost ?? 0) + ($this->tax ?? 0),
         ];
 
         return [

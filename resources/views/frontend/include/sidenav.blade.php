@@ -1,7 +1,12 @@
 <div class="cz-sidebar-static rounded-lg box-shadow-lg px-0 pb-0 mb-5 mb-lg-0 sticky">
     <div class="px-4 mb-4">
         <div class="media align-items-center">
-            <div class="img-thumbnail rounded-circle position-relative" style="width: 6.375rem;"><img class="rounded-circle" src="{{$user->image ? asset('storage/'.$user->image) : asset('theme-assets/img/team/01.jpg')}}" alt="{{ $user->first_name }}"></div>
+            <div class="img-thumbnail rounded-circle position-relative" style="width: 6.375rem;">
+                @if ( $user->image)
+                  <img src="{{ asset('storage/'.$user->image) }}" width="90" alt="{{ $user->first_name }}" class="img-thumbnail rounded-circle">
+                @else
+                  <img src="{{ $user->avatar ?: asset('theme-assets/img/team/01.jpg') }}" width="90" alt="{{ $user->first_name }}" class="img-thumbnail rounded-circle">
+                @endif
             <div class="media-body pl-3">
                 <h3 class="font-size-base mb-0">{{ $user->first_name }}</h3><span class="text-accent font-size-sm">{{ $user->email }}</span>
             </div>

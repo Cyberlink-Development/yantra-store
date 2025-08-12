@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BrandDiscountController;
+use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 
 /******************** By Sangam Starts ***********/
@@ -26,6 +27,8 @@ Route::get('/product-details', function () {return view('frontend/pages/product-
 Route::get('/product-list', function () {
     return view('frontend/pages/product-list');
 });
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 Route::group(['namespace' => 'Front'], function () {
     //social login
