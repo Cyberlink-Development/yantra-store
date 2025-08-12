@@ -35,9 +35,11 @@ class Order extends Model
     {
         $productsArray = $this->details->map(function($detail) {
             $product = $detail->products;
+            $mainImage = $product->images->where('is_main', 1)->first();
             return [
                 'name' => $product->product_name ?? 'N/A',
                 'brand' => $product->brand ?? null,
+                'image' => $mainImage ? $mainImage->image : null,
                 'size' => $detail->size ?? null,
                 'color' => $detail->color ?? null,
                 'price' => $product->price ?? 0,

@@ -87,6 +87,7 @@ class ProductController extends BackendController
 //            $product->color = $color;
                 $product->video = $request->video;
                 $product->brand_id = $request->brand;
+                $product->model_name = $request->model_name;
                 $product->component_type = $request->component_type;
                 $product->size_variation = $request->size_type;
                 if ($request->hasFile('audio')) {
@@ -270,6 +271,7 @@ class ProductController extends BackendController
                 $product->sku = $request->sku;
                 $product->video = $request->video;
                 $product->brand_id = $request->brand;
+                $product->model_name = $request->model_name;
                 $product->component_type = $request->component_type;
                 // $product->size_variation = $request->size_variation;
                 $product->weight = $request->weight;

@@ -186,6 +186,19 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h6 class="box-title">Model</h6>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="form-group mb-none">
+                                        <div class="form-group">
+                                            <input type="text" id="model_name" class="form-control" name="model_name" value="{{ $product->model_name }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="box box-default">
                                 <div class="box-header with-border">

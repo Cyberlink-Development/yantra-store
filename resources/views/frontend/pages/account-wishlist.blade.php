@@ -46,8 +46,8 @@
                                 <h3 class="product-title font-size-base mb-2">
                                     <a href="{{route('product-single',$product->slug)}}">{{ $product->product_name }}</a>
                                 </h3>
-                                @if($product->model)
-                                    <div class="font-size-sm"><span class="text-muted mr-2">Model:</span>{{ $product->model }}</div>
+                                @if($product->model_name)
+                                    <div class="font-size-sm"><span class="text-muted mr-2">Model:</span>{{ $product->model_name }}</div>
                                 @endif
                                 @if(get_brand_name($product->brand_id))
                                     <div class="font-size-sm"><span class="text-muted mr-2">Brand:</span>{{get_brand_name($product->brand_id) }}</div>

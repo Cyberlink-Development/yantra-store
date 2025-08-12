@@ -156,6 +156,19 @@
                             </div>
                         </div>
                     </div> 
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h6 class="box-title">Model</h6>
+                        </div>
+                        <!-- /.box-header -->
+                         <div class="box-body">
+                            <div class="form-group mb-none">
+                                <div class="form-group">
+                                    <input type="text" id="model_name" class="form-control" name="model_name" placeholder="Enter the Model">
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
 
                     <div class="box box-default">
                         <div class="box-header with-border">
@@ -167,8 +180,7 @@
                                 <select class="form-control" name="category[]" id="category" multiple="multiple">
                                     <option disabled value="">Select Category</option>
                                     @foreach($cat as $value)
-                                        <option value="{{$value->id}}">{{$value->name}}</option>
-                                        @include('backend.pages.category.category_dropdown',['category'=>$value])
+                                        @include('backend.pages.category.category_dropdown',['category'=>$value,'depth'=>0])
                                     @endforeach
                                 </select>
 
