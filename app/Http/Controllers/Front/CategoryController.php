@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Session;
+use Illuminate\Support\Facades\DB;
 
 
 class CategoryController extends FrontController
@@ -48,17 +49,28 @@ class CategoryController extends FrontController
         $query = Product::whereHas('categories', function($q) use ($categoryIds){
             $q->whereIn('categories.id',$categoryIds);
         })->active();
+
         // Apply filters (also do the validation for filters if possible)
-        // $this->applyFilters($query, $request);
-        $validSorts = ['latest', 'low-to-high', 'high-to-low','a-z','z-a'];
+        // $filtersRaw = $request->input('filterby', '');
+        // if (!$this->validateFilters($filtersRaw)) {
+        //     return $request->ajax()
+        //     ? response()->json(['error' => true, 'message' => 'Invalid filter parameters'])
+        //     : redirect()->back()->with(['error' => true, 'message' => 'Invalid filter parameters']);
+        // }
+        $this->applyFilters($query, $request);
+
+
         $sort = $request->input('sort', 'latest');
-        if (!in_array($sort, $validSorts)) {
+        if (!$this->validateSort($sort)) {
             return $request->ajax()
             ? response()->json(['error' => true, 'message' => 'Invalid sorting type'])
             : redirect()->back()->with(['error' => true, 'message' => 'Invalid sorting type']);
         }
         $this->applySorting($query, $sort);
+
         $products = $query->paginate(12)->appends($request->query());
+        $maxPrice = $query->max('price');
+
         if ($request->has('page') && $request->page > $products->lastPage()) {
             return redirect()->route('product-list', ['slug' => $category->slug])->with([
                 'info' => true,
@@ -66,118 +78,25 @@ class CategoryController extends FrontController
             ]);
         }
         if($request->ajax()){
-            $message = [];
+            $message = null;
+            $page = true;
             if($request->has('sort') && !$request->has('page')){
-                $message = "Product sorted by {$sort} successfully";
+                $message = "Product sorted successfully";
+                $page = false;
+            }
+            if(($request->has('filterby') || $request->has('minPrice') || $request->has('maxPrice')) && !$request->has('page')){
+                $message = "Product filtered successfully";
+                $page = false;
             }
             return response()->json([
                 'success' => true,
                 'message' => $message,
-                'view' => view('components.product.product_list',['products'=>$products])->render()
+                'view' => view('components.product.product_list',['products'=>$products,'maxPrice' => $maxPrice])->render(),
+                'page' => $page
             ]);
         }
-        return view($this->frontendPagePath . 'product-list', compact( 'category', 'products'));
+        return view($this->frontendPagePath . 'product-list', compact( 'category', 'products','maxPrice'));
     }
-
-
-    // public function product_list(Request $request)
-    // {
-    //     $category = Category::where('slug', $request->slug)->where('status', 1);
-    //     $children = Category::where('parent_id', $category->first()->id)->where('status', 1)->get();
-    //     if ($category->first() != null) {
-    //         foreach ($category->get() as $main) {
-    //             $mai_id[] = $main->id;
-
-    //         }
-    //     }
-    //     if ($children->first() != Null) {
-    //         foreach ($children as $child) {
-    //             if ($child->first() != Null) {
-    //                 foreach ($child->children as $grandChild) {
-    //                     $cat_id[] = $grandChild->id;
-    //                 }
-    //             }
-    //             $cat_id[] = $child->id;
-    //         }
-    //         if (isset($mai_id)) {
-    //             $cat_id = array_unique(array_merge($mai_id, $cat_id));
-    //         }
-    //         $query = Product::join('product_categories', 'product_categories.product_id', '=', 'products.id')
-    //             ->whereIn('product_categories.category_id', $cat_id)
-    //             ->select('products.*');
-    //     } else {
-    //         $query = Product::join('product_categories', 'product_categories.product_id', '=', 'products.id')
-    //             ->where('product_categories.category_id', $category->first()->id)
-    //             ->select('products.*');
-
-    //     }
-    //     $products = $query->paginate(12);
-
-    //     if ($request->ajax()) {
-    //         if ($request->slug) {
-    //             $category = Category::where('slug', $request->slug);
-    //             $children = Category::where('parent_id', $category->first()->id)->get();
-    //             if ($category->first() != null) {
-    //                 foreach ($category->get() as $main) {
-    //                     $mai_id[] = $main->id;
-
-    //                 }
-    //             }
-    //             if ($children->first() != Null) {
-    //                 foreach ($children as $child) {
-    //                     if ($child->first() != Null) {
-    //                         foreach ($child->children as $grandChild) {
-    //                             $cat_id[] = $grandChild->id;
-    //                         }
-    //                     }
-    //                     $cat_id[] = $child->id;
-    //                 }
-    //                 if (isset($mai_id)) {
-    //                     $cat_id = array_unique(array_merge($mai_id, $cat_id));
-    //                 }
-    //                 $query = Product::join('product_categories', 'product_categories.product_id', '=', 'products.id')
-    //                     ->whereIn('product_categories.category_id', $cat_id)
-    //                     ->select('products.*');
-    //             } else {
-    //                 $query = Product::join('product_categories', 'product_categories.product_id', '=', 'products.id')
-    //                     ->where('product_categories.category_id', $category->first()->id)
-    //                     ->select('products.*');
-
-    //             }
-
-    //             if ($request->has('value')) {
-    //                 if ($request->value == 'recent') {
-    //                     $query->orderby('products.updated_at', 'desc');
-    //                 }
-    //                 if ($request->value == 'low_to_high') {
-    //                     $query->orderby('products.price', 'asc');
-    //                 }
-    //                 if ($request->value == 'high_to_low') {
-    //                     $query->orderby('products.price', 'desc');
-    //                 }
-    //                 if ($request->value == 'a_to_z') {
-    //                     $query->orderby('products.product_name', 'asc');
-    //                 }
-    //                 if ($request->value == 'z_to_a') {
-    //                     $query->orderby('products.product_name', 'desc');
-    //                 }
-    //                 if ($request->value == 'older') {
-    //                     $query->orderby('products.updated_at', 'asc');
-    //                 }
-    //             }
-    //             $products = $query->get();
-    //             return view($this->frontendPagePath . 'filter/product_filter', compact('products'));
-    //         }
-
-    //     }
-    //     $size = Size::all();
-    //     $brand = Brand::all();
-    //     $category_slug = $request->slug;
-    //     return view($this->frontendPagePath . 'product-list', compact( 'category', 'products', 'size', 'brand', 'category_slug', 'children'));
-
-    // }
-
-
 
     public function brand_list(Request $request)
     {
@@ -301,24 +220,71 @@ class CategoryController extends FrontController
         }
     }
 
-    // protected function applyFilters($query, Request $request)
-    // {
-    //     // Brand filter
-    //     if ($request->filled('brand')) {
-    //         $query->where('brand_id', $request->brand);
-    //     }
+    private function applyFilters($query, Request $request)
+    {
+        $filtersRaw = $request->input('filterby', '');
+        // if ($filtersRaw) {
+        //     $filterGroups = explode(';', $filtersRaw);
 
-    //     // Price range filter
-    //     if ($request->filled('min_price') && $request->filled('max_price')) {
-    //         $query->whereBetween('price', [$request->min_price, $request->max_price]);
-    //     }
+        //     foreach ($filterGroups as $group) {
+        //         [$category, $values] = explode(':', $group);
+        //         $valuesArray = explode(',', $values);
 
-    //     // Processor filter (example)
-    //     if ($request->filled('processor')) {
-    //         $query->where('processor', $request->processor);
-    //     }
+        //         // Example: filter brand
+        //         if ($category === 'brand') {
+        //             $query->whereIn('brand', $valuesArray);
+        //         }
+        //         // Example: filter color
+        //         if ($category === 'color') {
+        //             $query->whereIn('color', $valuesArray);
+        //         }
+        //     }
+        // }
 
-    //     // Add more filters here as needed...
-    // }
+        // Handle price
+        if ($request->filled('minPrice')) {
+            $query->where('price', '>=', $request->minPrice);
+        }
+        if ($request->filled('maxPrice')) {
+            $query->where('price', '<=', $request->maxPrice);
+        }
+    }
+
+    private function validateSort(string $sort)
+    {
+        $validSorts = ['latest', 'low-to-high', 'high-to-low', 'a-z', 'z-a'];
+        return in_array($sort, $validSorts);
+    }
+
+    private function validateFilters(string $filtersRaw)
+    {
+        if (!$filtersRaw) {
+            return true;
+        }
+        $filterGroups = explode(';', $filtersRaw);
+        foreach ($filterGroups as $group) {
+            $parts = explode(':', $group);
+            if (count($parts) !== 2) {
+                return false; // invalid format
+            }
+            [$category, $values] = $parts;
+            $valuesArray = explode(',', $values);
+
+            // Check if category exists
+            $categoryRecord = DB::table('filter_categories')->where('name', $category)->first();
+            if (!$categoryRecord) {
+                return false; // invalid category
+            }
+            // Check each value exists for the category
+            $validValuesCount = DB::table('filter_values')
+                ->where('filter_category_id', $categoryRecord->id)
+                ->whereIn('value', $valuesArray)
+                ->count();
+            if ($validValuesCount !== count($valuesArray)) {
+                return false; // one or more invalid values
+            }
+        }
+        return true; // all valid
+    }
 
 }

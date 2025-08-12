@@ -42,7 +42,7 @@
         <div class="row">
             <!-- Sidebar-->
             <aside class="col-lg-3  mt-n5">
-                @include('frontend.include.sidebar')
+                @include('frontend.include.sidebar',['maxPrice' => $maxPrice])
             </aside>
             <!-- Content  -->
             <section class="col-lg-9" id="productList">
@@ -90,13 +90,76 @@
             $.ajax({
                 url: url,
                 success: function(data){
-                    ajax_response(data);
+                    if(!data.page){
+                        ajax_response(data);
+                    }
                     $('#productList').html(data.view);
                     if(data.success == true){
                         history.pushState(null,'',url);
                     }
                 }
             })
+        }
+
+        function filterProduct(event) {
+            event.preventDefault();
+            const url = new URL(window.location.href);
+            // Clear existing filter parameters (but keep sort)
+            url.searchParams.delete('filterby');
+            url.searchParams.delete('minPrice');
+            url.searchParams.delete('maxPrice');
+            url.searchParams.delete('page');
+            // Collect all dynamic filter values
+            const filters = {};
+
+            // Loop through all checked checkboxes
+            $('.filter-input[type="checkbox"]:checked').each(function() {
+                const category = $(this).data('category'); // category like 'brand', 'color'
+                const value = $(this).val();
+
+                if (!filters[category]) {
+                    filters[category] = [];
+                }
+                filters[category].push(value);
+            });
+
+            // Convert to filterby string
+            const filterParts = [];
+            for (const category in filters) {
+                filterParts.push(`${category}:${filters[category].join(',')}`);
+            }
+            if (filterParts.length > 0) {
+                url.searchParams.set('filterby', filterParts.join(';'));
+            }
+            // Process price range
+            const minPrice = $('input[name="minPrice"]').val();
+            const maxPrice = $('input[name="maxPrice"]').val();
+
+            if (minPrice && minPrice.trim() !== '') {
+                url.searchParams.set('minPrice', minPrice);
+            }
+            if (maxPrice && maxPrice.trim() !== '') {
+                url.searchParams.set('maxPrice', maxPrice);
+            }
+            // Load products with new URL
+            loadProducts(url.toString());
+        }
+        function clearFilters() {
+            const url = new URL(window.location.href);
+            const currentSort = url.searchParams.get('sort');
+            // Clear all filter parameters
+            url.searchParams.delete('filterby');
+            url.searchParams.delete('minPrice');
+            url.searchParams.delete('maxPrice');
+            url.searchParams.delete('page');
+            // Keep sort if it exists
+            if (currentSort) {
+                url.searchParams.set('sort', currentSort);
+            }
+            // Reset form
+            $('#filterForm')[0].reset();
+            // Load products
+            loadProducts(url.toString());
         }
         $(document).on('click', '.pagination a', function(e){
             e.preventDefault();
@@ -106,24 +169,6 @@
         window.addEventListener('popstate', function() {
             loadProducts(window.location.href);
         });
-        // $('.filter-input').on('change', function() {
-        //     const url = new URL(window.location.href);
-        //     $('.filter-input').each(function(){
-        //         const name = $(this).attr('name');
-        //         if(this.type === 'checkbox' || this.type === 'radio'){
-        //             if(this.checked){
-        //                 url.searchParams.append(name, this.value);
-        //             } else {
-        //                 url.searchParams.delete(name);
-        //             }
-        //         } else {
-        //             url.searchParams.set(name, $(this).val());
-        //         }
-        //     });
-
-        //     url.searchParams.delete('page');
-        //     loadProducts(url.toString());
-        // });
 
     </script>
 @stop
