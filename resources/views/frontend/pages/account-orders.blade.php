@@ -76,29 +76,6 @@
         </section>
     </div>
 </div>
-<!-- <div class="modal fade" id="order-details" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Order No - <span id="order-track"></span></h5>
-              <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          </div>
-          <div class="modal-body">
-              <div id="order-products-list">
-                
-              </div>
-
-              <hr>
-              <div class="order-summary">
-                  <p><strong>Subtotal:</strong> $<span id="order-subtotal"></span></p>
-                  <p><strong>Shipping:</strong> $<span id="order-shipping"></span></p>
-                  <p><strong>Tax:</strong> $<span id="order-tax"></span></p>
-                  <p><strong>Total:</strong> $<span id="order-total"></span></p>
-              </div>
-          </div>
-      </div>
-  </div>
-</div> -->
 
 <div class="modal fade" id="order-details">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">

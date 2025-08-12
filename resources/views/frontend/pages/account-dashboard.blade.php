@@ -33,7 +33,12 @@
           <form class="mt-5" action="{{ route('user-profile') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="bg-primary rounded-lg p-4 mb-4">
-              <div class="media align-items-center"><img src="{{ $user->image ? asset('storage/'.$user->image) : asset('theme-assets/img/team/01.jpg')}}" width="90" alt="{{ $user->first_name }}" class="img-thumbnail rounded-circle">
+              <div class="media align-items-center">
+                @if ( $user->image)
+                  <img src="{{ asset('storage/'.$user->image) }}" width="90" alt="{{ $user->first_name }}" class="img-thumbnail rounded-circle">
+                @else
+                  <img src="{{ $user->avatar ?: asset('theme-assets/img/team/01.jpg') }}" width="90" alt="{{ $user->first_name }}" class="img-thumbnail rounded-circle">
+                @endif
                 <div class="media-body pl-3">
                   <label for="profileImage" class="btn btn-light btn-shadow btn-sm mb-2"><i class="czi-loading mr-2"></i>Change Your Profile Image</label>
                   <input type="file" id="profileImage" name="profile_image" accept="image/png, image/jpeg, image/gif" style="display: none;">

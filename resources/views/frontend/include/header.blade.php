@@ -92,7 +92,7 @@
                             </div>
                             <div class="form-group d-flex justify-content-center">
                                 <div class="d-inline-block align-middle">Login With: <a
-                                        class="social-btn sb-google mr-2 mb-2" href="#" data-toggle="tooltip"
+                                        class="social-btn sb-google mr-2 mb-2" href="{{ url('auth/google') }}" data-toggle="tooltip"
                                         title="" data-original-title="Sign in with Google"><i
                                             class="czi-google"></i></a></div>
                             </div>
@@ -102,8 +102,7 @@
                             @csrf
                             <div class="form-group">
                                 <label for="su-name">Full name</label>
-                                <input class="form-control" type="text" id="su-name" placeholder="John Doe" name="first_name"
-                                    required>
+                                <input class="form-control" type="text" id="su-name" placeholder="Enter Full Name" name="first_name" required>
                                 <div class="invalid-feedback">Please fill in your name.</div>
                             </div>
                             <div class="form-group">
@@ -112,27 +111,15 @@
                                     placeholder="johndoe@example.com" required>
                                 <div class="invalid-feedback">Please provide a valid email address.</div>
                             </div>
-                            <div class="form-group">
-                                <label for="su-password">Password</label>
-                                <div class="password-toggle">
-                                    <input class="form-control" type="password" id="su-password" name="password" required>
-                                    <label class="password-toggle-btn">
-                                        <input class="custom-control-input" type="checkbox"><i
-                                            class="czi-eye password-toggle-indicator"></i><span class="sr-only">Show
-                                            password</span>
-                                    </label>
-                                    <div class="invalid-feedback">Please enter password.</div>
-                                </div>
+                            <small style="color:#d9534f">
+                                Note: Please enter a valid email address. Your password will be sent to the email you provide, so make sure it is correct.
+                            </small>
+                            <div>
+                                <p class="login-text">Or</p>
                             </div>
-                            <div class="form-group">
-                                <label for="su-password-confirm">Confirm password</label>
-                                <div class="password-toggle">
-                                    <input class="form-control" type="password" id="su-password-confirm" name="password_confirmation" required>
-                                    <label class="password-toggle-btn">
-                                        <input class="custom-control-input" type="checkbox"><i
-                                            class="czi-eye password-toggle-indicator"></i><span class="sr-only">Show
-                                            password</span>
-                                    </label>
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="d-inline-block align-middle">Sign up With: 
+                                    <a class="social-btn sb-google mr-2 mb-2" href="{{ url('auth/google') }}" data-toggle="tooltip" title="" data-original-title="Sign up with Google"><i class="czi-google"></i></a>
                                 </div>
                             </div>
                             <button class="btn btn-primary btn-block btn-shadow" type="submit">Sign up</button>

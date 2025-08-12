@@ -93,19 +93,27 @@ class RegisterController extends Controller
                 'first_name' => 'required',
                 // 'last_name'=>'required',
                 'email' => 'required|unique:users,email',
-                'password' => 'min:6|required_with:password_confirmation|same:password_confirmation',
+                // 'password' => 'min:6|required_with:password_confirmation|same:password_confirmation',
                 // 'phone_number'=>'required|max:10',
 
             ]);
 
+            $password = Str::random(10);
+            // $password1 = substr(str_shuffle( 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{<>?'), 0, 12);
+            dd($password, $request->all());
             $user = User::create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'email' => $request->email,
-                'password' => bcrypt($request->password),
+                'password' => bcrypt($password),
                 'phone' => $request->phone_number,
                 'roles' => 'user'
             ]);
+            if($user)
+            {
+                return redirect()->route('')->with('success','');
+                Mail::to($user->email)->send(new \App\Mail\UserPasswordMail($user, $password));
+            }
 
             $verifyUser = VerifyUser::create([
                 'user_id' => $user->id,
