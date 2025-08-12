@@ -76,7 +76,7 @@
         </section>
     </div>
 </div>
-<div class="modal fade" id="order-details" tabindex="-1" role="dialog">
+<!-- <div class="modal fade" id="order-details" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content">
           <div class="modal-header">
@@ -85,7 +85,7 @@
           </div>
           <div class="modal-body">
               <div id="order-products-list">
-                  <!-- Products will be appended here by JS -->
+                
               </div>
 
               <hr>
@@ -98,42 +98,78 @@
           </div>
       </div>
   </div>
+</div> -->
+
+<div class="modal fade" id="order-details">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title text-white"></h5>
+        <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body pb-0">
+        <!-- Item list -->
+        <div id="order-products-list"></div>
+
+        <!-- Order summary -->
+        <!-- <div class="mt-3">
+          <p>Subtotal: <span id="order-subtotal"></span></p>
+          <p>Shipping: <span id="order-shipping"></span></p>
+          <p>Tax: <span id="order-tax"></span></p>
+          <p><strong>Total: <span id="order-total"></span></strong></p>
+        </div> -->
+        
+      </div>
+    </div>
+  </div>
 </div>
 <script>
 $(document).ready(function() {
     $('.order-detail-link').on('click', function() {
         const jsonString = $(this).attr('data-value');
         const orderData = JSON.parse(jsonString);
+        let baseImageUrl = "{{ asset('images/products') }}";
 
-        // Set order tracking number
-        $('#order-track').text(orderData.order_track);
+        // Set order tracking number in the modal title
+        $('.modal-title').text(`Order No - ${orderData.order_track}`);
 
-        // Clear previous products list
+        // Clear previous products
         $('#order-products-list').empty();
 
-        // Append each product with detailed info
+        // Append each product with full structure
         orderData.products.forEach(product => {
             let productUrl = `/product-${product.slug}`;
+            let imagePath = `${baseImageUrl}/${product.image}`;
+
             let productHtml = `
-                <div class="product-item mb-3">
-                    <a href="${productUrl}"><h5>Product: ${product.name}</h5></a>
-                    ${product.brand ? `<p>Brand: ${product.brand}</p>` : ''}
-                    ${product.size ? `<p>Size: ${product.size}</p>` : ''}
-                    ${product.color ? `<p>Color: ${product.color}</p>` : ''}
-                    <p>Price: $${parseFloat(product.price).toFixed(2)}</p>
-                    <p>Quantity: ${product.quantity}</p>
-                    <p>Subtotal: $${parseFloat(product.subtotal).toFixed(2)}</p>
+                <div class="d-sm-flex justify-content-between mb-4 pb-3 pb-sm-2 border-bottom">
+                    <div class="media d-block d-sm-flex text-center text-sm-left">
+                        <a class="d-inline-block mx-auto mr-sm-4" href="${productUrl}" style="width: 10rem;">
+                            <img src="${imagePath}" alt="${product.name}">
+                        </a>
+                        <div class="media-body pt-2">
+                            <h3 class="product-title font-size-base mb-2">
+                                <a href="${productUrl}">${product.name}</a>
+                            </h3>
+                            ${product.model ? `<div class="font-size-sm"><span class="text-muted mr-2">Model:</span>${product.model}</div>` : ''}
+                            ${product.brand ? `<div class="font-size-sm"><span class="text-muted mr-2">Brand:</span>${product.brand}</div>` : ''}
+                            ${product.size ? `<div class="font-size-sm"><span class="text-muted mr-2">Size:</span>${product.size}</div>` : ''}
+                            ${product.color ? `<div class="font-size-sm"><span class="text-muted mr-2">Color:</span>${product.color}</div>` : ''}
+                            <div class="font-size-sm"><span class="text-muted mr-2">Quantity:</span>${product.quantity}</div>
+                            <div class="font-size-sm"><span class="text-muted mr-2">Price:</span>Rs. ${parseFloat(product.price).toLocaleString()}</div>
+                            <div class="text-muted mb-2">Subtotal: <span class="font-size-lg font-secondary pt-2">Rs. ${parseFloat(product.subtotal).toLocaleString()}</span></div>
+                        </div>
+                    </div>
                 </div>
-                <hr>
             `;
             $('#order-products-list').append(productHtml);
         });
 
         // Set order summary
-        $('#order-subtotal').text(parseFloat(orderData.summary.subtotal).toFixed(2));
-        $('#order-shipping').text(parseFloat(orderData.summary.shipping).toFixed(2));
-        $('#order-tax').text(parseFloat(orderData.summary.tax).toFixed(2));
-        $('#order-total').text(parseFloat(orderData.summary.total).toFixed(2));
+        $('#order-subtotal').text(`Rs. ${parseFloat(orderData.summary.subtotal).toLocaleString()}`);
+        $('#order-shipping').text(`Rs. ${parseFloat(orderData.summary.shipping).toLocaleString()}`);
+        $('#order-tax').text(`Rs. ${parseFloat(orderData.summary.tax).toLocaleString()}`);
+        $('#order-total').text(`Rs. ${parseFloat(orderData.summary.total).toLocaleString()}`);
     });
 });
 </script>
