@@ -1,62 +1,49 @@
-<!-- Toast: Added to Cart-->
-<div class="toast-container toast-bottom-center">
-   <div class="toast mb-3" id="cart-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header bg-success text-white">
-         <i class="czi-check-circle mr-2"></i>
-         <h6 class="font-size-sm text-white mb-0 mr-auto">Added to cart!</h6>
-         <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="toast-body">This item has been added to your cart.</div>
-   </div>
-</div>
-<!-- Footer-->
-<!-- Footer-->
 <!-- Footer-->
 <footer class="bg-dark ">
-   <div class="container-fluid bg-dark text-secondary mt-5 ">
-      <div class="row px-xl-5 pt-5">
-         <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-           <h2 class="text-white">LOGO HERE</h2>
-           <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus reprehenderit pariatur omnis repellendus assumenda quaerat </p>
-         </div>
-         <div class="col-lg-8 col-md-12">
-            <div class="row">
-               <div class="col-md-4 mb-5">
-                  <h5 class="text-secondary text-uppercase mb-4">LINKS</h5>
-                  <div class="d-flex flex-column justify-content-start">
-                     <a class="text-secondary mb-2" href="index.php">Home</a>
-                     <a class="text-secondary mb-2" href="wishlist.php">Wishlist</a>
-                     <a class="text-secondary mb-2" href="{{ route('user-dashboard') }}">Profile</a>
-                     <a class="text-secondary mb-2" href="cart.php">Shopping Cart</a>
-                     <a class="text-secondary mb-2" href="service-list.php">Services</a>
-                     <a class="text-secondary" href="contact.php">Contact Us</a>
-                  </div>
-               </div>
-               <div class="col-md-4 mb-5">
-                  <h5 class="text-secondary text-uppercase mb-4">CATEGORIES</h5>
-                  <div class="d-flex flex-column justify-content-start">
-                     <a class="text-secondary mb-2" href="list.php">Laptop</a>
-                     <a class="text-secondary mb-2" href="list.php">Desktop</a>
-                     <a class="text-secondary mb-2" href="list.php">Mobile</a>
-                     <a class="text-secondary mb-2" href="list.php">Tablet</a>
-                     <a class="text-secondary mb-2" href="list.php">Processor</a>
-                  </div>
-               </div>
-               <div class="col-md-4 mb-5">
-                  <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
-                  <p class="mb-2"><i class="czi-location text-white mr-3"></i>123 Street, New York, USA</p>
-                  <p class="mb-2"><i class="czi-mail text-white mr-3"></i>info@example.com</p>
-                  <p class="mb-0"><i class="czi-phone text-white mr-3"></i>+012 345 67890</p>
-                  <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
-                  <div class="widget mt-4 text-md-nowrap   ">
-                    <a class="social-btn sb-light sb-twitter mr-2 mb-2" href="#"><i class="czi-twitter"></i></a>
-                    <a class="social-btn sb-light sb-facebook mr-2 mb-2" href="#"><i class="czi-facebook"></i></a>
-                    <a class="social-btn sb-light sb-dribbble mr-2 mb-2" href="#"><i class="czi-instagram"></i></a>
-                    </div>
-               </div>
+    <div class="container-fluid bg-dark text-secondary mt-5 ">
+        <div class="row px-xl-5 pt-5">
+            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
+                <h2 class="text-white">LOGO HERE</h2>
+                {{ $setting->welcome_text }}
             </div>
-         </div>
-      </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="row">
+                <div class="col-md-4 mb-5">
+                    <h5 class="text-secondary text-uppercase mb-4">LINKS</h5>
+                    <div class="d-flex flex-column justify-content-start">
+                        <a class="text-secondary mb-2" href="index.php">Home</a>
+                        <a class="text-secondary mb-2" href="wishlist.php">Wishlist</a>
+                        <a class="text-secondary mb-2" href="{{ route('user-dashboard') }}">Profile</a>
+                        <a class="text-secondary mb-2" href="cart.php">Shopping Cart</a>
+                        <a class="text-secondary mb-2" href="service-list.php">Services</a>
+                        <a class="text-secondary" href="contact.php">Contact Us</a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <h5 class="text-secondary text-uppercase mb-4">CATEGORIES</h5>
+                    <div class="d-flex flex-column justify-content-start">
+                        <a class="text-secondary mb-2" href="list.php">Laptop</a>
+                        <a class="text-secondary mb-2" href="list.php">Desktop</a>
+                        <a class="text-secondary mb-2" href="list.php">Mobile</a>
+                        <a class="text-secondary mb-2" href="list.php">Tablet</a>
+                        <a class="text-secondary mb-2" href="list.php">Processor</a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
+                    <p class="mb-2"><i class="czi-location text-white mr-3"></i>123 Street, New York, USA</p>
+                    <p class="mb-2"><i class="czi-mail text-white mr-3"></i>info@example.com</p>
+                    <p class="mb-0"><i class="czi-phone text-white mr-3"></i>+012 345 67890</p>
+                    <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
+                    <div class="widget mt-4 text-md-nowrap   ">
+                        <a class="social-btn sb-light sb-twitter mr-2 mb-2" href="#"><i class="czi-twitter"></i></a>
+                        <a class="social-btn sb-light sb-facebook mr-2 mb-2" href="#"><i class="czi-facebook"></i></a>
+                        <a class="social-btn sb-light sb-dribbble mr-2 mb-2" href="#"><i class="czi-instagram"></i></a>
+                        </div>
+                </div>
+                </div>
+            </div>
+        </div>
       <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
          <div class="col-md-6 px-xl-0">
             <div class="mb-md-0 text-center text-md-left text-secondary d-flex ">

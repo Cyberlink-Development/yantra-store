@@ -21,7 +21,6 @@
             </div>
         </div>
     </div> -->
-    @include('backend/layouts/flash-message')
     <!-- /.content-header -->
     <div class="content" style="padding:0;">
         @yield('breadcrum')

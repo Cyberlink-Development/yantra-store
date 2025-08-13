@@ -282,8 +282,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     });
 
     Route::group(['prefix' => 'Setting'], function () {
-        Route::get('setting-page', 'SettingController@setting_page')->name('setting-page');
-        Route::post('setting-page', 'SettingController@setting_page')->name('setting-page');
+        Route::get('setting-page', 'SettingController@index')->name('setting.index');
+        Route::post('setting-page/update/{id}', 'SettingController@update')->name('setting.update');
+        Route::get('logo-delete/{field}', 'SettingController@logoDelete')->name('logo.delete');
         Route::get('faq', 'SettingController@faq')->name('faq');
         Route::post('faq', 'SettingController@faq')->name('faq');
     });

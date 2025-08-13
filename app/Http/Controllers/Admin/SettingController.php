@@ -3,119 +3,112 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Model\Configuration;
+use App\Model\Setting;
 use App\Model\Faq;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Exception;
+use Log;
 
 class SettingController extends BackendController
 {
-
-    public function setting_page(Request $request)
+    public function index(){
+        $data = Setting::where('id', 1)->first();
+        return view($this->backendPagePath . 'setting',compact('data'));
+    }
+    public function update(Request $request, $id)
     {
-        if ($request->isMethod('get')) {
-
-            return view($this->backendPagePath . 'setting');
-        }
-        if ($request->isMethod('post')) {
-            $inputs = $request->only(
-                'about','refund','privacy','twitter_link', 'googleplus_link', 'instagram_link', 'facebook_link', 'contact_no', 'address', 'website', 'email', 'site_title', 'site_description','regulation','recognition','price','link', 'google_map', 'opening_hours', 'terms_and_conditions',
-            );
-            if ($request->hasfile('logo')) {
-                $this->delete_file('logo');
-                $imageFile = $request->file('logo');
-                $imageName = 'logo'. '.' . $imageFile->getClientOriginalExtension();
-                $destinationPath = public_path('/backend/images/');
+        try{
+            $request->validate([
+                'title' => 'required',
+                'meta_title' => 'max:60',
+                'meta_description' => 'max:160'
+            ]);
+            $data = Setting::where('id',$id)->first();
+            if ($request->hasfile('logo_white')) {
+                $this->delete_file('logo_white');
+                $imageFile = $request->file('logo_white');
+                $imageName = 'logo-white'. '.' . $imageFile->getClientOriginalExtension();
+                $destinationPath = public_path('theme-assets/img/logo/');
                 $imageFile->move($destinationPath, $imageName);
-                $data = $imageName;
-                Configuration::updateorcreate(['configuration_key' => 'logo'], ['configuration_value' => $data]);
+                $data->logo_white = $imageName;
             }
-
-            if ($request->hasfile('about_image_1')) {
-                $this->delete_file('about_image_1');
-                $image = $request->file('about_image_1');
-                $ext = time() . '.' . $image->getClientOriginalExtension();
-                $destinationPath = public_path('/images/about/');
-                $image->move($destinationPath, $ext);
-                $data = $ext;
-                $aboutimage = Configuration::updateorcreate(['configuration_key' => 'about_image_1'], ['configuration_value' => $data]);
+            $data->title = $request->title;
+            $data->phone1 = $request->phone1;
+            $data->phone2 = $request->phone2;
+            $data->address = $request->address;
+            $data->email_primary = $request->email_primary;
+            $data->email_secondary = $request->email_secondary;
+            $data->twitter_link = $request->twitter_link;
+            $data->instagram_link = $request->instagram_link;
+            $data->facebook_link = $request->facebook_link;
+            $data->welcome_text = $request->welcome_text;
+            $data->copyright_text = $request->copyright_text;
+            $data->meta_title = $request->meta_title;
+            $data->meta_description = $request->meta_description;
+            if($data->save()){
+                return redirect()->back()->with([
+                    'success'=> true,
+                    'message' => 'Site details updated sucessfully.']
+                );
             }
-//
-//            if ($request->hasfile('regulation_image')) {
-//                $this->delete_regulation('regulation_image');
-//                $image = $request->file('regulation_image');
-//                $ext = time() . '.' . $image->getClientOriginalExtension();
-//                $destinationPath = public_path('images/');
-//                $makefile = Image::make($image);
-//                $save = $makefile->resize(500, '500', function ($ar) {
-//                    $ar->aspectRatio();
-//                })->save($destinationPath . '/' . $ext);
-//                $data = $ext;
-//                $reg_image = Configuration::updateorcreate(['configuration_key' => 'regulation_image'], ['configuration_value' => $data]);
-//            }
-//
-//            if ($request->hasfile('recognition_image')) {
-//                $this->delete_regulation('recognition_image');
-//                $image = $request->file('recognition_image');
-//                $ext = time() . '.' . $image->getClientOriginalExtension();
-//                $destinationPath = public_path('images/');
-//                $makefile = Image::make($image);
-//                $save = $makefile->resize(500, '500', function ($ar) {
-//                    $ar->aspectRatio();
-//                })->save($destinationPath . '/' . $ext);
-//                $data = $ext;
-//                $rec_image = Configuration::updateorcreate(['configuration_key' => 'recognition_image'], ['configuration_value' => $data]);
-//            }
-//
-//            if ($request->hasfile('affordable_image')) {
-//                $this->delete_regulation('affordable_image');
-//                $image = $request->file('affordable_image');
-//                $ext = time() . '.' . $image->getClientOriginalExtension();
-//                $destinationPath = public_path('images/');
-//                $makefile = Image::make($image);
-//                $save = $makefile->resize(500, '500', function ($ar) {
-//                    $ar->aspectRatio();
-//                })->save($destinationPath . '/' . $ext);
-//                $data = $ext;
-//                $aff_image = Configuration::updateorcreate(['configuration_key' => 'affordable_image'], ['configuration_value' => $data]);
-//            }
-
-            foreach ($inputs as $key => $value) {
-                $updateorcreate = Configuration::updateorcreate(['configuration_key' => $key], ['configuration_value' => $value]);
-            }
-            if ($updateorcreate) {
-                return redirect()->back()->with('success', 'Settings Saved');
-            }
+        }catch(ValidationException $e){
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => $e->validator->errors()->all()
+            ]);
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
         }
-        return false;
     }
 
-    public function delete_file($id)
+    public function delete_file($field)
     {
-        $findData = Configuration::where('configuration_key', '=', $id)->first();
+        $findData = Setting::where('id', 1)->first();
         if (!$findData) {
-            return true;
+            return false;
         }
-        $fileName = $findData->configuration_value;
-        $deletePath = public_path('images/about/' . $fileName);
+        $fileName = $findData->$field;
+        $deletePath = public_path('theme-assets/img/logo/' . $fileName);
         if (file_exists($deletePath) && is_file($deletePath)) {
             unlink($deletePath);
         }
         return true;
     }
 
-    public function delete_regulation($id)
-    {
-        $findData = Configuration::where('configuration_key', '=', $id)->first();
-        if (!$findData) {
-            return true;
+    public function logoDelete(Request $request){
+        try{
+            $data = Setting::where('id', 1)->first();
+            if (!$data) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Data not found'
+                ]);
+            }
+            $fileName = $data->{$request->field};
+            $deletePath = public_path('theme-assets/img/logo/' . $fileName);
+            if (file_exists($deletePath) && is_file($deletePath)) {
+                unlink($deletePath);
+            }
+            $data->{$request->field} = null;
+            $data->save();
+            return response()->json([
+                'success' => true,
+                'message' => 'Logo removed sucessfully'
+            ]);
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return response()->json([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
         }
-        $fileName = $findData->configuration_value;
-        $deletePath = public_path('images/' . $fileName);
-        if (file_exists($deletePath) && is_file($deletePath)) {
-            unlink($deletePath);
-        }
-        return true;
     }
+
 
     public function faq(Request $request)
     {

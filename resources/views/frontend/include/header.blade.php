@@ -112,7 +112,7 @@
                                 <input class="form-control" type="email" id="su-email" name="email" placeholder="johndoe@example.com" required>
                                 <div class="invalid-feedback">Please provide a valid email address.</div>
                             </div>
-                        
+
                             <small style="color:#d9534f">
                                 Note: Please enter a valid email address. Your password will be sent to the email you provide, so make sure it is correct.
                             </small>
@@ -120,11 +120,11 @@
                                 <p class="login-text">Or</p>
                             </div>
                             <div class="form-group d-flex justify-content-center">
-                                <div class="d-inline-block align-middle">Sign up With: 
+                                <div class="d-inline-block align-middle">Sign up With:
                                     <a class="social-btn sb-google mr-2 mb-2" href="{{ url('auth/google') }}" data-toggle="tooltip" title="" data-original-title="Sign up with Google"><i class="czi-google"></i></a>
                                 </div>
                             </div>
-                            
+
                             <button class="btn btn-primary btn-block btn-shadow" type="submit">Sign up</button>
                         </form>
                     </div>
@@ -139,14 +139,17 @@
             <div class="navbar-sticky bg-light">
                 <div class="navbar navbar-expand-lg navbar-light">
                     <div class="container">
+                        @if($setting && $setting->logo_white)
+                            <a class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0 p-0" href="{{url('/')}}" style="min-width: 7rem;">
+                                <img width="60" src="{{asset('theme-assets/img/logo/'. $setting->logo_white)}}" alt="{{$setting->title}}" />
+                            </a>
+                        @endif
 
-                        <a class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0 p-0" href="{{url('/')}}" style="min-width: 7rem;">
-                            <img width="60" src="{{ asset('theme-assets/img/logo.jpg') }}" alt="Yantra Store" />
-                        </a>
-
-                        <a class="navbar-brand d-sm-none mr-2" href="{{ url('/') }}" style="min-width: 4.625rem;">
-                            <img width="74" src="{{ asset('theme-assets/img/logo.jpg') }}" alt="Yantra Store" style="height: 60px; object-fit: contain;" />
-                        </a>
+                        @if($setting && $setting->logo_white)
+                            <a class="navbar-brand d-sm-none mr-2" href="{{ url('/') }}" style="min-width: 4.625rem;">
+                                <img width="74" src="{{asset('theme-assets/img/logo/'. $setting->logo_white)}}" alt="{{$setting->title}}" style="height: 60px; object-fit: contain;" />
+                            </a>
+                        @endif
 
                         <div class="input-group-overlay d-none d-lg-flex mx-4">
                             <input class="form-control appended-form-control" type="text" placeholder="Search for products">

@@ -1,7 +1,13 @@
 <!-- Main Footer -->
 <footer class="main-footer">
-    <strong>Copyright &copy; 2025 <a target="_blank" href="https://cyberlink.com.np/">Cyberlink Pvt. Ltd</a>.</strong>
-    All rights reserved.
+    <!-- <strong>Copyright &copy; 2025 <a target="_blank" href="https://cyberlink.com.np/">Cyberlink Pvt. Ltd</a>.</strong>
+    All rights reserved. -->
+    {!! $setting->copyright_text !!}
+    <style>
+        .main-footer p{
+            margin:0!important;
+        }
+    </style>
 </footer>
 </div>
 <!-- ./wrapper -->
@@ -41,11 +47,14 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script src="https://cdn.tiny.cloud/1/za0jmba7ox4tewobcbd11wgwllirmau1pe9a4edp9b15iq49/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
+    @yield('custom-scripts')
 <script>
   tinymce.init({
     selector: '.tiny-mce'
   });
   </script>
+
+
 
 <script>
     // ClassicEditor
