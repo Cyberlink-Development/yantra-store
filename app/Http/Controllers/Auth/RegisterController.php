@@ -99,7 +99,7 @@ class RegisterController extends Controller
             ]);
 
             $password = Str::random(10);
-            // dd($password, $request->all());
+            
             $user = User::create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
@@ -115,7 +115,7 @@ class RegisterController extends Controller
             ]);
             
             if ($user && $verifyUser) {
-                return new VerifyMail($verifyUser->token, $user->id, $user->name, $password);
+                return new VerifyMail($verifyUser->token, $user->id, $user->first_name, $password);
                 // Mail::send(new VerifyMail($verifyUser->token, $user->id, $user->name, $password));
             }
             return redirect('/')->with([
