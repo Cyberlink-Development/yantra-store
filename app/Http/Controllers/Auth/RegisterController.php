@@ -99,8 +99,7 @@ class RegisterController extends Controller
             ]);
 
             $password = Str::random(10);
-            // $password1 = substr(str_shuffle( 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{<>?'), 0, 12);
-            dd($password, $request->all());
+            // dd($password, $request->all());
             $user = User::create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
@@ -109,25 +108,20 @@ class RegisterController extends Controller
                 'phone' => $request->phone_number,
                 'roles' => 'user'
             ]);
-            if($user)
-            {
-                return redirect()->route('')->with('success','');
-                Mail::to($user->email)->send(new \App\Mail\UserPasswordMail($user, $password));
-            }
 
             $verifyUser = VerifyUser::create([
                 'user_id' => $user->id,
                 'token' => Str::random(20)
             ]);
-            // if ($user && $verifyUser) {
-            //     return new VerifyMail($verifyUser->token, $user->id, $user->name);
-            //     Mail::send(new VerifyMail($verifyUser->token, $user->id, $user->name));
-            //     return "sent mail";
-
-            // }
-
-            Session::flash('success', 'Please verify your email to complete registration process');
-            return redirect()->intended(route('index'));
+            
+            if ($user && $verifyUser) {
+                return new VerifyMail($verifyUser->token, $user->id, $user->name, $password);
+                // Mail::send(new VerifyMail($verifyUser->token, $user->id, $user->name, $password));
+            }
+            return redirect('/')->with([
+                'success' => true,
+                'message' => 'Sign Up Successfull. Password is sent to the provided email address.'
+            ]);
         }catch(ValidationException $e){
             return redirect()->back()->with([
                 'error' => true,
@@ -143,20 +137,39 @@ class RegisterController extends Controller
 
     public function verifyUser($token)
     {
-        $verifyUser = VerifyUser::where('token', $token)->first();
-        if (isset($verifyUser)) {
+        try
+        {
+            $verifyUser = VerifyUser::where('token', $token)->first();
+
+            if (!$verifyUser) {
+                return redirect()->route('login-page')->with([
+                    'error' => true,
+                    'message' => 'Sorry, your email cannot be identified.'
+                ]);
+            }
+
             $user = $verifyUser->users;
+
             if (!$user->verified) {
-                $verifyUser->users->verified = 1;
-                $verifyUser->users->save();
+                $user->verified = 1;
+                $user->save();
+
+                $verifyUser->delete();
+
                 $status = "Your e-mail is verified. You can now login.";
             } else {
                 $status = "Your e-mail is already verified. You can now login.";
             }
-        } else {
-            return redirect()->intended(route('login-page'))->with('warning', "Sorry your email cannot be identified.");
-        }
 
-        return redirect()->intended(route('login-page'))->with('success', $status);
+            return redirect()->route('login-page')->with([
+                'success' => true,
+                'message' => $status,
+            ]);
+        } catch(Exception $e){
+            return redirect()->intended(route('login-page'))->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
+        }
     }
 }

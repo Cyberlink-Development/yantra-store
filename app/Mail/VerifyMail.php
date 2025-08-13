@@ -14,16 +14,18 @@ class VerifyMail extends Mailable
     protected $token;
     protected $id;
     protected $user_name;
+    protected $pw;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($token,$id,$name)
+    public function __construct($token,$id,$name,$password)
     {
         $this->token = $token;
         $this->id = $id;
         $this->user_name = $name;
+        $this->pw = $password;
     }
 
     /**
@@ -37,6 +39,7 @@ class VerifyMail extends Mailable
         $token = $this->token;
         $user_id = $this->id;
         $name = $this->user_name;
-        return $this->view('emails.verifyuser', ['email' => $email, 'token' => $token, 'user_id' => $user_id, 'name' => $name])->to($email);
+        $password = $this->pw;
+        return $this->view('emails.verifyuser', ['email' => $email, 'token' => $token, 'user_id' => $user_id, 'name' => $name,'password'=>$password]);
     }
 }

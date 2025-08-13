@@ -93,7 +93,7 @@
                             </div>
                             <div class="form-group d-flex justify-content-center">
                                 <div class="d-inline-block align-middle">Login With:
-                                    <a class="social-btn sb-google mr-2 mb-2" href="#"  data-toggle="tooltip" title="" data-original-title="Sign in with Google">
+                                    <a class="social-btn sb-google mr-2 mb-2" href="{{ url('auth/google') }}"  data-toggle="tooltip" title="" data-original-title="Sign in with Google">
                                         <i class="czi-google"></i>
                                     </a>
                                 </div>
@@ -104,7 +104,7 @@
                             @csrf
                             <div class="form-group">
                                 <label for="su-name">Full name</label>
-                                <input class="form-control" type="text" id="su-name" placeholder="John Doe" name="first_name" required>
+                                <input class="form-control" type="text" id="su-name" placeholder="Enter Full Name" name="first_name" required>
                                 <div class="invalid-feedback">Please fill in your name.</div>
                             </div>
                             <div class="form-group">
@@ -112,29 +112,19 @@
                                 <input class="form-control" type="email" id="su-email" name="email" placeholder="johndoe@example.com" required>
                                 <div class="invalid-feedback">Please provide a valid email address.</div>
                             </div>
-                            <div class="form-group">
-                                <label for="su-password">Password</label>
-                                <div class="password-toggle">
-                                    <input class="form-control" type="password" id="su-password" name="password" required>
-                                    <label class="password-toggle-btn">
-                                        <input class="custom-control-input" type="checkbox">
-                                        <i class="czi-eye password-toggle-indicator"></i>
-                                        <span class="sr-only">Show password</span>
-                                    </label>
-                                    <div class="invalid-feedback">Please enter password.</div>
+                        
+                            <small style="color:#d9534f">
+                                Note: Please enter a valid email address. Your password will be sent to the email you provide, so make sure it is correct.
+                            </small>
+                            <div>
+                                <p class="login-text">Or</p>
+                            </div>
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="d-inline-block align-middle">Sign up With: 
+                                    <a class="social-btn sb-google mr-2 mb-2" href="{{ url('auth/google') }}" data-toggle="tooltip" title="" data-original-title="Sign up with Google"><i class="czi-google"></i></a>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="su-password-confirm">Confirm password</label>
-                                <div class="password-toggle">
-                                    <input class="form-control" type="password" id="su-password-confirm" name="password_confirmation" required>
-                                    <label class="password-toggle-btn">
-                                        <input class="custom-control-input" type="checkbox">
-                                        <i class="czi-eye password-toggle-indicator"></i>
-                                        <span class="sr-only">Show password</span>
-                                    </label>
-                                </div>
-                            </div>
+                            
                             <button class="btn btn-primary btn-block btn-shadow" type="submit">Sign up</button>
                         </form>
                     </div>
@@ -151,11 +141,11 @@
                     <div class="container">
 
                         <a class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0 p-0" href="{{url('/')}}" style="min-width: 7rem;">
-                            <img width="60" src="{{ asset('theme-assets/img/logo.jpg') }}" alt="Cyberlink" />
+                            <img width="60" src="{{ asset('theme-assets/img/logo.jpg') }}" alt="Yantra Store" />
                         </a>
 
                         <a class="navbar-brand d-sm-none mr-2" href="{{ url('/') }}" style="min-width: 4.625rem;">
-                            <img width="74" src="{{ asset('theme-assets/img/logo.jpg') }}" alt="Cyberlink" style="height: 60px; object-fit: contain;" />
+                            <img width="74" src="{{ asset('theme-assets/img/logo.jpg') }}" alt="Yantra Store" style="height: 60px; object-fit: contain;" />
                         </a>
 
                         <div class="input-group-overlay d-none d-lg-flex mx-4">
