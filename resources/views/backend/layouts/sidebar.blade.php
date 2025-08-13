@@ -5,9 +5,11 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4 position-relative" style="width:19rem; overflow-x:hidden;">
     <!-- Brand Logo -->
     <a href="{{ url('/') }}" target="_blank" class="brand-link" style="background-color: #ffffff; position: relative;">
-        <img src="{{ asset('images/logo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-            style="opacity: .8;"><br>
-        <!--<span class="brand-text font-weight-light"> {{ config('app.name') }}</span>-->
+        @if($setting && $setting->logo_white)
+            <img src="{{asset('theme-assets/img/logo/'. $setting->logo_white)}}" alt="{{$setting->title}}" class="brand-image img-circle elevation-3" style="opacity:1;    max-height: none; height: 3.5rem;">
+        @else
+            <span class="brand-text font-weight-light"> {{ $setting && $setting->title ? $setting->title : config('app.name') }}</span>
+        @endif
     </a>
 
     <!-- Sidebar -->
@@ -390,7 +392,7 @@
                 <!--</li>-->
 
                 <li class="nav-item">
-                    <a href="{{ route('setting-page') }}" class="nav-link">
+                    <a href="{{ route('setting.index') }}" class="nav-link">
                         <i class="fa fa-wrench"></i>
                         <p>Setting</p>
                     </a>

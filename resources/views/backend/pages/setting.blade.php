@@ -1,433 +1,196 @@
 @extends('backend.layouts.master')
-@section('content')
-    <form action="{{route('setting-page')}}" method="post" enctype="multipart/form-data">
-        @csrf
-        <br>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title">Configurations</h5>
-
-                            <div class="card-tools">
-
-                                <div class="btn-group">
-                                    <button type="submit" class="btn btn-primary btn-sm pull-right">Update Setting</button>
-                                </div>
-                                <button type="button" class="btn btn-tool" data-widget="collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-widget="remove">
-                                    <i class="fa fa-times"></i>
-                                </button>
-
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <div id="navbar-example">
-                                <!-- Nav tabs -->
-                                <ul class="nav nav-tabs" role="tablist">
-
-                                    <li class="nav-item">
-                                        <a class="nav-link " data-toggle="tab" href="#profile" role="tab">Site
-                                            Setting</a>
-                                    </li>
-                                    {{--<li class="nav-item">--}}
-                                    {{--<a class="nav-link" data-toggle="tab" href="#home"--}}
-                                    {{--role="tab">Home</a>--}}
-                                    {{--</li>--}}
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#about" role="tab">About us</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link active" data-toggle="tab" href="#media" role="tab">Social
-                                            Media
-                                            Info</a>
-                                    </li>
-{{--                                    <li class="nav-item">--}}
-{{--                                        <a class="nav-link" data-toggle="tab" href="#college" role="tab">College Description</a>--}}
-{{--                                    </li>--}}
-{{--                                    <li class="nav-item">--}}
-{{--                                        <a class="nav-link" data-toggle="tab" href="#image" role="tab">Image Section</a>--}}
-{{--                                    </li>--}}
-                                </ul>
-
-                                <!-- Tab panes {Fade}  -->
-
-                                <div class="tab-content">
-
-                                    <div class="tab-pane active" id="profile" role="tabpanel">
-                                        <br>
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <label for="title" class="col-sm-2 control-label">Site Title
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="site_title" class="form-control"
-                                                           value="{{getConfiguration('site_title')}}">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <label for="site_description" class="col-sm-2 control-label">Site
-                                                    Description</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="site_description" class="form-control"
-                                                           value="{{getConfiguration('site_description')}}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <label for="contact_no" class="col-sm-2 control-label">Contact
-                                                    No.</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="contact_no" class="form-control"
-                                                           value="{{getConfiguration('contact_no')}}"
-                                                           id="contact_no">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <label for="address" class="col-sm-2 control-label">Address</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="address" class="form-control"
-                                                           value="{{getConfiguration('address')}}"
-                                                           id="address">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <label for="email" class="col-sm-2 control-label">Email</label>
-                                                <div class="col-sm-10">
-                                                    <input type="email" name="email" class="form-control"
-                                                           value="{{getConfiguration('email')}}"
-                                                           id="email">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <label for="google_map" class="col-sm-2 control-label">Google Map</label>
-                                                <div class="col-sm-10">
-                                                    <input type="google_map" name="google_map" class="form-control"
-                                                           value="{{getConfiguration('google_map')}}"
-                                                           id="google_map">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <label for="opening_hours" class="col-sm-2 control-label">Opening Hours</label>
-                                                <div class="col-sm-10">
-                                                    <input type="opening_hours" name="opening_hours" class="form-control"
-                                                           value="{{getConfiguration('opening_hours')}}"
-                                                           id="opening_hours">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <label for="opening_hours" class="col-sm-2 control-label">Logo</label>
-                                                <div class="col-sm-10">
-                                                    <input type="file" name="logo" class="form-control" />
-                                                </div>
-                                                @if(getConfiguration('logo'))
-                                                <div class="col-sm-2">
-                                                    <img src="{{ asset('backend/images/'.getConfiguration('logo')) }}" height="200px" width="200px" />
-                                                </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="home" name="home" role="tabpanel">
-
-                                    </div>
-
-                                    <div class="tab-pane fade" id="about" name="About us" role="tabpanel">
-                                        <br>
-                                        <div class="bs-callout bs-callout-danger">
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-sm-2">
-                                                        <label for="our_vision">About</label>
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <textarea name="about" class="form-control tiny-mce" id="about_section">{{getConfiguration('about')}}</textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-sm-2">
-                                                        <label for="our_vision">Refund Policy</label>
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <textarea name="refund" class="form-control tiny-mce" id="refund">{{getConfiguration('refund')}}</textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-sm-2">
-                                                        <label for="our_vision">Privacy Policy</label>
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <textarea name="privacy" class="form-control tiny-mce" id="privacy">{{getConfiguration('privacy')}}</textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-sm-2">
-                                                        <label for="our_vision">Terms & Conditions</label>
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <textarea name="terms_and_conditions" class="form-control tiny-mce" id="terms_and_conditions">{{getConfiguration('terms_and_conditions')}}</textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-{{--                                            <div class="form-group">--}}
-{{--                                                <div class="row">--}}
-{{--                                                    <div class="col-sm-2">--}}
-{{--                                                        <label for="our_vision">Vision</label>--}}
-{{--                                                    </div>--}}
-{{--                                                    <div class="col-sm-8">--}}
-{{--                                                        <textarea name="vision" class="form-control tiny-mce" id="chairman">{{getConfiguration('vision')}}</textarea>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-                                            <div class="form-group">
-                                                <label class="">Current About Image</label>
-                                                <div class="container">
-                                                    <div class="round-img">
-                                                        <a href="#"><img class="fa-times-rectangle"
-                                                                         src="{{asset('images/about'.'/'.getConfiguration('about_image_1'))}}"
-                                                                         width="400px"
-                                                                         alt=""></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-sm-2">
-                                                        <label for="who_we_are">About Page Image</label></div>
-                                                    <div class="col-sm-8">
-                                                        <input type="file" class="form-control" name="about_image_1">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="tab-pane fade" id="media" name="Media" role="tabpanel">
-                                        <br>
-                                        <div class="form-group">
-                                            <div class="row">
-
-                                                <label for="twitter_link" class="col-sm-2 control-label">Twitter
-                                                    Link</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" value="{{getConfiguration('twitter_link')}}"
-                                                           name="twitter_link" class="form-control"
-                                                           id="twitter_link">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <label for="googleplus_link" class="col-sm-2 control-label">Google Plus
-                                                    Link</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="googleplus_link" class="form-control"
-                                                           value="{{getConfiguration('googleplus_link')}}"
-                                                           id="googleplus_link">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <label for="instagram_link" class="col-sm-2 control-label">Instagram
-                                                    Link</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="instagram_link" class="form-control"
-                                                           value="{{getConfiguration('instagram_link')}}"
-                                                           id="instagram_link">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <label for="linkedin_link" class="col-sm-2 control-label">Facebook
-                                                    Link</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="facebook_link" class="form-control"
-                                                           value="{{getConfiguration('facebook_link')}}"
-                                                           id="linkedin_link">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-{{--                                    <div class="tab-pane fade" id="college" name="College description" role="tabpanel">--}}
-{{--                                        <br>--}}
-{{--                                        <div class="bs-callout bs-callout-danger">--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <div class="row">--}}
-{{--                                                    <div class="col-sm-2">--}}
-{{--                                                        <label for="our_vision">ICHM Regulation</label>--}}
-{{--                                                    </div>--}}
-{{--                                                    <div class="col-sm-8">--}}
-{{--                                                        <textarea name="regulation" class="form-control" id="reg">{{getConfiguration('regulation')}}</textarea>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <div class="row">--}}
-{{--                                                    <div class="col-sm-2">--}}
-{{--                                                        <label for="our_vision">International Recognition</label>--}}
-{{--                                                    </div>--}}
-{{--                                                    <div class="col-sm-8">--}}
-{{--                                                        <textarea name="recognition" class="form-control" id="rec">{{getConfiguration('recognition')}}</textarea>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <div class="row">--}}
-{{--                                                    <div class="col-sm-2">--}}
-{{--                                                        <label for="our_vision">Affordable Price</label>--}}
-{{--                                                    </div>--}}
-{{--                                                    <div class="col-sm-8">--}}
-{{--                                                        <textarea name="price" class="form-control" id="price">{{getConfiguration('price')}}</textarea>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-
-{{--                                            <div class="form-group">--}}
-{{--                                                <div class="row">--}}
-{{--                                                    <div class="col-sm-2">--}}
-{{--                                                        <label for="who_we_are">Video Link</label></div>--}}
-{{--                                                    <div class="col-sm-8">--}}
-{{--                                                        <input type="text"  class="form-control" name="link" value="{{getConfiguration('link')}}">--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-
-{{--                                        </div>--}}
-
-
-{{--                                    </div>--}}
-
-{{--                                    <div class="tab-pane fade" id="image" name="Image" role="tabpanel">--}}
-{{--                                        <br>--}}
-{{--                                        <div class="bs-callout bs-callout-danger">--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <div class="form-group">--}}
-{{--                                                    <div class="row">--}}
-{{--                                                        <div class="col-sm-2">--}}
-{{--                                                            <label for="who_we_are">Regulation Image</label></div>--}}
-{{--                                                        <div class="col-sm-8">--}}
-{{--                                                            <input type="file" class="form-control" name="regulation_image">--}}
-{{--                                                        </div>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                                <div class="form-group">--}}
-{{--                                                    <div class="row">--}}
-{{--                                                        <div class="col-sm-2">--}}
-{{--                                                            <label for="who_we_are">Recognition Image</label></div>--}}
-{{--                                                        <div class="col-sm-8">--}}
-{{--                                                            <input type="file" class="form-control" name="recognition_image">--}}
-{{--                                                        </div>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                                <div class="form-group">--}}
-{{--                                                    <div class="row">--}}
-{{--                                                        <div class="col-sm-2">--}}
-{{--                                                            <label for="who_we_are">Affordable Price Image</label></div>--}}
-{{--                                                        <div class="col-sm-8">--}}
-{{--                                                            <input type="file" class="form-control" name="affordable_image">--}}
-{{--                                                        </div>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                                <label class="">Current Regulation Image</label>--}}
-{{--                                                <div class="container">--}}
-{{--                                                    <div class="round-img">--}}
-{{--                                                        <a href="#"><img class="fa-times-rectangle"--}}
-{{--                                                                         src="{{asset('images'.'/'.getConfiguration('regulation_image'))}}"--}}
-{{--                                                                         width="400px"--}}
-{{--                                                                         alt=""></a>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <label class="">Current Recognition Image</label>--}}
-{{--                                                <div class="container">--}}
-{{--                                                    <div class="round-img">--}}
-{{--                                                        <a href="#"><img class="fa-times-rectangle"--}}
-{{--                                                                         src="{{asset('images'.'/'.getConfiguration('recognition_image'))}}"--}}
-{{--                                                                         width="400px"--}}
-{{--                                                                         alt=""></a>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <label class="">Current Affordable Image</label>--}}
-{{--                                                <div class="container">--}}
-{{--                                                    <div class="round-img">--}}
-{{--                                                        <a href="#"><img class="fa-times-rectangle"--}}
-{{--                                                                         src="{{asset('images'.'/'.getConfiguration('affordable_image'))}}"--}}
-{{--                                                                         width="400px"--}}
-{{--                                                                         alt=""></a>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-
-{{--                                    </div>--}}
-
-
-                                </div>
-
-
-
-                            </div>
-                            <div class="footer">
-
-                            </div>
-
-
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- ./card-body -->
-
-                    <!-- /.card-footer -->
-                </div>
-                <!-- /.card -->
-            </div>
-            <!-- /.col -->
-        </div>
-        </div>
-    </form>
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'Site Settings'])
 @endsection
-@push('scripts')
+@section('content')
+    <div class="container">
+        <form class="form-group" action="{{route('setting.update',$data->id)}}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body">
+                            <!-- general form elements -->
+                            <div class="box">
+                                <div class="box-header with-border">
+                                    <ul class="nav" role="tablist">
+                                        <li class="nav-item custom-nav-item">
+                                            <a class="custom-nav-btn active" data-toggle="tab" href="#general" role="tab">Site Setting</a>
+                                        </li>
+                                        <li class="nav-item custom-nav-item">
+                                            <a class="custom-nav-btn" data-toggle="tab" href="#social" role="tab">Social Media Info</a>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                                <hr style="margin-top:0">
+                                <!-- form start -->
+                                <div class="box-body">
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="general" role="tabpanel">
+                                            <div class="form-group">
+                                                <label for="title" class="control-label">Title</label>
+                                                <input id="title" class="form-control" placeholder="Site name" name="title" type="text" value="{{ $data->title }}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone1" class="control-label">Phone1</label>
+                                                <input type="number" name="phone1" id="phone1" class="form-control" placeholder="Phone number" value="{{ $data->phone1 }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone2" class="control-label">Phone2</label>
+                                                <input type="number" name="phone2" id="phone2" class="form-control" placeholder="Phone number" value="{{ $data->phone2 }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="emailPrimary" class="control-label">Email Primary</label>
+                                                <input type="email" name="email_primary" id="emailPrimary" class="form-control" placeholder="Primary email" value="{{ $data->email_primary }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="emailSecondary" class="control-label">Email Secondary</label>
+                                                <input type="email" name="email_secondary" id="emailSecondary" class="form-control" placeholder="Secondary email" value="{{ $data->email_secondary }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="address" class="control-label">Address</label>
+                                                <input type="text" name="address" id="addresss" class="form-control" placeholder="Address" value="{{ $data->address }}">
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="social" role="tabpanel">
+                                            <div class="form-group">
+                                                <label for="twitterLink" class="control-label">Twitter Link</label>
+                                                <input class="form-control" id="twitterLink" placeholder="Twitter link" name="twitter_link" type="url" value="{{ $data->twitter_link }}">
+                                            </div>
+                                            <hr>
+                                            <div class="form-group">
+                                                <label for="instagramLink" class="control-label">Instagram Link</label>
+                                                <input class="form-control" id="instagramLink" placeholder="Intagram link" name="instagram_link" type="url" value="{{ $data->instagram_link }}">
+                                            </div>
+                                            <hr>
+                                            <div class="form-group">
+                                                <label for="facebookLink" class="control-label">Facebook Link</label>
+                                                <input class="form-control" id="facebookLink" placeholder="Facebook link" name="twitter_link" type="url" value="{{ $data->twitter_link }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body">
+                            <div class="box">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Meta Data</h3>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="box">
+                                <div class="form-group">
+                                    <label>Meta Title</label>
+                                    <input type="text" name="meta_title" id="meta_title" class="form-control" value="{{ $data->meta_title }}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Meta Description</label>
+                                    <textarea name="meta_description" id="desc" rows="3" class="form-control">{{ $data->meta_description }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body" style="padding:.5rem;">
+                            <button class="btn btn-primary btn-xs pull-right">
+                                Update
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body" style="padding:. 5rem;">
+                            <div class="form-group">
+                                <label for="logoWhite">Logo:</label>
+                                <input type="file" name="logo_white" class="form-control" id="logoWhite" style="height:auto; padding:0;">
+                            </div>
+                            @if($data->logo_white)
+                                <div id="logoWhitePrev" style="position:relative;border:1px dashed #00000073;">
+                                    <img src="{{asset('theme-assets/img/logo/'. $data->logo_white)}}" style="height: 150px; width:auto;">
+                                    <button type="button" class="btn btn-danger logoDelete" data-url="{{route('logo.delete',  ['field' => 'logo_white'])}}" data-field-id="logoWhitePrev" style="border-radius:50%; position:absolute; right:5px; top:5px;    padding: 2px 9px;">X</button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body" style="padding:. 5rem;">
+                            <div class="form-group">
+                                <label for="welcomeText">Welcome Text</label>
+                                <textarea name="welcome_text" id="welcomeText" rows="2" class="form-control tiny-mce-1">{{ $data->welcome_text }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body" style="padding:. 5rem;">
+                            <div class="form-group">
+                                <label for="copyright">Copyright Text</label>
+                                <textarea name="copyright_text" id="copyright" rows="2" class="form-control tiny-mce">{{ $data->copyright_text }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <style>
+        .custom-nav-item:not(:first-child) {
+            padding-left: 5px!important;
+            border-left: 1px solid #00000073;
+        }
+        .custom-nav-item {
+            padding: 5px 0px 5px 0px;
+        }
+        .custom-nav-btn {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-right: 5px;
+        }
+        .custom-nav-btn:hover{
+            text-decoration: none;
+        }
+        .custom-nav-btn.active {
+            /* border-bottom: 1px solid #0000001a; */
+            color: #212529 !important;
+        }
+    </style>
+
     <script>
-        $(document).ready(function () {
-            $("[rel='tooltip']").tooltip();
+        $(".logoDelete").click(function (e){
+            e.preventDefault();
+            let dataUrl = $(this).attr("data-url");
+            let divId = $(this).attr("data-field-id");
+            $.ajax({
+                type: 'GET',
+                url: dataUrl,
+                success: function (data) {
+                    ajax_response(data);
+                    if(data.success == true){
+                        $("#"+divId).remove();
+                    }
+                }
+            });
         });
     </script>
-
-@endpush
+@endsection
+@section('custom-scripts')
+    <script>
+        tinymce.remove('.tiny-mce'); // remove global init
+        tinymce.init({
+            selector: '.tiny-mce-1',
+            height: 200,
+        });
+        tinymce.init({
+            selector: '.tiny-mce',
+            height: 200,
+            menubar: false,
+            toolbar: 'code',
+            plugins: 'code'
+        });
+    </script>
+@endsection
