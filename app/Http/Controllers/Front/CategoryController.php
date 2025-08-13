@@ -80,11 +80,12 @@ class CategoryController extends FrontController
         if($request->ajax()){
             $message = null;
             $page = true;
-            if($request->has('sort') && !$request->has('page')){
+            $action = $request->input('action');
+            if($request->has('sort') && !$request->has('page') && $action === 'sort'){
                 $message = "Product sorted successfully";
                 $page = false;
             }
-            if(($request->has('filterby') || $request->has('minPrice') || $request->has('maxPrice')) && !$request->has('page')){
+            if(($request->has('filterby') || $request->has('minPrice') || $request->has('maxPrice')) && !$request->has('page') && $action === 'filter'){
                 $message = "Product filtered successfully";
                 $page = false;
             }

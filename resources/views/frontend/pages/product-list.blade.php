@@ -83,6 +83,8 @@
         function sorting(sorting){
             const url = new URL(window.location.href);
             url.searchParams.set('sort', $(sorting).val());
+            url.searchParams.delete('action');
+            url.searchParams.set('action','sort');
             url.searchParams.delete('page'); // reset to first page on sorting change
             loadProducts(url.toString());
         }
@@ -109,6 +111,7 @@
             url.searchParams.delete('minPrice');
             url.searchParams.delete('maxPrice');
             url.searchParams.delete('page');
+            url.searchParams.delete('action');
             // Collect all dynamic filter values
             const filters = {};
 
@@ -141,6 +144,7 @@
             if (maxPrice && maxPrice.trim() !== '') {
                 url.searchParams.set('maxPrice', maxPrice);
             }
+            url.searchParams.set('action', 'filter');
             // Load products with new URL
             loadProducts(url.toString());
         }
@@ -152,6 +156,7 @@
             url.searchParams.delete('minPrice');
             url.searchParams.delete('maxPrice');
             url.searchParams.delete('page');
+            url.searchParams.delete('action');
             // Keep sort if it exists
             if (currentSort) {
                 url.searchParams.set('sort', currentSort);
