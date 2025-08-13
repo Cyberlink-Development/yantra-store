@@ -39,6 +39,39 @@
                     </a>
                 </li>
 
+                
+                <li class="nav-header" style="padding-top:.5rem!important;">CMS</li>
+                <li class="nav-item has-treeview {{ in_array($currentRoute, ['type.posttype.index']) ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ in_array($currentRoute, ['type.posttype.index']) ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-sliders"></i>
+                        <p>
+                            PostType
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('type.posttype.index') }}" class="nav-link ml-3 {{ $currentRoute == 'type.posttype.index' ? 'active' : '' }}">
+                                <i class="fa fa-plus nav-icon"></i>
+                                <p>List</p>
+                            </a>
+                        </li>
+
+                        
+                        @if ($postTypes)
+                            @foreach ($postTypes as $row)
+                                <li class="nav-item">
+                                    <a href="" class="nav-link ml-3">
+                                        <i class="fa fa-list nav-icon"></i>
+                                        <p>{{ $row->post_type }}</p>
+                                    </a>
+                                </li>
+                            @endforeach
+                        @endif
+                    </ul>
+                </li>
+
+
                 <li class="nav-header" style="padding-top:.5rem!important;">PRODUCTS</li>
                 <li class="nav-item has-treeview {{ in_array($currentRoute, ['add-size', 'add-color']) ? 'menu-open' : '' }}">
                     <a href="" class="nav-link {{ in_array($currentRoute, ['add-size', 'add-color']) ? 'active' : '' }}">

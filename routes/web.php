@@ -151,6 +151,15 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('/admin-password', 'AdminController@admin_password')->name('admin-password');
     Route::post('/admin-password', 'AdminController@admin_password')->name('admin-password');
 
+    // CMS
+    // Posttype
+    Route::get('type', 'PostTypeController@index')->name('type.posttype.index');
+    Route::get('type/create', 'PostTypeController@create')->name('type.posttype.create');
+    Route::post('type/store', 'PostTypeController@store')->name('type.posttype.store');
+    Route::get('type/{id}/edit', 'PostTypeController@edit')->name('type.posttype.edit');
+    Route::put('type/{id}', 'PostTypeController@update')->name('type.posttype.update');
+    Route::delete('type/{id}', 'PostTypeController@destroy')->name('type.posttype.destroy');
+
 
     // Route::resource('category',CategoryController::class);
 
