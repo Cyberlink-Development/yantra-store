@@ -7,6 +7,7 @@
                 @else
                   <img src="{{ $user->avatar ?: asset('theme-assets/img/team/01.jpg') }}" width="90" alt="{{ $user->first_name }}" class="img-thumbnail rounded-circle">
                 @endif
+            </div>
             <div class="media-body pl-3">
                 <h3 class="font-size-base mb-0">{{ $user->first_name }}</h3><span class="text-accent font-size-sm">{{ $user->email }}</span>
             </div>
@@ -21,7 +22,7 @@
             </a>
         </li>
         <li class="border-bottom mb-0">
-            <a href="{{ route('user-orders') }}" class="nav-link-style d-flex align-items-center px-4 py-3" href="orders.php">
+            <a href="{{ route('user-orders') }}" class="nav-link-style d-flex align-items-center px-4 py-3">
                 <i class="czi-bag opacity-60 mr-2"></i>Orders<span class="font-size-sm text-muted ml-auto">{{ $order }}</span>
             </a>
         </li>

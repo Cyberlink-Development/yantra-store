@@ -55,7 +55,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="su-name">Full name</label>
-                            <input class="form-control" type="text" name="full_name" id="su-name" placeholder="Enter Full Name" required>
+                            <input class="form-control" type="text" name="first_name" id="su-name" placeholder="Enter Full Name" required>
                             <div class="invalid-feedback">Please fill in your name.</div>
                         </div>
                         <div class="form-group">

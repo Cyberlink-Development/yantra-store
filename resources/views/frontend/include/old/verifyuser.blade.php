@@ -184,54 +184,27 @@
                 <!-- Email Body -->
                 <tr>
                     <td class="email-body" width="100%">
-                        <table class="email-body_inner" align="center" width="570" cellpadding="0" cellspacing="0" style="background-color:#ffffff; border-radius:8px; padding:30px; font-family:Arial, sans-serif;">
+                        <table class="email-body_inner" align="center" width="570" cellpadding="0" cellspacing="0">
                             <!-- Body content -->
                             <tr>
-                                <td class="content-cell" style="font-size:16px; line-height:1.5; color:#333;">
-                                    <h1 style="font-size:24px; font-weight:bold; margin-bottom:20px; color:#222;">Verify your email address</h1>
-                                    
-                                    <p style="margin-bottom:15px;">
-                                        Hi <strong>{{ $name }}</strong>,
-                                    </p>
-                                    
-                                    <p style="margin-bottom:15px;">
-                                        Thanks for signing up for <strong>E-commerce</strong>! We’re excited to have you on board.
-                                    </p>
-                                    
-                                    <p style="margin-bottom:15px;">
-                                        Your registered email is: <strong>{{ $email }}</strong>
-                                    </p>
-
-                                    <p style="margin-bottom:15px;">
-                                        Your account password is:  
-                                        <span style="display:inline-block; background-color:#f4f4f4; padding:5px 10px; border-radius:4px; font-weight:bold;">
-                                            {{ $password }}
-                                        </span>
-                                    </p>
-
-                                    <p style="margin-bottom:20px;">
-                                        Please click the button below to verify your email account:
-                                    </p>
-
-                                    <!-- Action Button -->
-                                    <table class="body-action" align="center" cellpadding="0" cellspacing="0" style="margin: 20px 0;">
+                                <td class="content-cell">
+                                    <h1>Verify your email address</h1>
+                                    <p>Thanks {{$name}} for signing up for E-commerce! We're excited to have you as a user.</p>
+                                    <br/>
+                                    Your registered email-id is {{$email}} , Please click on the below link to verify your email account
+                                    <br/>
+                                    <!-- Action -->
+                                    <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                                         <tr>
                                             <td align="center">
-                                                <a href="{{ route('verify-user', $token) }}" style="display:inline-block; background-color:#007BFF; color:#fff; font-size:16px; font-weight:bold; padding:12px 25px; border-radius:5px; text-decoration:none;" target="_blank">
-                                                    Verify Email
-                                                </a>
+                                                <div>
+                                                    <a href="{{route('verify-user', $token)}}" class="button button--blue"><span style="color:blue;">Verify Email</span></a>
+                                                </div>
                                             </td>
                                         </tr>
                                     </table>
-
-                                    <p style="margin-top:20px;">
-                                        If you didn’t create an account, you can safely ignore this email.
-                                    </p>
-
-                                    <p style="margin-top:30px;">
-                                        Thanks,<br>
-                                        <strong>Yantra Store</strong>
-                                    </p>
+                                    <p>Thanks,<br>Yantra Store</p>
+                                    <!-- Sub copy -->
                                 </td>
                             </tr>
                         </table>

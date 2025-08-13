@@ -37,7 +37,7 @@ class GoogleController extends Controller
             return redirect('/')->with([
                 'success' => true,
                 'message' => 'Logged In Successfully'
-            ]);;
+            ]);
         } catch (\Exception $e) {
             // return redirect('/login')->withErrors(['msg' => 'Google login failed.']);
             return redirect('/login')->with([
