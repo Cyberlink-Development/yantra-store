@@ -34,17 +34,6 @@
                                         </div>
                                     @endif
                                     <div class="form-group">
-
-                                        <label for="formGroupExampleInput">Thumbnail:</label>
-                                        <input type="file" name="image" class="form-control" id="formGroupExampleInput">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="formGroupExampleInput">Banner:</label>
-                                        <input type="file" name="banner" class="form-control" id="formGroupExampleInput">
-                                    </div>
-
-                                    <div class="form-group">
                                         <label>Description</label>
                                         <textarea name="description" id="desc-norm" rows="3" class="form-control tiny-mce"></textarea>
                                     </div>
@@ -87,6 +76,22 @@
                                     <label for="is_footer" class="control-label m-0">Is Footer ?</label>
                                     <input type="checkbox" id="is_footer" name="is_footer" />
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body" style="padding:. 5rem;">
+                            <div class="form-group">
+                                <label for="banner">Banner:</label>
+                                <input type="file" name="banner" class="form-control" id="banner" style="height:auto; padding:0;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body" style="padding:. 5rem;">
+                            <div class="form-group">
+                                <label for="thumbnail">Thumbnail:</label>
+                                <input type="file" name="image" class="form-control" id="thumbnail" style="height:auto; padding:0;">
                             </div>
                         </div>
                     </div>

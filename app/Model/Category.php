@@ -12,7 +12,10 @@ class Category extends Model
     use HasSlug;
 
     public function scopeActive($query){
-        return $query->where('status', 1);
+        return $query->where('status', '1');
+    }
+    public function scopeHome($query){
+        return $query->where('in_home','1');
     }
 
     public function getSlugOptions() : SlugOptions

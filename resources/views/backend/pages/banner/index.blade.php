@@ -1,35 +1,57 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'Banners List','actionLabel'=>'Create',
+      'actionLink'=>route('banner.create')])
+@endsection
 @section('content')
-    <div class="container">
-        <h3 class="blockquote" style="text-align: center">View Banners / <a href="banner/create" class="btn btn-primary btn-sm">Create</a></h3>
-        <table id="example" class="table table-striped table-bordered datatable" style="width:100%">
-            <thead>
-            <tr>
-                <th>S.N</th>
-                <th>Title</th>                
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($data as $key=>$value)
-                <tr>
-                    <td>{{++$key}}</td>
-                    <td>{{$value->title}} </td>
-                   
-                    <td>
-                        <a class="btn btn-primary" href="{{url('admin/banner/'.$value->id.'/edit')}}"><i class="fa fa-eye"></i> </a>
-
-                        <a class="btn btn-danger confirm" href="{{url('admin/banner/'.$value->id.'/destroy')}}"  onclick="return confirm('Confirm Delete?')">
-                            <i class="fa fa fa-trash" ></i>
-                        
-                            </a>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">All Banners</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="package_table" class="table table-bordered table-striped datatable123">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Picture</th>
+                                <th>Status</th>
+                                <th class="sorting-false">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($data as $row)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $row->title }}</td>
+                                    <td>
+                                        @if($row->picture && File::exists('uploads/banners/'.$row->picture))
+                                            <img src="{{ asset('uploads/banners/'.$row->picture) }}" height="20" width="50" />
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" class="toggle-status" data-id="{{ $row->id }}" name="status" {{ $row->status == '1' ? 'checked' : '' }} onclick="updateStatus(this, {{$row->id}},'{{getModelPathFromData($row)}}')">
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('banner.edit', $row->id) }}" class="btn btn-sm btn-primary" title="Edit">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a href="{{ route('banner.delete', $row->id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Confirm Delete?')" title="Delete">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-    <br>
 
 @endsection
 

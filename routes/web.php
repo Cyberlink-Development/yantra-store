@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BrandDiscountController;
 use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GlobalController;
 
 /******************** By Sangam Starts ***********/
 // use App\Http\Controllers\Admin\CategoryController;
@@ -144,6 +145,12 @@ Route::group(['namespace' => 'Auth'], function () {
 
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'usercheck']], function () {
+    /******************************* By Sangam Starts ******************************************/
+    Route::post('update-status', [GlobalController::class,'updateStatus'])->name('global.update.status');
+    Route::get('image-delete', [GlobalController::class,'deleteImage'])->name('global.image.delete');
+    /******************************* By Sangam Ends ********************************************/
+
+
     Route::get('all-user', 'AdminController@all_user')->name('all-user');
     Route::get('/dashboard', 'AdminController@dashboard')->name('dashboard');
     Route::post('/wholesale-user', 'AdminController@wholesale_user')->name('wholesale-user');
@@ -333,7 +340,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     ]);
     Route::resource('brand-discounts', 'BrandDiscountController'::class);
 
-    Route::get('banner/{id}/destroy','BannerController@destroy');
+    Route::get('banner/{id}/destroy','BannerController@destroy')->name('banner.delete');
 });
 
 

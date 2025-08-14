@@ -130,4 +130,24 @@ function isFilterByCategory(string $category): bool
     }
     return false;
 }
+function getModelPathFromData($data)
+{
+    return str_replace('\\', '\\\\', get_class($data));
+    /*
+    Output: App\\Model\\Test
+    Remarks: Double slashes are retrun cause we are using this function to pass the model path to the ajax which removes the slash. But using doble slashes it treats the first one as the escape operator and ignore the second one cause escape operator means to ignore or skip first character after it.
+    */
+}
+function correctFolderPath($folderPath){
+    $folderPath = trim($folderPath);
+    if(substr($folderPath, -1) !== '/'){
+        $folderPath .= '/';
+    }
+    return $folderPath;
+    /*
+        input1 : 'images/banner';
+        input2 : 'images/banner/';
+        output : 'images/banner/';
+    */
+}
 /************************ By Sangam Ends ********************************/

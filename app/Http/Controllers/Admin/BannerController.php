@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\BannerModel;
+use Illuminate\Validation\ValidationException;
+use Exception;
+use Log;
 
 class BannerController extends BackendController
 {
@@ -37,28 +40,38 @@ class BannerController extends BackendController
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        $request->validate([
-            'title' => 'required',
-            'picture' => 'required',
-        ]);
+        try{
 
+            $request->validate([
+                'title' => 'required',
+                'picture' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048'
+            ]);
+            $req = $request->all();
 
-        $req = $request->all();
+            if ($request->hasFile('picture')) {
+                $image = $request->file('picture');
+                $name = time() .  '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $destinationPath = public_path('/uploads/banners/');
 
-        if ($request->hasFile('picture')) {
-            $image = $request->file('picture');
-            $name = time() . '.' . $image->getClientOriginalExtension();
-            $destinationPath = public_path('/images/banner/');
-
-            $image->move($destinationPath, $name);
-            $req['picture'] = $name;
-        }
-        $data = BannerModel::create($req);
-        if ($data) {
-            return redirect()->back()->with('success', 'Successfully added.');
-        } else {
-            return "Error";
+                $image->move($destinationPath, $name);
+                $req['picture'] = $name;
+            }
+            $data = BannerModel::create($req);
+            return redirect()->route('banner.index')->with([
+                'success' => true,
+                'message' => 'Banner added successfully.'
+            ]);
+        }catch(ValidationException $e){
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => $e->validator->errors()->all()
+            ]);
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong'
+            ]);
         }
     }
 
@@ -94,36 +107,50 @@ class BannerController extends BackendController
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'title' => 'required',
-        ]);
+        try{
 
-        $data = BannerModel::find($id);
-        $file = $request->file('picture');
+            $data = BannerModel::findOrFail($id);
+            $rules = [
+                'title' => 'required|string',
+            ];
 
-        if ($request->hasFile('picture')) {
-            // Remove old file if exists
-            $data = BannerModel::find($id);
-            if (file_exists(public_path('images/banner/' . $data->picture))) {
-                unlink('images/banner/' . $data->picture);
+            if (!$data->picture) {
+                $rules['picture'] = 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048';
             }
 
-            // Upload new file
-            $image = $request->file('picture');
-            $name = time() . '.' . $image->getClientOriginalExtension();
-            $destinationPath = public_path('/images/banner/');
-            $image->move($destinationPath, $name);
-            $data['picture'] = $name;
-        }
+            $request->validate($rules);
 
-        $data->title = $request->title;
-        $data->caption = $request->caption;
-        $data->content = $request->content;
-        $data->link = $request->link;
-
-        $data->save();
-        if ($data->save()) {
-            return redirect()->back()->with('success', 'Update Successful.');
+            if ($request->hasFile('picture')) {
+                if($data->picture && file_exists(public_path('uploads/banners/' . $data->picture))){
+                    unlink('uploads/banners/' . $data->picture);
+                }
+                // Upload new file
+                $image = $request->file('picture');
+                $name = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $destinationPath = public_path('/uploads/banners/');
+                $image->move($destinationPath, $name);
+                $data['picture'] = $name;
+            }
+            $data->title = $request->title;
+            $data->caption = $request->caption;
+            $data->content = $request->content;
+            $data->link = $request->link;
+            $data->save();
+            return redirect()->route('banner.index')->with([
+                'success' => true,
+                'message' => 'Banner update successfully.'
+            ]);
+        }catch(ValidationException $e){
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => $e->validator->errors()->all()
+            ]);
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong'
+            ]);
         }
     }
 
@@ -138,8 +165,8 @@ class BannerController extends BackendController
     {
         $data = BannerModel::find($id);
 
-        if (file_exists(public_path('images/banner/' . $data->picture))) {
-            unlink('images/banner/' . $data->picture);
+        if (file_exists(public_path('uploads/banners/' . $data->picture))) {
+            unlink('uploads/banners/' . $data->picture);
         }
         $data->delete();
         return redirect()->back()->with('success', 'Banner Deleted.');

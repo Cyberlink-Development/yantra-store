@@ -41,15 +41,15 @@ class CategoryController extends BackendController
             ]);
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
-                $name =rand(1, 1000000). time() . '.' . $image->getClientOriginalExtension();
+                $name = time() .  '_' . uniqid() . '.' . $image->getClientOriginalExtension();
                 $destinationPath = public_path('/images/categories/');
                 $image->move($destinationPath, $name);
                 $data['image'] = $name;
             }
             if ($request->hasFile('banner')) {
                 $banner = $request->file('banner');
-                $bname =rand(1, 1000000). time() . '.' . $banner->getClientOriginalExtension();
-                $destinationPath = public_path('/images/categories/');
+                $bname = time() .  '_' . uniqid() . '.' . $banner->getClientOriginalExtension();
+                $destinationPath = public_path('/uploads/banners/');
 
                 $banner->move($destinationPath, $bname);
                 $data['banner'] = $bname;
@@ -107,7 +107,7 @@ class CategoryController extends BackendController
             if ($request->hasFile('image')) {
                 $this->delete_file($id);
                 $image = $request->file('image');
-                $name = rand(1, 1000000).time() . '.' . $image->getClientOriginalExtension();
+                $name = time() .  '_' . uniqid() . '.' . $image->getClientOriginalExtension();
                 $destinationPath = public_path('/images/categories/');
                 $image->move($destinationPath, $name);
                 $data['image'] = $name;
@@ -116,8 +116,8 @@ class CategoryController extends BackendController
             if ($request->hasFile('banner')) {
                 $this->delete_banner($id);
                 $image = $request->file('banner');
-                $name = rand(1, 1000000).time() . '.' . $image->getClientOriginalExtension();
-                $destinationPath = public_path('/images/categories/');
+                $name = time() .  '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $destinationPath = public_path('/uploads/banners/');
                 $image->move($destinationPath, $name);
                 $data['banner'] = $name;
             }
@@ -188,7 +188,7 @@ class CategoryController extends BackendController
     {
         $findData = Category::findorfail($id);
         $fileName = $findData->banner;
-        $deletePath = public_path('images/categories/' . $fileName);
+        $deletePath = public_path('uploads/banners/' . $fileName);
         if (file_exists($deletePath) && is_file($deletePath)) {
             unlink($deletePath);
         }
