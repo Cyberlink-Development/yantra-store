@@ -17,6 +17,17 @@ class PostTypeController extends Controller
         $data = PostType::orderBy('ordering','asc')->get();
         return view('backend.cms.posttype.index',compact('data'));
     }
+    public function toggleStatus($id)
+    {
+        $postType = PostType::findOrFail($id);
+        $postType->status = $postType->status == 0 ? 1 : 0;
+        $postType->save();
+
+        return response()->json([
+            'success' => true,
+            'status' => $postType->status
+        ]);
+    }
 
     public function create(){
         
@@ -70,16 +81,39 @@ class PostTypeController extends Controller
         $postType = PostType::where('id',$id)->first();
         return view('backend.cms.posttype.edit', compact('postType'));
     }
-
-    public function update(Request $request, $id)
+    public function deleteBanner($id)
     {
         try{
             $postType = PostType::findOrFail($id);
+
+            if ($postType->banner && file_exists(public_path('uploads/banners/' . $postType->banner))) {
+                unlink(public_path('uploads/banners/' . $postType->banner));
+            }
+
+            $postType->banner = null;
+            $postType->save();
+            return response()->json([
+                'success' => true,
+                'message' => 'Banner deleted successfully'
+            ]);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return back()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
+        }
+    }
+    public function update(Request $request, $id)
+    {
+        try{
             $request->validate([
                 'post_type'   => 'required|string|max:255',
                 'uri'         => 'required|string|max:255|unique:cl_post_type,uri,' . $id,
                 'banner'      => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
+
+            $postType = PostType::findOrFail($id);
 
             if ($request->hasFile('banner')) 
             {

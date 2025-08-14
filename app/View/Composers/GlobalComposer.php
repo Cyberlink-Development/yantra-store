@@ -10,10 +10,10 @@ class GlobalComposer
 {
     public function compose(View $view){
         $setting = Setting::find(1);
-        $postTypes = PostType::where('status',1)->orderBy('ordering', 'asc')->get();
+        $postType_menus = PostType::where('status',1)->orderBy('ordering', 'asc')->get();
         $view->with([
             'setting'=>$setting,
-            'postTypes' => $postTypes,
+            'postType_menus' => $postType_menus,
         ]);
     }
 }

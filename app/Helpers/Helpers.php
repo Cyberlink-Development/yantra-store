@@ -2,6 +2,7 @@
 
 use App\Model\Brand;
 use App\Model\ComponentType;
+use App\Model\Post;
 use App\Model\Product;
 
 function categorySeperator( $size, $string = '')
@@ -69,6 +70,14 @@ function get_product_by_componenttype_id($id)
 //    return null;
 //
 //}
+
+function has_posts($post_type){
+  $data = Post::where(['post_type'=>$post_type,'post_parent'=>'0'])->orderBy('post_order','asc')->get();
+  if($data->count() > 0){
+    return $data;
+  }
+  return false;
+} 
 
 
 /************************ By Sangam Starts ******************************/

@@ -24,17 +24,11 @@
                             @foreach($data as $key=>$value)
                                 <tr>
                                     <td>{{$key+=1}}</td>
-                                    <td>{{$value->post_type}}</td>
+                                    <td><a href="{{ url('admin/posts/'.$value->uri)}}">{{ ucfirst($value->post_type) }}</a></td>
                                     <td>
-                                        @if(($value->status)==0)
-                                            <button class="btn btn-sm btn-danger btn btn-sm" name="inactive">
-                                                <i class="fa fa-times"></i>
-                                            </button>
-                                        @else
-                                            <button class="btn btn-sm btn-success btn btn-sm" name="active">
-                                                <i class="fa fa-check"></i>
-                                            </button>
-                                        @endif
+                                        <button class="btn btn-sm status-btn {{ $value->status == 0 ? 'btn-danger' : 'btn-success' }}" data-id="{{ $value->id }}" data-status="{{ $value->status }}">
+                                            <i class="fa {{ $value->status == 0 ? 'fa-times' : 'fa-check' }}"></i>
+                                        </button>
                                     </td>
                                     <td>
                                         <a class="btn btn-outline-primary btn btn-sm confirm"  href="{{route('type.posttype.edit',$value->id)}}"><i class="fa fa fa-edit"></i> </a>
@@ -70,6 +64,39 @@
         $('#package_table').DataTable({
 
         });
+    </script>
+    <script>
+        $(document).on('click', '.status-btn', function() {
+            var btn = $(this);
+            var id = btn.data('id');
+
+            $.ajax({
+                url: '{{ url("admin/types") }}/' + id + '/toggle-status',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if(response.success){
+                        if(response.status == 1){
+                            btn.removeClass('btn-danger').addClass('btn-success');
+                            btn.find('i').removeClass('fa-times').addClass('fa-check');
+                        } else {
+                            btn.removeClass('btn-success').addClass('btn-danger');
+                            btn.find('i').removeClass('fa-check').addClass('fa-times');
+                        }
+
+                        toastr.success('Status updated successfully.');
+                    } else {
+                        toastr.error('Failed to update status.');
+                    }
+                },
+                error: function() {
+                    toastr.error('Something went wrong.');
+                }
+            });
+        });
+
     </script>
 
 @endpush

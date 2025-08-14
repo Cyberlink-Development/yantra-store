@@ -159,6 +159,19 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('type/{id}/edit', 'PostTypeController@edit')->name('type.posttype.edit');
     Route::put('type/{id}', 'PostTypeController@update')->name('type.posttype.update');
     Route::delete('type/{id}', 'PostTypeController@destroy')->name('type.posttype.destroy');
+    Route::delete('types/{id}/banner', 'PostTypeController@deleteBanner')->name('type.posttype.deleteBanner');
+    Route::post('types/{id}/toggle-status', 'PostTypeController@toggleStatus')->name('type.posttype.toggleStatus');
+
+    // For post
+    Route::get('posts/{post}', 'PostController@index')->name('admin.post.index');
+    Route::get('posts/{post}/create', 'PostController@create')->name('admin.post.create');
+    Route::post('posts/{post}/store', 'PostController@store')->name('admin.post.store');
+    Route::put('posts/{post}/{id}', 'PostController@update')->name('admin.post.update');
+    Route::get('posts/{post}/{id}/edit', 'PostController@edit')->name('admin.post.edit');
+    Route::delete('posts/{post}/{id}', 'PostController@destroy')->name('admin.post.destroy');
+    Route::delete('post/{id}/thumbnail', 'PostController@deleteThumbnail')->name('admin.post.deleteThumbnail');
+    Route::delete('post/{id}/banner', 'PostController@deleteBanner')->name('admin.post.deleteBanner');
+    Route::post('post/{id}/toggle-status', 'PostController@toggleStatus')->name('admin.post.toggleStatus');
 
 
     // Route::resource('category',CategoryController::class);
