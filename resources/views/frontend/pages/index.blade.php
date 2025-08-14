@@ -1,20 +1,29 @@
 @extends('frontend.include.master')
 @section('content')
     <!-- Hero slider start -->
-    <section class="cz-carousel cz-controls-lg">
-        <div class="cz-carousel-inner" data-carousel-options='{"mode": "gallery", "responsive": {"0":{"nav":true, "controls": true},"992":{"nav":false, "controls": true}}}'>
-            <div>
-                <a href="list.php">
-                    <img src="{{asset('theme-assets/img/index.webp')}}" alt="">
-                </a>
+    @if($banners->count() > 0)
+        <section class="cz-carousel cz-controls-lg">
+            <div class="cz-carousel-inner" data-carousel-options='{"mode": "gallery", "responsive": {"0":{"nav":true, "controls": true},"992":{"nav":false, "controls": true}}}'>
+                @foreach($banners as $row)
+                    <div>
+                        @php
+                            $imagePath = $row->picture
+                                ? asset('uploads/banners/' . $row->picture)
+                                : asset('theme-assets/img/default-banner.png');
+                        @endphp
+
+                        @if($row->link)
+                            <a href="{{ $row->link }}">
+                                <img src="{{ $imagePath }}" alt="{{ $row->title }}">
+                            </a>
+                        @else
+                            <img src="{{ $imagePath }}" alt="{{ $row->title }}">
+                        @endif
+                    </div>
+                @endforeach
             </div>
-            <div>
-                <a href="list.php">
-                    <img src="{{asset('theme-assets/img/index2.webp')}}" alt="">
-                </a>
-            </div>
-        </div>
-    </section>
+        </section>
+    @endif
     <!-- Hero slider end -->
 
     <!-- scrolling text start-->
@@ -1187,64 +1196,25 @@
     <!-- Latest Launches / New Arrivals products end-->
 
     <!-- category section start -->
-    <section class="container-fluid px-4 px-md-5 mb-5">
-        <div class="row mb-3">
-            <div class="col-12 text-center">
-                <h2 class="section-title mb-0">Categories</h2>
+    @if($categories->count() > 0)
+        <section class="container-fluid px-4 px-md-5 mb-5">
+            <div class="row mb-3">
+                <div class="col-12 text-center">
+                    <h2 class="section-title mb-0">Categories</h2>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-3 col-md-4 col-6 category-div">
-                <a href="list.php" class="text-center">
-                    <img class="img-fluid" src="img/offer/offer1.png" alt="">
-                    <p>Motherboard</p>
-                </a>
+            <div class="row">
+                @foreach($categories as $row)
+                    <div class="col-lg-3 col-md-4 col-6 category-div">
+                        <a href="{{ route('product-list', $row->slug) }}" class="text-center">
+                            <img class="img-fluid" src="{{$row->banner ? asset('uploads/banners/'.$row->banner) : asset('theme-assets/img/default-thumbnail.jpeg')}}" alt="">
+                            <p>{{$row->name}}</p>
+                        </a>
+                    </div>
+                @endforeach
             </div>
-            <div class="col-lg-3 col-md-4 col-6 category-div">
-                <a href="list.php" class="text-center">
-                    <img class="img-fluid" src="img/offer/offer2.png" alt="">
-                    <p>Cabient Board</p>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-6 category-div">
-                <a href="list.php" class="text-center">
-                    <img class="img-fluid" src="img/offer/offer3.png" alt="">
-                    <p>Memory</p>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-6 category-div">
-                <a href="list.php" class="text-center">
-                    <img class="img-fluid" src="img/offer/offer1.png" alt="">
-                    <p>Motherboard</p>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-6 category-div">
-                <a href="list.php" class="text-center">
-                    <img class="img-fluid" src="img/offer/offer4.png" alt="">
-                    <p>Power Supply</p>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-6 category-div">
-                <a href="list.php" class="text-center">
-                    <img class="img-fluid" src="img/offer/offer1.png" alt="">
-                    <p>Motherboard</p>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-6 category-div">
-                <a href="list.php" class="text-center">
-                    <img class="img-fluid" src="img/offer/offer1.png" alt="">
-                    <p>Motherboard</p>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-6 category-div">
-                <a href="list.php" class="text-center">
-                    <img class="img-fluid" src="img/offer/offer1.png" alt="">
-                    <p>Motherboard</p>
-                </a>
-            </div>
-
-        </div>
-    </section>
+        </section>
+    @endif
     <!-- category section end-->
 
     <!-- Ad section start-->

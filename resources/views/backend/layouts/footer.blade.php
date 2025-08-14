@@ -118,5 +118,44 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
+    <script>
+        function updateStatus(element,id,modelPath){
+            /* To use this function the checkbox must have the name field with correct value*/
+            const fieldName = element.name;
+            $.ajax({
+                type: 'post',
+                url: "{{ route('global.update.status') }}",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id,
+                    field: fieldName,
+                    modelPath: modelPath,
+                },
+                success:function(res){
+                    ajax_response(res);
+                }
+            });
+        }
+        function imageDelete(e,id,modelPath,fieldName,folderPath){
+            e.preventDefault();
+            $.ajax({
+                type: 'GET',
+                url: "{{ route('global.image.delete') }}",
+                data:{
+                    id: id,
+                    field: fieldName,
+                    modelPath: modelPath,
+                    folderPath: folderPath
+                },
+                success: function (res) {
+                    ajax_response(res);
+                    if(res.success == true){
+                        $('#prev-'+fieldName).remove();
+                    }
+                }
+            });
+        }
+    </script>
+
 </body>
 </html>

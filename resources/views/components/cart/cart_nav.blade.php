@@ -41,7 +41,7 @@
                     <i class="czi-arrow-right ml-1 mr-n1"></i>
                 </a>
             </div>
-            <a class="btn btn-primary btn-sm btn-block" href="checkout.php">
+            <a class="btn btn-primary btn-sm btn-block" href="{{route('checkout-address')}}">
                 <i class="czi-card mr-2 font-size-base align-middle"></i>Checkout
             </a>
         </div>

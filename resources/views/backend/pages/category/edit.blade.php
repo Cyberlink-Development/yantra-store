@@ -58,8 +58,8 @@
                 <div class="col-md-4">
                     <div class="card" style="box-shadow:none; border:none;">
                         <div class="card-body" style="padding:.5rem;">
-                            <button class="btn btn-danger btn-xs pull-right">
-                                Save
+                            <button class="btn btn-primary btn-xs pull-right">
+                                Update
                             </button>
                         </div>
                     </div>
@@ -99,8 +99,8 @@
                             </div>
                             @if($data->banner)
                                 <div id="prev-banner" style="position:relative;">
-                                    <button type="button" class="btn btn-danger" data-url="{{route('category-banner-delete', $data->id)}}" id="banner-delete" style="border-radius:50%; position:absolute; right:5px; top:5px;    padding: 2px 9px;">X</button>
-                                    <img src="{{asset('images/categories/'. $data->banner)}}" style="height: 150px; width:auto;">
+                                    <button type="button" class="btn btn-danger" onclick="imageDelete(event,{{$data->id}},'{{getModelPathFromData($data)}}','banner','uploads/banners/')" style="border-radius:50%; position:absolute; right:5px; top:5px; padding: 2px 9px;">X</button>
+                                    <img src="{{asset('uploads/banners/'. $data->banner)}}" style="height: 150px; width:100%;">
                                 </div>
                             @endif
                         </div>
@@ -112,9 +112,9 @@
                                 <input type="file" name="image" class="form-control" id="formGroupExampleInput" style="height:auto; padding:0;">
                             </div>
                             @if($data->image)
-                                <div id="prev-img" style="position:relative;">
-                                    <img src="{{asset('images/categories/'. $data->image)}}" style="height: 150px; width:auto;">
-                                    <button type="button" class="btn btn-danger" data-url="{{route('category-image-delete', $data->id)}}" id="image-delete" style="border-radius:50%; position:absolute; right:5px; top:5px;    padding: 2px 9px;">X</button>
+                                <div id="prev-image" style="position:relative;">
+                                    <img src="{{asset('images/categories/'. $data->image)}}" style="height: 150px; width:100%;">
+                                    <button type="button" class="btn btn-danger" onclick="imageDelete(event,{{$data->id}},'{{getModelPathFromData($data)}}','image','images/categories/')" style="border-radius:50%; position:absolute; right:5px; top:5px; padding: 2px 9px;">X</button>
                                 </div>
                             @endif
                         </div>
@@ -149,61 +149,3 @@
         </form>
     </div>
 @stop
-
-@push('scripts')
-
-<script>
-    $("#image-delete").click(function (e){
-        e.preventDefault();
-        let dataUrl = $(this).attr("data-url");
-
-         $.ajax({
-                type: 'GET',
-                url: dataUrl,
-                success: function (data) {
-                    // console.log(data);
-                    if (!data.errors) {
-                        toastr.success(data.message);
-                        $("#prev-img").remove();
-                    }
-                    jQuery.each(data.errors, function (key, value) {
-                        toastr.error(value);
-                        // hideLoading();
-                    })
-                },
-                error: function (a) {//if an error occurs
-                    // hideLoading();
-                    alert("An error occured while uploading data.\n error code : " + a.statusText);
-                }
-            });
-    });
-</script>
-
-<script>
-    $("#banner-delete").click(function (e){
-        e.preventDefault();
-        let dataUrl = $(this).attr("data-url");
-
-         $.ajax({
-                type: 'GET',
-                url: dataUrl,
-                success: function (data) {
-                    // console.log(data);
-                    if (!data.errors) {
-                        toastr.success(data.message);
-                        $("#prev-banner").remove();
-                    }
-                    jQuery.each(data.errors, function (key, value) {
-                        toastr.error(value);
-                        // hideLoading();
-                    })
-                },
-                error: function (a) {//if an error occurs
-                    // hideLoading();
-                    alert("An error occured while uploading data.\n error code : " + a.statusText);
-                }
-            });
-    });
-</script>
-
-@endpush

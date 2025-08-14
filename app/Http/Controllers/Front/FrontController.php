@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 class FrontController extends Controller
 {
-
     protected $frontendPath = 'frontend.';
     protected $frontendPagePath = 'null';
 
@@ -24,16 +23,16 @@ class FrontController extends Controller
 
     }
 
-   public function index()
-   {
+    public function index()
+    {
+        $banners= BannerModel::active()->get();
+        $categories=Category::active()->home()->orderBy('created_at','desc')->get();
+        $brand=Brand::orderBy('created_at','desc')->take(16)->get();
+        $product=Product::where('is_popular','popular')->orderBy('created_at','desc')->limit(8)->get();
+        $featured_category=Category::where('is_special',1)->where('status', 1)->orderBy('updated_at','desc')->limit(5)->get();
+        $featured_category2=Category::where('is_special',1)->where('status', 1)->orderBy('updated_at','desc')->skip(1)->first();
 
-      $category=Category::orderBy('created_at','desc')->where('parent_id',0)->where('status', 1)->take(3)->get();
-      $brand=Brand::orderBy('created_at','desc')->take(16)->get();
-      $product=Product::where('is_popular','popular')->orderBy('created_at','desc')->limit(8)->get();
-      $featured_category=Category::where('is_special',1)->where('status', 1)->orderBy('updated_at','desc')->limit(5)->get();
-       $featured_category2=Category::where('is_special',1)->where('status', 1)->orderBy('updated_at','desc')->skip(1)->first();
-       $banner= BannerModel::all();
-       $latest_blogs = Blog::orderBy('created_at', 'desc')->limit(3)->get();
+        $latest_blogs = Blog::orderBy('created_at', 'desc')->limit(3)->get();
 
 //       $id=OrderDetail::all()->pluck('product_id');
 //       dd($id->sortByDesc('occurrences'));
@@ -43,19 +42,20 @@ class FrontController extends Controller
 //           dd($value->products());
 //       }
 //       dd($best_seller->first()->products);
-       $result = DB::table('order_details')
-           ->select(DB::raw('product_id'), DB::raw('count(*) as count'))
-           ->groupBy('product_id')
-           ->orderBy('count', 'desc')
-           ->take(8)
-           ->pluck('product_id');
+        $result = DB::table('order_details')
+            ->select(DB::raw('product_id'), DB::raw('count(*) as count'))
+            ->groupBy('product_id')
+            ->orderBy('count', 'desc')
+            ->take(8)
+            ->pluck('product_id');
 //       dd($result);
-       $best=Product::wherein('id',$result)->get();
-       $new=Product::orderby('created_at','desc')->take(5)->get();
-       $popular=Product::where('is_popular','popular')->orderBy('updated_at','desc')->take(5)->get();
-       return view('frontend.pages.index',compact('banner','popular','new','best','category','brand','product','featured_category','featured_category2', 'latest_blogs'));
+        $best=Product::wherein('id',$result)->get();
+        $new=Product::orderby('created_at','desc')->take(5)->get();
+        $popular=Product::where('is_popular','popular')->orderBy('updated_at','desc')->take(5)->get();
 
-  }
+
+        return view('frontend.pages.index',compact('banners','categories','popular','new','best','brand','product','featured_category','featured_category2', 'latest_blogs'));
+    }
 
   public function blog_single($slug){
     $blog = Blog::where('slug', $slug)->first();

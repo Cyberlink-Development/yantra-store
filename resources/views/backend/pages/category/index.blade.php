@@ -17,8 +17,10 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Parent</th>
-                                <th>In Home?</th>
                                 <th>Status</th>
+                                <th>Is Header?</th>
+                                <th>In Home?</th>
+                                <th>Is Footer?</th>
                                 <th class="sorting-false">Action</th>
                             </tr>
                         </thead>
@@ -31,10 +33,16 @@
                                         {{ optional(App\Model\Category::find($row->parent_id))->name ?? '-' }}
                                     </td>
                                     <td>
-                                        <input type="checkbox" class="toggle-home" data-id="{{ $row->id }}" {{ $row->in_home == '1' ? 'checked' : '' }}>
+                                        <input type="checkbox" class="toggle-status" data-id="{{ $row->id }}" name="status" onclick="updateStatus(this, {{$row->id}},'{{getModelPathFromData($row)}}')" {{ $row->status == '1' ? 'checked' : '' }}>
                                     </td>
                                     <td>
-                                        <input type="checkbox" class="toggle-status" data-id="{{ $row->id }}" {{ $row->status == '1' ? 'checked' : '' }}>
+                                        <input type="checkbox" class="toggle-home" data-id="{{ $row->id }}" name="is_header" onclick="updateStatus(this, {{$row->id}},'{{getModelPathFromData($row)}}')" {{ $row->is_header == '1' ? 'checked' : '' }}>
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" class="toggle-home" data-id="{{ $row->id }}" name="in_home" onclick="updateStatus(this, {{$row->id}},'{{getModelPathFromData($row)}}')" {{ $row->in_home == '1' ? 'checked' : '' }}>
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" class="toggle-home" data-id="{{ $row->id }}" name="is_footer" onclick="updateStatus(this, {{$row->id}},'{{getModelPathFromData($row)}}')" {{ $row->is_footer == '1' ? 'checked' : '' }}>
                                     </td>
                                     <td>
                                         <a href="{{ route('category.edit', $row->id) }}" class="btn btn-sm btn-primary" title="Edit">
