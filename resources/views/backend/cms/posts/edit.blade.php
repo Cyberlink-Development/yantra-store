@@ -123,8 +123,11 @@
                                 <div class="form-group">
                                     <label>Template</label>
                                     <select name="template" class="form-control">
-                                        <option value="1" {{ old('template', $post->template) == 1 ? 'selected' : '' }}>On</option>
-                                        <option value="0" {{ old('template', $post->template) == 0 ? 'selected' : '' }}>Off</option>
+                                        @if($templates)                  
+                                            @foreach($templates as $key=>$template)
+                                                <option value="{{$key}}" {{ ($template == $post->template)?'selected':'' }}> {{ ucfirst($template)}}</option>
+                                            @endforeach  
+                                        @endif 
                                     </select>
                                 </div>
 

@@ -36,11 +36,23 @@ class PostController extends Controller
 
     public function create($uri)
     {
+        $fileList = scandir(resource_path('views/frontend/cms/'));
+        $filterArray = $this->filter_template($fileList);
+
+        $filename = array();
+        foreach ($filterArray as $filterArr) {
+        $filename[] = $this->remove_extention($filterArr);
+        }
+        $file1 = array('single'=>'Choose Template');
+        foreach ($filename as $key=>$file) {
+        $file1[$file] = $file;
+        }
+        $templates = $file1;
         $posttype = PostType::where('uri',$uri)->first();
         $ordering = Post::max('post_order');
         $ordering = $ordering + 1;
-
-        return view('backend.cms.posts.create',compact('posttype','ordering'));
+        
+        return view('backend.cms.posts.create',compact('posttype','ordering','templates'));
     }
 
     public function store(Request $request, $post)
@@ -91,10 +103,22 @@ class PostController extends Controller
 
     public function edit($uri ,$id)
     {
+        $fileList = scandir(resource_path('views/frontend/cms/'));
+        $filterArray = $this->filter_template($fileList);
+
+        $filename = array();
+        foreach ($filterArray as $filterArr) {
+        $filename[] = $this->remove_extention($filterArr);
+        }
+        $file1 = array('single'=>'Choose Template');
+        foreach ($filename as $key=>$file) {
+        $file1[$file] = $file;
+        }
+        $templates = $file1;
         $posttype = PostType::where('uri',$uri)->first();
         $post = Post::find($id);
 
-        return view('backend.cms.posts.edit',compact('posttype','post'));
+        return view('backend.cms.posts.edit',compact('posttype','post','templates'));
     }
 
     public function deleteThumbnail($id)
@@ -232,6 +256,26 @@ class PostController extends Controller
             'success' => true,
             'message' => 'Post Deleted Successfully.'
         ]);
+    }
+
+    // Filter Template
+    private function filter_template($template){
+        $tmpl = array();
+        if(!empty($template)){
+        foreach($template as $tmp){
+            if(strpos($tmp, "template-") !== false){
+            $tmpl[] = $tmp;
+            }   
+        }
+        }
+        return $tmpl;
+    }
+
+    // Remove Extention
+    private function remove_extention($filename){
+        $exp = explode('.',$filename);
+        $file = $exp[0];
+        return $file;
     }
 
 }
