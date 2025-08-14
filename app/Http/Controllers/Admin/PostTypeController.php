@@ -29,11 +29,25 @@ class PostTypeController extends Controller
         ]);
     }
 
-    public function create(){
-        
+    public function create()
+    {
+        $fileList = scandir(resource_path('views/frontend/cms/'));
+        $filterArray = $this->filter_template_posttype($fileList);
+
+        $filename = array();
+        foreach ($filterArray as $filterArr) {
+            $filename[] = $this->remove_extention($filterArr);
+        }
+        $file1 = array('page'=>'Choose Template');
+        foreach ($filename as $file) {
+            $file1[$file] = $file;
+        }
+        $templates = $file1;
+
         $ordering = PostType::max('ordering');
         $ordering = $ordering + 1;
-        return view('backend.cms.posttype.create', compact('ordering'));
+        // dd($ordering);
+        return view('backend.cms.posttype.create', compact('ordering','templates'));
     }
 
     public function store(Request $request)
@@ -78,8 +92,21 @@ class PostTypeController extends Controller
 
     public function edit($id)
     {
+        $fileList = scandir(resource_path('views/frontend/cms/'));
+        $filterArray = $this->filter_template_posttype($fileList);
+
+        $filename = array();
+        foreach ($filterArray as $filterArr) {
+            $filename[] = $this->remove_extention($filterArr);
+        }
+        $file1 = array('page'=>'Choose Template');
+        foreach ($filename as $file) {
+            $file1[$file] = $file;
+        }
+        $templates = $file1;
         $postType = PostType::where('id',$id)->first();
-        return view('backend.cms.posttype.edit', compact('postType'));
+        
+        return view('backend.cms.posttype.edit', compact('postType','templates'));
     }
     public function deleteBanner($id)
     {
@@ -134,6 +161,7 @@ class PostTypeController extends Controller
                 'posttype_content' => $request->posttype_content,
                 'ordering'   => $request->ordering ?? 0,
                 'status'     => $request->status,
+                'template'     => $request->template,
                 'is_header'  => $request->is_header,
                 'is_footer'  => $request->is_footer,
             ]);
@@ -170,5 +198,23 @@ class PostTypeController extends Controller
             'success' => true,
             'message' => 'Posttype Updated Successfully.'
         ]);
+    }
+
+    private function filter_template_posttype($template){
+        $tmpl2 = array();
+        if(!empty($template)){
+            foreach($template as $tmpl){
+            if(strpos($tmpl, "posttypeTemplate-") !== false){
+                $tmpl2[] = $tmpl;
+            }   
+            }
+        }
+        return $tmpl2;
+    }
+
+    private function remove_extention($filename){
+        $exp = explode('.',$filename);
+        $file = $exp[0];
+        return $file;
     }
 }
