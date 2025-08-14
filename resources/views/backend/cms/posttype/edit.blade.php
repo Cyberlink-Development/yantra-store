@@ -37,9 +37,14 @@
                                 <div class="form-group">
                                     <label>Banner</label>
                                     @if($postType->banner)
-                                        <div class="mb-2">
-                                            <img src="{{ asset('uploads/banners/' . $postType->banner) }}" 
-                                                 alt="Current Banner" style="max-height: 100px;">
+                                        <div class="mb-2" id="posttype-banner">
+                                            <div style="position: relative; display: inline-block;">
+                                                <img src="{{ asset('uploads/banners/' . $postType->banner) }}" alt="Banner" height="80">
+
+                                                <button type="button" class="btn btn-sm btn-danger" id="delete-banner" style="position: absolute; top: -10px; right: -10px; border-radius: 50%;">
+                                                    &times;
+                                                </button>
+                                            </div>
                                         </div>
                                     @endif
                                     <input type="file" name="banner" class="form-control-file" />
@@ -101,4 +106,32 @@
     </form>
 </div>
 
+<script>
+$(document).ready(function() {
+    $('#delete-banner').click(function() {
+        if(!confirm('Are you sure you want to delete this banner?')) return;
+        
+        $.ajax({
+            url: '{{ route("type.posttype.deleteBanner", $postType->id) }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                _method: 'DELETE'
+            },
+            success: function(response) {
+                if(response.success){
+                    $('#posttype-banner').remove();
+                    $('#delete-banner').remove();
+                    toastr.success(response.message || 'Banner deleted successfully.');
+                } else {
+                    toastr.error(response.message || 'Failed to delete banner.');
+                }
+            },
+            error: function(xhr) {
+                toastr.error('Something went wrong.');
+            }
+        });
+    });
+});
+</script>
 @stop

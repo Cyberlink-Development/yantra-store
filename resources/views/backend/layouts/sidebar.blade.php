@@ -43,8 +43,8 @@
 
                 
                 <li class="nav-header" style="padding-top:.5rem!important;">CMS</li>
-                <li class="nav-item has-treeview {{ in_array($currentRoute, ['type.posttype.index']) ? 'menu-open' : '' }}">
-                    <a href="" class="nav-link {{ in_array($currentRoute, ['type.posttype.index']) ? 'active' : '' }}">
+                <li class="nav-item has-treeview {{ in_array($currentRoute, ['type.posttype.index']) || Request::segment(3) =='Services' || Request::segment(2) =='type' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ in_array($currentRoute, ['type.posttype.index']) || Request::segment(2) =='type' || Request::segment(3) =='Services' ? 'active' : '' }}">
                         <i class="nav-icon fa fa-sliders"></i>
                         <p>
                             PostType
@@ -60,10 +60,14 @@
                         </li>
 
                         
-                        @if ($postTypes)
-                            @foreach ($postTypes as $row)
+                        @if ($postType_menus)
+                            @foreach ($postType_menus as $row)
                                 <li class="nav-item">
-                                    <a href="" class="nav-link ml-3">
+                                    @if (has_posts($row->id))
+                                        <a href="{{ url('admin/posts/' . $row->uri) }}" class="nav-link ml-3 {{ Request::segment(3) == $row->uri ? 'active' : '' }}">
+                                    @else
+                                        <a href="{{ url('admin/type/' . $row->id . '/edit') }}" class="nav-link ml-3">
+                                    @endif
                                         <i class="fa fa-list nav-icon"></i>
                                         <p>{{ $row->post_type }}</p>
                                     </a>
