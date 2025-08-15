@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use App\Model\Tag\Tag;
 
 class Product extends Model
 {
@@ -15,6 +16,10 @@ class Product extends Model
 
     public function scopeActive($query){
         return $query->where('status', '1');
+    }
+    public function tag()
+    {
+        return $this->belongsTo(Tag::class);
     }
 
 
