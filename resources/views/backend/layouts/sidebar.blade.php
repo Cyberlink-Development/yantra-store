@@ -41,7 +41,7 @@
                     </a>
                 </li>
 
-                
+
                 <li class="nav-header" style="padding-top:.5rem!important;">CMS</li>
                 <li class="nav-item has-treeview {{ in_array($currentRoute, ['type.posttype.index']) || Request::segment(3) =='Services' || Request::segment(2) =='type' ? 'menu-open' : '' }}">
                     <a href="" class="nav-link {{ in_array($currentRoute, ['type.posttype.index']) || Request::segment(2) =='type' || Request::segment(3) =='Services' ? 'active' : '' }}">
@@ -59,7 +59,7 @@
                             </a>
                         </li>
 
-                        
+
                         @if ($postType_menus)
                             @foreach ($postType_menus as $row)
                                 <li class="nav-item">
@@ -135,7 +135,8 @@
 
                 <li class="nav-item has-treeview {{ in_array($currentRoute, ['category.create', 'category.index']) ? 'menu-open' : '' }}">
                     <a href="" class="nav-link {{ in_array($currentRoute, ['category.create', 'category.index']) ? 'active' : '' }}">
-                        <i class="nav-icon fa fa-tags"></i>
+                        <!-- <i class="nav-icon fa fa-tags"></i> -->
+                        <i class="nav-icon fa fa-folder"></i>
                         <p>
                             Category
                             <i class="fas fa-angle-left right"></i>
@@ -213,6 +214,12 @@
                             Banners
                             <!-- <i class="fas fa-angle-left right"></i> -->
                         </p>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="{{ route('tags.index') }}" class="nav-link">
+                        <i class="nav-icon fa fa-tags"></i>
+                        <p>Tags</p>
                     </a>
                 </li>
 
