@@ -360,9 +360,35 @@
                     </ul>
                 </li>
 
+                <li class="nav-item has-treeview">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon fas fa-sticky-note"></i>
+                        <p>
+                            Quotations
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('quotation-all') }}" class="nav-link ml-3">
+                                <i class="fa fa-paper-plane"></i>
+                                <p>Product Quotations</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="" class="nav-link ml-3">
+                                <i class="fa fa-paper-plane"></i>
+                                <p>Service Quotations</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="nav-header" style="padding-top:.5rem!important;">MISCELLANEOUS</li>
 
-                <li class="nav-item has-treeview">
+                {{-- <li class="nav-item has-treeview">
                     <a href="" class="nav-link">
                         <i class="nav-icon fa fa-newspaper-o"></i>
                         <p>
@@ -386,14 +412,14 @@
                         </li>
 
                     </ul>
-                </li>
+                </li> --}}
 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('quotation-all') }}" class="nav-link">
                         <i class="fas fa-sticky-note"></i>
                         <p>Quotations</p>
                     </a>
-                </li>
+                </li> --}}
 
                 <!--<li class="nav-item">-->
                 <!--    <a href="{{ route('faq') }}" class="nav-link">-->
