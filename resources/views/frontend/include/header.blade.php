@@ -233,12 +233,11 @@
                                                 <li class="nav-item">
                                                     <a class="nav-link" href="{{ route('index') }}">Home</a>
                                                 </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="about.php">About Us</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="service-list.php">Service</a>
-                                                </li>
+                                                @foreach ($posttypeHeader as $row)
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="{{route('page.posttype_detail',$row->uri)}}">{{ $row->post_type }}</a>
+                                                    </li>
+                                                @endforeach
                                                 @foreach ($cat as $value)
                                                     <li class="nav-item dropdown megamenu-li">
                                                         <a href="{{ route('product-list', $value->slug) }}" class="nav-link dropdown-toggle d-flex align-items-center"  id="dropdown01" aria-haspopup="true" aria-expanded="false">

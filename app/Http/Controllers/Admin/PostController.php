@@ -16,8 +16,8 @@ class PostController extends Controller
     public function index($uri)
     {
         $posttype = PostType::where('uri',$uri)->first();
-        $data = Post::where(['post_type'=>$posttype->id,'post_parent'=>0])->orderBy('post_order','asc')->get();
-
+        $data = Post::where(['post_type'=>$posttype->id])->orderBy('post_order','asc')->get();
+// dd('test',$posttype,$data);
         return view('backend.cms.posts.index',compact('data','posttype'));
     }
 
@@ -51,7 +51,7 @@ class PostController extends Controller
         $posttype = PostType::where('uri',$uri)->first();
         $ordering = Post::max('post_order');
         $ordering = $ordering + 1;
-        
+
         return view('backend.cms.posts.create',compact('posttype','ordering','templates'));
     }
 
@@ -67,7 +67,7 @@ class PostController extends Controller
             ]);
 
             $data = $request->all();
-            
+
             if ($request->hasFile('banner')) {
                 $bannerName = time() . '_' . Str::slug($request->post_title) . '.' . $request->banner->getClientOriginalExtension();
                 $request->banner->move(public_path('uploads/banners'), $bannerName);
@@ -265,7 +265,7 @@ class PostController extends Controller
         foreach($template as $tmp){
             if(strpos($tmp, "template-") !== false){
             $tmpl[] = $tmp;
-            }   
+            }
         }
         }
         return $tmpl;

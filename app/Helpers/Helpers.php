@@ -3,6 +3,7 @@
 use App\Model\Brand;
 use App\Model\ComponentType;
 use App\Model\Post;
+use App\Model\PostType;
 use App\Model\Product;
 
 function categorySeperator( $size, $string = '')
@@ -77,8 +78,26 @@ function has_posts($post_type){
     return $data;
   }
   return false;
-} 
+}
 
+function check_posttype_uri($uri)
+{
+    $data = PostType::where(['uri' => $uri])->first();
+    if ($data) {
+        return true;
+    }
+    return false;
+}
+
+
+function check_post_uri($uri)
+{
+    $data = Post::where(['uri' => $uri])->first();
+    if ($data) {
+        return true;
+    }
+    return false;
+}
 
 /************************ By Sangam Starts ******************************/
 function getAllCategoryChildrenIds($category)
