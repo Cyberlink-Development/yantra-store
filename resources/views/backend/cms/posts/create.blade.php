@@ -34,6 +34,12 @@
                                     <input type="text" id="uri" name="uri" class="form-control" value="{{ old('uri') }}" readonly/>
                                 </div>
 
+                                {{-- PRICE --}}
+                                <div class="form-group">
+                                    <label>Price</label>
+                                    <input type="number" id="price" name="price" class="form-control" value="{{ old('price') }}"/>
+                                </div>
+
                                 {{-- Post Order --}}
                                 <div class="form-group">
                                     <label>Post Order</label>

@@ -38,14 +38,16 @@
                     <p class="services-p text-center">{{$row->sub_title}}</p>
                 </div>
                 <div class="container">
-                    <div class="row">
+                  <div class="row">
+                    @if ($row->price)
+                      <div class="col-12 p-0">
+                          <div class="price-badge text-center">Rs. {{$row->price}}</div>
+                      </div>
+                    @endif
                     <div class="col-12 p-0">
-                        <div class="price-badge text-center">Rs. 40,000</div>
+                      <a href="#quote" data-toggle="modal" class="quote-badge text-center" data-service-id="{{ $row->id }}" data-price="{{ $row->price }}">{{$row->price ? 'Purchase Now' : 'Get A Quote'}}</a>
                     </div>
-                    <div class="col-12 p-0">
-                        <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
-                    </div>
-                    </div>
+                  </div>
                 </div>
                 </div>
             </div>
@@ -65,47 +67,49 @@
           <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body tab-content py-4">
-          <form>
+          <form action="{{route('quotation-submit')}}" method="post">
+            @csrf
             <div class="row">
+              <input class="form-control" type="hidden" name="type" value="service">
+              <input class="form-control" type="hidden" name="price" id="quote-price">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="quote-name">Full Name</label>
-                  <input class="form-control" type="text" id="quote-name" required>
+                  <label for="quote-name">Full Name*</label>
+                  <input class="form-control" type="text" name="full_name" id="quote-name" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="quote-email">Email address</label>
-                  <input class="form-control" type="email" id="quote-email" required>
+                  <label for="quote-email">Email address*</label>
+                  <input class="form-control" type="email" name="email" id="quote-email" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="quote-phone">Phone</label>
-                  <input class="form-control" type="number" id="quote-phone" required>
+                  <label for="quote-phone">Phone*</label>
+                  <input class="form-control" type="number" name="phone" id="quote-phone" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="quote-address">Address</label>
-                  <input class="form-control" type="text" id="quote-address" required>
+                  <label for="quote-address">Address*</label>
+                  <input class="form-control" type="text" name="country" id="quote-address" required>
                 </div>
               </div>
               <div class="col-md-12">
                 <div class="form-group">
-                  <label for="quote-service">Service</label>
-                  <select class="custom-select">
-                    <option value="1">Cloud Computing</option>
-                    <option value="2">Coloaction</option>
-                    <option value="3">Audit Support</option>
-                    <option value="4">It Sercives</option>
+                  <label for="quote-service">Service*</label>
+                  <select class="custom-select" name="service_id" id="quote-service" required>
+                    @foreach ($posts as $value)
+                      <option value="{{$value->id}}" data-price="{{ $value->price }}">{{$value->post_title}}</option>
+                    @endforeach
                   </select>
                 </div>
               </div>
               <div class="col-md-12">
                 <div class="form-group">
                   <label class="mb-3" for="message">Message</label>
-                  <textarea class="form-control" rows="4" id="messasge"></textarea>
+                  <textarea class="form-control" rows="4" name="message" id="messasge"></textarea>
                 </div>
               </div>
             </div>
@@ -119,4 +123,21 @@
 
 @endsection
 @push('scripts')
+<script>
+  $('#quote').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var serviceId = button.data('service-id');
+      var price = button.data('price');
+      var modal = $(this);
+
+      modal.find('#quote-service').val(serviceId);
+      modal.find('#quote-price').val(price);
+
+      modal.find('#quote-service').on('change', function() {
+        var selectedPrice = $(this).find(':selected').data('price');
+        modal.find('#quote-price').val(selectedPrice);
+      });
+  });
+</script>
+
 @endpush

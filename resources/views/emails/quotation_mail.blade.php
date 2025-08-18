@@ -178,8 +178,8 @@
                 <tr>
                     <td class="email-masthead">
 
-                        <img src="{{asset('images/logo.png')}}" style="max-height: 40px" alt="company logo">
-                        <a class="email-masthead_name">Mountain Handicraft</a>
+                        <img src="{{ asset('theme-assets/img/logo-white.jpg') }}" style="max-height: 40px" alt="Yantra Store">
+                        <a class="email-masthead_name">Yantra Store</a>
                     </td>
                 </tr>
                 <!-- Email Body -->
@@ -191,7 +191,7 @@
                                 <td class="content-cell">
                                     <h1>New Quotation Received</h1>
                                     <p>You have received quotaion from {{$quotation->full_name}}</p>
-                                    <p>Date: {{$quotation->created_at->format('d M Y')}}</p>
+                                    <p>Date: {{$quotation->created_at->format('d M, Y')}}</p>
                                     <br/>
                                     <br/>
                                     <!-- Action -->
@@ -199,7 +199,7 @@
                                         <tr>
                                             <td align="center">
                                                 <div>
-                                                    <a href="{{route('view-quotation', $quotation->id)}}" class="button button--blue"><span style="color:blue;">View this quotation</span></a>
+                                                    <a href="{{route('view-quotation', [$quotation->id, $quotation->type])}}" class="button button--blue" target="_blank" ><span style="color:blue;">View this quotation</span></a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -216,8 +216,8 @@
                             <tr>
                                 <td class="content-cell">
                                     <p class="sub center">
-                                       Mountain Handicraft
-                                        <br>Kathmandu
+                                       Yantra Store
+                                        <br>Nepal
                                     </p>
                                 </td>
                             </tr>

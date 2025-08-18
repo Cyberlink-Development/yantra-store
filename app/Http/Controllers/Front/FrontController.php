@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Mail\QuotationMail;
 use App\Model\BannerModel;
 use App\Model\Brand;
 use App\Model\Category;
@@ -11,9 +12,15 @@ use App\Model\Product;
 use App\Model\Blog;
 use App\Model\Post;
 use App\Model\PostType;
+use App\Model\Quotation;
 use App\Model\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
+use Exception;
 
 class FrontController extends Controller
 {
@@ -109,6 +116,53 @@ class FrontController extends Controller
         $related = Post::where('post_type', $data['post_type'])->orderBy('post_order', 'desc')->get();
 
         return view('frontend.cms.' . $tmpl['template'] . '', compact('data','post_type'));
+    }
+
+    public function quotation_submit(Request $request)
+    {
+        try{
+            $request->validate([
+                'full_name' => 'required',
+                'email' => 'required',
+                'phone'=>'required|max:10',
+                'country'=>'required',
+                'type'   => 'required|in:service,product',
+                'service_id' => 'required_if:type,service|exists:cl_posts,id',
+                'product_id' => 'required_if:type,product|exists:products,id',
+                'price' => 'nullable',
+            ]);
+
+            $quote = Quotation::create([
+                'full_name' => $request->full_name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'country' => $request->country,
+                'type' => $request->type,
+                'service_id'=> $request->service_id ?? null,
+                'product_id'=> $request->product_id ?? null,
+                'message'=> $request->message,
+                'price'=> $request->price,
+            ]);
+            
+            if ($quote ) {
+                return new QuotationMail( $quote->id);
+                // Mail::send(new QuotationMail( $quote->id));
+            }
+            return redirect('/')->with([
+                'success' => true,
+                'message' => 'Quotation Sent Successfully. One of our member will contact you soon.'
+            ]);
+        }catch(ValidationException $e){
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => $e->validator->errors()->all()
+            ]);
+        }catch(Exception $e){
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
+        }
     }
 
 }

@@ -4,13 +4,9 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-
                 <h2 class="page-header" style="padding-bottom: 25px; margin-top:0;">
                     <i class="fa fa-globe"></i> Quotation
-                    <small style="text-align: right">Sent Date:{{$quotation->created_at->format('M d Y')}} </small>
                 </h2>
-
-
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -19,26 +15,41 @@
 
                     <!-- info row -->
                     <div class="row invoice-info">
-                        <div class="col-sm-4 invoice-col">
-                            <h4> Customer Info:</h4>
+                        <div class="col-sm-12 invoice-col">
+                            <h4><i class="fas fa-users"></i> Customer Info :</h4>
                             <address>
-                                <strong>{{$quotation->full_name}}</strong><br>
-                                <i class="fa fa-phone"></i>{{$quotation->phone}}<br>
-                                <i class="fa fa-envelope"></i>{{$quotation->email}}<br>
-                                <i class="fa fa-globe"></i>{{$quotation->country}}
+                                <i class="fas fa-user"></i> Name : {{$quotation->full_name}}<br>
+                                <i class="fa fa-phone"></i> Phone : {{$quotation->phone}}<br>
+                                <i class="fa fa-envelope"></i> Email : {{$quotation->email}}<br>
+                                <i class="fa fa-globe"></i> Country : {{$quotation->country}}
                             </address>
                         </div>
-                        <!-- /.col -->
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4">
-                            <h4><i class="fas fa-comment-alt"></i> Message:</h4>
+                        <div class="col-md-12">
+                            <h4><i class="fas fa-comment-alt"></i> Message :</h4>
                             <p>{{$quotation->message}}</p>
                         </div>
                     </div>
-</div>
-</div>
-</div>
+                    
+                    <div class="row invoice-info">
+                        <div class="col-sm-12 invoice-col">
+                            <h4><i class="fas fa-box"> </i> {{ $quotation->product_id ? 'Product Info :' : 'Service Info :' }}</h4>
+                            <address>
+                                @if ($quotation->product_id)
+                                    <td> <strong>Product Name : </strong>{{ $quotation->products ? $quotation->products->product_name : ''}}</td>
+                                @else
+                                    <td> <strong>Service Name : </strong> {{ $quotation->posts ? $quotation->posts->post_title : ''}}</td>
+                                @endif
+                            </address>
+                        </div>
+                    </div>
+
+                    <h4 >Quotation Received Date : {{$quotation->created_at->format('M d, Y')}} </h4>
+                </section>
+            </div>
+        </div>
+    </div>
 
 @endsection

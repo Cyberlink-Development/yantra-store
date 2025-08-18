@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Model\Quotation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -17,13 +18,11 @@ class QuotationMail extends Mailable
      * @return void
      */
 
-    protected $quotation;
-    protected $email;
+    protected $quotation_id;
 
-    public function __construct($quotation, $email)
+    public function __construct($quotation_id)
     {
-        $this->quotation = $quotation;
-        $this->email = $email;
+        $this->quotation_id = $quotation_id;
     }
 
     /**
@@ -33,6 +32,8 @@ class QuotationMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.quotation_mail', ['quotation'=>$this->quotation])->to($this->email);
+        $quotation = Quotation::find($this->quotation_id);
+
+        return $this->view('emails.quotation_mail', ['quotation'=>$quotation]);
     }
 }
