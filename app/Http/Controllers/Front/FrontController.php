@@ -9,6 +9,9 @@ use App\Model\Category;
 use App\Model\OrderDetail;
 use App\Model\Product;
 use App\Model\Blog;
+use App\Model\Post;
+use App\Model\PostType;
+use App\Model\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -57,17 +60,55 @@ class FrontController extends Controller
         return view('frontend.pages.index',compact('banners','categories','popular','new','best','brand','product','featured_category','featured_category2', 'latest_blogs'));
     }
 
-  public function blog_single($slug){
-    $blog = Blog::where('slug', $slug)->first();
-    $related_blogs = Blog::orderBy('created_at', 'desc')->get();
-    $related_blogs = $related_blogs->except($blog->id);
+    public function blog_single($slug){
+        $blog = Blog::where('slug', $slug)->first();
+        $related_blogs = Blog::orderBy('created_at', 'desc')->get();
+        $related_blogs = $related_blogs->except($blog->id);
 
-    return view('frontend.pages.blog-single', compact('blog', 'related_blogs'));
-  }
+        return view('frontend.pages.blog-single', compact('blog', 'related_blogs'));
+    }
 
-  public function blog_all(){
-    $blogs = Blog::orderBy('created_at', 'DESC')->paginate(6);
-    return view('frontend.pages.blog-all', compact('blogs'));
-  }
+    public function blog_all(){
+        $blogs = Blog::orderBy('created_at', 'DESC')->paginate(6);
+        return view('frontend.pages.blog-all', compact('blogs'));
+    }
+
+    public function posttype(Request $request, $uri)
+    {
+        if (!check_posttype_uri($uri)) {
+            abort(404);
+        }
+        $data = PostType::where('uri', $uri)->first();
+        $posts = Post::where(['post_type' => $data->id, 'status' => '1'])->orderBy('post_order', 'asc')->paginate(8);
+
+        $tmpl['template'] = 'page';
+        if ($data['template']) {
+            $tmpl['template'] = $data['template'];
+        }
+        // dd($uri,$data,$posts,$data['template']);
+        return view('frontend.cms.' . $tmpl['template'] . '', compact('data','posts'));
+    }
+
+    public function pagedetail($uri)
+    {
+        if (!check_post_uri($uri)) {
+            abort(404);
+        }
+        $tmpl['template'] = 'single';
+        $data = Post::where('uri', $uri)->orWhere('page_key', $uri)->first();
+
+        // dd($uri,$data );
+        if ($data['template']) {
+            $tmpl['template'] = $data['template'];
+        }
+        if ($data->id) {
+            $data->visitor = $data->visitor + 1;
+            $data->save();
+        }
+        $post_type = PostType::where('id', $data['post_type'])->first();
+        $related = Post::where('post_type', $data['post_type'])->orderBy('post_order', 'desc')->get();
+
+        return view('frontend.cms.' . $tmpl['template'] . '', compact('data','post_type'));
+    }
 
 }
