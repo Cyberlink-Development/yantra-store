@@ -37,11 +37,13 @@
                 <p>{{ $data->post_content }}</p>
                 <div class="container">
                     <div class="row d-flex" style="gap:10px;">
+                      @if($data->price)
+                        <div class=" p-0">
+                          <div class="price-badge text-center" style="width:175px;">Rs. {{ $data->price }}</div>
+                        </div>
+                      @endif
                       <div class=" p-0">
-                        <div class="price-badge text-center" style="width:175px;">Rs. 40,000</div>
-                      </div>
-                      <div class=" p-0">
-                        <a href="#quote" data-toggle="modal" class="quote-badge text-center" style="width:175px;">Get A Quote</a>
+                        <a href="#quote" data-toggle="modal" class="quote-badge text-center" style="width:175px;">{{$data->price ? 'Purchase Now' : 'Get A Quote'}}</a>
                       </div>
                     </div>
                 </div>
@@ -60,36 +62,46 @@
             <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body tab-content py-4">
-              <form>
+              <form action="{{route('quotation-submit')}}" method="post">
+                @csrf
                   <div class="row">
+                    <input class="form-control" type="hidden" name="type" value="service">
+                    <input class="form-control" type="hidden" name="price" value="{{ $data->price }}">
                       <div class="col-md-6">
                           <div class="form-group">
-                            <label for="quote-name">Full Name</label>
-                            <input class="form-control" type="text" id="quote-name"  required>
+                            <label for="quote-name">Full Name*</label>
+                            <input class="form-control" type="text" name="full_name" id="quote-name"  required>
                           </div>
                       </div>
                       <div class="col-md-6">
                           <div class="form-group">
-                            <label for="quote-email">Email address</label>
-                            <input class="form-control" type="email" id="quote-email"  required>
+                            <label for="quote-email">Email address*</label>
+                            <input class="form-control" type="email" name="email" id="quote-email"  required>
                           </div>
                       </div>
                       <div class="col-md-6">
                           <div class="form-group">
-                            <label for="quote-phone">Phone</label>
-                            <input class="form-control" type="number" id="quote-phone"  required>
+                            <label for="quote-phone">Phone*</label>
+                            <input class="form-control" type="number" name="phone" id="quote-phone"  required>
                           </div>
                       </div>
                       <div class="col-md-6">
                           <div class="form-group">
-                            <label for="quote-address">Address</label>
-                            <input class="form-control" type="text" id="quote-address"  required>
+                            <label for="quote-address">Address*</label>
+                            <input class="form-control" type="text" name="country" id="quote-address"  required>
                           </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="quote-service">Service*</label>
+                          <input class="form-control" type="text" value="{{ $data->post_title }}" readonly>
+                          <input type="hidden" name="service_id" value="{{ $data->id }}">
+                        </div>
                       </div>
                       <div class="col-md-12">
                           <div class="form-group">
                             <label class="mb-3" for="message">Message</label>
-                            <textarea class="form-control" rows="4" id="messasge"></textarea>
+                            <textarea class="form-control" rows="4" name="message" id="messasge"></textarea>
                           </div>
                       </div>
                   </div>

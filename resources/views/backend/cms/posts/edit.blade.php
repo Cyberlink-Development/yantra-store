@@ -39,6 +39,13 @@
                                         value="{{ old('uri', $post->uri) }}" readonly />
                                 </div>
 
+                                {{-- PRICE --}}
+                                <div class="form-group">
+                                    <label>Price</label>
+                                    <input type="number" id="price" name="price" class="form-control" 
+                                        value="{{ old('price',$post->price) }}"/>
+                                </div>
+
                                 {{-- Post Order --}}
                                 <div class="form-group">
                                     <label>Post Order</label>

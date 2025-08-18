@@ -52,7 +52,7 @@ Route::group(['namespace' => 'Front'], function () {
     //cart details//
     Route::get('/product-{slug?}', 'ProductController@product_details')->name('product-single');
     Route::post('/product-search', 'ProductController@product_search')->name('product-search');
-    Route::post('/quotation-submit', 'ProductController@quotation_submit')->name('quotation-submit');
+    Route::post('/quotation-submit', 'FrontController@quotation_submit')->name('quotation-submit');
 
     Route::get('/product-details/{slug?}', 'CategoryController@product_details')->name('product-details');
     Route::get('/product-stock/{id}/{color_id}/{size_id}', 'ProductController@product_stock')->name('product-stock');
@@ -328,9 +328,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
 
     // Quotation routes
     Route::group(['prefix' => 'quotation'], function () {
-        Route::get('/quotaion-all', 'QuotationController@quotation_all')->name('quotation-all');
         Route::get('/delete-quotation/{id}', 'QuotationController@delete_quotation')->name('delete-quotation');
-        Route::get('/view-quotation/{id}', 'QuotationController@view_quotation')->name('view-quotation');
+        Route::get('/view-quotation/{id}/{uri}', 'QuotationController@view_quotation')->name('view-quotation');
+        Route::get('{uri}', 'QuotationController@quotation_all')->where('uri', 'product|service')->name('quotation-all');
         //Route::post('/edit-blog', 'BlogController@edit_blog')->name('edit-blog');
     });
 

@@ -360,8 +360,8 @@
                     </ul>
                 </li>
 
-                <li class="nav-item has-treeview">
-                    <a href="" class="nav-link">
+                <li class="nav-item has-treeview  {{ Request::segment(2) =='quotation' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) =='quotation' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-sticky-note"></i>
                         <p>
                             Quotations
@@ -370,16 +370,16 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('quotation-all') }}" class="nav-link ml-3">
-                                <i class="fa fa-paper-plane"></i>
+                            <a href="{{ route('quotation-all','product') }}" class="nav-link ml-3 {{ Request::segment(3) == 'product' || Request::segment(5) == 'product' ? 'active' : '' }}">
+                                <i class="fa fa-cube"></i>
                                 <p>Product Quotations</p>
                             </a>
                         </li>
                     </ul>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="" class="nav-link ml-3">
-                                <i class="fa fa-paper-plane"></i>
+                            <a href="{{ route('quotation-all','service') }}" class="nav-link ml-3 {{ Request::segment(3) == 'service' || Request::segment(5) == 'service' ? 'active' : '' }}">
+                                <i class="fa fa-handshake"></i>
                                 <p>Service Quotations</p>
                             </a>
                         </li>
@@ -453,4 +453,16 @@
         <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(function () {
+                let activeItem = document.querySelector('.nav-link.active');
+                if (activeItem) {
+                    activeItem.scrollIntoView({ block: "center", inline: "nearest" });
+                }
+            }, 2000);
+        });
+    </script>
+
+
 </aside>

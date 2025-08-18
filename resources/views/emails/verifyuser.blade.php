@@ -177,7 +177,7 @@
                 <!-- Logo -->
                 <tr>
                     <td class="email-masthead">
-                        <img src="{{ asset('theme-assets/img/logo.jpg') }}" style="max-height: 40px" alt="Yantra Store">
+                        <img src="{{ asset('theme-assets/img/logo-white.jpg') }}" style="max-height: 40px" alt="Yantra Store">
                         <a class="email-masthead_name">Yantra Store</a>
                     </td>
                 </tr>

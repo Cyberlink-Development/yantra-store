@@ -60,6 +60,7 @@ class PostController extends Controller
         try{
             $request->validate([
                 'post_title'   => 'required|string|max:255',
+                'price'         =>  'nullable|numeric|min:0',
                 'post_type'    => 'required|exists:cl_post_type,id',
                 'uri'         => 'required|string|max:255|unique:cl_posts,uri',
                 'banner'      => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -175,6 +176,7 @@ class PostController extends Controller
         try{
             $request->validate([
                 'post_title'   => 'required|string|max:255',
+                'price'         =>  'nullable|numeric|min:0',
                 'post_type'    => 'required|exists:cl_post_type,id',
                 'uri'         => 'required|string|max:255|unique:cl_posts,uri,' . $id,
                 'banner'      => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -211,6 +213,7 @@ class PostController extends Controller
                 'sub_title'         => $request->sub_title,
                 'post_order'        => $request->post_order ?? 0,
                 'post_content'      => $request->post_content,
+                'price'             => $request->price,
                 'post_excerpt'      => $request->post_excerpt,
                 'meta_keyword'      => $request->meta_keyword,
                 'meta_description'  => $request->meta_description,

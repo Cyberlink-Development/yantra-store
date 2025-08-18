@@ -73,7 +73,7 @@ function get_product_by_componenttype_id($id)
 //}
 
 function has_posts($post_type){
-  $data = Post::where(['post_type'=>$post_type,'post_parent'=>'0'])->orderBy('post_order','asc')->get();
+  $data = Post::where(['post_type'=>$post_type])->orderBy('post_order','asc')->get();
   if($data->count() > 0){
     return $data;
   }
