@@ -55,6 +55,7 @@ class CategoryController extends BackendController
                 $data['banner'] = $bname;
             }
             $data['name'] = $request->name;
+            $data['caption'] = $request->caption;
             $data['meta_title'] = $request->meta_title;
             $data['meta_description'] = $request->meta_description;
             $data['parent_id'] = $request->parent_id;
@@ -63,6 +64,8 @@ class CategoryController extends BackendController
             $data['is_header'] = $request->has('is_header') ? '1' : '0';
             $data['in_home'] = $request->has('in_home') ? '1' : '0';
             $data['is_footer'] = $request->has('is_footer') ? '1' : '0';
+            $data['in_slider'] = $request->has('in_slider') ? '1' : '0';
+            $data['in_moving_text'] = $request->has('in_moving_text') ? '1' : '0';
             $category = Category::create($data);
             return back()->with([
                 'success' => true,
@@ -96,6 +99,7 @@ class CategoryController extends BackendController
             ]);
             $id = $request->id;
             $data['name'] = $request->name;
+            $data['caption'] = $request->caption;
             $data['parent_id'] = $request->parent_id;
             $data['meta_title'] = $request->meta_title;
             $data['meta_description'] = $request->meta_description;
@@ -104,6 +108,8 @@ class CategoryController extends BackendController
             $data['is_header'] = $request->has('is_header') ? '1' : '0';
             $data['in_home'] = $request->has('in_home') ? '1' : '0';
             $data['is_footer'] = $request->has('is_footer') ? '1' : '0';
+            $data['in_slider'] = $request->has('in_slider') ? '1' : '0';
+            $data['in_moving_text'] = $request->has('in_moving_text') ? '1' : '0';
             if ($request->hasFile('image')) {
                 $this->delete_file($id);
                 $image = $request->file('image');

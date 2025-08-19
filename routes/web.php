@@ -204,12 +204,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     });
 
     Route::group(['prefix' => 'product'], function () {
-        Route::get('add-product', 'ProductController@add_product')->name('add-product');
-        Route::get('all-products', 'ProductController@all_product')->name('all-product');
-        Route::post('store-product', 'ProductController@store_product')->name('store-product');
+        Route::get('index', 'ProductController@index')->name('product.index');
+        Route::get('create', 'ProductController@create')->name('product.create');
+        Route::post('store-product', 'ProductController@store')->name('store-product');
         Route::any('show-product/{slug?}', 'ProductController@show_product')->name('show-product');
-        Route::get('edit-product/{id}', 'ProductController@edit_product')->name('edit-product');
-        Route::post('edit-product/{id?}', 'ProductController@edit_product')->name('edit-product');
+        Route::get('edit/{id}', 'ProductController@edit')->name('product.edit');
+        Route::post('update/{id?}', 'ProductController@update')->name('product.update');
         Route::any('delete-product/{id}', 'ProductController@delete_product')->name('delete-product');
         Route::any('delete-specification/{id}', 'ProductController@delete_specification')->name('delete-specification');
         Route::any('show-review', 'ProductController@show_review')->name('show-review');

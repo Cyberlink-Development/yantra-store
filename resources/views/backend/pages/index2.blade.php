@@ -1,5 +1,8 @@
 
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'Dashboard'])
+@endsection
 @section('content')
 
     <!-- Main content -->
@@ -51,7 +54,7 @@
                         <div class="icon">
                             <i class="fa fa-icons"></i>
                         </div>
-                        <a href="{{route('all-product')}}" class="small-box-footer">More info <i
+                        <a href="{{route('product.index')}}" class="small-box-footer">More info <i
                                 class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
@@ -160,7 +163,7 @@
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer text-center">
-                                <a href="{{route('all-product')}}" class="uppercase">View All Products</a>
+                                <a href="{{route('product.index')}}" class="uppercase">View All Products</a>
                             </div>
                             <!-- /.card-footer -->
                         </div>

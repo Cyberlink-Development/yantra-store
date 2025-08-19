@@ -1,4 +1,7 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'Product Edit','backLabel'=>'List','backLink'=>route('product.index')])
+@endsection
 @section('content')
 
     <h3>Edit Product</h3>
@@ -115,26 +118,21 @@
                             </div>
 
                             <div class="box box-default">
-                                <!-- <div class="box-header with-border">
-                                    <h6 class="box-title">Featured/Unfeatured:</h6>
-                                </div> -->
-                                <!-- /.box-header -->
-                                <!--<div class="box-body">-->
-                                <!--    <div class="form-group mb-none">-->
-                                <!--        <select class="form-control" name="is_featured">-->
-                                <!--            <option @if($product->is_featured=='featured')selected-->
-                                <!--                    @endif value="featured">Featured-->
-                                <!--            </option>-->
-                                <!--            <option @if($product->is_featured=='unfeatured')selected-->
-                                <!--                    @endif value="unfeatured">Unfeatured-->
-                                <!--            </option>-->
-                                <!--        </select>-->
-
-                                <!--    </div>-->
-                                <!--</div>-->
+                                <div class="box-header with-border" style="display:flex;align-items:middle;gap:5px;margin-bottom: 5px;">
+                                    <h6 class="box-title" style="margin-bottom: 0;">Is Feature?</h6>
+                                    <input type="checkbox" name="is_featured" {{ $product->is_featured == 1 ? 'checked' : '' }} />
+                                </div>
+                                <div class="box-header with-border" style="display:flex;align-items:middle;gap:5px;margin-bottom: 5px;">
+                                    <h6 class="box-title" style="margin-bottom: 0;">Hot Deals?</h6>
+                                    <input type="checkbox" name="hot" {{ $product->hot == 1 ? 'checked' : '' }} />
+                                </div>
+                                <div class="box-header with-border" style="display:flex;align-items:middle;gap:5px;margin-bottom: 5px;">
+                                    <h6 class="box-title" style="margin-bottom: 0;">Latest?</h6>
+                                    <input type="checkbox" name="latest" {{ $product->latest == 1 ? 'checked' : '' }} />
+                                </div>
                                 
                                 <div class="box-header with-border">
-                                    <h6 class="box-title">Popular/Unpopular:</h6>
+                                    <h6 class="box-title">Popular(Products for you):</h6>
                                 </div>
                                 <div class="box-body">
                                     <div class="form-group mb-none">
@@ -246,7 +244,7 @@
                             </div>
 
                             <div class="form-group special-link">
-                                <label for="name" class="col-sm-2 col-md-3 control-label">Special:</label>
+                                <label for="name" class="col-sm-2 col-md-3 control-label">Special(Gone in seconds):</label>
                                 <select class="form-control" name="is_special" id="isSpecial">
                                     <option @if($product->is_special==0) selected @endif value="0">No</option>
                                     <option @if($product->is_special==1) selected @endif value="1">Yes</option>
@@ -256,7 +254,7 @@
                             </div>
 
                             <div class="form-group special-link">
-                                <label for="name" class="col-sm-2 col-md-3 control-label">On sale:</label>
+                                <label for="name" class="col-sm-2 col-md-3 control-label">Flash sale:</label>
                                 <select class="form-control" name="on_sale" id="isSpecial">
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>
@@ -746,7 +744,7 @@
                 // showLoading();
                 $.ajax({
                     type: 'POST',
-                    url: '{{route('edit-product')}}',
+                    url: '{{route('product.update')}}',
                     data: formData,
                     contentType: false,
                     cache: false,
@@ -755,23 +753,11 @@
                         $("#loading-image").show();
                     },
                     success: function (data) {
-                       alert(data.status);
-                        jQuery.each(data.errors, function (key, value) {
-                            toastr.error(value);
-                            // hideLoading();
-
-                        });
-                        if (data.status == 'success') {
-                            toastr.success(data.message);
+                        ajax_response(data);
+                        if (data.success == true) {
                             location.reload();
                         }
                         $("#loading-image").hide();
-                        // hideLoading();
-
-                    },
-                    error: function (a) {//if an error occurs
-                        // hideLoading();
-                        alert("An error occured while uploading data.\n error code : " + a.statusText);
                     }
                 });
 

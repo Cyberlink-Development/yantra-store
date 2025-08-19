@@ -10,6 +10,10 @@ class Brand extends Model
 {
     use HasSlug;
 
+    public function scopeActive($query){
+        return $query->where('status', '1');
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
