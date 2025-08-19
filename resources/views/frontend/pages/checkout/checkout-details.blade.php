@@ -28,55 +28,30 @@
                 <div class="cz-sidebar-static rounded-lg box-shadow-lg sticky">
                     <div class="widget mb-3">
                         <h2 class="h4 text-center">Order summary</h2>
-                        <div class="media align-items-center py-3 border-bottom">
-                            <a class="d-block mr-2" href="detail.php">
-                                <img width="64" src="{{asset('theme-assets/img/computer/computer1.webp')}}" alt="Product" />
-                            </a>
-                            <div class="media-body">
-                                <h6 class="widget-product-title two-line">
-                                    <a href="detail.php">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
-                                </h6>
-                                <div class="widget-product-meta">
-                                    <span class="font-secondary mr-2">Rs 4,00,000</span><span class="text-muted">x 1</span>
+                        @foreach($cartItem as $item)
+                            <div class="media align-items-center py-3 border-bottom">
+                                <a class="d-block mr-2" href="{{route('product-single',$item->options->slug)}}">
+                                    <img width="64" src="{{asset('theme-assets/img/computer/computer1.webp')}}" alt="Product" />
+                                </a>
+                                <div class="media-body">
+                                    <h6 class="widget-product-title two-line">
+                                        <a href="{{route('product-single',$item->options->slug)}}">{{ $item->name }}</a>
+                                    </h6>
+                                    <div class="widget-product-meta">
+                                        <span class="font-secondary mr-2">Rs {{ $item->price }}</span><span class="text-muted">x {{ $item->qty }}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="media align-items-center py-3 border-bottom">
-                            <a class="d-block mr-2" href="detail.php">
-                                <img width="64" src="img/computer/computer2.webp" alt="Product" />
-                            </a>
-                            <div class="media-body">
-                                <h6 class="widget-product-title two-line">
-                                    <a href="detail.php">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
-                                </h6>
-                                <div class="widget-product-meta">
-                                    <span class="font-secondary mr-2">Rs 4,00,000</span><span class="text-muted">x 1</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="media align-items-center py-3 border-bottom">
-                            <a class="d-block mr-2" href="detail.php">
-                                <img width="64" src="img/computer/computer3.webp" alt="Product" />
-                            </a>
-                            <div class="media-body">
-                                <h6 class="widget-product-title two-line">
-                                    <a href="detail.php">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5 12450HX Processor)</a>
-                                </h6>
-                                <div class="widget-product-meta">
-                                    <span class="font-secondary mr-2">Rs 4,00,000</span><span class="text-muted">x 1</span>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <ul class="list-unstyled font-size-sm pb-2 border-bottom">
-                        <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Subtotal:</span><span class="text-right">Rs. 5,00,000</span></li>
-                        <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Shipping:</span><span class="text-right">Rs. 150</span></li>
-                        <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Discount:</span><span class="text-right">Rs. 250</span></li>
+                        <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Subtotal:</span><span class="text-right">Rs. {{ $cartPrice['subTotal'] }}</span></li>
+                        <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Shipping:</span><span class="text-right" id="shipping-price">Rs. {{ $shipping->first()->price ?? 0 }}</span></li>
+                        <!-- <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Discount:</span><span class="text-right">Rs. 0</span></li> -->
                     </ul>
                     <div class="d-flex justify-content-between">
                         <p class=" font-weight-bold text-center ">Grand Total:</p>
-                        <p class=" font-weight-bold text-center">5,00,000</p>
-
+                        <p class=" font-weight-bold text-center" id="grand-total"> {{ $final }}</p>
                     </div>
                 </div>
             </aside>
@@ -85,32 +60,34 @@
                 <div class="d-flex justify-content-between align-items-center mt-5 border-bottom mb-4">
                     <h2 class="h4">Billing / Shipping Address</h2>
                 </div>
-                <form>
+                <form action="{{ route('checkout-page') }}" Method="post">
+                    @csrf
                     <div class="row">
-                        <div class="col-sm-6">
+                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                        <div class="col-sm-12">
                             <div class="form-group">
-                                <label for="checkout-fn">First Name <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-fn" value="John" required>
+                                <label for="checkout-fn">Full Name <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" id="checkout-fn" value="{{ old('first_name', $user->first_name ?? '') }}" name="first_name" required>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <!-- <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-ln">Last Name<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" id="checkout-ln" value="Doe" required>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-email">E-mail Address<span class="text-danger">*</span></label>
-                                <input class="form-control" type="email" id="checkout-email" value="admin@gmail.com" disabled required>
+                                <input class="form-control" type="email" id="checkout-email" name="email" value="{{ $user->email }}" readonly>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-phone">Phone Number<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-phone" value="+7 (805) 348 95 72" required>
+                                <input class="form-control" type="text" id="checkout-phone" name="phone" value="{{ $user->phone }}" required>
                             </div>
                         </div>
                     </div>
@@ -118,13 +95,13 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-country">Country<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-country" required>
+                                <input class="form-control" type="text" id="checkout-country" name="country" value="{{ $user->country }}" required>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-province">Province<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-province" required>
+                                <input class="form-control" type="text" id="checkout-province" name="province" required>
                             </div>
                         </div>
                     </div>
@@ -132,22 +109,23 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-city">City<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-city" required>
+                                <input class="form-control" type="text" id="checkout-city" name="city" required>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-zip">ZIP Code<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-zip" required>
+                                <input class="form-control" type="text" id="checkout-zip" name="zip_code" required>
                             </div>
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="checkout-shipping">Shipping Area<span class="text-danger">*</span></label>
-                                <select class="form-control custom-select" id="checkout-shipping" required>
-                                    <option>Choose Area</option>
-                                    <option>Inside Kathmandu Valley</option>
-                                    <option>Outside Kathmandu Valley</option>
+                                <select class="form-control custom-select" id="checkout-shipping" name="shipping" required>
+                                    <option value="" selected hidden>Choose Shipping Area</option>
+                                    @foreach ($shipping as $row )
+                                        <option value="{{ $row->id }}" data-price="{{ $row->shipping_price }}">{{$row->shipping_location}} (Rs. {{ $row->shipping_price }})</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -156,19 +134,19 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-address-1">Address 1<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-address-1" placeholder="For Example: House# 123, Street# 123, ABC Road" required>
+                                <input class="form-control" type="text" id="checkout-address-1" name="address_1" required>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-address-2">Address 2</label>
-                                <input class="form-control" type="text" id="checkout-address-2" placeholder="For Example: House# 123, Street# 123, ABC Road">
+                                <input class="form-control" type="text" id="checkout-address-2" name="address_2">
                             </div>
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label class="mb-3" for="order-comments">Additional Message</label>
-                                <textarea class="form-control" rows="6" id="order-comments"></textarea>
+                                <textarea class="form-control" rows="6" id="order-comments" name="message"></textarea>
                             </div>
                         </div>
                     </div>
@@ -178,7 +156,8 @@
                             <div class="card-header p-3" role="tab">
                                 <div class="accordion-heading d-flex justify-content-between">
                                     <div class="acc-heading d-flex align-items-center">
-                                        <input type="radio" id="cash_on_delivery" name="payment" value="cashondelivery">
+                                        <!-- <input type="radio" id="cash_on_delivery" name="payment" value="cashondelivery"> -->
+                                        <input type="hidden" id="cash_on_delivery" name="payment" value="cash-on-delivery">
                                         <i class="czi-card font-size-lg mr-2 mt-n1 align-middle ml-2"></i>Cash on Delivery
                                     </div>
                                     <a href="#tab1" data-toggle="collapse" class="d-flex justify-content-between"><span class="accordion-indicator"></span></a>
@@ -190,7 +169,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <!-- <div class="card">
                             <div class="card-header p-3" role="tab">
                                 <div class="accordion-heading d-flex justify-content-between">
                                     <div class="acc-heading d-flex align-items-center">
@@ -236,12 +215,21 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <!-- Navigation (desktop)-->
                     <div class=" d-flex pt-4 mt-3">
                         <div class="w-50 pr-3"><a class="btn btn-secondary btn-block" href="cart.php"><i class="czi-arrow-left mt-sm-0 mr-1"></i><span class="d-none d-sm-inline">Back to Cart</span><span class="d-inline d-sm-none">Back</span></a></div>
-                        <div class="w-50 pl-2"><a class="btn btn-primary btn-block" href="#sucess-modal" data-toggle="modal"><span class="d-none d-sm-inline">Complete Order</span><span class="d-inline d-sm-none">Next</span><i class="czi-arrow-right mt-sm-0 ml-1"></i></a></div>
+
+                        <!-- <div class="w-50 pl-2"><a class="btn btn-primary btn-block" href="#sucess-modal" data-toggle="modal"><span class="d-none d-sm-inline">Complete Order</span><span class="d-inline d-sm-none">Next</span><i class="czi-arrow-right mt-sm-0 ml-1"></i></a></div> -->
+
+                        <div class="w-50 pl-2">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <span class="d-none d-sm-inline">Complete Order</span>
+                                <span class="d-inline d-sm-none">Next</span>
+                                <i class="czi-arrow-right mt-sm-0 ml-1"></i>
+                            </button>
+                        </div>
                     </div>
                 </form>
             </section>
@@ -269,5 +257,22 @@
 
 @endsection
 @push('scripts')
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const shippingSelect = document.getElementById("checkout-shipping");
+        const shippingPriceEl = document.getElementById("shipping-price");
+        const grandTotalEl = document.getElementById("grand-total");
+
+        let subtotal = {{ $final }}; // from backend
+
+        shippingSelect.addEventListener("change", function () {
+            let selectedOption = this.options[this.selectedIndex];
+            let shippingPrice = parseFloat(selectedOption.getAttribute("data-price")) || 0;
+
+            shippingPriceEl.textContent = "Rs. " + shippingPrice;
+            grandTotalEl.textContent = "Rs. " + (subtotal + shippingPrice);
+        });
+    });
+</script>
 
 @endpush
