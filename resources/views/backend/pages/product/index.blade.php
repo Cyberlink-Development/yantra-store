@@ -30,11 +30,8 @@
                         <td>{{ $key+=1 }}</td>
                         <td>{{ $product->product_name }}</td>
                         <td>{{ $product->sku }}</td>
-                        <td>@if($product->is_featured == 'featured')
-                                 Featured
-                            @else
-                               Not Featured
-                                @endif
+                        <td>
+                            <input type="checkbox" name="is_featured" {{ $product->is_featured == 1 ? 'checked' : '' }} />
                         </td>
                         <td>
                             @if($product->status==1)
@@ -104,7 +101,7 @@
                         </td> -->
                         <td>
                             <a class="btn btn-sm btn-outline-primary confirm"
-                               href="{{route('edit-product',$product->id)}}"><i class="fa fa fa-edit"></i>
+                               href="{{route('product.edit',$product->id)}}"><i class="fa fa fa-edit"></i>
                             </a>
                             <!-- <a class="btn btn-sm btn-outline-primary confirm"
                                href="{{route('show-product',$product->slug)}}"

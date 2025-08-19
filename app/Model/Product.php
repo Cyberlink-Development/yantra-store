@@ -12,6 +12,8 @@ class Product extends Model
 {
     use HasSlug;
 
+    protected $fillable = ['latest','hot'];
+
 //    protected $dates = ['deleted_at'];
 
     public function scopeActive($query){

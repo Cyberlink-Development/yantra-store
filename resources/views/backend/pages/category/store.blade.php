@@ -22,6 +22,10 @@
                                         <label for="name" class="control-label">Category</label>
                                         <input class="form-control" placeholder="Name" name="name" type="text" required>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="caption" class="control-label">Caption</label>
+                                        <input class="form-control" placeholder="Caption" name="caption" type="text">
+                                    </div>
                                     @if($category)
                                         <div class="form-group">
                                             <label for="name" class="control-label">Parent Category</label>
@@ -81,9 +85,24 @@
                     </div>
                     <div class="card" style="box-shadow:none; border:none;">
                         <div class="card-body" style="padding:. 5rem;">
+                            <div class="d-flex justify-content-between">
+                                <div class="form-group m-0">
+                                    <label for="in_slider" class="control-label m-0">In Slider:</label>
+                                    <input type="checkbox" id="in_slider" name="in_slider" />
+                                </div>
+                                <div class="form-group m-0">
+                                    <label for="in_moving_text" class="control-label m-0">In Moving Text ?</label>
+                                    <input type="checkbox" id="in_moving_text" name="in_moving_text" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body" style="padding:. 5rem;">
                             <div class="form-group">
                                 <label for="banner">Banner:</label>
                                 <input type="file" name="banner" class="form-control" id="banner" style="height:auto; padding:0;">
+                                <small style="color:red"><i><b>**Banner is used for slider**</b></i></small>
                             </div>
                         </div>
                     </div>

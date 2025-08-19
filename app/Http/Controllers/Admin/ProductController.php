@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Model\Category;
 use App\Model\OrderDetail;
 use App\Model\Wishlist;
+use Illuminate\Validation\ValidationException;
+use Exception;
+use Log;
 
 
 
@@ -30,43 +33,51 @@ class ProductController extends BackendController
         $this->category = $category;
     }
 
-    public function add_product(Request $request)
+    public function index(Request $request)
     {
-        if ($request->isMethod('get')) {
-            $pro = Product::all();
-            $size = Size::all();
-            $brand = Brand::all();
-            $color = Color::all();
-            $comp_type = ComponentType::all();
-            // dd($comp_type);
-            return view($this->backendproductPath . 'add_product', compact('size', 'brand', 'color','comp_type'));
-        }
+        $products = Product::orderby('created_at', 'DESC')->get();
+        $img = new Product();
+        return view($this->backendproductPath . 'index', compact('products', 'img'));
     }
 
-    public function store_product(Request $request)
+    public function create(Request $request)
+    {
+        $pro = Product::all();
+        $size = Size::all();
+        $brand = Brand::all();
+        $color = Color::all();
+        $comp_type = ComponentType::all();
+        // dd($comp_type);
+        return view($this->backendproductPath . 'create', compact('size', 'brand', 'color','comp_type'));
+
+    }
+
+    public function store(Request $request)
     {
         if ($request->ajax()) {
             // dd($request->all());
             $validator = Validator::make($request->all(), [
                 'product_name' => 'required|unique:products,product_name',
-                'price' => 'required|numeric',
-                'selling_price' => 'required|numeric',
+                // 'price' => 'required|numeric',
+                // 'selling_price' => 'required|numeric',
                 'description' => 'required',
                 'category' => 'required',
-                'size_type' => 'required',
+                // 'size_type' => 'required',
                 // 'is_special' => 'required',
                 // 'on_sale' => 'required',
                 // 'is_featured' => 'required',
                 // 'is_popular' => 'required',
                 'image' => 'required',
-                'weight' => 'required',
+                // 'weight' => 'required',
             ]);
             
             if ($validator->fails()) {
                 return response()->json([
-                    'errors' => $validator->errors()->all()
+                    'error' => true,
+                    'message' => $validator->errors()->all()
                 ]);
             }
+
             try {
                 $product = new Product();
                 $product->product_name = $request->product_name;
@@ -77,14 +88,14 @@ class ProductController extends BackendController
                 $product->short_description = $request->description;
                 $product->long_description = $request->long_description;
                 $product->status = $request->status;
-                $product->is_featured = $request->is_featured;
+                $product->is_featured = $request->has('is_featured') ? 1 : 0;
+                $product->latest = $request->has('latest') ? 1 : 0;
+                $product->hot = $request->has('hot') ? 1 : 0;
                 $product->is_popular = $request->is_popular;
                 $product->is_special = $request->is_special;
                 $product->on_sale = $request->on_sale;
                 $product->sku = $request->sku;
                 $product->weight = $request->weight;
-//            $color = implode(',', $request->color);
-//            $product->color = $color;
                 $product->video = $request->video;
                 $product->brand_id = $request->brand;
                 $product->model_name = $request->model_name;
@@ -99,17 +110,14 @@ class ProductController extends BackendController
                     $product['audio'] = $name;
                 }
                 $product->save();
-                //  category pivot table ma
                 $product->categories()->attach($request->category);
-                //color stock pivot table
                 if ($request->size_type == 0) {
                     if (isset($request->free_size_color)) {
                         for ($i = 0; $i < count($request->free_size_color); $i++) {
-                            //$product->colorstocks()->attach($request->free_size_color[$i], ['stock' => $request->color_stocks[$i]]);
                             $existing_stock = DB::table('color_stocks')
-                                                  ->where('product_id', $product->id)
-                                                  ->where('color_id', $request->free_size_color[$i])
-                                                  ->first();
+                                        ->where('product_id', $product->id)
+                                        ->where('color_id', $request->free_size_color[$i])
+                                        ->first();
                             if($existing_stock){
                                 $new_stock = $existing_stock->stock + $request->color_stocks[$i];
                                 DB::table('color_stocks')
@@ -125,8 +133,6 @@ class ProductController extends BackendController
 
                     $product->save();
                 } else {
-                    // size stock insert pivot table//
-
                     if (isset($request->size)) {
                         $keys = array_keys($request->size);
 
@@ -149,7 +155,6 @@ class ProductController extends BackendController
                         }
                     }
                 }
-//            seos//
                 if (($request->seo_keyword) && ($request->seo_description)) {
                     $product->seo()->create([
                         'seo_keyword' => $request->seo_keyword,
@@ -157,7 +162,6 @@ class ProductController extends BackendController
                     ]);
                 }
 
-                //specifications table ma gayo from product controller
                 if (isset($request->title)) {
                     $title = $request->title;
                     $specification = $request->description1;
@@ -171,7 +175,6 @@ class ProductController extends BackendController
 
                 }
 
-                //insertion to image database
                 if ($request->hasFile('image')) {
                     $counter = 1;
                     foreach ($request->file('image') as $image) {
@@ -194,22 +197,18 @@ class ProductController extends BackendController
                     }
                 }
 
-            } catch (\Exception $e) {
-                throw new \PDOException('error in saving name' . $e->getMessage());
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+                return response()->json([
+                    'error' => true,
+                    'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                ]);
             }
-            return response()->json(['status' => 'success', 'message' => 'Product Added Successfully']);
-
+            return response()->json([
+                'success' => true,
+                'message' => 'Product Added Successfully'
+            ]);
         }
-        return false;
-
-    }
-
-    // Delete description
-    public function delete_description($id){
-        $desc = Description::find($id);
-        $desc->delete();
-
-        return response()->json(['status' => 'success', 'message' => 'Description deleted successfully']);
     }
 
     public function show_product(Request $request)
@@ -220,42 +219,34 @@ class ProductController extends BackendController
         return view($this->backendproductPath . 'single_product', compact('product'));
     }
 
-    public function all_product(Request $request)
-    {
-        $products = Product::orderby('created_at', 'DESC')->get();
-        $img = new Product();
-        return view($this->backendproductPath . 'all_products', compact('products', 'img'));
+    public function edit(Request $request){
+        $product = Product::where('id', '=', $request->id)->first();
+        $size = Size::all();
+        $brand = Brand::all();
+        $color = Color::all();
+        $category=Category::all();
+        $comp_type = ComponentType::all();
+        return view($this->backendproductPath . 'edit', compact('category','product', 'size', 'brand', 'color','comp_type'));
     }
 
-    public function edit_product(Request $request)
+    public function update(Request $request)
     {
-        
-        if ($request->isMethod('get')) {
-            $product = Product::where('id', '=', $request->id)->first();
-            $size = Size::all();
-            $brand = Brand::all();
-            $color = Color::all();
-            $category=Category::all();
-            $comp_type = ComponentType::all();
-            return view($this->backendproductPath . 'edit_product', compact('category','product', 'size', 'brand', 'color','comp_type'));
-        }
-        if ($request->isMethod('post')) {
-            if ($request->ajax()) {
-                $validator = Validator::make($request->all(), [
-                    'product_name' => 'required|unique:products,product_name,' . $request->id,
-                    'price' => 'required',
-                    'selling_price' => 'required',
-                    'description' => 'required',
-                    'category' => 'required',
-                    'weight' => 'required',
-//                    'size_type' => 'required'
-
+        if ($request->ajax()) {
+            $validator = Validator::make($request->all(), [
+                'product_name' => 'required|unique:products,product_name,' . $request->id,
+                // 'price' => 'required',
+                // 'selling_price' => 'required',
+                'description' => 'required',
+                'category' => 'required',
+                // 'weight' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'error' => true,
+                    'message' => $validator->errors()->all()
                 ]);
-                if ($validator->fails()) {
-                    return response()->json([
-                        'errors' => $validator->errors()->all()
-                    ]);
-                }
+            }
+            try{
                 $product = Product::findorfail($request->id);
                 $product->product_name = $request->product_name;      
                 $product->price = $request->price;
@@ -264,7 +255,9 @@ class ProductController extends BackendController
                 $product->short_description = $request->short_description;
                 $product->long_description = $request->long_description;
                 $product->status = $request->status;
-                $product->is_featured = $request->is_featured;
+                $product->is_featured = $request->has('is_featured') ? 1 : 0;
+                $product->latest = $request->has('latest') ? 1 : 0;
+                $product->hot = $request->has('hot') ? 1 : 0;
                 $product->is_popular = $request->is_popular;
                 $product->is_special = $request->is_special;
                 $product->on_sale = $request->on_sale;
@@ -275,32 +268,30 @@ class ProductController extends BackendController
                 $product->component_type = $request->component_type;
                 // $product->size_variation = $request->size_variation;
                 $product->weight = $request->weight;
-               if ($request->hasFile('audio')) {
-                   $this->delete_file($request->id);
-                   $image = $request->file('audio');
-                   $name = time() . '.' . $image->getClientOriginalExtension();
-                   $destinationPath = public_path('/audio/');
+                if ($request->hasFile('audio')) {
+                    $this->delete_file($request->id);
+                    $image = $request->file('audio');
+                    $name = time() . '.' . $image->getClientOriginalExtension();
+                    $destinationPath = public_path('/audio/');
 
-                   $image->move($destinationPath, $name);
-                   $product['audio'] = $name;
-               }
+                    $image->move($destinationPath, $name);
+                    $product['audio'] = $name;
+                }
                 $product->save();
                 //  category pivot table ma
                 $product->categories()->sync($request->category);
-//                //color stock pivot table
+                //color stock pivot table
                 if ($product->size_variation == 0) {
                     if (isset($request->free_size_color)) {
-//                        dd($request->free_size_color);
                         for ($i = 0; $i < count($request->free_size_color); $i++) {
                             $save = DB::table('color_stocks')->updateOrInsert(['product_id' => $product->id, 'color_id' => $request->free_size_color[$i]], ['stock' => $request->color_stocks[$i]]);
-//                            $product->colorstocks()->sync([$request->free_size_color[$i] => ['stock' => $request->color_stocks[$i]]]);
+                            //$product->colorstocks()->sync([$request->free_size_color[$i] => ['stock' => $request->color_stocks[$i]]]);
                         }
-
                     }
                     $product->save();
                 } else {
                     // size stock insert pivot table//
-//dd($request->size);
+                    //dd($request->size);
                     if (isset($request->size)) {
                         //dd($request->size_stocks);
                         for ($key = 0; $key < count($request->size); $key++) {
@@ -322,16 +313,12 @@ class ProductController extends BackendController
                         }
                     }
                 }
-//            seos//
-               
-
                 //specifications table ma gayo from product controller
                 if (isset($request->title)) {
                     $title = $request->title['title'];
                     $description = $request->description['desc'];
                     $keys = array_keys($title);
                     foreach ($keys as $key) {
-
                         $product->descriptions()->updateorcreate(['product_id' => $request->id, 'id' => $key], [
                             'title' => $title[$key],
                             'description' => $description[$key]
@@ -339,7 +326,6 @@ class ProductController extends BackendController
                     }
 
                 }
-
                 //insertion to image database
                 if ($request->hasFile('image')) {
                     $counter = 1;
@@ -377,9 +363,23 @@ class ProductController extends BackendController
                     }
                 }
 
-                return response()->json(['status' => 'success', 'message' => 'Product Updated Successfully']);
-            }
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Product Updated Successfully'
+                ]);
 
+            }catch (Exception $e) {
+                Log::error($e->getMessage());
+                return response()->json([
+                    'error' => true,
+                    'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                ]);
+            }
+        }else{
+            return response()->json([
+                'error' => true,
+                'message' => app()->isLocal() ? 'Invalid request type. Expected ajax reqeust' : 'Something went wrong. Please try again.'
+            ]);
         }
     }
 
@@ -393,6 +393,13 @@ class ProductController extends BackendController
        }
        return true;
    }
+
+    public function delete_description($id){
+        $desc = Description::find($id);
+        $desc->delete();
+
+        return response()->json(['status' => 'success', 'message' => 'Description deleted successfully']);
+    }
 
     public function delete_product(Request $request)
     {

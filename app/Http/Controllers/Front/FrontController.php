@@ -36,9 +36,34 @@ class FrontController extends Controller
     public function index()
     {
         $banners= BannerModel::active()->get();
-        $categories=Category::active()->home()->orderBy('created_at','desc')->get();
-        $brand=Brand::orderBy('created_at','desc')->take(16)->get();
-        $product=Product::where('is_popular','popular')->orderBy('created_at','desc')->limit(8)->get();
+        $categories = Category::active()->home()->where('in_moving_text','!=','1')->orderBy('created_at','desc')->get();
+        $categoriesSlider = Category::active()->where('in_slider', '1')->latest()->get();
+        $categoriesMovingText = Category::active()->where('in_moving_text','1')->latest()->get(); 
+
+        $flashSales = Product::where('on_sale','1')->active()
+                        ->with(['categories' => function ($query){
+                          $query->where('in_moving_text','!=','1');
+                        }])->latest()->take(5)->get();
+        $latestProducts = Product::where('latest','1')->active()->with(['categories' => function ($query){
+                          $query->where('in_moving_text','!=','1');
+                        }])->latest()->take(10)->get();
+        $productsForYou = Product::where('is_popular','popular')->active()->with(['categories' => function ($query){
+                          $query->where('in_moving_text','!=','1');
+                        }])->latest()->take(15)->get();
+        $goneInSeconds = Product::where('is_special','1')->active()->with(['categories' => function ($query){
+                          $query->where('in_moving_text','!=','1');
+                        }])->latest()->get();
+        $featuresProducts = Product::where('is_featured','1')->active()
+                        ->with(['categories' => function ($query){
+                          $query->where('in_moving_text','!=','1');
+                        }])->latest()->take(5)->get();
+        $hotProducts = Product::where('hot','1')->active()
+                        ->with(['categories' => function ($query){
+                          $query->where('in_moving_text','!=','1');
+                        }])->latest()->take(5)->get();
+        $brands=Brand::active()->latest()->get();
+
+        
         $featured_category=Category::where('is_special',1)->where('status', 1)->orderBy('updated_at','desc')->limit(5)->get();
         $featured_category2=Category::where('is_special',1)->where('status', 1)->orderBy('updated_at','desc')->skip(1)->first();
 
@@ -60,11 +85,11 @@ class FrontController extends Controller
             ->pluck('product_id');
 //       dd($result);
         $best=Product::wherein('id',$result)->get();
+
         $new=Product::orderby('created_at','desc')->take(5)->get();
-        $popular=Product::where('is_popular','popular')->orderBy('updated_at','desc')->take(5)->get();
 
 
-        return view('frontend.pages.index',compact('banners','categories','popular','new','best','brand','product','featured_category','featured_category2', 'latest_blogs'));
+        return view('frontend.pages.index',compact('banners','categories','categoriesSlider','categoriesMovingText','flashSales','latestProducts','featuresProducts','hotProducts','productsForYou','goneInSeconds','brands',  'new','best','featured_category','featured_category2', 'latest_blogs'));
     }
 
     public function blog_single($slug){

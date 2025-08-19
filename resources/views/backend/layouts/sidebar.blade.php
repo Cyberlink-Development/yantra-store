@@ -184,8 +184,8 @@
 
                     </ul>
                 </li>
-                <li class="nav-item has-treeview {{ in_array($currentRoute, ['add-product', 'all-product']) ? 'menu-open' : '' }}">
-                    <a href="" class="nav-link {{ in_array($currentRoute, ['add-product', 'all-product']) ? 'active' : '' }}">
+                <li class="nav-item has-treeview {{ in_array($currentRoute, ['product.create', 'product.index']) ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ in_array($currentRoute, ['product.create', 'product.index']) ? 'active' : '' }}">
                         <i class="nav-icon fa fa-cube"></i>
                         <p>
                             Product
@@ -194,13 +194,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('add-product') }}" class="nav-link ml-3 {{ $currentRoute == 'add-product' ? 'active' : '' }}">
+                            <a href="{{ route('product.create') }}" class="nav-link ml-3 {{ $currentRoute == 'product.create' ? 'active' : '' }}">
                                 <i class="fa fa-plus nav-icon"></i>
                                 <p>Add Product</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('all-product') }}" class="nav-link ml-3 {{ $currentRoute == 'all-product' ? 'active' : '' }}">
+                            <a href="{{ route('product.index') }}" class="nav-link ml-3 {{ $currentRoute == 'product.index' ? 'active' : '' }}">
                                 <i class="fa fa-list nav-icon"></i>
                                 <p>All Products</p>
                             </a>
