@@ -20,8 +20,7 @@ class OrderMail extends Mailable
     public $data;
     public function __construct($data)
     {
-        dd($data);
-        $this->data=$data;
+        $this->data = $data;
     }
 
     /**
@@ -31,9 +30,8 @@ class OrderMail extends Mailable
      */
     public function build(Request $request)
     {
-
-        return $this->from('admin@ecommerce.com')
-            ->view('emails.order_mail')
-            ->with('content',$this->data);
+        $email = $this->data["email"];
+        $order = $this->data["order"];
+        return $this->view('emails.order_mail')->with('content',$this->data);
     }
 }
