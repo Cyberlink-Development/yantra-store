@@ -1,27 +1,29 @@
 <div class="mt-5">
     <div class="d-md-flex  justify-content-between pt-2">
         <div class=" pr-lg-4 text-md-left text-center">
-            <h2 class="h4 mb-0">Latest Products</h2>
+            <h2 class="h4 mb-0">Our Products</h2>
         </div>
-        <div class="d-flex flex-wrap justify-content-center">
-            <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
-                <label class="text-light opacity-75 text-nowrap mr-2 d-none d-sm-block" for="sorting">Sort by:</label>
-                @php
-                    $sort = [
-                        'All' => 'latest',
-                        'Low - High Price' => 'low-to-high',
-                        'High - Low Price' => 'high-to-low',
-                        'A - Z Order' => 'a-z',
-                        'Z - A Order' => 'z-a'
-                    ]
-                @endphp
-                <select class="form-control custom-select" id="sorting" onChange="sorting(this)">
-                    @foreach($sort as $key => $value)
-                        <option value="{{ $value }}" {{ $value == request('sort')  ? 'selected' : '' }}>{{ $key }}</option>
-                    @endforeach
-                </select>
+        @if ($products->isNotEmpty())
+            <div class="d-flex flex-wrap justify-content-center">
+                <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
+                    <label class="text-light opacity-75 text-nowrap mr-2 d-none d-sm-block" for="sorting">Sort by:</label>
+                    @php
+                        $sort = [
+                            'All' => 'latest',
+                            'Low - High Price' => 'low-to-high',
+                            'High - Low Price' => 'high-to-low',
+                            'A - Z Order' => 'a-z',
+                            'Z - A Order' => 'z-a'
+                        ]
+                    @endphp
+                    <select class="form-control custom-select" id="sorting" onChange="sorting(this)">
+                        @foreach($sort as $key => $value)
+                            <option value="{{ $value }}" {{ $value == request('sort')  ? 'selected' : '' }}>{{ $key }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 </div>
 <!-- Products grid-->
@@ -29,11 +31,16 @@
     <!-- Product-->
     @if ($products->isNotEmpty())
         @foreach ($products as $row)
+            @php
+                $isPriced = ($row->discount_price || $row->price);
+            @endphp
             <div class="col-md-3 col-6 px-1 px-md-2 mb-4">
                 <div class="card product-card translate p-0">
-                    <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left" onclick="addToCart(event,{{ $row->id }})">
-                        <i class="czi-cart"></i>
-                    </button>
+                    @if($isPriced)
+                        <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left" onclick="addToCart(event,{{ $row->id }})">
+                            <i class="czi-cart"></i>
+                        </button>
+                    @endif
                     <a class="card-img-top d-block overflow-hidden" href="{{route('product-single',$row->slug)}}">
                         <div class="image-hover-box">
                             <img src="{{ asset('images/products/' . $row->images->where('is_main', '=', 1)->first()->image)}}" alt="{{$row->product_name}}" class="main-img  img-fluid">
@@ -58,7 +65,14 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <div class="product-price">
-                                <span class="font-midnight">Rs. {{$row->price}}</span>
+                                @if($isPriced)
+                                    <span class="font-midnight">Rs. {{ $row->discount_price ?? $row->price }}</span>
+                                    @if($row->discount_price)
+                                        <del class="font-size-sm text-danger">Rs. {{ $row->price }}</del>
+                                    @endif
+                                @else
+                                    <span class="font-midnight" style="visibility: hidden;"> Rs</span>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -78,8 +92,10 @@
             </div>
         @endforeach
     @else
-        <div class="col-md-3 col-6 px-1 px-md-2 mb-4">
-            <h6>No Products Available</h6>
+        <div class="col-6 px-1 px-md-2 mb-4">
+            <div class="card product-card translate p-3">
+                <span> No Products Available</span>
+            </div>
         </div>
     @endif
 </div>

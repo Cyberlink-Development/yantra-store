@@ -119,7 +119,7 @@
                 <!-- Product-->
                 @foreach($flashSales as $row)
                     @php
-                        $isPriced = ($row->discount_price || $row->price); 
+                        $isPriced = ($row->discount_price || $row->price);
                     @endphp
                     <div class="col-5th px-1 mb-4">
                         <div class="card product-card translate p-0">
@@ -219,7 +219,7 @@
                 <!-- Product-->
                 @foreach($hotProducts as $row)
                     @php
-                        $isPriced = ($row->discount_price || $row->price); 
+                        $isPriced = ($row->discount_price || $row->price);
                     @endphp
                     <div class="col-5th px-1 mb-4">
                         <div class="card product-card translate p-0">
@@ -294,7 +294,7 @@
                                             <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
                                         </div>
                                     </div>
-                                </a>                                
+                                </a>
                             @endif
                         </div>
                     </div>
@@ -308,13 +308,13 @@
     <section class="container-fluid px-4 px-md-5">
         <div class="row">
             <div class="col-md-6 my-1 px-1">
-                <a href="list.php">
-                    <img src="img/ads/ad2.jpg" class="rounded img-fluid" alt"" />
+                <a href="adLink.php">
+                    <img src="{{asset('theme-assets/img/ads/ad2.jpg')}}" class="rounded img-fluid" alt"" />
                 </a>
             </div>
             <div class="col-md-6 my-1 px-1">
-                <a href="list.php">
-                    <img src="img/ads/ad1.jpg" class="rounded img-fluid" alt"" />
+                <a href="adLink.php">
+                    <img src="{{asset('theme-assets/img/ads/ad1.jpg')}}" class="rounded img-fluid" alt"" />
                 </a>
             </div>
         </div>
@@ -330,7 +330,7 @@
                 </div>
                 <div class="col-md-6 d-none d-md-flex justify-content-end">
                     <div class="text-center pt-3">
-                        <a class="btn btn-primary btn-sm pl-2" href="list.php">View All Products<i
+                        <a class="btn btn-primary btn-sm pl-2" href="{{route('search.results',['uri'=>'latest'])}}">View All Products<i
                                 class="czi-arrow-right ml-2"></i></a>
                     </div>
                 </div>
@@ -340,7 +340,7 @@
                 <!-- Product-->
                 @foreach($latestProducts as $row)
                     @php
-                        $isPriced = ($row->discount_price || $row->price); 
+                        $isPriced = ($row->discount_price || $row->price);
                     @endphp
                     <div class="col-5th px-1 mb-4">
                         <div class="card product-card translate p-0">
@@ -421,7 +421,7 @@
             </div>
             <div class="row d-flex  justify-content-center d-md-none mb-3">
                 <div class="text-center pt-3">
-                    <a class="btn btn-primary btn-sm pl-2" href="list.php">View All Products<i
+                    <a class="btn btn-primary btn-sm pl-2" href="{{route('search.results',['uri'=>'latest'])}}">View All Products<i
                             class="czi-arrow-right ml-2"></i></a>
                 </div>
             </div>
@@ -459,9 +459,9 @@
                     <div class="py-4 my-2 my-md-0 py-md-5 px-4 ml-md-3 text-center text-sm-left">
                         <h4 class="font-size-lg font-weight-light mb-2 text-white">Hurry up! Limited time offer</h4>
                         <h3 class="mb-4 text-white">Grab all the discount Appliances</h3><a
-                            class="btn btn-primary btn-shadow btn-sm" href="list.php">Shop Now</a>
+                            class="btn btn-primary btn-shadow btn-sm" href="adLink.php">Shop Now</a>
                     </div>
-                    <img class="d-block ml-auto " src="img/ads/computer.webp" alt="Shop Converse">
+                    <img class="d-block ml-auto " src="{{asset('theme-assets/img/ads/computer.webp')}}" alt="Shop Converse">
                 </div>
             </div>
         </div>
@@ -478,7 +478,7 @@
                 </div>
                 <div class="col-md-6 d-none d-md-flex justify-content-end">
                     <div class="text-center pt-3">
-                        <a class="btn btn-primary btn-sm pl-2" href="list.php">View All Products<i
+                        <a class="btn btn-primary btn-sm pl-2" href="{{route('search.results',['uri'=>'features'])}}">View All Products<i
                                 class="czi-arrow-right ml-2"></i></a>
                     </div>
                 </div>
@@ -488,7 +488,7 @@
                 <!-- Product-->
                 @foreach ($featuresProducts as $row)
                     @php
-                        $isPriced = ($row->discount_price || $row->price); 
+                        $isPriced = ($row->discount_price || $row->price);
                     @endphp
                     <div class="col-lg col-md-4 col-6 px-1 mb-4">
                         <div class="card product-card translate p-0">
@@ -568,7 +568,7 @@
             </div>
             <div class="row d-flex  justify-content-center d-md-none">
                 <div class="text-center pt-3">
-                    <a class="btn btn-primary btn-sm pl-2" href="list.php">View All Products<i
+                    <a class="btn btn-primary btn-sm pl-2" href="{{route('search.results',['uri'=>'features'])}}">View All Products<i
                             class="czi-arrow-right ml-2"></i></a>
                 </div>
             </div>
@@ -583,12 +583,12 @@
                 <div class="col-md-4">
                     <div>
                         <div>
-                            <a class=" mt-auto" href="list.php">
-                                <img class="d-block w-100 rounded-lg" src="img/ads/promo.png" alt="">
+                            <a class=" mt-auto" href="adLink.php">
+                                <img class="d-block w-100 rounded-lg" src="{{asset('theme-assets/img/ads/promo.png')}}" alt="">
                             </a>
                         </div>
                         <div class="mt-2">
-                            <a class=" mt-2" href="list.php">
+                            <a class=" mt-2" href="adLink.php">
                                 <img class="d-block w-100 rounded-lg" src="https://i.imgur.com/LDzCEGE.jpeg" alt="">
                             </a>
                         </div>
@@ -616,7 +616,7 @@
                                     <div class="row mx-n2">
                                         @foreach ($items as $row)
                                             @php
-                                                $isPriced = ($row->discount_price || $row->price); 
+                                                $isPriced = ($row->discount_price || $row->price);
                                             @endphp
                                             <div class="col-lg-4 col-6 px-0 px-sm-2 mb-sm-4">
                                                 <div class="card product-card translate p-0">
@@ -695,7 +695,7 @@
                             <div>
                                 <div class="  d-flex  rounded align-items-center">
                                     <div class="card product-card translate w-100 p-0">
-                                        <a class="card-img-top d-block overflow-hidden" href="list.php">
+                                        <a class="card-img-top d-block overflow-hidden" href="{{route('search.results',['uri'=>'brands-'.$row->slug])}}">
                                             @if($row->brand_image)
                                                 <img src="{{$row->brand_image ? asset('images/brands/'.$row->brand_image) : asset('theme-assets/img/default-thumbnail.jpeg')}}"
                                                 alt="{{$row->brand_name}}" style="height: 55px;">
@@ -720,8 +720,8 @@
     <div class=" container-fluid px-4 px-md-5 mb-md-3">
         <div class="row">
             <div class="col-md-12">
-                <a href="list.php">
-                    <img src="img/index3.webp" class="img-fluid" alt="" class="rounded-lg">
+                <a href="adlink.php">
+                    <img src="{{asset('theme-assets/img/index3.webp')}}" class="img-fluid" alt="" class="rounded-lg">
                 </a>
             </div>
         </div>
@@ -740,7 +740,7 @@
                 <!-- Product-->
                 @foreach($productsForYou as $row)
                     @php
-                        $isPriced = ($row->discount_price || $row->price); 
+                        $isPriced = ($row->discount_price || $row->price);
                     @endphp
                     <div class="col-5th px-1 mb-2">
                         <div class="card product-card translate p-0">
@@ -820,8 +820,12 @@
             </div>
             <div class="col-12 d-flex justify-content-center mt-3">
                 <div class="text-center pt-3">
-                    <a class="btn btn-primary  " href="list.php">More Products <span><i style="font-size: 12px;"
-                                class="czi-arrow-right ml-1 mr-1 font-weight-bold "></i></span></a>
+                    <a class="btn btn-primary" href="{{route('search.results',['uri'=>'productsForYou'])}}">
+                        More Products
+                        <span>
+                            <i style="font-size: 12px;" class="czi-arrow-right ml-1 mr-1 font-weight-bold "></i>
+                        </span>
+                    </a>
                 </div>
             </div>
         </section>
