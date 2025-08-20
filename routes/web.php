@@ -43,7 +43,7 @@ Route::group(['namespace' => 'Front'], function () {
     Route::get('terms-and-conditions', 'FooterController@terms')->name('terms');
     Route::get('privacy-policy', 'FooterController@privacy')->name('privacy');
     Route::get('faq', 'FooterController@faq')->name('faq-page');
-    Route::post('search-results', 'SearchController@search_results')->name('search-results');
+    Route::get('products/results', 'SearchController@search_results')->name('search.results');
 
     //CMS
     Route::get('{uri}.html', 'FrontController@pagedetail')->name('page.pagedetail');

@@ -151,14 +151,14 @@
                             </a>
                         @endif
 
-                        <div class="input-group-overlay d-none d-lg-flex mx-4">
-                            <input class="form-control appended-form-control" type="text" placeholder="Search for products">
-                            <div class="input-group-append-overlay">
+                        <form class="input-group-overlay d-none d-lg-flex mx-4" action="{{ route('search.results') }}" method="get">
+                            <input class="form-control appended-form-control" type="text" name="search" placeholder="Search for products" required>
+                            <button class="input-group-append-overlay" style="border:0px;padding:0px;">
                                 <span class="input-group-text bg-secondary text-white">
                                     <i class="czi-search"></i>
                                 </span>
-                            </div>
-                        </div>
+                            </button>
+                        </form>
                         <div class="navbar-toolbar d-flex flex-shrink-0 align-items-center">
                             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
                                 <span class="navbar-toggler-icon"></span>
@@ -205,14 +205,14 @@
                         <div class="collapse navbar-collapse" id="navbarCollapse">
                             <!-- Search-->
                             <div class="input-group-overlay d-lg-none my-3 row">
-                                <div class="col-11">
+                                <form class="col-11" action="{{ route('search.results') }}" method="get">
                                     <div class="input-group-prepend-overlay">
                                         <span class="input-group-text">
                                             <i class="czi-search"></i>
                                         </span>
                                     </div>
-                                    <input class="form-control prepended-form-control" type="text" placeholder="Search for products">
-                                </div>
+                                    <input class="form-control prepended-form-control" type="text" placeholder="Search for products" name="search">
+                                </form>
                                 <div class="col-1 p-0">
                                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbars"  aria-expanded="false" aria-label="Toggle navigation">
                                         <!-- <span class="navbar-toggler-icon"></span> -->

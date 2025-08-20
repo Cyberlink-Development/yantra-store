@@ -39,6 +39,39 @@ class CategoryController extends FrontController
 
     public function product_list(Request $request)
     {
+        if(($request->has('minPrice') && !$request->filled('maxPrice')) ||
+        ($request->has('maxPrice') && !$request->filled('minPrice'))) {
+            return $request->ajax()
+                ? response()->json(['error' => true, 'message' => 'Both minPrice and maxPrice are required when filtering by price'])
+                : redirect()->back()->with(['error' => true, 'message' => 'Both minPrice and maxPrice are required when filtering by price']);
+        }
+        if($request->has('sort') && !$request->filled('sort')) {
+            return $request->ajax()
+                ? response()->json(['error' => true, 'message' => 'Sort parameter cannot be empty'])
+                : redirect()->back()->with(['error' => true, 'message' => 'Sort parameter cannot be empty']);
+        }
+        if($request->has('filterby') && !$request->filled('filterby')) {
+            return $request->ajax()
+                ? response()->json(['error' => true, 'message' => 'FilterBy parameter cannot be empty'])
+                : redirect()->back()->with(['error' => true, 'message' => 'FilterBy parameter cannot be empty']);
+        }
+        $hasSort = $request->filled('sort');
+        $hasPriceFilter = $request->filled('minPrice') && $request->filled('maxPrice');
+        $hasFilterBy = $request->filled('filterby');
+        if($hasSort || $hasPriceFilter || $hasFilterBy) {
+            if(!$request->filled('action')) {
+                return $request->ajax()
+                    ? response()->json(['error' => true, 'message' => 'Action parameter is required'])
+                    : redirect()->back()->with(['error' => true, 'message' => 'Action parameter is required']);
+            }
+            $validActions = ['sort', 'filter'];
+            if(!in_array($request->action, $validActions)) {
+                return $request->ajax()
+                    ? response()->json(['error' => true, 'message' => 'Invalid action. Must be either "sort" or "filter"'])
+                    : redirect()->back()->with(['error' => true, 'message' => 'Invalid action. Must be either "sort" or "filter"']);
+            }
+        }
+
         $category = Category::where('slug', $request->slug)->active()->first();
         if(!$category){
             return $request->ajax()
@@ -205,15 +238,35 @@ class CategoryController extends FrontController
                 $query->latest();
                 break;
             case 'low-to-high':
-                $query->orderByRaw("CASE WHEN discount_price IS NULL  OR discount_price = 0 OR discount_price = '' THEN price ELSE discount_price END ASC");
+                $query->reorder();
+                $query->where(function($q1){
+                    $q1->whereNotNull('price')
+                    ->where('price','>',0)
+                    ->orWhere(function($q2){
+                        $q2->whereNotNull('discount_price')
+                        ->where('discount_price','>',0);
+                    });
+                });
+                $query->orderByRaw("CASE WHEN discount_price IS NULL OR discount_price = 0 OR discount_price = '' THEN price ELSE discount_price END ASC");
                 break;
             case 'high-to-low':
-                $query->orderByRaw("CASE WHEN discount_price IS NULL  OR discount_price = 0 OR discount_price = '' THEN price ELSE discount_price END DESC");
+                $query->reorder();
+                $query->where(function($q1){
+                    $q1->whereNotNull('price')
+                    ->where('price','>',0)
+                    ->orWhere(function($q2){
+                        $q2->whereNotNull('discount_price')
+                        ->where('discount_price','>',0);
+                    });
+                });
+                $query->orderByRaw("CASE WHEN discount_price IS NULL OR discount_price = 0 OR discount_price = '' THEN price ELSE discount_price END DESC");
                 break;
             case 'a-z':
+                $query->reorder();
                 $query->orderby('product_name','asc');
                 break;
             case 'z-a':
+                $query->reorder();
                 $query->orderby('product_name','desc');
                 break;
             default:
