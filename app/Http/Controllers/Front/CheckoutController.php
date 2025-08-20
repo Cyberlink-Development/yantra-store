@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Exception;
+use Log;
 
 class CheckoutController extends Controller
 {
@@ -194,7 +195,7 @@ class CheckoutController extends Controller
         if ($request->isMethod('post')) 
         {
             try{
-                $validator = Validator::make($request->all(), [
+                $request->validate([
                     'first_name' => 'required',
                     'email' => 'required',
                     'phone' => 'required',
@@ -202,327 +203,110 @@ class CheckoutController extends Controller
                     'city'=>'required',
                 ]);
 
+                DB::beginTransaction();
+
                 $cartPrice = ['subTotal' => Cart::subtotal(), 'count' => Cart::count()];
                 $cartItem = Cart::content();
                 $shipping = Shipping::where('id', $request->shipping)->first();
-                $grandTotal = $cartPrice['subTotal'] + $shipping->shipping_price;
+                $subTotal = (float) str_replace(',', '', Cart::subtotal());
+                $grandTotal = $subTotal + (float) $shipping->shipping_price;
+                $user = Auth::user();
 
-                dd('test post',$shipping, $request->all(),$cartItem,$cartPrice,$grandTotal);
+                // dd('test post',$shipping, $request->all(),$cartItem,$cartPrice,$grandTotal);
+                
+                $order = Order::create([
+                    'subtotal'       => $subTotal,
+                    'grand_total'    => $grandTotal,
+                    'user_id'        => $user->id,
+                    'shipping_id'    => $shipping->id,
+                    'order_track'    => 'OT' . $user->id . '-' . time(),
+                    'status'         => 0,
+                    'discount'       => 0,
+                    'payment_type'   => $request->payment,
+                    'order_note'     => $request->message,
+                ]);
 
-                $data['subtotal'] = $request->subtotal;
-                // $data['tax'] = $request->tax;
-                $data['grand_total'] = $request->subtotal + $request->shipping;
-                // $data['discount'] = 0;
-                $data['user_id'] = $request->user_id;
-                $data['shipping_id'] = $request->shipping_id;
-                // $data['courier_id'] = $request->shipping_id;
-                $data['order_track'] = 'OT' . $request->user_id . '-' . time();
-                $data['status']=0;
-                $data['payment_status'] = 0;
-                $data['order_note'] = $request->order_note;
-                $data['weight'] = $request->weight;
-                $order = Order::create($data);
-
-                $order_id = $order->id;
-
-                $data['first_name'] = $request->first_name;
-                $data['last_name'] = $request->last_name;
-                $data['email'] = $request->email;
-                $data['phone'] = $request->phone;
-                $data['country'] = $request->country;
-                $data['city'] = $request->city;
-                $data['zip_code'] = $request->zip_code;
-                $data['address1'] = $request->address;
-                // $data['address2'] = $request->address_2;
-                $data['order_id'] = $order_id;
-                $save = OrderAddress::create($data);
-                $address_id = $save->id;
-
-                if(isset($request->is_order)){
-
+                $save = OrderAddress::create([
+                    'first_name' => $request->first_name,
+                    'last_name'  => $request->last_name,
+                    'email'      => $request->email,
+                    'phone'      => $request->phone,
+                    'country'    => $request->country,
+                    'province'   => $request->province,
+                    'city'       => $request->city,
+                    'zip_code'   => $request->zip_code,
+                    'address1'   => $request->address_1,
+                    'address2'   => $request->address_2,
+                    'order_id'   => $order->id,
+                ]);
+            
+                if(isset($request->is_order))
+                {
                     $product = Product::where('slug', $request->product_slug)->first();
 
-                    $detail = new OrderDetail();
-                    $detail->order_id = $order->id;
-                    $detail->product_id = $product->id;
-                    $detail->price = $product->price;
-                    $detail->quantity = $request->quantity;
-                    $detail->size = $request->size;
-                    $detail->color = $request->color;
-                    $detail->discount = 0;
-                    $detail->total = $product->price * $request->quantity;
-                    $detail->save();
-                }
-                else{
-                    foreach (Cart::content() as $product) {
-                        $detail = new OrderDetail();
-                        $detail->order_id = $order->id;
-                        $detail->product_id = $product->id;
-                        $detail->price = $product->price;
-                        $detail->quantity = $product->qty;
-                        $detail->size = $product->options['size'];
-                        $detail->color = $product->options['color'];
-                        $detail->discount = 0;
-                        $detail->total = $product->price * $product->qty;
-                        $detail->save();
-                    }
-                }
-
-                foreach($order->details as $orderDetail){
-                    $color_id = Color::where('title', $orderDetail->color)->pluck('id')->first();
-                    $product = Product::find($orderDetail->product_id);
-                    $size_id = Size::where('title', $orderDetail->size)->pluck('id')->first();
-
-                    if($orderDetail->size==null){
-                        $totalStock = $product->totalStock($color_id);
-                        $remaining = $totalStock - $orderDetail->quantity;
-
-                        DB::table('color_stocks')
-                            ->where('color_id', $color_id)
-                            ->where('product_id', $product->id)
-                            ->update(['stock' => $remaining]);
-                    }else{
-                        $totalStock = $product->totalStock($color_id, $size_id);
-                        $remaining = $totalStock - $orderDetail->quantity;
-
-                        DB::table('stocks')
-                            ->where('color_id', $color_id)
-                            ->where('size_id', $size_id)
-                            ->where('product_id', $product->id)
-                            ->update(['stock' => $remaining]);
-                    }
-                }
-
-                if ($order && $save) {
-                    if(!isset($request->is_order)){
-                        // Cart::destroy();
-                    }
-                    $user = Auth::user();
-                    $data = ['email' => $user->email, 'order' => $order];
-                    
-                    return redirect('/')->with([
-                        'success' => true,
-                        'message' => 'Order Placed Successfully.'
+                    OrderDetail::create([
+                        'order_id'   => $order->id,
+                        'product_id' => $product->id,
+                        'price'      => $product->price,
+                        'quantity'   => $request->quantity,
+                        'size'       => $request->size,
+                        'color'      => $request->color,
+                        'discount'   => 0,
+                        'total'      => $product->price * $request->quantity,
                     ]);
-                    // return response()->json(['status'=>'success','message'=>'Please proceed with the payment for your order.','order_id' => $order->order_track, 'route' => route('checkout-payment', ['order_id' => $order->order_track])], 200);
+
+                    $product->decrement('stock', $request->quantity); 
+                } else {
+                    foreach ($cartItem as $item) {
+                        OrderDetail::create([
+                            'order_id'  => $order->id,
+                            'product_id'=> $item->id,
+                            'price'     => $item->price,
+                            'quantity'  => $item->qty,
+                            'size'      => $item->options['size'],
+                            'color'     => $item->options['color'],
+                            'discount'  => 0,
+                            'total'     => (float)$item->price * (int)$item->qty,
+                        ]);
+
+                        $product = Product::findOrFail($item->id);
+                        $product->decrement('stock', $item->qty);
+                    }
                 }
+
+                DB::commit();
+
+                $data = ['email' => $user->email, 'order' => $order];
+
+                if(!isset($request->is_order)){
+                    Cart::destroy();
+                }
+            
             }catch(ValidationException $e){
                 return redirect()->back()->with([
                     'error' => true,
                     'message' => $e->validator->errors()->all()
                 ]);
             }catch(Exception $e){
+                DB::rollBack();
                 return redirect()->back()->with([
                     'error' => true,
                     'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
                 ]);
             }
+
+            try {
+                return new OrderMail($data);
+                // Mail::to($user->email)->send(new OrderMail($data));
+            } catch (Exception $e) {
+                Log::error("Order email failed for order {$order->id}: " . $e->getMessage());
+            }
+            return redirect('/')->with([
+                'success' => true,
+                'message' => 'Order placed successfully!'
+            ]);
         }
     }
-
-//     public function checkout_address(Request $request)
-//     {
-
-//         if ($request->isMethod('get')) {
-//             // dd($request->all());
-
-//             // Cart empty validation
-//             if(Cart::count()<1){
-//                 return redirect()->back()->withErrors(['msg' => 'Cart is empty']);  
-//             }
-
-//             // Out of stock validation
-//             foreach (Cart::content() as $cartItem) {
-//                 $product = Product::find($cartItem->id);
-//                 $color = Color::where('title', $cartItem->options->color)->first();
-// // dd($color,'testt',$product);
-//                 // if($product->size_variation==1){
-//                 //     $size = Size::where('title', $cartItem->options->size)->first();
-//                 //     $totalStock = $product->totalStock($color->id, $size->id);
-//                 // }else{
-//                     // $totalStock = $product->totalStock($color->id);
-//                     $totalStock = 10;
-//                 // }
-//                 if($totalStock < $cartItem->qty){
-//                     //Cart::destroy();
-
-//                     $cartItem->qty = $totalStock;
-//                     return back()->with('error', 'Stock not available');
-//                 }
-//             }
-
-
-//             $cartItem = Cart::content();
-//             $countries = Country::all();
-//             $shipping = Shipping::where('status', 1)->get();
-//             $sub = Cart::subtotal();
-//             $total = preg_replace("/[^0-9.]/", "", $sub);
-//             $final = (int)$total;
-//             $user = Auth::user();
-
-//             // Calculate total weight of the cart
-//             $weight = 0;
-
-//             foreach (Cart::content() as $content) {
-//                 $wt = Product::find($content->id)->weight;
-//                 $qt = $content->qty;
-//                 $weight += ($wt * $qt);
-//             }
-
-//             // Determine weight category
-//             $weight_category = $this->weight_category($weight);
-
-//             // Shipping option
-//             // $shipping_option = $this->shipping_option($weight_category);
-//             $shipping_option = '';
-
-//            return view('frontend/pages/checkout/checkout-details', compact('user', 'cartItem', 'countries', 'shipping', 'final', 'weight', 'weight_category', 'shipping_option'));
-//         }
-
-//         if ($request->isMethod('post')) {
-
-// //            dd((new \Gloudemans\Shoppingcart\Cart)->instance(Auth::user()->id));
-// //            dd(Cart::content());
-//               //dd($request->all());
-//             //   if($request->country == "value" || $request->city == "value"){
-//             //     dd("Please enter city and country");
-//             //   }
-//             // dd($request->country);
-//             $request->validate([
-//                 'first_name' => 'required',
-//                 // 'last_name' => 'required',
-//                 'email' => 'required',
-//                 // 'phone' => 'required',
-//                 // 'shipping_option'=>'required',
-//                 // 'zip_code' => 'required',
-//                 // 'address_1' => 'required',
-//                 // 'country'=>'required',
-//                 // 'city'=>'required',
-//                 // 'address_2' => 'required',
-//             ]);
-
-//             $data['subtotal'] = $request->subtotal;
-//             $data['tax'] = 0;
-//             $data['grand_total'] = $request->subtotal + $request->shipping;
-// //            $data['discount'] = 0;
-//             $data['user_id'] = $request->user_id;
-//             //$data['shipping_id'] = $request->shipping_id;
-//             $data['courier_id'] = $request->shipping_id;
-//             $data['order_track'] = 'OT' . $request->user_id . '-' . time();
-//             $data['status']=0;
-//             $data['order_note'] = $request->order_note;
-//             $data['weight'] = $request->weight;
-//             dd($data);
-//             $order = Order::create($data);
-
-//             $order_id = $order->id;
-
-//             $data['first_name'] = $request->first_name;
-//             $data['last_name'] = $request->last_name;
-//             $data['email'] = $request->email;
-//             $data['phone'] = $request->phone;
-//             $data['country'] = $request->country;
-//             $data['city'] = $request->city;
-//             $data['zip_code'] = $request->zip_code;
-//             $data['address1'] = $request->address_1;
-//             $data['address2'] = $request->address_2;
-//             $data['order_id'] = $order_id;
-//             $save = OrderAddress::create($data);
-//             $address_id = $save->id;
-
-//             if(isset($request->is_order)){
-
-//                 $product = Product::where('slug', $request->product_slug)->first();
-
-//                 $detail = new OrderDetail();
-//                 $detail->order_id = $order->id;
-//                 $detail->product_id = $product->id;
-//                 $detail->price = $product->price;
-//                 $detail->quantity = $request->quantity;
-//                 $detail->size = $request->size;
-//                 $detail->color = $request->color;
-//                 $detail->discount = 0;
-//                 $detail->total = $product->price * $request->quantity;
-//                 $detail->save();
-//             }
-//             else{
-//                 foreach (Cart::content() as $product) {
-//                     $detail = new OrderDetail();
-//                     $detail->order_id = $order->id;
-//                     $detail->product_id = $product->id;
-//                     $detail->price = $product->price;
-//                     $detail->quantity = $product->qty;
-//                     $detail->size = $product->options['size'];
-//                     $detail->color = $product->options['color'];
-//                     $detail->discount = 0;
-//                     $detail->total = $product->price * $product->qty;
-//                     $detail->save();
-//                 }
-//             }
-
-//             foreach($order->details as $orderDetail){
-//                 $color_id = Color::where('title', $orderDetail->color)->pluck('id')->first();
-//                 $product = Product::find($orderDetail->product_id);
-//                 $size_id = Size::where('title', $orderDetail->size)->pluck('id')->first();
-
-//                 if($orderDetail->size==null){
-//                     $totalStock = $product->totalStock($color_id);
-//                     $remaining = $totalStock - $orderDetail->quantity;
-
-//                     DB::table('color_stocks')
-//                         ->where('color_id', $color_id)
-//                         ->where('product_id', $product->id)
-//                         ->update(['stock' => $remaining]);
-//                 }else{
-//                     $totalStock = $product->totalStock($color_id, $size_id);
-//                     $remaining = $totalStock - $orderDetail->quantity;
-
-//                     DB::table('stocks')
-//                         ->where('color_id', $color_id)
-//                         ->where('size_id', $size_id)
-//                         ->where('product_id', $product->id)
-//                         ->update(['stock' => $remaining]);
-//                 }
-//             }
-
-// //            foreach ($order->order_details as $orderDetail) {
-// ////                dd($product->colorstocks->first()->pivot->stock);
-// //                if ($orderDetail->products->size_variation == 0) {
-// //                    $decreasedQuantity =$orderDetail->products->colorstocks->first()->pivot->stock - $orderDetail->quantity;
-// //                    $update = DB::table('color_stocks')
-// //                        ->where('product_id', $orderDetail->product_id)
-// //                        ->where('color_id', $orderDetail->products->colorstocks->first()->id)
-// //                        ->update(['stock' => $decreasedQuantity]);
-// ////                    $idss=array($product->colorstocks->first()->id);
-// //////                    $decreasedQuantity = $product->colorstocks->first()->pivot->stock - $orderDetail->quantity;
-// ////
-// ////
-// ////                    $product->colorstocks()->sync([0=>2], ['stock' =>300]);
-// //                } else {
-// //                    $size = Size::where('title', $orderDetail->size)->first();
-// //                    $stock = Stock::where('product_id', $product->id)->where('size_id', $size->id)->first();
-// //                    $stock->stock = $stock->stock - 1;
-// //                    $stock->save();
-// //                }
-// //            }
-//             //sending email
-// //        $user = Auth::user();
-// //        $data = ['email' => $user->email, 'order' => $order];
-// //        return new OrderMail($data);
-// //        Mail::to($user->email)->send(new OrderMail($data));
-
-//             if ($order && $save) {
-//                 if(!isset($request->is_order)){
-//                     Cart::destroy();
-//                 }
-//                 return view('frontend/pages/checkout/checkout-complete', compact('order'));
-//             }
-
-//         }
-
-//     }
-
-
 
     public function shipping_page()
     {

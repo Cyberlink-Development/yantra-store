@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $fillable=['user_id','subtotal','tax','discount','grand_total','status','order_track','shipping_id', 'order_note', 'courier_id', 'weight'];
+    protected $fillable=['user_id','subtotal','tax','discount','grand_total','status','order_track','shipping_id', 'order_note', 'courier_id', 'weight','payment_type'];
 
     public function shippingInfo(){
         return $this->belongsTo('App\ShippingPrice','courier_id');
@@ -23,7 +23,7 @@ class Order extends Model
     }
     public function addresses()
     {
-        return $this->hasMany(OrderAddress::class,'order_id');
+        return $this->belongsTo(OrderAddress::class,'order_id');
     }
 
     public function users()
