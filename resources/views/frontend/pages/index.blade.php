@@ -305,20 +305,19 @@
     <!-- Hot products end-->
 
     <!-- Ad section start-->
-    <section class="container-fluid px-4 px-md-5">
-        <div class="row">
-            <div class="col-md-6 my-1 px-1">
-                <a href="adLink.php">
-                    <img src="{{asset('theme-assets/img/ads/ad2.jpg')}}" class="rounded img-fluid" alt"" />
-                </a>
+    @if(isset($ads['after_hot_deals']) && $ads['after_hot_deals']->count() > 0)
+        <section class="container-fluid px-4 px-md-5">
+            <div class="row">
+                @foreach($ads['after_hot_deals'] as $row)
+                    <div class="col-md-6 my-1 px-1">
+                        <a href="{{ $row->link ?? '#' }}" {{ $row->link && $row->isNewTab() ? 'target="_blank"' : '' }}>
+                            <img src="{{$row->image ? asset('uploads/ads/'.$row->image) : asset('theme-assets/img/default-ad.jpg')}}" class="rounded img-fluid" alt="{{ $row->client_name ?? $row->title }}" />
+                        </a>
+                    </div>
+                @endforeach
             </div>
-            <div class="col-md-6 my-1 px-1">
-                <a href="adLink.php">
-                    <img src="{{asset('theme-assets/img/ads/ad1.jpg')}}" class="rounded img-fluid" alt"" />
-                </a>
-            </div>
-        </div>
-    </section>
+        </section>
+    @endif
     <!-- Ad section end -->
 
     <!-- Latest Launches / New Arrivals products start-->
@@ -452,20 +451,26 @@
     <!-- category section end-->
 
     <!-- Ad section start-->
-    <div class="container-fluid ad-section mb-md-3 px-4 px-md-5">
-        <div class="row">
-            <div class="col-md-12 mb-4">
-                <div class="d-sm-flex justify-content-between align-items-center bg-image overflow-hidden rounded-lg">
-                    <div class="py-4 my-2 my-md-0 py-md-5 px-4 ml-md-3 text-center text-sm-left">
-                        <h4 class="font-size-lg font-weight-light mb-2 text-white">Hurry up! Limited time offer</h4>
-                        <h3 class="mb-4 text-white">Grab all the discount Appliances</h3><a
-                            class="btn btn-primary btn-shadow btn-sm" href="adLink.php">Shop Now</a>
+    @if(isset($ads['after_categories']) && $ads['after_categories']->count() > 0)
+        @php
+            $ad = $ads['after_categories']->first();
+        @endphp
+        <div class="container-fluid ad-section mb-md-3 px-4 px-md-5">
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    <div  class="d-sm-flex justify-content-between align-items-center bg-image overflow-hidden rounded-lg">
+                        <div class="py-4 my-2 my-md-0 py-md-5 px-4 ml-md-3 text-center text-sm-left">
+                            {!! $ad->description !!}
+                            <a class="btn btn-primary btn-shadow btn-sm" href="{{ $ad->link_url ?? '#' }}" {{ $ad->link_url && $ad->open_in_new_tab ? 'target="_blank"' : '' }}>Shop Now</a>
+                        </div>
+                        <a href="{{ $ad->link_url ?? '#' }}" {{ $ad->link_url && $ad->open_in_new_tab ? 'target="_blank"' : '' }}>
+                            <img class="d-block ml-auto" src="{{$ad->image ? asset('uploads/ads/'.$ad->image) : asset('theme-assets/img/default-ad.jpg')}}" alt="{{ $ad->client_name ?? $ad->title }}">
+                        </a>
                     </div>
-                    <img class="d-block ml-auto " src="{{asset('theme-assets/img/ads/computer.webp')}}" alt="Shop Converse">
                 </div>
             </div>
         </div>
-    </div>
+    @endif
     <!--End of Ad section end-->
 
     <!-- feature products start-->
@@ -576,105 +581,108 @@
     @endif
     <!-- featured products  end-->
     <!-- Gone in seconds category start-->
-    @if($goneInSeconds->count() > 0)
+    @if($goneInSeconds->count() > 0) <!----- heare add || $ads[] exits too --->
         <section class="container-fluid px-4 px-md-5 mt-4">
             <div class="row">
                 <!-- Banner with controls-->
-                <div class="col-md-4">
-                    <div>
+                @if($goneInSeconds->count() > 0)
+                    <div class="col-md-4">
                         <div>
-                            <a class=" mt-auto" href="adLink.php">
-                                <img class="d-block w-100 rounded-lg" src="{{asset('theme-assets/img/ads/promo.png')}}" alt="">
-                            </a>
-                        </div>
-                        <div class="mt-2">
-                            <a class=" mt-2" href="adLink.php">
-                                <img class="d-block w-100 rounded-lg" src="https://i.imgur.com/LDzCEGE.jpeg" alt="">
-                            </a>
+                            @if(isset($ads['gone_in_seconds_sidebar']) && $ads['gone_in_seconds_sidebar']->count() > 0)
+                                @foreach($ads['gone_in_seconds_sidebar']->take(2) as $index => $ad)
+                                    <div class="{{ $index > 0 ? 'mt-2' : '' }}">
+                                        <a class="mt-auto" href="{{ $ad->link_url ?? '#' }}" {{ $ad->link_url && $ad->open_in_new_tab ? 'target="_blank"' : '' }}>
+                                            <img class="d-block w-100 rounded-lg" src="{{$ad->image ? asset('uploads/ads/'.$ad->image) : asset('theme-assets/img/default-ad.jpg')}}" alt="{{ $ad->client_name ?? $ad->title }}">
+                                        </a>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
-                </div>
+                @endif
                 <!-- Product grid (carousel)-->
-                <div class="col-md-8 pt-4 pt-md-0">
-                    <div class="d-flex justify-content-between mb-3">
-                        <div>
-                            <h2 class="section-title mb-0 ml-1">Gone in seconds</h2>
-                        </div>
-                        <div>
-                            <div class="cz-custom-controls" id="hoodie-day">
-                                <button type="button"><i class="czi-arrow-left"></i></button>
-                                <button type="button"><i class="czi-arrow-right"></i></button>
+                @if($goneInSeconds->count() > 0)
+                    <div class="col-md-8 pt-4 pt-md-0">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <h2 class="section-title mb-0 ml-1">Gone in seconds</h2>
+                            </div>
+                            <div>
+                                <div class="cz-custom-controls" id="hoodie-day">
+                                    <button type="button"><i class="czi-arrow-left"></i></button>
+                                    <button type="button"><i class="czi-arrow-right"></i></button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="cz-carousel">
-                        <div class="cz-carousel-inner"
-                            data-carousel-options="{&quot;nav&quot;: false, &quot;controlsContainer&quot;: &quot;#hoodie-day&quot;}">
-                            <!-- Carousel item-->
-                            @foreach($goneInSeconds->chunk(6) as $items)
-                                <div>
-                                    <div class="row mx-n2">
-                                        @foreach ($items as $row)
-                                            @php
-                                                $isPriced = ($row->discount_price || $row->price);
-                                            @endphp
-                                            <div class="col-lg-4 col-6 px-0 px-sm-2 mb-sm-4">
-                                                <div class="card product-card translate p-0">
-                                                    @if($isPriced)
-                                                        <button class="btn-cart btn-sm" type="button" data-toggle="tooltip"
-                                                            data-placement="left" onclick="addToCart(event,{{ $row->id }})">
-                                                            <i class="czi-cart"></i>
-                                                        </button>
-                                                    @endif
-                                                    @php
-                                                        $images = $row->images->sortByDesc('is_main')->take(2)->values();
-                                                    @endphp
-                                                    <a class="card-img-top d-block overflow-hidden" href="{{route('product-single',$row->slug)}}">
-                                                        <div class="image-hover-box">
-                                                            <img src="{{ asset('images/products/' . $images[0]->image) }}" alt="Main" class="main-img img-fluid">
-                                                            <img src="{{ asset('images/products/' . (isset($images[1]) ? $images[1]->image : $images[0]->image)) }}" alt="Hover" class="hover-img img-fluid">
-                                                        </div>
-                                                    </a>
-                                                    <div class="card-body py-2">
-                                                        @if($row->categories->count() > 0)
-                                                            <a href="{{ route('product-list', $row->categories->first()->slug) }}" class="product-meta d-block font-size-xs pb-1">{{$row->categories->first()->name}}</a>
+                        <div class="cz-carousel">
+                            <div class="cz-carousel-inner"
+                                data-carousel-options="{&quot;nav&quot;: false, &quot;controlsContainer&quot;: &quot;#hoodie-day&quot;}">
+                                <!-- Carousel item-->
+                                @foreach($goneInSeconds->chunk(6) as $items)
+                                    <div>
+                                        <div class="row mx-n2">
+                                            @foreach ($items as $row)
+                                                @php
+                                                    $isPriced = ($row->discount_price || $row->price);
+                                                @endphp
+                                                <div class="col-lg-4 col-6 px-0 px-sm-2 mb-sm-4">
+                                                    <div class="card product-card translate p-0">
+                                                        @if($isPriced)
+                                                            <button class="btn-cart btn-sm" type="button" data-toggle="tooltip"
+                                                                data-placement="left" onclick="addToCart(event,{{ $row->id }})">
+                                                                <i class="czi-cart"></i>
+                                                            </button>
                                                         @endif
-                                                        <h3 class="product-title font-size-sm mb-2">
-                                                            <a href="{{route('product-single',$row->slug)}}" class="two-line">{{$row->product_name}}</a>
-                                                        </h3>
-                                                        <div class="mb-2">
-                                                            <div class="star-list d-flex">
-                                                                <i class="sr-star czi-star-filled active-star"></i>
-                                                                <i class="sr-star czi-star-filled active-star"></i>
-                                                                <i class="sr-star czi-star-filled active-star"></i>
-                                                                <i class="sr-star czi-star-filled inactive-star"></i>
-                                                                <i class="sr-star czi-star-filled inactive-star"></i>
+                                                        @php
+                                                            $images = $row->images->sortByDesc('is_main')->take(2)->values();
+                                                        @endphp
+                                                        <a class="card-img-top d-block overflow-hidden" href="{{route('product-single',$row->slug)}}">
+                                                            <div class="image-hover-box">
+                                                                <img src="{{ asset('images/products/' . $images[0]->image) }}" alt="Main" class="main-img img-fluid">
+                                                                <img src="{{ asset('images/products/' . (isset($images[1]) ? $images[1]->image : $images[0]->image)) }}" alt="Hover" class="hover-img img-fluid">
                                                             </div>
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <div class="product-price">
-                                                                @if($isPriced)
-                                                                    <span class="font-midnight">Rs. {{ $row->discount_price ?? $row->price }}</span>
-                                                                    @if($row->discount_price)
-                                                                        <del class="font-size-sm text-danger">Rs. {{ $row->price }}</del>
+                                                        </a>
+                                                        <div class="card-body py-2">
+                                                            @if($row->categories->count() > 0)
+                                                                <a href="{{ route('product-list', $row->categories->first()->slug) }}" class="product-meta d-block font-size-xs pb-1">{{$row->categories->first()->name}}</a>
+                                                            @endif
+                                                            <h3 class="product-title font-size-sm mb-2">
+                                                                <a href="{{route('product-single',$row->slug)}}" class="two-line">{{$row->product_name}}</a>
+                                                            </h3>
+                                                            <div class="mb-2">
+                                                                <div class="star-list d-flex">
+                                                                    <i class="sr-star czi-star-filled active-star"></i>
+                                                                    <i class="sr-star czi-star-filled active-star"></i>
+                                                                    <i class="sr-star czi-star-filled active-star"></i>
+                                                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <div class="product-price">
+                                                                    @if($isPriced)
+                                                                        <span class="font-midnight">Rs. {{ $row->discount_price ?? $row->price }}</span>
+                                                                        @if($row->discount_price)
+                                                                            <del class="font-size-sm text-danger">Rs. {{ $row->price }}</del>
+                                                                        @endif
+                                                                    @else
+                                                                        <span class="font-midnight" style="visibility: hidden;"> Rs</span>
                                                                     @endif
-                                                                @else
-                                                                    <span class="font-midnight" style="visibility: hidden;"> Rs</span>
-                                                                @endif
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <hr class="d-sm-none">
                                                 </div>
-                                                <hr class="d-sm-none">
-                                            </div>
-                                        @endforeach
+                                            @endforeach
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
-                            <!-- Carousel item-->
+                                @endforeach
+                                <!-- Carousel item-->
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
         </section>
     @endif
@@ -717,15 +725,20 @@
     <!-- shop by brand end -->
 
     <!-- Ad section start-->
-    <div class=" container-fluid px-4 px-md-5 mb-md-3">
-        <div class="row">
-            <div class="col-md-12">
-                <a href="adlink.php">
-                    <img src="{{asset('theme-assets/img/index3.webp')}}" class="img-fluid" alt="" class="rounded-lg">
-                </a>
+    @if(isset($ads['after_brands']) && $ads['after_brands']->count() > 0)
+        @php
+            $ad = $ads['after_brands']->first();
+        @endphp
+        <div class=" container-fluid px-4 px-md-5 mb-md-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="{{ $ad->link_url }}" {{ $ad->link_url && $ad->open_in_new_tab ? 'target="_blank"' : '' }}>
+                        <img src="{{$ad->image ? asset('uploads/ads/'.$ad->image) : asset('theme-assets/img/default-ad.jpg')}}" class="rounded-lg" alt="{{ $ad->client_name ?? $ad->title }}">
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
+    @endif
     <!--Ad section end -->
 
     <!-- Product for you start-->

@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\Admin\Tags\TagController;
+// use App\Http\Controllers\Admin\Ads\AdController;
 
 /******************** By Sangam Starts ***********/
 // use App\Http\Controllers\Admin\CategoryController;
@@ -160,6 +161,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::post('update-status', [GlobalController::class,'updateStatus'])->name('global.update.status');
     Route::get('image-delete', [GlobalController::class,'deleteImage'])->name('global.image.delete');
     Route::resource('tags', TagController::class);
+    Route::resource('ads', AdController::class);
     /******************************* By Sangam Ends ********************************************/
 
 
