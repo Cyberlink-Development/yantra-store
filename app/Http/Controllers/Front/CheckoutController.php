@@ -159,6 +159,12 @@ class CheckoutController extends Controller
             $total = preg_replace("/[^0-9.]/", "", $sub);
             $final = (int)$total;
             $user = Auth::user();
+            $userInfo = null;
+            $userOrder = Order::where('user_id',$user->id)->latest()->first();
+            if($userOrder)
+            {
+                $userInfo = $userOrder->addresses;
+            }
 
             // Calculate total weight of the cart
             $weight = 0;
@@ -175,21 +181,8 @@ class CheckoutController extends Controller
             // Shipping option
             // $shipping_option = $this->shipping_option($weight_category);
             $shipping_option ='';
-            // dd([
-            //     'cartPrice'       => $cartPrice,
-            //     'cartItem'        => $cartItem,
-            //     'countries'       => $countries,
-            //     'shipping'        => $shipping,
-            //     'subtotal_raw'    => $sub,
-            //     'total_numeric'   => $total,
-            //     'final_total'     => $final,
-            //     'user'            => $user,
-            //     'weight'          => $weight,
-            //     'weight_category' => $weight_category,
-            //     'shipping_option' => $shipping_option,
-            // ]);
 
-           return view('frontend/pages/checkout/checkout-details', compact('user', 'cartItem', 'countries', 'shipping', 'final', 'weight', 'weight_category', 'shipping_option', 'cartPrice'));
+           return view('frontend/pages/checkout/checkout-details', compact('user','userInfo', 'cartItem', 'countries', 'shipping', 'final', 'weight', 'weight_category', 'shipping_option', 'cartPrice'));
         }
 
         if ($request->isMethod('post')) 
@@ -226,7 +219,7 @@ class CheckoutController extends Controller
                     'order_note'     => $request->message,
                 ]);
 
-                $save = OrderAddress::create([
+                $userInfo = OrderAddress::create([
                     'first_name' => $request->first_name,
                     'last_name'  => $request->last_name,
                     'email'      => $request->email,
@@ -276,7 +269,7 @@ class CheckoutController extends Controller
 
                 DB::commit();
 
-                $data = ['email' => $user->email, 'order' => $order];
+                $data = ['email' => $user->email, 'order' => $order,'user' => $userInfo];
 
                 if(!isset($request->is_order)){
                     Cart::destroy();

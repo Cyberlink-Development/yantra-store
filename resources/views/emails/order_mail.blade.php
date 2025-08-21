@@ -39,7 +39,9 @@
                                 <!-- Header / Logo -->
                                 <tr>
                                     <td align="center" style="padding:20px 0;">
-                                        <img src="{{ asset('theme-assets/img/logo-white.jpg') }}" alt="Yantra Store" style="max-height:40px;">
+                                        <a href="{{ url('/') }}" target="_blank">
+                                            <img src="{{ asset('theme-assets/img/logo-white.jpg') }}" alt="Yantra Store" style="max-height:40px;">
+                                        </a>
                                         <p style="margin:10px 0 0 0; font-size:18px; color:#000;">Thank You For Shopping With Us!</p>
                                     </td>
                                 </tr>
@@ -59,14 +61,6 @@
                                                                 <td>{{ $content['order']->order_track }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>Subtotal:</td>
-                                                                <td>Rs. {{ $content['order']->subtotal }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Shipping Price:</td>
-                                                                <td>Rs. {{ $content['order']->shippings->shipping_price ?? 0 }}</td>
-                                                            </tr>
-                                                            <tr>
                                                                 <td>Total:</td>
                                                                 <td>Rs. {{ $content['order']->grand_total }}</td>
                                                             </tr>
@@ -76,13 +70,17 @@
                                                                 </tr>
                                                             @endif
                                                         </table>
+                                                        
+                                                        <p style="font-size:16px; font-weight:900; text-transform:uppercase; margin:10px 0 10px 0;">Shipping Address</p>
+                                                        <p style="margin:0 0 5px 0;">[{{ $content['order']->shippings->shipping_location ?? '' }}]</p>
                                                     </td>
 
                                                     <!-- Shipping Details -->
                                                     <td width="50%" style="vertical-align:top; padding:15px;">
-                                                        <p style="font-size:16px; font-weight:900; text-transform:uppercase; margin:0 0 10px 0;">Shipping Details</p>
-                                                        <p style="margin:0 0 5px 0;">[{{ $content['order']->shippings->shipping_location ?? '' }}]</p>
-                                                        <p style="margin:0;">Phone: {{ $content['order']->addresses }}</p>
+                                                        <p style="font-size:16px; font-weight:900; text-transform:uppercase; margin:0 0 10px 0;">User Details</p>
+                                                        <p style="margin:0;">Name: {{ $content['user']->first_name }}</p>
+                                                        <p style="margin:0;">Phone: {{ $content['user']->phone }}</p>
+                                                        <p style="margin:0;">Email: {{ $content['user']->email }}</p>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -93,39 +91,70 @@
                                 <!-- Items Header -->
                                 <tr>
                                     <td style="padding:10px 20px;">
-                                        <table width="100%" style="border-collapse:collapse; background-color:#f9f9f9; border:1px solid #E5E5E5;">
+                                        <table width="100%" style="border-collapse:collapse; background-color:#f9f9f9; border:1px solid #E5E5E5; table-layout:fixed;">
                                             <tr>
-                                                <td style="padding:10px; font-weight:900;">Items</td>
-                                                <td style="padding:10px; text-align:center; font-weight:900;">Quantity</td>
-                                                <td style="padding:10px; text-align:right; font-weight:900;">Price</td>
+                                                <td style="padding:10px; width:10%; font-weight:900; text-align:center;">
+                                                    SN
+                                                </td>
+                                                <td style="padding:10px; width:45%; font-weight:900; text-align:left;">
+                                                    Item(s)
+                                                </td>
+                                                <td style="padding:10px; width:20%; font-weight:900; text-align:center;">
+                                                    Quantity
+                                                </td>
+                                                <td style="padding:10px; width:25%; font-weight:900; text-align:center;">
+                                                    Price
+                                                </td>
                                             </tr>
                                         </table>
                                     </td>
                                 </tr>
 
                                 <!-- Loop through products -->
-                                @foreach($content['order']->getOrderDataForModal()['products'] as $product)
-                                <tr>
-                                    <td style="padding:10px 20px;">
-                                        <table width="100%" style="border-collapse:collapse; border-bottom:1px solid #E5E5E5;">
-                                            <tr>
-                                                <td style="padding:5px; background-color:blue;" >
-                                                    <a href="{{route('product-single',$product['slug'])}}" target="_blank">
-                                                        {{ $product['name'] }}
-                                                    </a>
-                                                </td>
-                                                <td style="text-align:center; padding:5px;">{{ $product['quantity'] }}</td>
-                                                <td style="text-align:right; padding:5px;">Rs. {{ $product['price'] }}</td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
+                                @foreach($content['order']->getOrderDataForModal()['products'] as $index => $product)
+                                    <tr>
+                                        <td style="padding:10px 20px;">
+                                            <table width="100%" style="border-collapse:collapse; border-bottom:1px solid #E5E5E5; table-layout:fixed;">
+                                                <tr>
+                                                    <td style="padding:5px; width:10%; text-align:center;">
+                                                        {{ $index + 1 }}
+                                                    </td>
+                                                    <!-- Product Name -->
+                                                    <td style="padding:5px; width:45%; word-wrap:break-word; overflow-wrap:break-word;">
+                                                        <a href="{{ route('product-single', $product['slug']) }}" target="_blank"
+                                                        style="color:#000000; text-decoration:underline;"
+                                                        onmouseover="this.style.color='#007BFF'"
+                                                        onmouseout="this.style.color='#000000'"
+                                                        onclick="this.style.color='#000000'">
+                                                            {{ $product['name'] }}
+                                                        </a>
+                                                    </td>
+
+                                                    <td style="padding:5px; width:20%; text-align:center; white-space:nowrap;">
+                                                        {{ $product['quantity'] }}
+                                                    </td>
+                                                    <td style="padding:5px; width:25%; text-align:center; white-space:nowrap;">
+                                                        Rs. {{ $product['price'] }}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
                                 @endforeach
+
 
                                 <!-- Summary -->
                                 <tr>
                                     <td style="padding:20px;">
                                         <table width="100%" style="border-collapse:collapse;">
+                                            <tr>
+                                                <td style="text-align:right; font-weight:900; font-size:16px;">Sub Total:</td>
+                                                <td style="text-align:right; color:#bc0101; font-weight:bold; font-size:16px;">Rs. {{ $content['order']->subtotal }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:right; font-weight:900; font-size:16px;">Shipping Price:</td>
+                                                <td style="text-align:right; color:#bc0101; font-weight:bold; font-size:16px;">Rs. {{ $content['order']->shippings->shipping_price ?? 0 }}</td>
+                                            </tr>
                                             <tr>
                                                 <td style="text-align:right; font-weight:900; font-size:16px;">Grand Total:</td>
                                                 <td style="text-align:right; color:#bc0101; font-weight:bold; font-size:16px;">Rs. {{ $content['order']->grand_total }}</td>

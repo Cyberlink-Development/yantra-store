@@ -32,6 +32,7 @@ class OrderMail extends Mailable
     {
         $email = $this->data["email"];
         $order = $this->data["order"];
+        $user = $this->data["user"];
         return $this->view('emails.order_mail')->with('content',$this->data);
     }
 }
