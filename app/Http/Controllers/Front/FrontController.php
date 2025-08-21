@@ -14,6 +14,7 @@ use App\Model\Post;
 use App\Model\PostType;
 use App\Model\Quotation;
 use App\Model\Setting;
+use App\Model\Ad\Ad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -33,24 +34,52 @@ class FrontController extends Controller
 
     }
 
+    private function getHomePageAds()
+    {
+        $positions = [
+            'after_hot_deals',
+            'after_categories',
+            'gone_in_seconds_sidebar',
+            'after_brands'
+        ];
+        $ads = collect();
+        foreach ($positions as $position) {
+            $positionAds = Ad::active()
+                ->byPosition($position)
+                // ->currentlyActive()  //if need to do date based filtering
+                ->orderBy('ordering')
+                ->get();
+
+            if ($positionAds->count() > 0) {
+                $ads->put($position, $positionAds);
+            }
+        }
+        return $ads;
+    }
+
     public function index()
     {
+        /********************** By Sangam Starts ************************/
         $banners= BannerModel::active()->get();
+        $ads = $this->getHomePageAds();
         $categories = Category::active()->home()->where('in_moving_text','!=','1')->orderBy('created_at','desc')->get();
         $categoriesSlider = Category::active()->where('in_slider', '1')->latest()->get();
-        $categoriesMovingText = Category::active()->where('in_moving_text','1')->latest()->get(); 
+        $categoriesMovingText = Category::active()->where('in_moving_text','1')->latest()->get();
 
         $flashSales = Product::where('on_sale','1')->active()
                         ->with(['categories' => function ($query){
                           $query->where('in_moving_text','!=','1');
                         }])->latest()->take(5)->get();
-        $latestProducts = Product::where('latest','1')->active()->with(['categories' => function ($query){
+        $latestProducts = Product::where('latest','1')->active()
+                        ->with(['categories' => function ($query){
                           $query->where('in_moving_text','!=','1');
                         }])->latest()->take(10)->get();
-        $productsForYou = Product::where('is_popular','popular')->active()->with(['categories' => function ($query){
+        $productsForYou = Product::where('is_popular','popular')->active()
+                        ->with(['categories' => function ($query){
                           $query->where('in_moving_text','!=','1');
                         }])->latest()->take(15)->get();
-        $goneInSeconds = Product::where('is_special','1')->active()->with(['categories' => function ($query){
+        $goneInSeconds = Product::where('is_special','1')->active()
+                        ->with(['categories' => function ($query){
                           $query->where('in_moving_text','!=','1');
                         }])->latest()->get();
         $featuresProducts = Product::where('is_featured','1')->active()
@@ -62,34 +91,22 @@ class FrontController extends Controller
                           $query->where('in_moving_text','!=','1');
                         }])->latest()->take(5)->get();
         $brands=Brand::active()->latest()->get();
+        /********************** By Sangam Ends **************************/
 
-        
         $featured_category=Category::where('is_special',1)->where('status', 1)->orderBy('updated_at','desc')->limit(5)->get();
         $featured_category2=Category::where('is_special',1)->where('status', 1)->orderBy('updated_at','desc')->skip(1)->first();
-
         $latest_blogs = Blog::orderBy('created_at', 'desc')->limit(3)->get();
-
-//       $id=OrderDetail::all()->pluck('product_id');
-//       dd($id->sortByDesc('occurrences'));
-//       $best_seller=OrderDetail::()->groupBy('product_id')->sortBy(count($id))->take(5);
-//       foreach ($best_seller as $value)
-//       {
-//           dd($value->products());
-//       }
-//       dd($best_seller->first()->products);
         $result = DB::table('order_details')
             ->select(DB::raw('product_id'), DB::raw('count(*) as count'))
             ->groupBy('product_id')
             ->orderBy('count', 'desc')
             ->take(8)
             ->pluck('product_id');
-//       dd($result);
         $best=Product::wherein('id',$result)->get();
-
         $new=Product::orderby('created_at','desc')->take(5)->get();
 
 
-        return view('frontend.pages.index',compact('banners','categories','categoriesSlider','categoriesMovingText','flashSales','latestProducts','featuresProducts','hotProducts','productsForYou','goneInSeconds','brands',  'new','best','featured_category','featured_category2', 'latest_blogs'));
+        return view('frontend.pages.index',compact('banners','ads','categories','categoriesSlider','categoriesMovingText','flashSales','latestProducts','featuresProducts','hotProducts','productsForYou','goneInSeconds','brands',  'new','best','featured_category','featured_category2', 'latest_blogs'));
     }
 
     public function blog_single($slug){
@@ -168,7 +185,7 @@ class FrontController extends Controller
                 'message'=> $request->message,
                 'price'=> $request->price,
             ]);
-            
+
             if ($quote ) {
                 return new QuotationMail( $quote->id);
                 // Mail::send(new QuotationMail( $quote->id));

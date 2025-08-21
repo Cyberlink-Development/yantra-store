@@ -217,11 +217,17 @@
                     </a>
                 </li>
                 <li class="nav-item has-treeview">
+                    <a href="{{ route('ads.index') }}" class="nav-link">
+                        <i class="nav-icon fa fa-bullseye"></i>
+                        <p>Ads</p>
+                    </a>
+                </li>
+                {{--<li class="nav-item has-treeview">
                     <a href="{{ route('tags.index') }}" class="nav-link">
                         <i class="nav-icon fa fa-tags"></i>
                         <p>Tags</p>
                     </a>
-                </li>
+                </li>--}}
 
 
                 {{--                <li class="nav-header">USERS</li> --}}

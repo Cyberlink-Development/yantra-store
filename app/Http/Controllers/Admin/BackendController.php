@@ -10,6 +10,7 @@ class BackendController extends Controller
     protected $backendPath = 'backend.';
     protected $backendPagePath = 'null';
     protected $backendcategoryPath = 'null';
+    protected $backendAdsPath = 'null';
     protected $backendproductPath = 'null';
     protected $backendbrandPath = 'null';
     protected $backendslidePath = 'null';
@@ -25,6 +26,7 @@ class BackendController extends Controller
         $this->backendPath;
         $this->backendPagePath = $this->backendPath . '/' . 'pages.';
         $this->backendcategoryPath = $this->backendPath . '/' . 'pages.' . '/' . 'category.';
+        $this->backendAdsPath = $this->backendPath . '/' . 'pages.' . '/' . 'ads.';
         $this->backendproductPath = $this->backendPath . '/' . 'pages.' . '/' . 'product.';
         $this->backendslidePath = $this->backendPath . '/' . 'pages.' . '/' . 'slide.';
         $this->backendbrandPath = $this->backendPath . '/' . 'pages.' . '/' . 'brand.';
