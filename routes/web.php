@@ -83,6 +83,11 @@ Route::group(['namespace' => 'Front'], function () {
 //checkout details//
     Route::get('/checkout-address', 'CheckoutController@checkout_address')->name('checkout-address');
     Route::post('/checkout-page', 'CheckoutController@checkout_address')->name('checkout-page');
+
+    // Checkout Without Login
+    Route::get('/checkout/{uri}', 'CheckoutController@direct_checkout')->name('checkout-process');
+    Route::post('/checkout-success', 'CheckoutController@direct_checkout_success')->name('checkout-success');
+
     Route::get('/checkout-shipping', 'CheckoutController@shipping_page')->name('shipping-page');
     Route::get('/checkout-payment/{id?}', 'CheckoutController@checkout_payment')->name('checkout-payment');
     Route::post('/checkout-payment', 'CheckoutController@checkout_payment')->name('checkout-payment');

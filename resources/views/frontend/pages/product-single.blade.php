@@ -128,7 +128,7 @@
 
                                 </div>
                                 <div class="form-group d-flex align-items-center" style="gap:5px;">
-                                    <a class="btn btn-primary btn-shadow btn-block mt-0" href="checkout.php"><i class="czi-bag font-size-lg mr-2"></i>Buy Now</a>
+                                    <a class="btn btn-primary btn-shadow btn-block mt-0" id="buy_now_btn"><i class="czi-bag font-size-lg mr-2"></i>Buy Now</a>
                                     <a class="btn btn-secondary btn-shadow btn-block mt-0" id="cart_btn">
                                         <i class="czi-cart font-size-lg mr-2"></i>Add to Cart
                                     </a>
@@ -624,6 +624,13 @@
                     alert("An error occurred while uploading data.\nError code: " + xhr.statusText);
                 }
             });
+        });
+        $('#buy_now_btn').on('click', function(e){
+            e.preventDefault();
+            let quantity = $('select[name="quantity"]').val(); // get selected quantity
+            let productSlug = "{{ $product->slug }}"; 
+            let url = "{{ url('checkout') }}/" + productSlug + "?quantity=" + quantity;
+            window.location.href = url; // redirect with selected quantity
         });
     </script>
 
