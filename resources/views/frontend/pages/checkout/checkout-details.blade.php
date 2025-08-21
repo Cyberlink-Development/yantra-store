@@ -95,13 +95,13 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-country">Country<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-country" name="country" value="{{ $user->country }}" required>
+                                <input class="form-control" type="text" id="checkout-country" name="country" value="{{ $userInfo->country ?? '' }}" required>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-province">Province<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-province" name="province" required>
+                                <input class="form-control" type="text" id="checkout-province" name="province" value="{{ $userInfo->province ?? '' }}" required>
                             </div>
                         </div>
                     </div>
@@ -109,13 +109,27 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-city">City<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-city" name="city" required>
+                                <input class="form-control" type="text" id="checkout-city" name="city" value="{{ $userInfo->city ?? '' }}" required>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-zip">ZIP Code<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-zip" name="zip_code" required>
+                                <input class="form-control" type="text" id="checkout-zip" name="zip_code" value="{{ $userInfo->zip_code ?? '' }}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="checkout-address-1">Address 1<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" id="checkout-address-1" name="address_1" value="{{ $userInfo->address1 ?? '' }}" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="checkout-address-2">Address 2</label>
+                                <input class="form-control" type="text" id="checkout-address-2" name="address_2" value="{{ $userInfo->address2 ?? '' }}">
                             </div>
                         </div>
                         <div class="col-sm-12">
@@ -127,20 +141,6 @@
                                         <option value="{{ $row->id }}" data-price="{{ $row->shipping_price }}">{{$row->shipping_location}} (Rs. {{ $row->shipping_price }})</option>
                                     @endforeach
                                 </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="checkout-address-1">Address 1<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-address-1" name="address_1" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="checkout-address-2">Address 2</label>
-                                <input class="form-control" type="text" id="checkout-address-2" name="address_2">
                             </div>
                         </div>
                         <div class="col-sm-12">

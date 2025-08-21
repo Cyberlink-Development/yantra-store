@@ -23,7 +23,7 @@ class Order extends Model
     }
     public function addresses()
     {
-        return $this->belongsTo(OrderAddress::class,'order_id');
+        return $this->hasOne(OrderAddress::class,'order_id');
     }
 
     public function users()
