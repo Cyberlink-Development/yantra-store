@@ -72,6 +72,12 @@
                   <input class="form-control" type="text" id="account-phone" name="phone" value="{{$user->phone}}" required>
                 </div>
               </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="account-phone">Address</label>
+                  <input class="form-control" type="text" id="account-phone" name="address" value="{{$user->country}}" required>
+                </div>
+              </div>
               <div class="col-12">
                 <hr class="mt-2 mb-3">
                 <div class="d-flex flex-wrap justify-content-between align-items-center">

@@ -32,7 +32,7 @@ class CheckoutController extends Controller
     public function __construct()
     {
         // $this->middleware('auth')->except(['checkout_address']);
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['direct_checkout','direct_checkout_success']);
     }
 
     // Function to get cities using ajax, when country field changes
@@ -157,7 +157,7 @@ class CheckoutController extends Controller
             $shipping = Shipping::where('status', 1)->get();
             $sub = Cart::subtotal();
             $total = preg_replace("/[^0-9.]/", "", $sub);
-            $final = (int)$total;
+            $final = (float)$total;
             $user = Auth::user();
             $userInfo = null;
             $userOrder = Order::where('user_id',$user->id)->latest()->first();
@@ -299,6 +299,116 @@ class CheckoutController extends Controller
                 'message' => 'Order placed successfully!'
             ]);
         }
+    }
+
+    public function direct_checkout( $slug )
+    {
+        $quantity = request()->query('quantity', 1);
+        $product = Product::where('slug',$slug)->first();
+        if (!$product) {
+            abort(404);
+        }
+        if($product->discount_price){
+            $total = (int)$quantity * (float)$product->discount_price; 
+        } else {
+            $total = (int)$quantity * (float)$product->price;
+        }
+        $shipping = Shipping::where('status', 1)->get();
+
+        // dd('test get',$slug, $quantity,$product,$total);
+
+        return view('frontend/pages/checkout/checkout-direct', compact('product','quantity','total','shipping'));
+    }
+
+    public function direct_checkout_success(Request $request)
+    {
+        try{
+            $request->validate([
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required',
+                'phone' => 'required',
+                'country'=>'required',
+                'city'=>'required',
+            ]);
+            DB::beginTransaction();
+
+            $product = Product::where('id',$request->product_id)->first();
+            $shipping = Shipping::where('id', $request->shipping)->first();
+            if($product->discount_price){
+                $sell_price = (float)$product->discount_price; 
+            } else {
+                $sell_price = (float)$product->price;
+            }
+            $subTotal = (int)$request->quantity * (float)$sell_price;
+            $grandTotal = $subTotal + (float) $shipping->shipping_price;
+
+            // dd('test post',$shipping, $request->all(),$subTotal, $grandTotal);
+            
+            $order = Order::create([
+                'subtotal'       => $subTotal,
+                'grand_total'    => $grandTotal,
+                'shipping_id'    => $shipping->id,
+                'order_track'    => 'OT' . mt_rand(100, 999). '-' . time(),
+                'status'         => 0,
+                'discount'       => 0,
+                'payment_type'   => $request->payment,
+                'order_note'     => $request->message,
+            ]);
+
+            $userInfo = OrderAddress::create([
+                'first_name' => $request->first_name,
+                'last_name'  => $request->last_name,
+                'email'      => $request->email,
+                'phone'      => $request->phone,
+                'country'    => $request->country,
+                'province'   => $request->province,
+                'city'       => $request->city,
+                'zip_code'   => $request->zip_code,
+                'address1'   => $request->address_1,
+                'address2'   => $request->address_2,
+                'order_id'   => $order->id,
+            ]);
+
+            OrderDetail::create([
+                'order_id'   => $order->id,
+                'product_id' => $product->id,
+                'price'      => $sell_price,
+                'quantity'   => $request->quantity,
+                'size'       => $request->size,
+                'color'      => $request->color,
+                'discount'   => 0,
+                'total'      => $subTotal,
+            ]);
+            $product->decrement('stock', $request->quantity);
+
+            DB::commit();
+
+            $data = ['email' => $request->email, 'order' => $order,'user' => $userInfo];
+        
+        }catch(ValidationException $e){
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => $e->validator->errors()->all()
+            ]);
+        }catch(Exception $e){
+            DB::rollBack();
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
+        }
+
+        try {
+            return new OrderMail($data);
+            // Mail::to($user->email)->send(new OrderMail($data));
+        } catch (Exception $e) {
+            Log::error("Order email failed for order {$order->id}: " . $e->getMessage());
+        }
+        return redirect('/')->with([
+            'success' => true,
+            'message' => 'Order placed successfully!'
+        ]);
     }
 
     public function shipping_page()

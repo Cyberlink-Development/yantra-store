@@ -144,6 +144,7 @@ class UserController extends Controller
                     // 'last_name' => 'required',
                     // 'email'=>'required|email',
                     'phone'=>'required',
+                    'address'=>'required',
                     'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 ]);
                 
@@ -153,6 +154,7 @@ class UserController extends Controller
                     // 'last_name' => $request->last_name,
                     // 'email' => $request->email,
                     'phone' => $request->phone,
+                    'country'=>$request->address
                 ];
 
                 if ($request->hasFile('profile_image')) {

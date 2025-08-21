@@ -36,6 +36,7 @@ class Order extends Model
         $productsArray = $this->details->map(function($detail) {
             $product = $detail->products;
             $mainImage = $product->images->where('is_main', 1)->first();
+            $sell_price = $detail->discount_price && $detail->discount_price > 0 ? $detail->discount_price  : $detail->price;
             return [
                 'name' => $product->product_name ?? 'N/A',
                 'brand' => get_brand_name($product->brand_id) ?? null,
@@ -43,9 +44,9 @@ class Order extends Model
                 'image' => $mainImage ? $mainImage->image : null,
                 'size' => $detail->size ?? null,
                 'color' => $detail->color ?? null,
-                'price' => $detail->price ?? 0,
+                'price' => $sell_price ?? 0,
                 'quantity' => $detail->quantity ?? 1,
-                'subtotal' => $detail->total ?? ($detail->price * $detail->quantity),
+                'subtotal' => $detail->total ?? ($sell_price * $detail->quantity),
                 'slug' => $product->slug,
             ];
         })->toArray();
