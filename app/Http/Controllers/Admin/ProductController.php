@@ -70,7 +70,7 @@ class ProductController extends BackendController
                 'image' => 'required',
                 // 'weight' => 'required',
             ]);
-            
+
             if ($validator->fails()) {
                 return response()->json([
                     'error' => true,
@@ -248,7 +248,7 @@ class ProductController extends BackendController
             }
             try{
                 $product = Product::findorfail($request->id);
-                $product->product_name = $request->product_name;      
+                $product->product_name = $request->product_name;
                 $product->price = $request->price;
                 $product->stock = $request->stock;
                 $product->discount_price = $request->selling_price;
@@ -415,14 +415,14 @@ class ProductController extends BackendController
         }
         if($product->images)
         {
-        foreach ($product->images as $image) {
-            $filename = $image->image;
-            $deletePath = public_path('images/products/' . $image);
-            if (file_exists($deletePath) && is_file($deletePath)) {
-                unlink($deletePath);
+            foreach ($product->images as $image) {
+                $filename = $image->image;
+                $deletePath = public_path('images/products/' . $image);
+                if (file_exists($deletePath) && is_file($deletePath)) {
+                    unlink($deletePath);
+                }
+                $image->delete();
             }
-            $image->delete();
-        }
         }
 
         $product->seo()->delete();
