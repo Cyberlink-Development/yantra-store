@@ -325,8 +325,8 @@
                         </li>
                     </ul>
                 </li> --}}
-                <li class="nav-item has-treeview">
-                    <a href="" class="nav-link">
+                <li class="nav-item has-treeview {{ Request::segment(2) =='shipping' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) =='shipping' ? 'active' : '' }}">
                         <i class="nav-icon fa fa-dollar-sign"></i>
                         <p>
                             Shipping Rates
@@ -335,21 +335,9 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('add-price') }}" class="nav-link ml-3">
+                            <a href="{{ route('add-price') }}" class="nav-link ml-3 {{ Request::segment(2) =='shipping' ? 'active' : '' }}">
                                 <i class="fa fa-paper-plane"></i>
                                 <p>Add Shipping Price</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('add-medium') }}" class="nav-link ml-3">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add Shipping Medium</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('add-weight') }}" class="nav-link ml-3">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add Weight Category</p>
                             </a>
                         </li>
                     </ul>
