@@ -11,20 +11,45 @@ use App\Model\Tag\Tag;
 class Product extends Model
 {
     use HasSlug;
-
     protected $fillable = ['latest','hot'];
-
-//    protected $dates = ['deleted_at'];
-
+    protected $appends = ['average_rating','star_ratings']; //average_rating to automatically appear when returning JSON (e.g., API) we need to append it
     public function scopeActive($query){
         return $query->where('status', '1');
+    }
+    public function getAverageRatingAttribute(){
+        //For active ratings only
+        if($this->relationLoaded('reviews')){
+            return round($this->reviews->avg('rating'), 2) ?? 0;
+        }
+        return round($this->reviews()->active()->avg('rating'), 2) ?? 0;
+    }
+    public function getStarRatingsAttribute(){
+        $rating = $this->average_rating;
+        $fullStars = floor($rating);
+        $decimal = $rating - $fullStars;
+        if($decimal >= 0.75){
+            $fullStars += 1;
+            $halfStars = 0;
+        }elseif($decimal >= 0.25){
+            $halfStars = 1;
+        }else{
+            $halfStars = 0;
+        }
+        $emptyStars = 5 - $fullStars - $halfStars;
+        return [
+            'full' => $fullStars,
+            'half' => $halfStars,
+            'empty' => $emptyStars,
+        ];
+    }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class,'product_id');
     }
     public function tag()
     {
         return $this->belongsTo(Tag::class);
     }
-
-
     public function getSlugOptions() : SlugOptions
     {
         return SlugOptions::create()
@@ -36,12 +61,10 @@ class Product extends Model
     {
         return $this->hasMany('App\Model\Description','product_id');
     }
-
     public function categories()
     {
         return $this->belongsToMany('App\Model\Category','product_categories');
     }
-
     public function brands()
     {
         return $this->belongsTo('App\Model\Brand','brand_id');
@@ -68,8 +91,8 @@ class Product extends Model
     {
         return $this->hasMany(Image::class, 'product_id');
     }
-    public function get_main_image($id){
-
+    public function get_main_image($id)
+    {
         $main_image="";
         $product= Product::findOrFail($id);
         $images = $product->images;
@@ -80,14 +103,8 @@ class Product extends Model
         }
         return $main_image;
     }
-
     public function orderDetails(){
        return $this->hasMany(OrderDetail::class,'product_id');
-    }
-
-    public function reviews()
-    {
-        return $this->hasMany(Review::class,'product_id');
     }
 
     public function wishlists(){

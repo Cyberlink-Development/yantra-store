@@ -124,7 +124,9 @@
                     <div class="col-5th px-1 mb-4">
                         <div class="card product-card translate p-0">
                             @if($isPriced)
-                                <div class="ribbon"> 8% <br> OFF</div>
+                                @if($row->discount_price && $row->price)
+                                    <div class="ribbon"> {{getDiscountPercentage($row->price,$row->discount_price)}} <br> OFF</div>
+                                @endif
                                 <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left" onclick="addToCart(event,{{ $row->id }})">
                                     <i class="czi-cart"></i>
                                 </button>
@@ -498,6 +500,9 @@
                     <div class="col-lg col-md-4 col-6 px-1 mb-4">
                         <div class="card product-card translate p-0">
                             @if($isPriced)
+                                @if($row->discount_price && $row->price)
+                                    <div class="ribbon"> {{getDiscountPercentage($row->price,$row->discount_price)}} <br> OFF</div>
+                                @endif
                                 <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left"   onclick="addToCart(event,{{ $row->id }})">
                                     <i class="czi-cart"></i>
                                 </button>
@@ -628,6 +633,9 @@
                                                 <div class="col-lg-4 col-6 px-0 px-sm-2 mb-sm-4">
                                                     <div class="card product-card translate p-0">
                                                         @if($isPriced)
+                                                            @if($row->discount_price && $row->price)
+                                                                <div class="ribbon"> {{getDiscountPercentage($row->price,$row->discount_price)}} <br> OFF</div>
+                                                            @endif
                                                             <button class="btn-cart btn-sm" type="button" data-toggle="tooltip"
                                                                 data-placement="left" onclick="addToCart(event,{{ $row->id }})">
                                                                 <i class="czi-cart"></i>
@@ -758,6 +766,9 @@
                     <div class="col-5th px-1 mb-2">
                         <div class="card product-card translate p-0">
                             @if($isPriced)
+                                @if($row->discount_price && $row->price)
+                                    <div class="ribbon"> {{getDiscountPercentage($row->price,$row->discount_price)}} <br> OFF</div>
+                                @endif
                                 <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left" onclick="addToCart(event,{{ $row->id }})">
                                     <i class="czi-cart"></i>
                                 </button>

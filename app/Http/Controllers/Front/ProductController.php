@@ -15,22 +15,32 @@ use Illuminate\Support\Facades\Mail;
 
 class ProductController extends FrontController
 {
-     public function product_details(Request $request)
+    public function product_details(Request $request)
     {
-        $product = Product::where('slug', $request->slug)->first();
+        $data = Product::where('slug', $request->slug)->first();
+        $data->load([
+            'images' => function($query){
+                $query->orderByDesc('is_main');
+            },
+            'reviews' => function($query){
+                $query->active();
+            }
+        ]);
+        
+        // dd($data->average_rating, $data->star_ratings);
         $related_products = Product::join('product_categories', 'product_categories.product_id', '=', 'products.id')
-                                ->whereIn('product_categories.category_id', $product->categories->pluck('id'))
+                                ->whereIn('product_categories.category_id', $data->categories->pluck('id'))
                                 ->select('products.*')->get();
 
-        $related_products = $related_products->except($product->id);
-        // dd($product);
-        $count = $product->reviews->where('show', 1)->count();
-        $fivestar = Review::where('product_id', '=', $product->id)->where('rating', '=', 5)->where('show', 1)->get();
-        $fourstar = Review::where('product_id', '=', $product->id)->where('rating', '=', 4)->where('show', 1)->get();
-        $threestar = Review::where('product_id', '=', $product->id)->where('rating', '=', 3)->where('show', 1)->get();
-        $twostar = Review::where('product_id', '=', $product->id)->where('rating', '=', 2)->where('show', 1)->get();
-        $onestar = Review::where('product_id', '=', $product->id)->where('rating', '=', 1)->where('show', 1)->get();
-        $allreviews = Review::where('product_id', $product->id)->where('show', 1)->orderBy('created_at', 'DESC')->get();
+        $related_products = $related_products->except($data->id);
+        // dd($data);
+        $count = $data->reviews->where('show', 1)->count();
+        $fivestar = Review::where('product_id', '=', $data->id)->where('rating', '=', 5)->where('show', 1)->get();
+        $fourstar = Review::where('product_id', '=', $data->id)->where('rating', '=', 4)->where('show', 1)->get();
+        $threestar = Review::where('product_id', '=', $data->id)->where('rating', '=', 3)->where('show', 1)->get();
+        $twostar = Review::where('product_id', '=', $data->id)->where('rating', '=', 2)->where('show', 1)->get();
+        $onestar = Review::where('product_id', '=', $data->id)->where('rating', '=', 1)->where('show', 1)->get();
+        $allreviews = Review::where('product_id', $data->id)->where('show', 1)->orderBy('created_at', 'DESC')->get();
         if ($count != 0) {
             $total = 5 * count($fivestar) + 4 * count($fourstar) + 3 * count($threestar) + 2 * count($twostar) + 1 * count($onestar);
             $total_review = count($fivestar) + count($fourstar) + count($threestar) + count($twostar) + count($onestar);
@@ -38,7 +48,7 @@ class ProductController extends FrontController
         }else{
             $average=0;
         }
-        return view($this->frontendPagePath . 'product-single', compact('product', 'related_products', 'count', 'fivestar', 'fourstar', 'threestar', 'twostar', 'onestar', 'average', 'allreviews'));
+        return view($this->frontendPagePath . 'product-single', compact('data', 'related_products', 'count', 'fivestar', 'fourstar', 'threestar', 'twostar', 'onestar', 'average', 'allreviews'));
     }
 
     public function product_stock(){
@@ -138,7 +148,7 @@ class ProductController extends FrontController
 
         // Send email
         $email = Configuration::where('configuration_key', 'email')->pluck('configuration_value')->first();
-        
+
         /* Production code for sending mail*/
         //Mail::send(new QuotationMail($quotation, $email));
 

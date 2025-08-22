@@ -17826,6 +17826,7 @@ border: 1px solid #ebebeb;
   object-fit: cover;
 }
 
+/******************* By Sangam Starts ******************/
 .nav-secondary-category{
     font-size:1.25rem!important;
     color:#B72822!important;
@@ -17834,3 +17835,31 @@ border: 1px solid #ebebeb;
     line-height: 1.2!important;
     font-family: Rubik, sans-serif!important;
 }
+
+.product-badge.product-out-of-stock{
+    background-color: #d30033;
+    color: #ffffff;
+}
+
+.product-badge.product-out-of-stock::after {
+    border-color: rgb(95 22 22 / 0%);
+    border-bottom-color: #bc295c;
+}
+
+.czi-star-half {
+  position: relative;
+}
+.czi-star-half::before {
+  content: "\e97f"; /* full star */
+  color: #b1b1b1;   /* empty star color */
+}
+.czi-star-half::after {
+  content: "\e97f"; /* full star */
+  color: #038d63;   /* filled star color */
+  width: 50%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/******************* By Sangam Ends ********************/

@@ -169,4 +169,31 @@ function correctFolderPath($folderPath){
         output : 'images/banner/';
     */
 }
+
+function getDiscountPercentage($price,$discountPrice){
+    if($price <= 0){
+        return '0%';
+    }
+    $percentage = (($price - $discountPrice) * 100) / $price;
+    return number_format($percentage,2).'%';
+}
+
+function getStarRatings($rating){
+    $fullStars = floor($rating);
+    $decimal = $rating - $fullStars;
+    if($decimal >= 0.75){
+        $fullStars += 1;
+        $halfStars = 0;
+    }elseif($decimal >= 0.25){
+        $halfStars = 1;
+    }else{
+        $halfStars = 0;
+    }
+    $emptyStars = 5 - $fullStars - $halfStars;
+    return [
+        'full' => $fullStars,
+        'half' => $halfStars,
+        'empty' => $emptyStars,
+    ];
+}
 /************************ By Sangam Ends ********************************/

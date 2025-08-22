@@ -74,7 +74,7 @@ Route::group(['namespace' => 'Front'], function () {
     Route::get('search-results', 'SearchController@search_results')->name('search-results');
     Route::post('search-results', 'SearchController@search_results')->name('search-results');
     //Product review
-    Route::post('product-review', 'ReviewController@add_review')->name('add-review');
+    Route::post('product-review', 'ReviewController@create')->name('front.review.create');
 
     // Blog Routes
     Route::get('blog-single/{slug}', 'FrontController@blog_single')->name('blog-single');
