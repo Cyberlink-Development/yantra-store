@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Model\Shipping;
 use Illuminate\Http\Request;
 use App\ShippingMedium;
 use App\Weight;
 use App\ShippingPrice;
+use Illuminate\Validation\ValidationException;
+use Exception;
+use Log;
 
 class ShippingController extends BackendController
 {
@@ -106,79 +110,92 @@ class ShippingController extends BackendController
 
     public function add_price()
     {
-        $shippingmedium=ShippingMedium::all();
-        $weights = Weight::all();
-        $shippings = ShippingPrice::all();
-
-        return view($this->backendPagePath . 'shipping/shipping',compact('shippingmedium', 'weights', 'shippings'));
+        $shippings = Shipping::all();
+        return view($this->backendPagePath . 'shipping/shipping',compact('shippings'));
     }
 
-    public function post_price(Request $request){
+    public function post_price(Request $request)
+    {
+        try {
+            $request->validate([
+                "location_name"=>"required|unique:shippings,shipping_location",
+                "price"=>"required|numeric|min:0",
+            ]);
 
-        $request->validate([
-            "shipping_medium"=>"required",
-            "weight"=>"required",
-            "price"=>"required|numeric|min:0",
-        ]);
+            Shipping::create([
+                'shipping_location'=>$request->location_name,
+                'shipping_price' => $request->price,
+                'status' => $request->status
+            ]);
 
-        $shipping = ShippingPrice::where([
-            ['weight_id', '=', $request->weight],
-            ['shipping_media_id', '=', $request->shipping_medium],
-        ])->first();
-
-        if($shipping){
-            $shipping->price = $request->price;
-            if($request->has('status')){
-                $shipping->status = $request->status;
-            }
-
-            $shipping->save();
-        }else{
-            $shipping= new ShippingPrice();
-            $shipping->status = $request->status;
-            $shipping->shipping_media_id = $request->shipping_medium;
-            $shipping->weight_id = $request->weight;
-            $shipping->price = $request->price;
-
-            $shipping->save();
+            return redirect()->back()->with([
+                'success' => true,
+                'message' => 'Shipping rates added successfully.'
+            ]);
+        } catch (ValidationException $e) {
+            return redirect()->back()->withInput()->with([
+                'error' => true,
+                'message' => $e->validator->errors()->all()
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error while creating discount :- ' . $e->getMessage());
+            return redirect()->back()->withInput()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
         }
-
-        return back()->with('success','Shipping Price added');
     }
 
-    public function edit_price(Request $request){
+    public function edit_price(Request $request)
+    {
 
-        $request->validate([
-            "shipping_medium"=>"required",
-            "weight"=>"required",
-            "price"=>"required|numeric|min:0",
-        ]);
+        try {
+            $shipping = Shipping::findOrFail($request->id);
 
-        $shipping = ShippingPrice::where([
-            ['weight_id', '=', $request->weight],
-            ['shipping_media_id', '=', $request->shipping_medium],
-            ['id', '!=', $request->id]
-        ])->first();
+            $request->validate([
+                "location_name" => "required|unique:shippings,shipping_location," . $shipping->id,
+                "price" => "required|numeric|min:0",
+            ]);
 
-        if($shipping){
-            return back()->withErrors(['msg' => 'Weight category and shipping medium combination already exists']);
-        }else{
-            $shipping= ShippingPrice::find($request->id);
-            $shipping->shipping_media_id = $request->shipping_medium;
-            $shipping->weight_id = $request->weight;
-            $shipping->price = $request->price;
+            $shipping->update([
+                'shipping_location' => $request->location_name,
+                'shipping_price'    => $request->price,
+            ]);
 
-            $shipping->save();
+            return redirect()->back()->with([
+                'success' => true,
+                'message' => 'Shipping rates updated successfully.'
+            ]);
+        } catch (ValidationException $e) {
+            return redirect()->back()->withInput()->with([
+                'error' => true,
+                'message' => $e->validator->errors()->all()
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error while updating shipping :- ' . $e->getMessage());
+            return redirect()->back()->withInput()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
         }
-
-        return back()->with('success','Shipping Price updated');
     }
 
     public function delete_price(Request $request)
     {
-        $find=ShippingPrice::findorfail($request->id);
-        $find->delete();
-        return back()->with('success','Shipping Price deleted');
+        try{
+            $find = Shipping::findorfail($request->id);
+            $find->delete();
+            return redirect()->back()->with([
+                'success' => true,
+                'message' => 'Shipping rates deleted successfully.'
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error while updating shipping :- ' . $e->getMessage());
+            return redirect()->back()->withInput()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
+        }
     }
 
     public function deal_status(Request $request)

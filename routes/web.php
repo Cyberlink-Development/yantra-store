@@ -300,7 +300,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
         Route::any('edit-weight/{id?}', 'ShippingController@edit_weight')->name('edit-weight');
         Route::get('delete-weight/{id}', 'ShippingController@delete_weight')->name('delete-weight');
 
-        Route::get('/shipping-price', 'ShippingController@add_price')->name('add-price');
+        Route::get('/shipping-price', 'ShippingController@add_price')->name('add-price'); 
         Route::post('/shipping-price', 'ShippingController@post_price')->name('post_price');
         Route::get('delete-price/{id}', 'ShippingController@delete_price')->name('delete-price');
         Route::any('shipping-status', 'ShippingController@deal_status')->name('shipping-status');
