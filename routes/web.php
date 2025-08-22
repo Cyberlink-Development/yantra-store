@@ -84,6 +84,7 @@ Route::group(['namespace' => 'Front'], function () {
 //checkout details//
     Route::get('/checkout-address', 'CheckoutController@checkout_address')->name('checkout-address');
     Route::post('/checkout-page', 'CheckoutController@checkout_address')->name('checkout-page');
+    Route::post('/apply-promo', 'CheckoutController@applyPromo')->name('checkout.applyPromo');
 
     // Checkout Without Login
     Route::get('/checkout/{uri}', 'CheckoutController@direct_checkout')->name('checkout-process');
@@ -194,6 +195,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::delete('post/{id}/banner', 'PostController@deleteBanner')->name('admin.post.deleteBanner');
     Route::post('post/{id}/toggle-status', 'PostController@toggleStatus')->name('admin.post.toggleStatus');
 
+    // For Discount 
+    Route::get('discount','DiscountController@index')->name('admin.discount');
+    Route::get('discount/create','DiscountController@create')->name('admin.discount.create');
+    Route::post('discount/store','DiscountController@store')->name('admin.discount.store');
+    Route::post('discount/{id}','DiscountController@update')->name('admin.discount.update');
+    Route::get('discount/{id}/edit','DiscountController@edit')->name('admin.discount.edit');
+    Route::delete('discount/{id}', 'DiscountController@destroy')->name('admin.discount.destroy');
 
     // Route::resource('category',CategoryController::class);
 

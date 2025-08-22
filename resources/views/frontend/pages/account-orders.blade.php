@@ -63,7 +63,7 @@
                           <span class="text-danger m-0">Return</span>
                         @endif 
                     </td>
-                    <th>{{$value->payment_type}}</th>
+                    <td class="py-3">{{$value->payment_type}}</td>
                     <td class="py-3">{{$value->grand_total}}</td>
                   </tr>
                 @endforeach

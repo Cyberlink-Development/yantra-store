@@ -228,6 +228,12 @@
                         <p>Tags</p>
                     </a>
                 </li>--}}
+                <li class="nav-item has-treeview">
+                    <a href="{{ route('admin.discount') }}" class="nav-link {{ Request::segment(2) =='discount' ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-percent"></i>
+                        <p>Discount Code</p>
+                    </a>
+                </li>
 
 
                 {{--                <li class="nav-header">USERS</li> --}}
