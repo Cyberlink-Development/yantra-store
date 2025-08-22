@@ -223,7 +223,7 @@
                                         </td>
 
                                         <td>
-                                            {{$value->users->first_name}} {{$value->users->last_name}}
+                                            {{$value->users?->first_name ?? 'Guest User'}} {{$value->users?->last_name}}
                                         </td>
                                         <td>
                                             {{$value->created_at->format('M d Y')}}

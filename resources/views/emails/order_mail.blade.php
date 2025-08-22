@@ -66,7 +66,7 @@
                                                             </tr>
                                                             @if($content['order']->discount > 0)
                                                                 <tr>
-                                                                    <td colspan="2" style="color:#bc0101; font-weight:bold;">You saved Rs.{{ $content['order']->discount }}!</td>
+                                                                    <td colspan="2" style="color:#bc0101; font-weight:bold;">You saved Rs. {{ $content['order']->discount }}!</td>
                                                                 </tr>
                                                             @endif
                                                         </table>
@@ -81,6 +81,11 @@
                                                         <p style="margin:0;">Name: {{ $content['user']->first_name }}</p>
                                                         <p style="margin:0;">Phone: {{ $content['user']->phone }}</p>
                                                         <p style="margin:0;">Email: {{ $content['user']->email }}</p>
+                                                        
+                                                        @if($content['used_msg'] === 1)
+                                                            <p style="font-size:16px; font-weight:900; text-transform:uppercase; margin:10px 0 0 0;">Note</p>
+                                                            <p style="color:#bc0101;">Promo code already used — it can only be applied once per customer.</p>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -150,6 +155,10 @@
                                             <tr>
                                                 <td style="text-align:right; font-weight:900; font-size:16px;">Sub Total:</td>
                                                 <td style="text-align:right; color:#bc0101; font-weight:bold; font-size:16px;">Rs. {{ $content['order']->subtotal }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:right; font-weight:900; font-size:16px;">Discount:</td>
+                                                <td style="text-align:right; color:#bc0101; font-weight:bold; font-size:16px;">Rs. {{ $content['order']->discount }}</td>
                                             </tr>
                                             <tr>
                                                 <td style="text-align:right; font-weight:900; font-size:16px;">Shipping Price:</td>

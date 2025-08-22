@@ -17,6 +17,7 @@ class BackendController extends Controller
     protected $backendsetupPath = 'null';
     protected $backendComponentPath = 'null';
     protected $backendComponentTypePath = 'null';
+    protected $backendDiscountPath = 'null';
 
 
 
@@ -33,6 +34,7 @@ class BackendController extends Controller
         $this->backendsetupPath = $this->backendPath . '/' . 'pages.' . '/' . 'setup.';
         $this->backendComponentTypePath = $this->backendPath . '/' . 'pages.' . '/' . 'component_types.';
         $this->backendComponentPath = $this->backendPath . '/' . 'pages.' . '/' . 'component.';
+        $this->backendDiscountPath = $this->backendPath . '/' . 'pages.' . '/' . 'discount.';
 
 
     }

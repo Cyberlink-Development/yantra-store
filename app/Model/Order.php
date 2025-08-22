@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $fillable=['user_id','subtotal','tax','discount','grand_total','status','order_track','shipping_id', 'order_note', 'courier_id', 'weight','payment_type'];
+    protected $fillable=['user_id','subtotal','tax','discount','discount_id','grand_total','status','order_track','shipping_id', 'order_note', 'courier_id', 'weight','payment_type'];
 
     public function shippingInfo(){
         return $this->belongsTo('App\ShippingPrice','courier_id');
