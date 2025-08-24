@@ -72,6 +72,7 @@
                 success:function(res){
                     ajax_response(res);
                     $('#cartNav').html(res.view);
+                    $('#mblCart .badge').text(res.newItemCount);
                 }
             });
         }

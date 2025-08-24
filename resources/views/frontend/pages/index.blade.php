@@ -131,13 +131,20 @@
                                     <i class="czi-cart"></i>
                                 </button>
                             @endif
-                            @php
-                                $images = $row->images->sortByDesc('is_main')->take(2)->values();
-                            @endphp
                             <a class="card-img-top d-block overflow-hidden" href="{{route('product-single',$row->slug)}}">
                                 <div class="image-hover-box">
-                                    <img src="{{ asset('images/products/' . $images[0]->image) }}" alt="Main" class="main-img img-fluid">
-                                    <img src="{{ asset('images/products/' . (isset($images[1]) ? $images[1]->image : $images[0]->image)) }}" alt="Hover" class="hover-img img-fluid">
+                                    @php
+                                        $main = $row->main_image ?? $row->hover_image;
+                                        $hover = $row->hover_image;
+                                    @endphp
+                                    @if($main)
+                                        <img src="{{ asset('images/products/' . $main->image) }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                    @else
+                                        <img src="{{ asset('theme-assets/img/default-thumbnail.jpeg') }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                    @endif
+                                    @if($hover)
+                                        <img src="{{ asset('images/products/' . $hover->image) }}" alt="{{ $row->product_name }}" class="hover-img img-fluid">
+                                    @endif
                                 </div>
                             </a>
                             <div class="card-body py-2">
@@ -149,11 +156,18 @@
                                 </h3>
                                 <div class="mb-2">
                                     <div class="star-list d-flex">
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled inactive-star"></i>
-                                        <i class="sr-star czi-star-filled inactive-star"></i>
+                                        @php
+                                            $stars = $row->star_ratings;
+                                        @endphp
+                                        @for ($i = 0; $i < $stars['full']; $i++)
+                                            <i class="sr-star czi-star-filled active-star"></i>
+                                        @endfor
+                                        @if ($stars['half'])
+                                            <i class="sr-star czi-star-half active-star"></i>
+                                        @endif
+                                        @for ($i = 0; $i < $stars['empty']; $i++)
+                                            <i class="sr-star czi-star-filled inactive-star"></i>
+                                        @endfor
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between">
@@ -187,7 +201,7 @@
                                     <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class="font-size-md mb-2 text-white text-center pt-2">
-                                                Get a quote 
+                                                Get a quote
                                             </h3>
                                         </div>
                                         <div>
@@ -233,13 +247,20 @@
                                     <i class="czi-cart"></i>
                                 </button>
                             @endif
-                            @php
-                                $images = $row->images->sortByDesc('is_main')->take(2)->values();
-                            @endphp
                             <a class="card-img-top d-block overflow-hidden" href="{{route('product-single',$row->slug)}}">
                                 <div class="image-hover-box">
-                                    <img src="{{ asset('images/products/' . $images[0]->image) }}" alt="Main" class="main-img img-fluid">
-                                    <img src="{{ asset('images/products/' . (isset($images[1]) ? $images[1]->image : $images[0]->image)) }}" alt="Hover" class="hover-img img-fluid">
+                                    @php
+                                        $main = $row->main_image ?? $row->hover_image;
+                                        $hover = $row->hover_image;
+                                    @endphp
+                                    @if($main)
+                                        <img src="{{ asset('images/products/' . $main->image) }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                    @else
+                                        <img src="{{ asset('theme-assets/img/default-thumbnail.jpeg') }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                    @endif
+                                    @if($hover)
+                                        <img src="{{ asset('images/products/' . $hover->image) }}" ="{{ $row->product_name }}" class="hover-img img-fluid">
+                                    @endif
                                 </div>
                             </a>
                             <div class="card-body py-2">
@@ -251,11 +272,18 @@
                                 </h3>
                                 <div class="mb-2">
                                     <div class="star-list d-flex">
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled inactive-star"></i>
-                                        <i class="sr-star czi-star-filled inactive-star"></i>
+                                        @php
+                                            $stars = $row->star_ratings;
+                                        @endphp
+                                        @for ($i = 0; $i < $stars['full']; $i++)
+                                            <i class="sr-star czi-star-filled active-star"></i>
+                                        @endfor
+                                        @if ($stars['half'])
+                                            <i class="sr-star czi-star-half active-star"></i>
+                                        @endif
+                                        @for ($i = 0; $i < $stars['empty']; $i++)
+                                            <i class="sr-star czi-star-filled inactive-star"></i>
+                                        @endfor
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between">
@@ -351,13 +379,20 @@
                                     <i class="czi-cart"></i>
                                 </button>
                             @endif
-                            @php
-                                $images = $row->images->sortByDesc('is_main')->take(2)->values();
-                            @endphp
                             <a class="card-img-top d-block overflow-hidden" href="{{route('product-single',$row->slug)}}">
                                 <div class="image-hover-box">
-                                    <img src="{{ asset('images/products/' . $images[0]->image) }}" alt="Main" class="main-img img-fluid">
-                                    <img src="{{ asset('images/products/' . (isset($images[1]) ? $images[1]->image : $images[0]->image)) }}" alt="Hover" class="hover-img img-fluid">
+                                    @php
+                                        $main = $row->main_image ?? $row->hover_image;
+                                        $hover = $row->hover_image;
+                                    @endphp
+                                    @if($main)
+                                        <img src="{{ asset('images/products/' . $main->image) }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                    @else
+                                        <img src="{{ asset('theme-assets/img/default-thumbnail.jpeg') }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                    @endif
+                                    @if($hover)
+                                        <img src="{{ asset('images/products/' . $hover->image) }}" ="{{ $row->product_name }}" class="hover-img img-fluid">
+                                    @endif
                                 </div>
                             </a>
                             <div class="card-body py-2">
@@ -369,11 +404,18 @@
                                 </h3>
                                 <div class="mb-2">
                                     <div class="star-list d-flex">
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled inactive-star"></i>
-                                        <i class="sr-star czi-star-filled inactive-star"></i>
+                                        @php
+                                            $stars = $row->star_ratings;
+                                        @endphp
+                                        @for ($i = 0; $i < $stars['full']; $i++)
+                                            <i class="sr-star czi-star-filled active-star"></i>
+                                        @endfor
+                                        @if ($stars['half'])
+                                            <i class="sr-star czi-star-half active-star"></i>
+                                        @endif
+                                        @for ($i = 0; $i < $stars['empty']; $i++)
+                                            <i class="sr-star czi-star-filled inactive-star"></i>
+                                        @endfor
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between">
@@ -507,13 +549,20 @@
                                     <i class="czi-cart"></i>
                                 </button>
                             @endif
-                            @php
-                                $images = $row->images->sortByDesc('is_main')->take(2)->values();
-                            @endphp
                             <a class="card-img-top d-block overflow-hidden" href="{{route('product-single',$row->slug)}}">
                                 <div class="image-hover-box">
-                                    <img src="{{ asset('images/products/' . $images[0]->image) }}" alt="Main" class="main-img img-fluid">
-                                    <img src="{{ asset('images/products/' . (isset($images[1]) ? $images[1]->image : $images[0]->image)) }}" alt="Hover" class="hover-img img-fluid">
+                                    @php
+                                        $main = $row->main_image ?? $row->hover_image;
+                                        $hover = $row->hover_image;
+                                    @endphp
+                                    @if($main)
+                                        <img src="{{ asset('images/products/' . $main->image) }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                    @else
+                                        <img src="{{ asset('theme-assets/img/default-thumbnail.jpeg') }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                    @endif
+                                    @if($hover)
+                                        <img src="{{ asset('images/products/' . $hover->image) }}" ="{{ $row->product_name }}" class="hover-img img-fluid">
+                                    @endif
                                 </div>
                             </a>
                             <div class="card-body py-2">
@@ -525,11 +574,18 @@
                                 </h3>
                                 <div class="mb-2">
                                     <div class="star-list d-flex">
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled inactive-star"></i>
-                                        <i class="sr-star czi-star-filled inactive-star"></i>
+                                        @php
+                                            $stars = $row->star_ratings;
+                                        @endphp
+                                        @for ($i = 0; $i < $stars['full']; $i++)
+                                            <i class="sr-star czi-star-filled active-star"></i>
+                                        @endfor
+                                        @if ($stars['half'])
+                                            <i class="sr-star czi-star-half active-star"></i>
+                                        @endif
+                                        @for ($i = 0; $i < $stars['empty']; $i++)
+                                            <i class="sr-star czi-star-filled inactive-star"></i>
+                                        @endfor
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between">
@@ -641,13 +697,20 @@
                                                                 <i class="czi-cart"></i>
                                                             </button>
                                                         @endif
-                                                        @php
-                                                            $images = $row->images->sortByDesc('is_main')->take(2)->values();
-                                                        @endphp
                                                         <a class="card-img-top d-block overflow-hidden" href="{{route('product-single',$row->slug)}}">
                                                             <div class="image-hover-box">
-                                                                <img src="{{ asset('images/products/' . $images[0]->image) }}" alt="Main" class="main-img img-fluid">
-                                                                <img src="{{ asset('images/products/' . (isset($images[1]) ? $images[1]->image : $images[0]->image)) }}" alt="Hover" class="hover-img img-fluid">
+                                                                @php
+                                                                    $main = $row->main_image ?? $row->hover_image;
+                                                                    $hover = $row->hover_image;
+                                                                @endphp
+                                                                @if($main)
+                                                                    <img src="{{ asset('images/products/' . $main->image) }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                                                @else
+                                                                    <img src="{{ asset('theme-assets/img/default-thumbnail.jpeg') }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                                                @endif
+                                                                @if($hover)
+                                                                    <img src="{{ asset('images/products/' . $hover->image) }}" ="{{ $row->product_name }}" class="hover-img img-fluid">
+                                                                @endif
                                                             </div>
                                                         </a>
                                                         <div class="card-body py-2">
@@ -659,11 +722,18 @@
                                                             </h3>
                                                             <div class="mb-2">
                                                                 <div class="star-list d-flex">
-                                                                    <i class="sr-star czi-star-filled active-star"></i>
-                                                                    <i class="sr-star czi-star-filled active-star"></i>
-                                                                    <i class="sr-star czi-star-filled active-star"></i>
-                                                                    <i class="sr-star czi-star-filled inactive-star"></i>
-                                                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                                                    @php
+                                                                        $stars = $row->star_ratings;
+                                                                    @endphp
+                                                                    @for ($i = 0; $i < $stars['full']; $i++)
+                                                                        <i class="sr-star czi-star-filled active-star"></i>
+                                                                    @endfor
+                                                                    @if ($stars['half'])
+                                                                        <i class="sr-star czi-star-half active-star"></i>
+                                                                    @endif
+                                                                    @for ($i = 0; $i < $stars['empty']; $i++)
+                                                                        <i class="sr-star czi-star-filled inactive-star"></i>
+                                                                    @endfor
                                                                 </div>
                                                             </div>
                                                             <div class="d-flex justify-content-between">
@@ -773,13 +843,20 @@
                                     <i class="czi-cart"></i>
                                 </button>
                             @endif
-                            @php
-                                $images = $row->images->sortByDesc('is_main')->take(2)->values();
-                            @endphp
                             <a class="card-img-top d-block overflow-hidden" href="{{route('product-single',$row->slug)}}">
                                 <div class="image-hover-box">
-                                    <img src="{{ asset('images/products/' . $images[0]->image) }}" alt="Main" class="main-img img-fluid">
-                                    <img src="{{ asset('images/products/' . (isset($images[1]) ? $images[1]->image : $images[0]->image)) }}" alt="Hover" class="hover-img img-fluid">
+                                    @php
+                                        $main = $row->main_image ?? $row->hover_image;
+                                        $hover = $row->hover_image;
+                                    @endphp
+                                    @if($main)
+                                        <img src="{{ asset('images/products/' . $main->image) }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                    @else
+                                        <img src="{{ asset('theme-assets/img/default-thumbnail.jpeg') }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                    @endif
+                                    @if($hover)
+                                        <img src="{{ asset('images/products/' . $hover->image) }}" ="{{ $row->product_name }}" class="hover-img img-fluid">
+                                    @endif
                                 </div>
                             </a>
                             <div class="card-body py-2">
@@ -791,11 +868,18 @@
                                 </h3>
                                 <div class="mb-2">
                                     <div class="star-list d-flex">
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                        <i class="sr-star czi-star-filled inactive-star"></i>
-                                        <i class="sr-star czi-star-filled inactive-star"></i>
+                                        @php
+                                            $stars = $row->star_ratings;
+                                        @endphp
+                                        @for ($i = 0; $i < $stars['full']; $i++)
+                                            <i class="sr-star czi-star-filled active-star"></i>
+                                        @endfor
+                                        @if ($stars['half'])
+                                            <i class="sr-star czi-star-half active-star"></i>
+                                        @endif
+                                        @for ($i = 0; $i < $stars['empty']; $i++)
+                                            <i class="sr-star czi-star-filled inactive-star"></i>
+                                        @endfor
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between">
@@ -995,7 +1079,7 @@
             var price = button.data('price');
 
             var modal = $(this);
-            
+
             if (price) {
                 modal.find('.modal-header h2').text('Purchase');
             } else {
@@ -1072,6 +1156,7 @@
                 success:function(res){
                     ajax_response(res);
                     $('#cartNav').html(res.view);
+                    $('#mblCart .badge').text(res.newItemCount);
                 }
             });
         }

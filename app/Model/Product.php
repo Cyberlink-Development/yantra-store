@@ -12,9 +12,18 @@ class Product extends Model
 {
     use HasSlug;
     protected $fillable = ['latest','hot'];
-    protected $appends = ['average_rating','star_ratings']; //average_rating to automatically appear when returning JSON (e.g., API) we need to append it
+    protected $appends = ['average_rating','star_ratings','main_image','hover_image']; //average_rating to automatically appear when returning JSON (e.g., API) we need to append it
     public function scopeActive($query){
         return $query->where('status', '1');
+    }
+    public function getMainImageAttribute()
+    {
+        return $this->images()->orderByDesc('is_main')->first();
+    }
+
+    public function getHoverImageAttribute()
+    {
+        return $this->images()->orderByDesc('is_main')->skip(1)->first();
     }
     public function getAverageRatingAttribute(){
         //For active ratings only
@@ -91,6 +100,7 @@ class Product extends Model
     {
         return $this->hasMany(Image::class, 'product_id');
     }
+
     public function get_main_image($id)
     {
         $main_image="";

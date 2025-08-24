@@ -40,30 +40,49 @@
                         @if($row->discount_price && $row->price)
                             <div class="ribbon"> {{getDiscountPercentage($row->price,$row->discount_price)}} <br> OFF</div>
                         @endif
-                        <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left" onclick="addToCart(event,{{ $row->id }})">
-                            <i class="czi-cart"></i>
-                        </button>
+                        @if($row->stock > 0)
+                            <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left" onclick="addToCart(event,{{ $row->id }})">
+                                <i class="czi-cart"></i>
+                            </button>
+                        @endif
                     @endif
                     <a class="card-img-top d-block overflow-hidden" href="{{route('product-single',$row->slug)}}">
                         <div class="image-hover-box">
-                            <img src="{{ asset('images/products/' . $row->images->where('is_main', '=', 1)->first()->image)}}" alt="{{$row->product_name}}" class="main-img  img-fluid">
-                            @if($row->images->where('is_main', '=', 0)->isNotEmpty())
-                                <img src="{{asset('images/products/'.$row->images->where('is_main', '=', 0)->first()->image)}}" alt="{{$row->product_name}}" class="hover-img img-fluid">
+                            @php
+                                $main = $row->main_image ?? $row->hover_image;
+                                $hover = $row->hover_image;
+                            @endphp
+                            @if($main)
+                                <img src="{{ asset('images/products/' . $main->image) }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                            @else
+                                <img src="{{ asset('theme-assets/img/default-thumbnail.jpeg') }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                            @endif
+                            @if($hover)
+                                <img src="{{ asset('images/products/' . $hover->image) }}" ="{{ $row->product_name }}" class="hover-img img-fluid">
                             @endif
                         </div>
                     </a>
                     <div class="card-body py-2">
-                        <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
+                        @if($row->categories->count() > 0)
+                            <a href="{{ route('product-list', $row->categories->first()->slug) }}" class="product-meta d-block font-size-xs pb-1">{{$row->categories->first()->name}}</a>
+                        @endif
                         <h3 class="product-title font-size-sm mb-2">
                             <a href="{{route('product-single',$row->slug)}}" class="two-line">{{ $row->product_name }}</a>
                         </h3>
                         <div class="mb-2">
                             <div class="star-list d-flex">
-                                <i class="sr-star czi-star-filled active-star"></i>
-                                <i class="sr-star czi-star-filled active-star"></i>
-                                <i class="sr-star czi-star-filled active-star"></i>
-                                <i class="sr-star czi-star-filled active-star"></i>
-                                <i class="sr-star czi-star-filled active-star"></i>
+                                @php
+                                    $stars = $row->star_ratings;
+                                @endphp
+                                @for ($i = 0; $i < $stars['full']; $i++)
+                                    <i class="sr-star czi-star-filled active-star"></i>
+                                @endfor
+                                @if ($stars['half'])
+                                    <i class="sr-star czi-star-half active-star"></i>
+                                @endif
+                                @for ($i = 0; $i < $stars['empty']; $i++)
+                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                                @endfor
                             </div>
                         </div>
                         <div class="d-flex justify-content-between">

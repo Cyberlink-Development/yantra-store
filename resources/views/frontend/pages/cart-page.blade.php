@@ -44,12 +44,11 @@
                 contentType: false,
                 cache: false,
                 processData: false,
-                success: function (data) {
-                    ajax_response(data);
-                    $('#cartList').html(data.view);
-                    $('#cartNav').html(data.view2);
-                    // $(".uk-cart-count").replaceWith($(".uk-cart-count")).html(data.count);
-                    // $("#sub-total").replaceWith($("#sub-total")).html("$" + data.subTotal);
+                success: function (res) {
+                    ajax_response(res);
+                    $('#cartList').html(res.view);
+                    $('#cartNav').html(res.view2);
+                    $('#mblCart .badge').text(res.newItemCount);
                 }
             });
         }
@@ -67,11 +66,11 @@
                 type: 'GET',
                 url: '{{ route('cart-remove') }}',
                 data: {'id': cartId},
-                success: function (data) {
-                    $("#cartItem-" + cartId).remove();
-                    $('.uk-cart-count').html(data.count);
-                    $("#sub-total").html("Rs." + data.subTotal);
-                    ajax_response(data);
+                success: function (res) {
+                    $('#cartList').html(res.view);
+                    $('#cartNav').html(res.view2);
+                    $('#mblCart .badge').text(res.newItemCount);
+                    ajax_response(res);
                 },
                 error: function(xhr, status, error) {
                     console.error('Delete AJAX Error:', error);
