@@ -58,7 +58,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 class="h3 m-0">Get a Quote</h2>
+            <h2 class="h3 m-0">{{ $data->price ? 'Purchase' : 'Get a Quote'}}</h2>
             <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body tab-content py-4">

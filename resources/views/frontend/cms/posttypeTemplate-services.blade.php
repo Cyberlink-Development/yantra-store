@@ -129,6 +129,11 @@
       var serviceId = button.data('service-id');
       var price = button.data('price');
       var modal = $(this);
+      if (price) {
+        modal.find('.modal-header h2').text('Purchase');
+      } else {
+        modal.find('.modal-header h2').text('Get a Quote');
+      }
 
       modal.find('#quote-service').val(serviceId);
       modal.find('#quote-price').val(price);
