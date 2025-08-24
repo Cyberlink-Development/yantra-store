@@ -389,6 +389,7 @@ class CheckoutController extends Controller
             // dd('test post',$shipping, $request->all(),$subTotal, $grandTotal ,$promo_discount,$discount_amount);
             
             $order = Order::create([
+                'user_id'        => Auth::id(),
                 'subtotal'       => $subTotal,
                 'grand_total'    => $grandTotal,
                 'shipping_id'    => $shipping->id,

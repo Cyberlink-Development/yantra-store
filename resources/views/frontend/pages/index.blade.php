@@ -170,7 +170,7 @@
                                 </div>
                             </div>
                             @if($isPriced)
-                                <a href="{{route('product-single',$row->slug)}}">
+                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}">
                                     <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class=" font-size-md mb-2 text-white text-center pt-2">
@@ -183,11 +183,11 @@
                                     </div>
                                 </a>
                             @else
-                                <a href="{{route('product-single',$row->slug)}}">
+                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product">
                                     <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
-                                            <h3 class=" font-size-md mb-2 text-white text-center pt-2">
-                                                Get a quote
+                                            <h3 class="font-size-md mb-2 text-white text-center pt-2">
+                                                Get a quote 
                                             </h3>
                                         </div>
                                         <div>
@@ -272,7 +272,7 @@
                                 </div>
                             </div>
                             @if($isPriced)
-                                <a href="{{route('product-single',$row->slug)}}">
+                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}">
                                     <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class=" font-size-md mb-2 text-white text-center pt-2">
@@ -285,7 +285,7 @@
                                     </div>
                                 </a>
                             @else
-                                <a href="{{route('product-single',$row->slug)}}">
+                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product">
                                     <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class=" font-size-md mb-2 text-white text-center pt-2">
@@ -390,7 +390,7 @@
                                 </div>
                             </div>
                             @if($isPriced)
-                                <a href="{{route('product-single',$row->slug)}}">
+                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}">
                                     <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class=" font-size-md mb-2 text-white text-center pt-2">
@@ -403,7 +403,7 @@
                                     </div>
                                 </a>
                             @else
-                                <a href="{{route('product-single',$row->slug)}}">
+                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product">
                                     <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class=" font-size-md mb-2 text-white text-center pt-2">
@@ -546,7 +546,7 @@
                                 </div>
                             </div>
                             @if($isPriced)
-                                <a href="{{route('product-single',$row->slug)}}">
+                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}">
                                     <div class="py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class="font-size-md mb-2 text-white text-center pt-2">
@@ -559,7 +559,7 @@
                                     </div>
                                 </a>
                             @else
-                                <a href="{{route('product-single',$row->slug)}}">
+                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product">
                                     <div class="py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class="font-size-md mb-2 text-white text-center pt-2">
@@ -812,10 +812,10 @@
                                 </div>
                             </div>
                             @if($isPriced)
-                                <a href="{{route('product-single',$row->slug)}}">
+                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}">
                                     <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
-                                            <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                                            <h3 class="font-size-md mb-2 text-white text-center pt-2">
                                                 BUY NOW
                                             </h3>
                                         </div>
@@ -825,7 +825,7 @@
                                     </div>
                                 </a>
                             @else
-                                <a href="{{route('product-single',$row->slug)}}">
+                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product">
                                     <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class=" font-size-md mb-2 text-white text-center pt-2">
@@ -864,224 +864,37 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
-                <div class="bg-white rounded-lg">
-                    <div class="p-2 h-320">
-                        <a href="service.php">
-                            <img src="img/service/cloud.png" class="service-list-img">
-                        </a>
-                        <a href="service.php" class="text-center">
-                            <p class="services-span">Cloud Computing</p>
-                        </a>
-                        <p class="services-p text-center">By accessing this website or placing an order, you agree to accept
-                            all the terms listed below.</p>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12 p-0">
-                                <div class="price-badge text-center">Rs. 40,000</div>
-                            </div>
-                            <div class="col-12 p-0">
-                                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
+            @foreach($services as $row)
+                <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
+                    <div class="bg-white rounded-lg">
+                        <div class="p-2 h-320">
+                            <a href="{{ route('page.pagedetail', $row->uri) }}">
+                                <img src="{{ $row->thumbnail ? asset('uploads/thumbnails/'.$row->thumbnail) : asset('theme-assets/img/service/cloud.png') }}" class="service-list-img" alt="{{$row->post_title}}">
+                            </a>
+                            <a href="{{ route('page.pagedetail', $row->uri) }}" class="text-center">
+                                <p class="services-span">{{$row->post_title}}</p>
+                            </a>
+                            <p class="services-p text-center">{{$row->sub_title}}</p>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                @if ($row->price)
+                                    <div class="col-12 p-0">
+                                        <div class="price-badge text-center">Rs. {{$row->price}}</div>
+                                    </div>
+                                @endif
+                                <div class="col-12 p-0">
+                                    <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->post_title }}" data-type="service" class="quote-badge text-center">{{$row->price ? 'Purchase Now' : 'Get A Quote'}}</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
-                <div class="bg-white rounded-lg">
-                    <div class="p-2 h-320">
-                        <a href="service.php">
-                            <img src="img/service/azure.png" class="service-list-img">
-                        </a>
-                        <a href="service.php" class="text-center">
-                            <p class="services-span">Azure</p>
-                        </a>
-                        <p class="services-p text-center">
-                            By accessing this website or placing an order, you agree to accept all the terms listed below.
-                        </p>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12 p-0">
-                                <div class="price-badge text-center">Rs. 40,000</div>
-                            </div>
-                            <div class="col-12 p-0">
-                                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
-                <div class="bg-white rounded-lg">
-                    <div class="p-2 h-320">
-                        <a href="service.php">
-                            <img src="img/service/vps.png" class="service-list-img">
-                        </a>
-                        <a href="service.php" class="text-center">
-                            <p class="services-span">VPS</p>
-                        </a>
-                        <p class="services-p text-center">
-                            By accessing this website or placing an order, you agree to accept all the terms listed below.
-                        </p>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12 p-0">
-                                <div class="price-badge text-center">Rs. 40,000</div>
-                            </div>
-                            <div class="col-12 p-0">
-                                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
-                <div class="bg-white rounded-lg">
-                    <div class="p-2 h-320">
-                        <a href="service.php">
-                            <img src="img/service/colocation.png" class="service-list-img">
-                        </a>
-                        <a href="service.php" class="text-center">
-                            <p class="services-span">Colocation</p>
-                        </a>
-                        <p class="services-p text-center">
-                            By accessing this website or placing an order, you agree to accept all the terms listed below.
-                        </p>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12 p-0">
-                                <div class="price-badge text-center">Rs. 4,00,000</div>
-                            </div>
-                            <div class="col-12 p-0">
-                                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
-                <div class="bg-white rounded-lg">
-                    <div class="p-2 h-320">
-                        <a href="service.php">
-                            <img src="img/service/it.png" class="service-list-img">
-                        </a>
-                        <a href="service.php" class="text-center">
-                            <p class="services-span">IT Consulting</p>
-                        </a>
-                        <p class="services-p text-center">
-                            By accessing this website or placing an order, you agree to accept all the terms listed below.
-                        </p>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12 p-0">
-                                <div class="price-badge text-center">Rs. 40,000</div>
-                            </div>
-                            <div class="col-12 p-0">
-                                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
-                <div class="bg-white rounded-lg">
-                    <div class="p-2 h-320">
-                        <a href="service.php">
-                            <img src="img/service/implementation.png" class="service-list-img">
-                        </a>
-                        <a href="service.php" class="text-center">
-                            <p class="services-span">Implementation Service</p>
-                        </a>
-                        <p class="services-p text-center">
-                            By accessing this website or placing an order, you agree to accept all the terms listed below.
-                        </p>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12 p-0">
-                                <div class="price-badge text-center">Rs. 40,000</div>
-                            </div>
-                            <div class="col-12 p-0">
-                                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
-                <div class="bg-white rounded-lg">
-                    <div class="p-2 h-320">
-                        <a href="service.php">
-                            <img src="img/service/audit.png" class="service-list-img">
-                        </a>
-                        <a href="service.php" class="text-center">
-                            <p class="services-span">Audit Support</p>
-                        </a>
-                        <p class="services-p text-center">
-                            By accessing this website or placing an order, you agree to accept all the terms listed below.
-                        </p>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12 p-0">
-                                <div class="price-badge text-center">Rs. 40,000</div>
-                            </div>
-                            <div class="col-12 p-0">
-                                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-lg-3 col-md-4 col-6 p-1 large-top">
-                <div class="bg-white rounded-lg">
-                    <div class="p-2 h-320">
-                        <a href="service.php">
-                            <img src="img/service/server.png" class="service-list-img">
-                        </a>
-                        <a href="service.php" class="text-center">
-                            <p class="services-span">Server Support</p>
-                        </a>
-                        <p class="services-p text-center">
-                            By accessing this website or placing an order, you agree to accept all the terms listed below.
-                        </p>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12 p-0">
-                                <div class="price-badge text-center">Rs. 40,000</div>
-                            </div>
-                            <div class="col-12 p-0">
-                                <a href="#quote" data-toggle="modal" class="quote-badge text-center">Get A Quote</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
+            @endforeach
         </div>
         <div class="col-12 d-flex justify-content-center mt-3 ">
             <div class="text-center pt-3 large-top">
-                <a class="btn btn-primary  " href="service-list.php">View All Services <span><i style="font-size: 12px;"
-                            class="czi-arrow-right ml-1 mr-1 font-weight-bold "></i></span></a>
+                <a class="btn btn-primary" href="{{route('page.posttype_detail',$post_type->uri)}}">View All Services <span><i style="font-size: 12px;" class="czi-arrow-right ml-1 mr-1 font-weight-bold "></i></span></a>
             </div>
         </div>
 
@@ -1097,47 +910,49 @@
                             aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body tab-content py-4">
-                    <form>
+                    <form action="{{route('quotation-submit')}}" method="post">
+                        @csrf
+                        <input type="hidden" name="type" id="quote-type">
+                        <input type="hidden" name="product_id" id="quote-product-id">
+                        <input type="hidden" name="service_id" id="quote-service-id">
+                        <input type="hidden" name="price" id="quote-price">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="quote-name">Full Name</label>
-                                    <input class="form-control" type="text" id="quote-name" required>
+                                    <label for="quote-name">Full Name*</label>
+                                    <input class="form-control" type="text" name="full_name" id="quote-name" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="quote-email">Email address</label>
-                                    <input class="form-control" type="email" id="quote-email" required>
+                                    <label for="quote-email">Email address*</label>
+                                    <input class="form-control" type="email" name="email" id="quote-email" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="quote-phone">Phone</label>
-                                    <input class="form-control" type="number" id="quote-phone" required>
+                                    <label for="quote-phone">Phone*</label>
+                                    <input class="form-control" type="number" name="phone" id="quote-phone" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="quote-address">Address</label>
-                                    <input class="form-control" type="text" id="quote-address" required>
+                                    <label for="quote-address">Address*</label>
+                                    <input class="form-control" type="text" name="country" id="quote-address" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="quote-service">Service</label>
-                                    <select class="custom-select">
-                                        <option value="1">Cloud Computing</option>
-                                        <option value="2">Coloaction</option>
-                                        <option value="3">Audit Support</option>
-                                        <option value="4">It Sercives</option>
+                                    <label for="quote-service">Selected Item*</label>
+                                    <select class="custom-select" id="quote-service" >
+                                        <!-- Option will be filled dynamically -->
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="mb-3" for="message">Message</label>
-                                    <textarea class="form-control" rows="4" id="messasge"></textarea>
+                                    <textarea class="form-control" rows="4" name="message" id="messasge"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -1157,6 +972,57 @@
             if (mainImg && hoverImg && hoverImg.getAttribute('src')) {
                 box.classList.add('has-hover');
             }
+        });
+
+        $(document).on('click', '.buy_now_btn', function(e){
+            e.preventDefault();
+
+            let productSlug = $(this).data('slug');
+            let quantity = 1;
+
+            // If you have per-product quantity inputs, you can grab it like this:
+            // let quantity = $(this).closest('.product-card').find('select[name="quantity"]').val() || 1;
+
+            let url = "{{ url('checkout') }}/" + productSlug + "?quantity=" + quantity;
+            window.location.href = url;
+        });
+
+        $('#quote').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var itemId = button.data('item-id');
+            var itemName = button.data('name');
+            var type = button.data('type');
+            var price = button.data('price');
+
+            var modal = $(this);
+            
+            if (price) {
+                modal.find('.modal-header h2').text('Purchase');
+            } else {
+                modal.find('.modal-header h2').text('Get a Quote');
+            }
+
+            // Reset hidden inputs
+            modal.find('#quote-product-id').val('');
+            modal.find('#quote-service-id').val('');
+
+            // Set type
+            modal.find('#quote-type').val(type);
+
+            // Set name in dropdown
+            modal.find('#quote-service').html(
+                `<option value="${itemId}" selected>${itemName}</option>`
+            );
+
+            // Set correct ID field
+            if (type === 'product') {
+                modal.find('#quote-product-id').val(itemId);
+            } else {
+                modal.find('#quote-service-id').val(itemId);
+            }
+
+            // Price if any
+            modal.find('#quote-price').val(price || '');
         });
     </script>
 

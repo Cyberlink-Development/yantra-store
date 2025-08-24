@@ -190,7 +190,7 @@
                             <tr>
                                 <td class="content-cell">
                                     <h1>New Quotation Received</h1>
-                                    <p>You have received quotaion from {{$quotation->full_name}}</p>
+                                    <p>You have received quotaion from {{$quotation->full_name}} for {{ $productName ? 'Product: ' . $productName : 'Service: ' . $serviceName }} .</p>
                                     <p>Date: {{$quotation->created_at->format('d M, Y')}}</p>
                                     <br/>
                                     <br/>

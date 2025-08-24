@@ -105,8 +105,11 @@ class FrontController extends Controller
         $best=Product::wherein('id',$result)->get();
         $new=Product::orderby('created_at','desc')->take(5)->get();
 
-
-        return view('frontend.pages.index',compact('banners','ads','categories','categoriesSlider','categoriesMovingText','flashSales','latestProducts','featuresProducts','hotProducts','productsForYou','goneInSeconds','brands',  'new','best','featured_category','featured_category2', 'latest_blogs'));
+        
+        $post_type = PostType::where('id', '4')->first();
+        $services = Post::where(['post_type' => $post_type->id, 'status' => '1'])->orderBy('post_order', 'asc')->paginate(8);
+// dd($service);
+        return view('frontend.pages.index',compact('banners','ads','categories','categoriesSlider','categoriesMovingText','flashSales','latestProducts','featuresProducts','hotProducts','productsForYou','goneInSeconds','brands',  'new','best','featured_category','featured_category2', 'latest_blogs','post_type','services'));
     }
 
     public function blog_single($slug){
@@ -169,8 +172,8 @@ class FrontController extends Controller
                 'phone'=>'required|max:10',
                 'country'=>'required',
                 'type'   => 'required|in:service,product',
-                'service_id' => 'required_if:type,service|exists:cl_posts,id',
-                'product_id' => 'required_if:type,product|exists:products,id',
+                'service_id' => 'nullable|required_if:type,service|exists:cl_posts,id',
+                'product_id' => 'nullable|required_if:type,product|exists:products,id',
                 'price' => 'nullable',
             ]);
 
