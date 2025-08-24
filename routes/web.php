@@ -75,6 +75,7 @@ Route::group(['namespace' => 'Front'], function () {
     Route::post('search-results', 'SearchController@search_results')->name('search-results');
     //Product review
     Route::post('product-review', 'ReviewController@create')->name('front.review.create');
+    Route::get('product-review-sort/{id}', 'ReviewController@sort')->name('front.review.sort');
 
     // Blog Routes
     Route::get('blog-single/{slug}', 'FrontController@blog_single')->name('blog-single');
@@ -195,7 +196,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::delete('post/{id}/banner', 'PostController@deleteBanner')->name('admin.post.deleteBanner');
     Route::post('post/{id}/toggle-status', 'PostController@toggleStatus')->name('admin.post.toggleStatus');
 
-    // For Discount 
+    // For Discount
     Route::get('discount','DiscountController@index')->name('admin.discount');
     Route::get('discount/create','DiscountController@create')->name('admin.discount.create');
     Route::post('discount/store','DiscountController@store')->name('admin.discount.store');
@@ -300,7 +301,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
         Route::any('edit-weight/{id?}', 'ShippingController@edit_weight')->name('edit-weight');
         Route::get('delete-weight/{id}', 'ShippingController@delete_weight')->name('delete-weight');
 
-        Route::get('/shipping-price', 'ShippingController@add_price')->name('add-price'); 
+        Route::get('/shipping-price', 'ShippingController@add_price')->name('add-price');
         Route::post('/shipping-price', 'ShippingController@post_price')->name('post_price');
         Route::get('delete-price/{id}', 'ShippingController@delete_price')->name('delete-price');
         Route::any('shipping-status', 'ShippingController@deal_status')->name('shipping-status');

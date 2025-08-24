@@ -11,7 +11,7 @@
                 <div class="col-md-4 mb-5">
                     <h5 class="text-secondary text-uppercase mb-4">LINKS</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-secondary mb-2" href="index.php">Home</a>
+                        <a class="text-secondary mb-2" href="{{url('/')}}">Home</a>
                         <a class="text-secondary mb-2" href="wishlist.php">Wishlist</a>
                         <a class="text-secondary mb-2" href="{{ route('user-dashboard') }}">Profile</a>
                         <a class="text-secondary mb-2" href="cart.php">Shopping Cart</a>

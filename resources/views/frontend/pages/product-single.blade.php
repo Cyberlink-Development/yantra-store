@@ -14,6 +14,70 @@
 @section('short_description', strip_tags($data->short_description))
 
 @section('content')
+    <!--quote modal start-->
+    <div class="modal fade" id="quote" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="h3 m-0">Get a Quote</h2>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body tab-content py-4">
+                    <form action="{{route('quotation-submit')}}" method="post">
+                        @csrf
+                        <input type="hidden" name="type" id="quote-type">
+                        <input type="hidden" name="product_id" id="quote-product-id">
+                        <input type="hidden" name="service_id" id="quote-service-id">
+                        <input type="hidden" name="price" id="quote-price">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="quote-name">Full Name*</label>
+                                    <input class="form-control" type="text" name="full_name" id="quote-name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="quote-email">Email address*</label>
+                                    <input class="form-control" type="email" name="email" id="quote-email" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="quote-phone">Phone*</label>
+                                    <input class="form-control" type="number" name="phone" id="quote-phone" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="quote-address">Address*</label>
+                                    <input class="form-control" type="text" name="country" id="quote-address" required>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="quote-service">Selected Item*</label>
+                                    <select class="custom-select" id="quote-service" >
+                                        <!-- Option will be filled dynamically -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="mb-3" for="message">Message</label>
+                                    <textarea class="form-control" rows="4" name="message" id="messasge"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-block btn-shadow" type="submit">Send the quote</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--quote modal end-->
     <!-- Page Title-->
     <div class="bg-primary page-title-overlap   pt-4 ">
         <div class="container d-flex justify-content-center align-items-center text-center py-2 py-lg-3">
@@ -157,12 +221,16 @@
                                         <a class="btn btn-primary btn-shadow btn-block mt-0" id="buy_now_btn">
                                             <i class="czi-bag font-size-lg mr-2"></i>Buy Now
                                         </a>
-                                        <a class="btn btn-secondary btn-shadow btn-block mt-0" id="cart_btn">
+                                        <a class="btn btn-secondary btn-shadow btn-block mt-0 btn-hover-white" id="cart_btn">
                                             <i class="czi-cart font-size-lg mr-2"></i>Add to Cart
                                         </a>
                                     @else
-                                        <a class="btn btn-primary btn-shadow btn-block mt-0" id="buy_now_btn">
+                                        <!-- <a class="btn btn-primary btn-shadow btn-block mt-0" id="buy_now_btn">
                                             <i class="czi-bag font-size-lg mr-2"></i>Get a quote
+                                        </a> -->
+                                        <a href="#quote" data-toggle="modal" data-item-id="{{ $data->id }}" data-price="{{ $data->price }}" data-name="{{ $data->product_name }}" data-type="product" class="btn btn-secondary btn-shadow btn-block mt-0 btn-hover-white">
+                                            Get a quote
+                                            <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
                                         </a>
                                     @endif
                                 </div>
@@ -264,8 +332,8 @@
                                             </div>
                                             <div class="form-inline flex-nowrap">
                                                 <label class="text-muted text-nowrap mr-2 d-none d-sm-block" for="sort-reviews">Sort by:</label>
-                                                <select class="custom-select custom-select-sm" id="sort-reviews">
-                                                    <option value="newest">Newest</option>
+                                                <select class="custom-select custom-select-sm" id="sort-reviews" onChange="sortReview(this)">
+                                                    <option value="latest">Latest</option>
                                                     <option value="oldest">Oldest</option>
                                                     <option value="high_rating">High rating</option>
                                                     <option value="low_rating">Low rating</option>
@@ -274,7 +342,7 @@
                                         </div>
                                     @endif
                                     <!-- Review-->
-                                    <div id="review-list">
+                                    <div id="reviewList">
                                         <x-review.review_list :reviews="$data->reviews" />
                                     </div>
                                 </div>
@@ -333,249 +401,146 @@
     </div>
 
     <!-- Product  (Style with)-->
-    <div class="">
-        <div class="container ">
-            <div class="row d-flex align-items-end  mb-3">
-                <div class="col-6">
-                    <h2 class="section-title mb-0">Similar Products</h2>
-                </div>
-                <div class="col-6 d-flex justify-content-end">
-                    <div class="text-center pt-3">
-                        <a class="btn btn-primary btn-sm pl-2" href="list.php">View All Products<i
-                                class="czi-arrow-right ml-2"></i></a>
+    @if($relatedProducts->count() > 0)
+        <div class="">
+            <div class="container ">
+                <div class="row d-flex align-items-end  mb-3">
+                    <div class="col-6">
+                        <h2 class="section-title mb-0">Similar Products</h2>
+                    </div>
+                    <div class="col-6 d-flex justify-content-end">
+                        <div class="text-center pt-3">
+                            <a class="btn btn-primary btn-sm pl-2" href="{{ route('product-list', $data->categories()->first()->slug) }}">View All Products<i
+                                    class="czi-arrow-right ml-2"></i></a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="custom-cols-5">
-                <!-- Product-->
-                <div class="col-5th col-lg px-1  mb-4">
-                    <div class="card product-card translate p-0">
-                        <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
-                            <i class="czi-cart"></i>
-                        </button>
-                        <a class="card-img-top d-block overflow-hidden" href="detail.php">
-                            <div class="image-hover-box">
-                                <img src="img/computer/computer1.webp" alt="" class="main-img img-fluid">
-                                <img src="img/computer/computer4.webp" alt="" class="hover-img img-fluid">
-                            </div>
-                        </a>
-                        <div class="card-body py-2">
-                            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
-                            <h3 class="product-title font-size-sm mb-2">
-                                <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5
-                                    12450HX Processor)</a>
-                            </h3>
-                            <div class="mb-2">
-                                <div class="star-list d-flex">
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled inactive-star"></i>
-                                    <i class="sr-star czi-star-filled inactive-star"></i>
+                <div class="custom-cols-5">
+                    <!-- Product-->
+                    @foreach($relatedProducts as $row)
+                        @php
+                            $isPriced = ($row->discount_price || $row->price);
+                        @endphp
+                        <div class="col-5th col-lg px-1  mb-4">
+                            <div class="card product-card translate p-0">
+                                @if($isPriced)
+                                    @if($row->discount_price && $row->price)
+                                        <div class="ribbon"> {{getDiscountPercentage($row->price,$row->discount_price)}} <br> OFF</div>
+                                    @endif
+                                    <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left" onclick="addToCart(event,{{ $row->id }})">
+                                        <i class="czi-cart"></i>
+                                    </button>
+                                @endif
+                                <a class="card-img-top d-block overflow-hidden" href="{{route('product-single',$row->slug)}}">
+                                    <div class="image-hover-box">
+                                        @php
+                                            $main = $row->main_image ?? $row->hover_image;
+                                            $hover = $row->hover_image;
+                                        @endphp
+                                        @if($main)
+                                            <img src="{{ asset('images/products/' . $main->image) }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                        @else
+                                            <img src="{{ asset('theme-assets/img/default-thumbnail.jpeg') }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                        @endif
+                                        @if($hover)
+                                            <img src="{{ asset('images/products/' . $hover->image) }}" alt="{{ $row->product_name }}" class="hover-img img-fluid">
+                                        @endif
+                                    </div>
+                                </a>
+                                <div class="card-body py-2">
+                                    @if($row->categories->count() > 0)
+                                        <a href="{{ route('product-list', $row->categories->first()->slug) }}" class="product-meta d-block font-size-xs pb-1">{{$row->categories->first()->name}}</a>
+                                    @endif
+                                    <h3 class="product-title font-size-sm mb-2">
+                                        <a href="{{route('product-single',$row->slug)}}" class="two-line">{{$row->product_name}}</a>
+                                    </h3>
+                                    <div class="mb-2">
+                                        <div class="star-list d-flex">
+                                            @php
+                                                $stars = $row->star_ratings;
+                                            @endphp
+                                            @for ($i = 0; $i < $stars['full']; $i++)
+                                                <i class="sr-star czi-star-filled active-star"></i>
+                                            @endfor
+                                            @if ($stars['half'])
+                                                <i class="sr-star czi-star-half active-star"></i>
+                                            @endif
+                                            @for ($i = 0; $i < $stars['empty']; $i++)
+                                                <i class="sr-star czi-star-filled inactive-star"></i>
+                                            @endfor
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="product-price">
+                                            @if($isPriced)
+                                                <span class="font-midnight">Rs. {{ $row->discount_price ?? $row->price }}</span>
+                                                @if($row->discount_price)
+                                                    <del class="font-size-sm text-danger">Rs. {{ $row->price }}</del>
+                                                @endif
+                                            @else
+                                                <span class="font-midnight" style="visibility: hidden;"> Rs</span>
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
-                                </div>
+                                <a href="{{route('product-single',$row->slug)}}">
+                                    <div class="py-1 px-3 book-btn d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                                                View Details
+                                            </h3>
+                                        </div>
+                                        <div>
+                                            <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
                         </div>
-                        <a href="detail.php">
-                            <div class=" py-1 px-3 book-btn d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h3 class=" font-size-md mb-2 text-white text-center pt-2">
-                                        BUY NOW
-                                    </h3>
-                                </div>
-                                <div>
-                                    <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-5th col-lg px-1  mb-4">
-                    <div class="card product-card translate p-0">
-                        <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
-                            <i class="czi-cart"></i>
-                        </button>
-                        <a class="card-img-top d-block overflow-hidden" href="detail.php">
-                            <div class="image-hover-box">
-                                <img src="img/computer/computer1.webp" alt="" class="main-img img-fluid">
-                                <img src="img/computer/computer4.webp" alt="" class="hover-img img-fluid">
-                            </div>
-                        </a>
-                        <div class="card-body py-2">
-                            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
-                            <h3 class="product-title font-size-sm mb-2">
-                                <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5
-                                    12450HX Processor)</a>
-                            </h3>
-                            <div class="mb-2">
-                                <div class="star-list d-flex">
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled inactive-star"></i>
-                                    <i class="sr-star czi-star-filled inactive-star"></i>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <div class="product-price"><span class="font-midnight">RS. 4,50,000</span>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="detail.php">
-                            <div class=" py-1 px-3 book-btn d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h3 class=" font-size-md mb-2 text-white text-center pt-2">
-                                        BUY NOW
-                                    </h3>
-                                </div>
-                                <div>
-                                    <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-5th col-lg px-1  mb-4">
-                    <div class="card product-card translate p-0">
-                        <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
-                            <i class="czi-cart"></i>
-                        </button>
-                        <a class="card-img-top d-block overflow-hidden" href="detail.php">
-                            <div class="image-hover-box">
-                                <img src="img/computer/computer1.webp" alt="" class="main-img img-fluid">
-                                <img src="img/computer/computer4.webp" alt="" class="hover-img img-fluid">
-                            </div>
-                        </a>
-                        <div class="card-body py-2">
-                            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
-                            <h3 class="product-title font-size-sm mb-2">
-                                <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5
-                                    12450HX Processor)</a>
-                            </h3>
-                            <div class="mb-2">
-                                <div class="star-list d-flex">
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled inactive-star"></i>
-                                    <i class="sr-star czi-star-filled inactive-star"></i>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <div class="product-price"><span class="font-midnight">Rs. 4,50,000</span>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="detail.php">
-                            <div class=" py-1 px-3 book-btn d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h3 class=" font-size-md mb-2 text-white text-center pt-2">
-                                        BUY NOW
-                                    </h3>
-                                </div>
-                                <div>
-                                    <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-5th col-lg px-1  mb-4">
-                    <div class="card product-card translate p-0">
-                        <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
-                            <i class="czi-cart"></i>
-                        </button>
-                        <a class="card-img-top d-block overflow-hidden" href="detail.php">
-                            <div class="image-hover-box">
-                                <img src="img/computer/computer1.webp" alt="" class="main-img img-fluid">
-                                <img src="img/computer/computer4.webp" alt="" class="hover-img img-fluid">
-                            </div>
-                        </a>
-                        <div class="card-body py-2">
-                            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
-                            <h3 class="product-title font-size-sm mb-2">
-                                <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5
-                                    12450HX Processor)</a>
-                            </h3>
-                            <div class="mb-2">
-                                <div class="star-list d-flex">
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled inactive-star"></i>
-                                    <i class="sr-star czi-star-filled inactive-star"></i>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <div class="product-price"><span class="font-midnight">Rs. 4,50,000</span>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="detail.php">
-                            <div class=" py-1 px-3 book-btn d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h3 class=" font-size-md mb-2 text-white text-center pt-2">
-                                        BUY NOW
-                                    </h3>
-                                </div>
-                                <div>
-                                    <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-5th col-lg px-1 mb-4">
-                    <div class="card product-card translate p-0">
-                        <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left">
-                            <i class="czi-cart"></i>
-                        </button>
-                        <a class="card-img-top d-block overflow-hidden" href="detail.php">
-                            <div class="image-hover-box">
-                                <img src="img/computer/computer1.webp" alt="" class="main-img img-fluid">
-                                <img src="img/computer/computer4.webp" alt="" class="hover-img img-fluid">
-                            </div>
-                        </a>
-                        <div class="card-body py-2">
-                            <a class="product-meta d-block font-size-xs pb-1" href="#">Laptop</a>
-                            <h3 class="product-title font-size-sm mb-2">
-                                <a href="detail.php" class="two-line">Lenovo LOQ 15IAX9 Gaming Laptop (Intel Core i5
-                                    12450HX Processor)</a>
-                            </h3>
-                            <div class="mb-2">
-                                <div class="star-list d-flex">
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled active-star"></i>
-                                    <i class="sr-star czi-star-filled inactive-star"></i>
-                                    <i class="sr-star czi-star-filled inactive-star"></i>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <div class="product-price"><span class="font-midnight">Rs. 4,50,000</span>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="detail.php">
-                            <div class=" py-1 px-3 book-btn d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h3 class=" font-size-md mb-2 text-white text-center pt-2">
-                                        BUY NOW
-                                    </h3>
-                                </div>
-                                <div>
-                                    <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
-    </div>
+    @endif
+    <script>
+        $('#quote').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var itemId = button.data('item-id');
+            var itemName = button.data('name');
+            var type = button.data('type');
+            var price = button.data('price');
+
+            var modal = $(this);
+
+            if (price) {
+                modal.find('.modal-header h2').text('Purchase');
+            } else {
+                modal.find('.modal-header h2').text('Get a Quote');
+            }
+
+            // Reset hidden inputs
+            modal.find('#quote-product-id').val('');
+            modal.find('#quote-service-id').val('');
+
+            // Set type
+            modal.find('#quote-type').val(type);
+
+            // Set name in dropdown
+            modal.find('#quote-service').html(
+                `<option value="${itemId}" selected>${itemName}</option>`
+            );
+
+            // Set correct ID field
+            if (type === 'product') {
+                modal.find('#quote-product-id').val(itemId);
+            } else {
+                modal.find('#quote-service-id').val(itemId);
+            }
+
+            // Price if any
+            modal.find('#quote-price').val(price || '');
+        });
+    </script>
     <script>
         document.querySelectorAll('.image-hover-box').forEach(box => {
             const mainImg = box.querySelector('.main-img');
@@ -585,6 +550,25 @@
                 box.classList.add('has-hover');
             }
         });
+    </script>
+    <script>
+        function sortReview(sorting){
+            sortingValue = $(sorting).val();
+            const url = "{{ route('front.review.sort',$data->id) }}";
+            $.ajax({
+                url: url,
+                method: 'GET',
+                data: {
+                    sortValue: sortingValue,
+                },
+                success: function(res){
+                    ajax_response(res)
+                    if(res.success == true){
+                        $('#reviewList').html(res.view);
+                    }
+                }
+            })
+        }
     </script>
     @include('frontend.include.toolbar')
 @stop
@@ -612,9 +596,10 @@
                 processData: false,
                 cache: false,
 
-                success: function(data) {
-                    ajax_response(data);
-                    $('#cartNav').html(data.view);
+                success: function(res) {
+                    ajax_response(res);
+                    $('#cartNav').html(res.view);
+                    $('#mblCart .badge').text(res.newItemCount);
                 },
 
                 error: function(xhr) {

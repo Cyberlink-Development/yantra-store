@@ -5441,7 +5441,8 @@ a.badge:hover, a.badge:focus {
     font-weight: bold;
     text-align: center;
     clip-path: polygon(0 0, 100% 0, 100% 80%, 90% 100%, 80% 80%, 70% 100%, 60% 80%, 50% 100%, 40% 80%, 30% 100%, 20% 80%, 10% 100%, 0 80%);
-    z-index: 2;
+    /* z-index: 2; */
+    z-index: 3; /**** By Sangam *******/
     line-height: 1.2;
 }
 .ribbon-detail{
@@ -17839,6 +17840,7 @@ border: 1px solid #ebebeb;
 .product-badge.product-out-of-stock{
     background-color: #d30033;
     color: #ffffff;
+    box-shadow: -.5px 1px 5px 0px #696969;
 }
 
 .product-badge.product-out-of-stock::after {
@@ -17861,5 +17863,8 @@ border: 1px solid #ebebeb;
   position: absolute;
   top: 0;
   left: 0;
+}
+.btn-hover-white:hover{
+    color:white!important;
 }
 /******************* By Sangam Ends ********************/

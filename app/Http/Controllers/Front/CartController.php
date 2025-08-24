@@ -72,8 +72,9 @@ class CartController extends FrontController
             ]);
             return response()->json([
                 'success' => true,
-                'message' => 'Item added in cart successfullys',
-                'view' => view('components.cart.cart_nav')->render()
+                'message' => 'Item added in cart successfully',
+                'view' => view('components.cart.cart_nav')->render(),
+                'newItemCount' => Cart::count()
             ]);
         }catch(ValidationException $e){
             return response()->json([
@@ -107,6 +108,9 @@ class CartController extends FrontController
                 'message' => 'Successfully removed from cart ',
                 'count' => Cart::count(),
                 'subTotal' => Cart::subtotal(),
+                'view' => view('components.cart.cart_list')->render(),
+                'view2' => view('components.cart.cart_nav')->render(),
+                'newItemCount' => Cart::count()
             ]);
         }catch(Exception $e){
             Log::error($e->getMessage());
@@ -169,7 +173,8 @@ class CartController extends FrontController
                 'count' => Cart::count(),
                 'subTotal' => Cart::subtotal(),
                 'view' => view('components.cart.cart_list')->render(),
-                'view2' => view('components.cart.cart_nav')->render()
+                'view2' => view('components.cart.cart_nav')->render(),
+                'newItemCount' => Cart::count()
             ]);
         }catch(Exception $e){
             Log::error("Cart update failed: " .$e->getMessage());

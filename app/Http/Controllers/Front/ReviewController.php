@@ -59,4 +59,64 @@ class ReviewController extends Controller
                 : redirect()->back()->with(['error' => true, 'message' => $message]);
         }
     }
+
+    public function sort(Request $request,$id)
+    {
+        try{
+            $data = Product::findOrFail($id);
+            $query = $data->reviews()->active();
+            $sort = $request->input('sortValue', 'latest');
+            if (!$this->validateSort($sort)) {
+                return $request->ajax()
+                ? response()->json(['error' => true, 'message' => 'Invalid sorting type'])
+                : redirect()->back()->with(['error' => true, 'message' => 'Invalid sorting type']);
+            }
+            $this->applySorting($query, $sort);
+            $reviews = $query->get();
+            if($request->ajax()){
+                return response()->json([
+                    'success' => true,
+                    'message' => "Review sorted successfully",
+                    'view' => view('components.review.review_list',['reviews'=>$reviews])->render(),
+                ]);
+            }
+            return redirect()->back()->with([
+                'success' => true,
+                'message' => 'Review sorted successfully',
+                'reviews' => $reviews
+            ]);
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
+        }
+    }
+
+    private function validateSort(string $sort)
+    {
+        $validSorts = ['latest', 'oldest', 'high_rating', 'low_rating'];
+        return in_array($sort, $validSorts);
+    }
+
+
+    private function applySorting($query,$sort){
+        switch($sort){
+            case 'latest':
+                $query->latest();
+                break;
+            case 'oldest':
+                $query->oldest();
+                break;
+            case 'high_rating':
+                $query->orderby('rating','desc');
+                break;
+            case 'low_rating':
+                $query->orderby('rating','asc');
+                break;
+            default:
+                $query->latest();
+        }
+    }
 }
