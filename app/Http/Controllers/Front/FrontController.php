@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ContactMail;
 use App\Mail\QuotationMail;
 use App\Model\BannerModel;
 use App\Model\Brand;
 use App\Model\Category;
+use App\Model\Contact;
 use App\Model\OrderDetail;
 use App\Model\Product;
 use App\Model\Blog;
@@ -137,7 +139,7 @@ class FrontController extends Controller
         if ($data['template']) {
             $tmpl['template'] = $data['template'];
         }
-        // dd($uri,$data,$posts,$data['template']);
+        // dd($uri,$data,$posts,$setting);
         return view('frontend.cms.' . $tmpl['template'] . '', compact('data','posts'));
     }
 
@@ -197,6 +199,46 @@ class FrontController extends Controller
                 'success' => true,
                 'message' => 'Quotation Sent Successfully. One of our member will contact you soon.'
             ]);
+        }catch(ValidationException $e){
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => $e->validator->errors()->all()
+            ]);
+        }catch(Exception $e){
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
+        }
+    }
+
+    public function contact_us(Request $request)
+    {
+        try{
+            $request->validate([
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email'=>'required|email',
+                'phone'=>'required',
+            ]);
+            
+            $create = Contact::create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'number' => $request->phone,
+                'subject' => $request->subject,
+                'message' => $request->message,
+                'country' => $request->country,
+            ]);
+
+            if ($create ) {
+                return new ContactMail();
+                // Mail::send(new ContactMail());
+            }
+            $name = $request->first_name;
+            $message = "<p>Thanks for contacting us. One of our team will be in touch with you soon.</p>";
+            return view('frontend.cms.inquiry-success', compact('message', 'name'));
         }catch(ValidationException $e){
             return redirect()->back()->with([
                 'error' => true,

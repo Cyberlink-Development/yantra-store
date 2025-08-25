@@ -3,43 +3,42 @@
     <div class="container-fluid bg-dark text-secondary mt-5 ">
         <div class="row px-xl-5 pt-5">
             <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-                <h2 class="text-white">LOGO HERE</h2>
-                {{ $setting->welcome_text }}
+                <!-- <h2 class="text-white">LOGO HERE</h2> -->
+                <a href="{{url('/')}}"><img src="{{ asset('theme-assets/img/logo-white.jpg') }}" style="max-height: 100px" alt="{{$setting->site_name}}"></a>
+                {!! $setting->welcome_text !!}
             </div>
             <div class="col-lg-8 col-md-12">
                 <div class="row">
                 <div class="col-md-4 mb-5">
                     <h5 class="text-secondary text-uppercase mb-4">LINKS</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-secondary mb-2" href="{{url('/')}}">Home</a>
-                        <a class="text-secondary mb-2" href="wishlist.php">Wishlist</a>
+                        <!-- <a class="text-secondary mb-2" href="wishlist.php">Wishlist</a> -->
                         <a class="text-secondary mb-2" href="{{ route('user-dashboard') }}">Profile</a>
-                        <a class="text-secondary mb-2" href="cart.php">Shopping Cart</a>
-                        <a class="text-secondary mb-2" href="service-list.php">Services</a>
-                        <a class="text-secondary" href="contact.php">Contact Us</a>
+                        <a class="text-secondary mb-2" href="{{ route('cart-item') }}">Shopping Cart</a>
+                        @foreach ($posttypeFooter as $row)
+                            <a class="text-secondary mb-2" href="{{route('page.posttype_detail',$row->uri)}}">{{ $row->post_type }}</a>
+                        @endforeach
                     </div>
                 </div>
                 <div class="col-md-4 mb-5">
                     <h5 class="text-secondary text-uppercase mb-4">CATEGORIES</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-secondary mb-2" href="list.php">Laptop</a>
-                        <a class="text-secondary mb-2" href="list.php">Desktop</a>
-                        <a class="text-secondary mb-2" href="list.php">Mobile</a>
-                        <a class="text-secondary mb-2" href="list.php">Tablet</a>
-                        <a class="text-secondary mb-2" href="list.php">Processor</a>
+                        @foreach ($cat as $value)
+                            <a class="text-secondary mb-2" href="{{ route('product-list', $value->slug) }}">{{ $value->name }}</a>
+                        @endforeach
                     </div>
                 </div>
                 <div class="col-md-4 mb-5">
                     <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
-                    <p class="mb-2"><i class="czi-location text-white mr-3"></i>123 Street, New York, USA</p>
-                    <p class="mb-2"><i class="czi-mail text-white mr-3"></i>info@example.com</p>
-                    <p class="mb-0"><i class="czi-phone text-white mr-3"></i>+012 345 67890</p>
+                    <p class="mb-2"><i class="czi-location text-white mr-3"></i>{{ $setting->address }}</p>
+                    <p class="mb-2"><i class="czi-mail text-white mr-3"></i>{{ $setting->email_primary }}</p>
+                    <p class="mb-0"><i class="czi-phone text-white mr-3"></i>{{ $setting->phone1 }}</p>
                     <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
                     <div class="widget mt-4 text-md-nowrap   ">
                         <a class="social-btn sb-light sb-twitter mr-2 mb-2" href="#"><i class="czi-twitter"></i></a>
                         <a class="social-btn sb-light sb-facebook mr-2 mb-2" href="#"><i class="czi-facebook"></i></a>
                         <a class="social-btn sb-light sb-dribbble mr-2 mb-2" href="#"><i class="czi-instagram"></i></a>
-                        </div>
+                    </div>
                 </div>
                 </div>
             </div>
@@ -47,13 +46,13 @@
       <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
          <div class="col-md-6 px-xl-0">
             <div class="mb-md-0 text-center text-md-left text-secondary d-flex ">
-               <div class="mr-2"><a href="terms.php" class="text-white">Terms & Conditions</a></div>
-              <div class="mr-2"><a href="faq.php" class="text-white"> FAQ's</a></div>
+               <!-- <div class="mr-2"><a href="terms.php" class="text-white">Terms & Conditions</a></div>
+              <div class="mr-2"><a href="faq.php" class="text-white"> FAQ's</a></div> -->
             </div>
          </div>
          <div class="col-md-6 px-xl-0 text-center text-md-right">
             <!-- <img class="img-fluid" src="img/payments.png" alt=""> -->
-            ©  All Rights Reserved.
+            {!! $setting->copyright_text  !!}
          </div>
       </div>
    </div>

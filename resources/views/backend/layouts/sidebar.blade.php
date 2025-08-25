@@ -429,6 +429,12 @@
                 <!--</li>-->
 
                 <li class="nav-item">
+                    <a href="{{ route('contact.index') }}" class="nav-link {{ Request::segment(2) =='contact_inquiry' ? 'active' : '' }}">
+                        <i class="fa fa-comments"></i>
+                        <p>Contact Inquiry</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('setting.index') }}" class="nav-link">
                         <i class="fa fa-wrench"></i>
                         <p>Setting</p>

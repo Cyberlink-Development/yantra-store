@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>{{getConfiguration('site_title')}}</title>
+        <title>Yantra Store</title>
         <!-- SEO Meta Tags-->
         <meta name="description" content="YantraNetwork">
         <meta name="keywords" content="YantraNetwork">

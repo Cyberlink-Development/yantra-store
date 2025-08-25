@@ -45,6 +45,7 @@ Route::group(['namespace' => 'Front'], function () {
     Route::get('privacy-policy', 'FooterController@privacy')->name('privacy');
     Route::get('faq', 'FooterController@faq')->name('faq-page');
     Route::get('products/results', 'SearchController@search_results')->name('search.results');
+    Route::post('contact-us', 'FrontController@contact_us')->name('contact_us');
 
     //CMS
     Route::get('{uri}.html', 'FrontController@pagedetail')->name('page.pagedetail');
@@ -173,6 +174,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('/wholesale-user', 'AdminController@wholesale_user')->name('wholesale-user');
     Route::get('/admin-password', 'AdminController@admin_password')->name('admin-password');
     Route::post('/admin-password', 'AdminController@admin_password')->name('admin-password');
+
+    // Contact Us
+    Route::get('contact_inquiry', 'ContactController@index')->name('contact.index');
+    Route::delete('inquiry/{id}', 'ContactController@destroy')->name('contact.destroy');
 
     // CMS
     // Posttype
