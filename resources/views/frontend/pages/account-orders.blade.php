@@ -29,50 +29,61 @@
         </aside>
         <!-- Content  -->
         <section class="col-lg-9">
+          @if($orders->count() > 0)
           <!-- Orders list-->
-          <div class="table-responsive font-size-md mt-5 bg-white rounded shadow">
-            <table class="table table-striped table-hover mb-0">
-              <thead class="thead-dark">
-                <tr>
-                  <th>Order #</th>
-                  <th>Date Purchased</th>
-                  <th>Status</th>
-                  <th>Payment Method</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($orders as $value)
-                  @php
-                    $orderJson = json_encode($value->getOrderDataForModal(), JSON_HEX_APOS | JSON_HEX_QUOT);
-                  @endphp
+            <div class="table-responsive font-size-md mt-5 bg-white rounded shadow">
+              <table class="table table-striped table-hover mb-0">
+                <thead class="thead-dark">
                   <tr>
-                    <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm order-detail-link" href="#order-details" data-toggle="modal" data-value="{{ $orderJson }}">{{$value->order_track}}</a></td>
-                    <td class="py-3">{{$value->created_at->format('d M Y')}}</td>
-                    <td class="py-3">
-                        @if($value->status==0)
-                          <span class="text-info m-0">Pending</span>
-                        @endif
-                        @if(($value->status==1))
-                          <span class="text-success m-0">Completed</span>
-                        @endif
-                        @if(($value->status==2))
-                          <span class="text-danger m-0">Canceled</span>
-                        @endif
-                        @if(($value->status==3))
-                          <span class="text-danger m-0">Return</span>
-                        @endif 
-                    </td>
-                    <td class="py-3">{{$value->payment_type}}</td>
-                    <td class="py-3">{{$value->grand_total}}</td>
+                    <th>Order #</th>
+                    <th>Date Purchased</th>
+                    <th>Status</th>
+                    <th>Payment Method</th>
+                    <th>Total</th>
                   </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-          <hr class="pb-4">
-          <!-- Pagination-->
-          {!! $orders->links('frontend.include.pagination') !!}
+                </thead>
+                <tbody>
+                  @foreach($orders as $value)
+                    @php
+                      $orderJson = json_encode($value->getOrderDataForModal(), JSON_HEX_APOS | JSON_HEX_QUOT);
+                    @endphp
+                    <tr>
+                      <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm order-detail-link" href="#order-details" data-toggle="modal" data-value="{{ $orderJson }}">{{$value->order_track}}</a></td>
+                      <td class="py-3">{{$value->created_at->format('d M Y')}}</td>
+                      <td class="py-3">
+                          @if($value->status==0)
+                            <span class="text-info m-0">Pending</span>
+                          @endif
+                          @if(($value->status==1))
+                            <span class="text-success m-0">Completed</span>
+                          @endif
+                          @if(($value->status==2))
+                            <span class="text-danger m-0">Canceled</span>
+                          @endif
+                          @if(($value->status==3))
+                            <span class="text-danger m-0">Return</span>
+                          @endif 
+                      </td>
+                      <td class="py-3">{{$value->payment_type}}</td>
+                      <td class="py-3">{{$value->grand_total}}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+            <hr class="pb-4">
+            <!-- Pagination-->
+            {!! $orders->links('frontend.include.pagination') !!}
+          @else
+            <div class="text-center my-5 p-4 border rounded shadow-sm bg-light">
+                <i class="czi-box mb-2" style="font-size: 40px; color: #0d6efd;"></i>
+                <h5 class="mt-3 mb-2">You have no orders yet</h5>
+                <p class="text-muted">Once you place an order, it will appear here.</p>
+                <a href="{{ url('/') }}" class="btn btn-primary btn-sm mt-2">
+                  Shop Now
+                </a>
+            </div>
+          @endif
         </section>
     </div>
 </div>

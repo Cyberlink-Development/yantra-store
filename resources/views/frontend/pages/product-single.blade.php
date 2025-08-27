@@ -79,7 +79,7 @@
     </div>
     <!--quote modal end-->
     <!-- Page Title-->
-    <div class="bg-primary page-title-overlap   pt-4 ">
+    <div class="bg-primary page-title-overlap pt-4 ">
         <div class="container d-flex justify-content-center align-items-center text-center py-2 py-lg-3">
             <div>
                 <div class="mb-3 mb-lg-0 pt-lg-2">
@@ -169,8 +169,11 @@
                                     @if($data->discount_price && $data->price)
                                         <div class="ribbon-detail"> 🔥 {{getDiscountPercentage($data->price,$data->discount_price)}} <br> OFF</div>
                                     @endif
-                                    <button class="btn-wishlist mr-0 mr-lg-n3 " type="button" data-toggle="tooltip"
-                                        title="Add to wishlist"><i class="czi-heart"></i></button>
+                                    @if(Auth::check())
+                                        <button class="btn-wishlist wishlist-btn mr-0 mr-lg-n3 " type="button" data-toggle="tooltip" title="Add to wishlist" data-product-id="{{ $data->id }}"><i class="czi-heart {{ inWishlist($data->id) ? 'text-danger' : '' }}"></i></button>
+                                    @else
+                                        <button class="btn-wishlist mr-0 mr-lg-n3 " type="button" title="Add to wishlist" data-toggle="modal" data-target="#signin-modal"><i class="czi-heart"></i></button>
+                                    @endif
                                 </div>
                             </div>
                             <h3>{{ $data->product_name }}</h3>
@@ -607,12 +610,49 @@
                 }
             });
         });
+
         $('#buy_now_btn').on('click', function(e){
             e.preventDefault();
             let quantity = $('select[name="quantity"]').val(); // get selected quantity
             let productSlug = "{{ $data->slug }}";
             let url = "{{ url('checkout') }}/" + productSlug + "?quantity=" + quantity;
             window.location.href = url; // redirect with selected quantity
+        });
+
+        $(document).ready(function() {
+            $('.wishlist-btn').click(function() {
+                let btn = $(this);
+                let productId = btn.data('product-id');
+
+                $.ajax({
+                    url: '{{ route("add-wishlist") }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        product_id: productId
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            if (response.action === 'added') {
+                                btn.find('i').addClass('text-danger'); // heart filled
+                                toastr.success(response.message);
+                            } else {
+                                btn.find('i').removeClass('text-danger'); // heart outline
+                                toastr.info(response.message);
+                            }
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 401) {
+                            toastr.warning('Please login to add to wishlist.');
+                        } else {
+                            toastr.error('Something went wrong!');
+                        }
+                    }
+                });
+            });
         });
     </script>
 

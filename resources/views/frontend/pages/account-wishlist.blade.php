@@ -32,6 +32,7 @@
 
             <!-- Wishlist-->
             <!-- Item-->
+        @if($wishlists->count() > 0)
             @foreach ($wishlists as $wishlist)
                 @php $product = $wishlist->products; @endphp
                 @if($product)
@@ -65,6 +66,17 @@
                 @endif
             @endforeach
           {!! $wishlists->links('frontend.include.pagination') !!}
+
+        @else
+            <div class="text-center my-5 p-4 border rounded shadow-sm bg-light">
+                <i class="czi-heart mb-2" style="font-size: 40px; color: #ff4d4f;"></i>
+                <h5 class="mt-3 mb-2">Your wishlist is empty</h5>
+                <p class="text-muted">Start adding your favorite products to see them here!</p>
+                <a href="{{ url('/') }}" class="btn btn-primary btn-sm mt-2">
+                  Browse Products
+                </a>
+            </div>
+        @endif
         </section>
     </div>
 </div>

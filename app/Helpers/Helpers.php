@@ -99,6 +99,16 @@ function check_post_uri($uri)
     return false;
 }
 
+function inWishlist($productId)
+{
+    $user = Auth::user();
+    if (!$user) {
+        return false;
+    }
+
+    return $user->wishlist()->where('product_id', $productId)->exists();
+}
+
 /************************ By Sangam Starts ******************************/
 function getAllCategoryChildrenIds($category)
 {
