@@ -134,7 +134,10 @@ class CheckoutController extends Controller
         if ($request->isMethod('get')) {
             // Cart empty validation
             if(Cart::count()<1){
-                return redirect()->back()->withErrors(['msg' => 'Cart is empty']);  
+                return redirect()->back()->with([
+                    'error' => true,
+                    'message' => 'Cart is empty.'
+                ]);  
             }
 
             // Out of stock validation
@@ -148,7 +151,10 @@ class CheckoutController extends Controller
                     //Cart::destroy();
 
                     $cartItem->qty = $totalStock;
-                    return back()->with('error', 'Stock not available');
+                    return redirect()->back()->with([
+                        'error' => true,
+                        'message' => 'Stock not available'
+                    ]);
                 }
             }
 

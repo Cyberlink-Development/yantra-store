@@ -34,7 +34,7 @@ class GoogleController extends Controller
 
             Auth::login($user);
 
-            return redirect('/')->with([
+            return redirect()->back()->with([
                 'success' => true,
                 'message' => 'Logged In Successfully'
             ]);

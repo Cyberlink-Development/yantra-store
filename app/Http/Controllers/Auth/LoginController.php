@@ -138,7 +138,7 @@ class LoginController extends Controller
                     ]);
                 }
                 if ($authUser->roles == 'user') {
-                    return redirect()->route('index')->with([
+                    return redirect()->back()->with([
                         'success' => true,
                         'message' => 'User login successfull'
                     ]);

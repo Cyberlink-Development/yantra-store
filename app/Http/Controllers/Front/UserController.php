@@ -34,6 +34,35 @@ class UserController extends Controller
         return view('frontend/pages/account-orders', compact('order','wishlist','user','orders'));
     }
 
+    public function add_wishlist(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please login first.'
+            ], 401);
+        }
+
+        $productId = $request->product_id;
+        $exists = $user->wishlist()->where('product_id', $productId)->exists();
+        
+        if ($exists) {
+            $user->wishlist()->detach($productId);
+            return response()->json([
+                'success' => true,
+                'action' => 'removed',
+                'message' => 'Item removed from wishlist.'
+            ]);
+        } else {
+            $user->wishlist()->attach($productId);
+            return response()->json([
+                'success' => true,
+                'action' => 'added',
+                'message' => 'Item added to wishlist successfully'
+            ]);
+        }
+    }
     public function wishlist()
     {
         $order = Order::where('user_id',Auth::id())->orderby('updated_at','desc')->count();

@@ -67,10 +67,7 @@ Route::group(['namespace' => 'Front'], function () {
     Route::get('/cart-page', 'CartController@cart_item')->name('cart-item');
     Route::get('/cart-remove/{id?}', 'CartController@cart_remove')->name('cart-remove');
     Route::post('/cart-update/{id?}', 'CartController@cart_update')->name('cart-update');
-//wishlist//
-    Route::get('wishlist', 'CartController@show_wishlist')->name('wishlist');
-    Route::get('wishlist/{id?}', 'CartController@add_wishlist')->name('add-wishlist');
-    Route::get('delete-wishlist/{id}', 'CartController@delete_wishlist')->name('delete-wishlist');
+    
     //search results
     Route::get('search-results', 'SearchController@search_results')->name('search-results');
     Route::post('search-results', 'SearchController@search_results')->name('search-results');
@@ -121,6 +118,7 @@ Route::group(['namespace' => 'Front'], function () {
         Route::get('/change-password', 'UserController@change_password')->name('change-password');
         Route::post('/change-password', 'UserController@change_password')->name('change-password');
         Route::get('/account-orders/{id?}', 'UserController@orders')->name('user-orders');
+        Route::post('/add-wishlist', 'UserController@add_wishlist')->name('add-wishlist');
         Route::get('/account-wishlist/{id?}', 'UserController@wishlist')->name('user-wishlist');
         Route::delete('/account-remove-wishlist/{id?}', 'UserController@wishlist_remove')->name('remove-wishlist');
         Route::get('/account-password-recovery', 'UserController@password_recovery')->name('password-recovery');

@@ -4,6 +4,7 @@ namespace App;
 
 use App\Model\Address;
 use App\Model\Order;
+use App\Model\Product;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -47,5 +48,10 @@ class User extends Authenticatable
     public function addresses()
     {
         return $this->hasOne(Address::class,'user_id');
+    }
+
+    public function wishlist()
+    {
+        return $this->belongsToMany(Product::class, 'wishlists', 'user_id', 'product_id');
     }
 }
