@@ -30,7 +30,7 @@ class CategoryController extends BackendController
     public function create(){
         $category = $this->category->getCategories();
         $table = $this->category->getAll();
-        return view($this->backendcategoryPath . 'store', compact('category', 'table'));
+        return view($this->backendcategoryPath . 'create', compact('category', 'table'));
     }
 
     public function store(Request $request)

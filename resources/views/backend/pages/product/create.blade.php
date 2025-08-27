@@ -3,199 +3,234 @@
     @include('backend.layouts.breadcrum', ['title' => 'Product Create','backLabel'=>'List','backLink'=>route('product.index')])
 @endsection
 @section('content')
-
-    <h3>Add Products</h3>
-    <hr>
+    <style>
+        .select2-container--default .select2-selection--multiple .select2-selection__choice{
+            color:#000!important;
+        }
+        .control-label{
+            font-weight: 500!important;
+            font-size: 1rem;
+        }
+        #productFormNav .nav .nav-item{
+            border-right: 1px solid #dee2e6;
+            padding: .6rem 0px;
+        }
+        #productFormNav .nav .nav-item.active {
+            color: #2a2b2cff;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.08);
+            font-weight: 600;
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
     <div class="container">
-        <form method="post" class="form-group" id="add_product"  enctype="multipart/form-data">
+        <form method="post" class="form-group" id="add_product" action="{{route('product.store')}}" enctype="multipart/form-data">
             @csrf
-
             <div class="row">
-                <div class="col-md-6">
-
-                    <div class="card">
-                        <div class="card-body">
-
-                            <div class="form-group">
-                                <h4>
-                                    <span style="color: red;">*</span> <label>Title</label>
-                                </h4>
-                                <input type="text" name="product_name" class="form-control" id="formGroupExampleInput"
-                                       value="{{old('product_name')}}" placeholder="enter product name">
-                            </div>
-
-                            <h4>
-                                <span style="color: red;"></span> <label>SKU</label>
-                            </h4>
-                            <div class="form-group">
-                                <input type="text" id="sku" class="form-control" name="sku"
-                                       placeholder="Enter the SKU">
-                            </div>
-                            <div class="form-group">
-                                <h4>
-                                    <span style="color: red;">*</span> <label>Actual Price:</label>
-                                </h4>
-                                <input type="text" id="price" name="price" class="form-control"
-                                       id="formGroupExampleInput" value="{{old('price')}}"
-                                       placeholder="enter product price">
-                            </div>
-                            <div class="form-group">
-                                <h4>
-                                    <span style="color: red;">*</span> <label>Selling Price:</label>
-                                </h4>
-
-                                <input type="text" id="discount" name="selling_price"
-                                       class="form-control" id="formGroupExampleInput" value="{{old('selling_price')}}"
-                                       placeholder="Enter selling price">
-                            </div>
-                                  <div class="form-group">
-                                <h4>
-                                    <span style="color: red;">*</span> <label>Stock Availability:</label>
-                                </h4>
-
-                                <input type="number" min="0" id="stock" name="stock"
-                                       class="form-control" id="formGroupExampleInput" value="{{old('stock')}}"
-                                       placeholder="Enter stock availability">
-                            </div>
-                            <div class="form-group">
-                                <h4>
-                                    <span style="color: red;">*</span> <label>Weight:</label>
-                                </h4>
-                                <input type="number" id="weight" name="weight" class="form-control"
-                                       id="formGroupExampleInput" value="{{old('weight')}}"
-                                       placeholder="enter product weight">
-                            </div>
-{{--                            <div class="form-group">--}}
-{{--                                <h4>--}}
-{{--                                    <span style="color: red;">*</span> <label>Wholesale Price:</label>--}}
-{{--                                </h4>--}}
-{{--                                <input type="text" name="wholesale_price" class="form-control"--}}
-{{--                                       id="formGroupExampleInput" value="{{old('wholesale_price')}}"--}}
-{{--                                       placeholder="enter wholesale price">--}}
-{{--                                <small>*for wholesale users*</small>--}}
-{{--                            </div>--}}
-                            <div class="form-group">
-                                <label for="formGroupExampleInput">Short Description:</label>
-                                <textarea id="title"
-                                          name="description"
-                                          class="form-control tiny-mce"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="formGroupExampleInput">Long Description:</label>
-                                <textarea id="desc1"
-                                          name="long_description"
-                                          class="form-control tiny-mce"></textarea>
-                            </div>
-
+                <div class="col-md-8">
+                    <div class="card" id="productFormNav" style="box-shadow:none; border:none;">
+                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-general-tab" data-toggle="tab" href="#nav-general" role="tab" aria-controls="nav-home" aria-selected="true">General</a>
+                            <a class="nav-item nav-link" id="nav-media-tab" data-toggle="tab" href="#nav-media" role="tab" aria-controls="nav-media" aria-selected="false">Media</a>
+                            <a class="nav-item nav-link" id="nav-seo-tab" data-toggle="tab" href="#nav-seo" role="tab" aria-controls="nav-seo" aria-selected="false">SEO</a>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-md-6">
-                <div class="card">
-                <div class="card-body">
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <h6 class="box-title">Status:</h6>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <div class="form-group mb-none">
-                                <select class="form-control" name="status">
-                                    <option disabled>Select status</option>
-                                    <option selected value="1">Enabled</option>
-                                    <option value="0">Disabled</option>
-                                </select>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="box box-default">
-                        <div class="box-header with-border" style="display:flex;align-items:middle;gap:5px;margin-bottom: 5px;">
-                            <h6 class="box-title" style="margin-bottom: 0;">Is Feature?</h6>
-                            <input type="checkbox" name="is_featured" />
-                        </div>
-                        <div class="box-header with-border" style="display:flex;align-items:middle;gap:5px;margin-bottom: 5px;">
-                            <h6 class="box-title" style="margin-bottom: 0;">Hot Deals?</h6>
-                            <input type="checkbox" name="hot" />
-                        </div>
-                        <div class="box-header with-border" style="display:flex;align-items:middle;gap:5px;margin-bottom: 5px;">
-                            <h6 class="box-title" style="margin-bottom: 0;">Latest?</h6>
-                            <input type="checkbox" name="latest" />
-                        </div>
-                        <div class="box-header with-border">
-                            <h6 class="box-title">Popular(Products for you):</h6>
-                        </div>
-                        <div class="box-body">
-                            <div class="form-group mb-none">
-                                <select class="form-control" name="is_popular">
-                                    <option disabled>Select any option</option>
-                                    <option value="popular">Popular</option>
-                                    <option selected value="notpopular">Not Popular</option>
-                                </select>
-
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <h6 class="box-title">Brands</h6>
-                        </div>
-                        <!-- /.box-header -->
-                         <div class="box-body">
-                            <div class="form-group mb-none">
-                                <select class="form-control" name="brand">
-                                    <option selected="selected" value="">Select Brand</option>
-                                    @foreach($brand as $value)
-                                        <option value="{{$value->id}}">{{$value->brand_name}}</option>
-                                    @endforeach
-                                </select>
-
-                            </div>
-                        </div>
-                    </div> 
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <h6 class="box-title">Model</h6>
-                        </div>
-                        <!-- /.box-header -->
-                         <div class="box-body">
-                            <div class="form-group mb-none">
-                                <div class="form-group">
-                                    <input type="text" id="model_name" class="form-control" name="model_name" placeholder="Enter the Model">
+                    <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent" style="padding-top:0px!important;">
+                        <!-- <div class="tab-pane fade show active" id="nav-general" role="tabpanel" aria-labelledby="nav-general-tab"></div> -->
+                        <div class="card tab-pane fade show active" id="nav-general" role="tabpanel" aria-labelledby="nav-general-tab" style="box-shadow:none; border:none;">
+                            <div class="card-body">
+                                <!-- general form elements -->
+                                <div class="box">
+                                    <!-- form start -->
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label for="name" class="control-label">Product Name</label>
+                                            <input class="form-control" placeholder="Enter product name" name="product_name" type="text" required>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label for="price" class="control-label">Price</label>
+                                                <input class="form-control" placeholder="price" name="price" type="number">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="discount_price" class="control-label">Disocunt Price</label>
+                                                <input class="form-control" placeholder="Discount price" name="discount_price" type="number">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label for="stock" class="control-label">Stock</label>
+                                                <input class="form-control" placeholder="stock" name="stock" type="number">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="model_name" class="control-label">Model Name</label>
+                                                <input type="text" name="model_name" class="form-control" id="model_name" placeholder="Enter model name/number" value="{{old('model_name')}}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="shortDescription" class="control-label">Short Description</label>
+                                            <textarea name="short_description" id="shortDescription" rows="3" class="form-control tiny-mce"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label id="longDescription" class="control-label">Long Description</label>
+                                            <textarea name="long_description" id="longDescription" rows="3" class="form-control tiny-mce"></textarea>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-body -->
                                 </div>
                             </div>
                         </div>
-                    </div> 
-
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <h6 class="box-title">Select Category</h6>
+                        <div class="card tab-pane fade" id="nav-media" role="tabpanel" aria-labelledby="nav-media-tab" style="box-shadow:none; border:none;">
+                            <div class="card-body">
+                                <h6><span style="color: red;">*</span><label for=""> Enter Images of the
+                                Product </label></h6>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered table-images"  id="myTable" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Image</th>
+                                                    <th>Main</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="text-align: left;">
+                                                        <input type="button" class="tdAdd" value="Add Row" />
+                                                    <td>
+                                                        <input type="file" name="image[]"/>
+                                                    </td>
+                                                    <td>
+                                                        <input value="1" class="radio1" type="radio" checked name="is_main"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: left;">
+                                                        <input type="button" class="tdAdd" value="Add Row" />
+                                                    <td>
+                                                        <input type="file" name="image[]"/>
+                                                    </td>
+                                                    <td>
+                                                        <input value="1" class="radio1" type="radio"  name="is_main"/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="button" value="Delete" class="ibtnDel"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <div class="form-group mb-none">
-                                <select class="form-control" name="category[]" id="category" multiple="multiple">
+                        <div class="card tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="nav-seo-tab" style="box-shadow:none; border:none;">
+                            <div class="card-body">
+                                <div class="box">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Meta Data</h3>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="box">
+                                    <div class="form-group">
+                                        <label>Meta Title</label>
+                                        <input type="text" name="meta_title" id="meta_title" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Meta Description</label>
+                                        <textarea name="meta_description" id="desc" rows="3" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body" style="padding:.5rem;">
+                            <button class="btn btn-danger btn-xs pull-right" style="padding: .1rem .75rem;">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div class="form-group m-0">
+                                    <label for="status" class="control-label m-0">Status:</label>
+                                    <input type="checkbox" id="status" name="status" checked />
+                                </div>
+                                <div class="form-group m-0">
+                                    <label for="is_featured" class="control-label m-0">Is Feature?</label>
+                                    <input type="checkbox" id="is_featured" name="is_featured" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div class="form-group m-0">
+                                    <label for="hot" class="control-label m-0">Hot Deals?:</label>
+                                    <input type="checkbox" id="hot" name="hot" />
+                                </div>
+                                <div class="form-group m-0">
+                                    <label for="latest" class="control-label m-0">Latest ?</label>
+                                    <input type="checkbox" id="latest" name="latest" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div class="form-group m-0">
+                                    <label for="on_sale" class="control-label m-0">Flash Sale:</label>
+                                    <input type="checkbox" id="on_sale" name="on_sale" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div class="form-group m-0">
+                                    <label for="is_popular" class="control-label m-0">Popular(Products for you?):</label>
+                                    <input type="checkbox" id="is_popular" name="is_popular" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div class="form-group m-0">
+                                    <label for="is_special" class="control-label m-0">Special(Gone in seconds):</label>
+                                    <input type="checkbox" id="is_special" name="is_special" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between" style="flex-direction: column;">
+                                <label for="category" class="control-label mb-1">Category:</label>
+                                <select class="form-control" name="category[]" id="category" multiple="multiple" required>
                                     <option disabled value="">Select Category</option>
                                     @foreach($cat as $value)
                                         @include('backend.pages.category.category_dropdown',['category'=>$value,'depth'=>0])
                                     @endforeach
                                 </select>
-
                             </div>
                         </div>
                     </div>
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <h6 class="box-title">Component Type</h6>
-                        </div>
-                        
-                         <div class="box-body">
-                            <div class="form-group mb-none">
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between" style="flex-direction: column;">
+                                <label for="component_type" class="control-label mb-1">Component Type:</label>
                                 <select class="form-control" name="component_type">
                                     <option selected="selected" value="">Select Component Type</option>
                                     @foreach($comp_type as $value)
@@ -204,335 +239,21 @@
                                 </select>
                             </div>
                         </div>
-                    </div> 
-
-                    <div class="form-group special-link">
-                        <label for="name" class="col-sm-2 col-md-3 control-label">Special(Gone in seconds):</label>
-                        <select class="form-control" name="is_special" id="isSpecial">
-                            <option disabled>Select any option</option>
-                            <option selected value="0">No</option>
-                            <option value="1">Yes</option>
-                        </select>
-                        <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
-                                  Choose if this is in deals/special products. Special products belongs to deals.</span>
-                    </div>
-
-                    <div class="form-group special-link">
-                        <label for="name" class="col-sm-2 col-md-3 control-label">Flash sale:</label>
-                        <select class="form-control" name="on_sale" id="isSpecial">
-                            <option disabled>Select any option</option>
-                            <option selected value="0">No</option>
-                            <option value="1">Yes</option>
-                        </select>
-                        <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
-                                  Choose if this is in sale</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="formGroupExampleInput">Enter Video Url (Youtube)</label>
-                        <input type="text" name="video" class="form-control" id="formGroupExampleInput"  placeholder="Paste the Url of the Video" value="{{old('video')}}">
-                    </div>
-
-                  <div class="form-group">
-                        <label for="formGroupExampleInput">Audio</label>
-                        <input type="file" name="audio" class="form-control" id="formGroupExampleInput">
-                    </div>
-
-                </div>
-
-                </div>
-                </div>
-            </div>
-            <nav>
-                <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
-                       aria-controls="nav-home" aria-selected="true">Description</a>
-                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
-                       aria-controls="nav-profile" aria-selected="false">Media</a>
-                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-inventory" role="tab"
-                       aria-controls="nav-profile" aria-selected="false">Inventory</a>
-                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-seo" role="tab"
-                       aria-controls="nav-profile" aria-selected="false">SEO</a>
-                </div>
-            </nav>
-            <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-
-
-                    <div class="container">
-                        <div class="row clearfix">
-                            <div class="col-md-12 column">
-                                <table class="table table-bordered table-hover" id="tab_logic">
-                                    <thead>
-                                    <tr>
-                                        <th class="text-center">
-                                            #
-                                        </th>
-                                        <th class="text-center">
-                                            Title
-                                        </th>
-                                        <th class="text-center">
-                                            Description
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr id='addr0'>
-                                        <td>
-                                            1
-                                        </td>
-                                        <td>
-                                            <input type="text" name='title[]' placeholder='Title' class="form-control"/>
-                                        </td>
-                                        <td>
-                                            <input type="text" name='description1[]' placeholder='Description'
-                                                   class="form-control description"/>
-                                        </td>
-                                    </tr>
-                                    <tr id='addr1'></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <a id="add_row" class="btn btn-default pull-left">Add Row</a>
-                        <a id='delete_row' class="pull-right btn btn-default">Delete Row</a>
-                    </div>
-
-                </div>
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-
-                    <h4><span style="color: red;">*</span><label for=""> Enter Images of the
-                            Product </label></h4>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <table class="table table-bordered table-images"  id="myTable" width="100%">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Image</th>
-                                    <th>Main</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td style="text-align: left;">
-                                        <input type="button" class="tdAdd" value="Add Row" />
-                                    <td>
-                                        <input type="file" name="image[]"/>
-                                    </td>
-                                    <td>
-                                        <input value="1" class="radio1" type="radio" checked name="is_main"/>
-                                    </td>
-                                   
-                                </tr>
-                                <tr>
-                                    <td style="text-align: left;">
-                                        <input type="button" class="tdAdd" value="Add Row" />
-                                    <td>
-                                        <input type="file" name="image[]"/>
-                                    </td>
-                                    <td>
-                                        <input value="1" class="radio1" type="radio"  name="is_main"/>
-                                    </td>
-                                    <td>
-                                        <input type="button" value="Delete" class="ibtnDel"/>
-                                    </td>
-                                </tr>
-                                </tbody>
-
-                            </table>
-                        </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="nav-inventory" role="tabpanel" aria-labelledby="nav-profile-tab">
-
-                    <div class="row">
-                        <div class="col-md-12">
-
-                            <h4><span style="color: red;">*</span>Sizes</h4>
-                            <hr>
-                            <div class="form-group">
-                                <input type="radio" class="no_size" name="size_type" value="0"> Free-size
-                                <input type="radio" class="no_size" name="size_type" value="1"> Size Variations
-                            </div>
-                            <span class="error_message" id="stock_quantity_error"
-                                  style="display:none; color: red"></span>
-                            <div class="form-group no_size_form" style="display: none;">
-{{--                                <label for="">Stock Quantity</label>--}}
-{{--                                <input type="number" name="stock_quantity" class="form-control" value="0" min="0">--}}
-{{--                                <hr>--}}
-                                <label for="">Stock Quantity based on Color</label>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <table class="table table-bordered table-colorstocks" id="color_table" width="100%">
-                                            <thead>
-                                            <tr>
-                                                <th>SN</th>
-                                                <th>Color</th>
-                                                <th>Stock</th>
-                                                <th>Action</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td style="text-align: left;">
-                                                    <input type="button" class="colorStock" value="Add Row" />
-                                                <td>
-                                                    <select name="free_size_color[]">
-                                                        @foreach($color as $value)
-                                                            <option value="{{$value->id}}">{{$value->title}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input class="valid-quantity" type="number" min="1" name="color_stocks[]" />
-                                                </td>
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align: left;">
-                                                    <input type="button" class="colorStock" value="Add Row" />
-                                                <td>
-                                                    <select name="free_size_color[]">
-                                                        @foreach($color as $value)
-                                                            <option value="{{$value->id}}">{{$value->title}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input class="valid-quantity" type="number" min="1" name="color_stocks[]" />
-                                                </td>
-                                                <td>
-                                                    <input type="button" value="Delete" class="Del"/>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-
-                                        </table>
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-                            <div class="form-group different_size_form" style="display: none;">
-                                <label for="">Stock Quantity based on Size</label>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <table class="table table-bordered table-stocks" id="size_table" width="100%">
-                                            <thead>
-                                            <tr>
-                                                <th>SN</th>
-                                                <th>Size</th>
-                                                <th>Color</th>
-                                                <th>Stock</th>
-                                                <th>Action</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td style="text-align: left;">
-                                                    <input type="button" class="tdAddStock" value="Add Row" />
-                                                <td>
-                                                    <select name="size[]">
-                                                        @foreach($size as $value)
-                                                        <option value="{{$value->id}}">{{$value->title}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <select name="color[]">
-                                                        @foreach($color as $value)
-                                                            <option value="{{$value->id}}">{{$value->title}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input class="valid-quantity" type="number" name="size_stocks[]" />
-                                                </td>
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align: left;">
-                                                    <input type="button" class="tdAddStock" value="Add Row" />
-                                                <td>
-                                                    <select name="size[]">
-                                                        @foreach($size as $value)
-                                                        <option value="{{$value->id}}">{{$value->title}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <select name="color[]">
-                                                        @foreach($color as $value)
-                                                            <option value="{{$value->id}}">{{$value->title}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input class="valid-quantity" type="number" name="size_stocks[]" />
-                                                </td>
-                                                <td>
-                                                    <input type="button" value="Delete" class="Del"/>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="nav-profile-tab">
-                    <div class="smart-wizard-form-inner">
-                        <div class="form-group">
-                            <label>SEO Keyword</label>
-                            <input type="text" name="seo_keyword" id="keyword" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>SEO Description</label>
-                            <textarea name="seo_description" id="desc" rows="3" class="form-control"></textarea>
-                        </div>
-                    </div>
-
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-sm">
-                    <i class="fa fa-plus-circle"></i> Add Product
-                </button>
-                <button type="reset" class="btn btn-danger btn-sm">
-                    <i class="fa fa-ban"></i> Reset
-                </button>
-
-            </div>
             </div>
         </form>
-        <body onload="loadingAjax('myDiv');">
-        <div id="myDiv">
-            <img id='loading-image  ' src='{{asset('images/loader.gif')}}'
-                 style="visibility: hidden; display:none">
-        </div>
-        </body>
-
     </div>
-
-
 @stop
 @push('scripts')
-
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-
     <script>
         $(document).ready(function () {
             $('#category').select2();
         });
     </script>
-<script>
-    $(document).ready(function () {
+    <script>
+        $(document).ready(function () {
             var i = 1;
 
             $("#add_row").click(function () {
@@ -550,7 +271,6 @@
 
         });
     </script>
-
     <script>
         // multiple stock-colors free size
         jQuery(document).on('click', '.btn-delete-stocks', function (e) {
@@ -558,7 +278,6 @@
             var $this = $(this);
             $this.closest("tr").remove();
         });
-
         $(document).on("click", '.colorStock', function () {
             var counter = $('#color_table tbody tr').length + 1;
             var newRow = $("<tr>");
@@ -573,22 +292,16 @@
             newRow.append(column);
             newRow.insertAfter( $(this).closest("tr") );
         });
-
         $("table.table-colorstocks").on("click", ".Del", function (event) {
             $(this).closest("tr").remove();
         });
-
     </script>
-
-
     <script>
-        // multiple stock-sizes
         jQuery(document).on('click', '.btn-delete-stocks', function (e) {
             e.preventDefault();
             var $this = $(this);
             $this.closest("tr").remove();
         });
-
         $(document).on("click", '.tdAddStock', function () {
             var counter = $('#size_table tbody tr').length + 1;
             var newRow = $("<tr>");
@@ -607,13 +320,10 @@
             newRow.append(column);
             newRow.insertAfter( $(this).closest("tr") );
         });
-
         $("table.table-stocks").on("click", ".Del", function (event) {
             $(this).closest("tr").remove();
         });
-
     </script>
-
     <script>
         $('input[type=radio][name=size_type]').change(function () {
             if (this.value == '0') {
@@ -645,16 +355,12 @@
             $(this).closest("tr").remove();
         });
     </script>
-
-
     <script>
-
         $(".valid-quantity").keyup(function (){
             if($(this).val()<1){
                 $(this).val(1);
             }
         });
-
         $(document).ready(function () {
             function showLoading() {
                 document.getElementById("loading").style = "visibility: visible";
@@ -681,7 +387,7 @@
                 // showLoading();
                 $.ajax({
                     type: 'POST',
-                    url: '{{route('store-product')}}',
+                    url: '{{route('product.store')}}',
                     data:formData,
                     contentType: false,
                     cache: false,
@@ -702,7 +408,4 @@
 
         });
     </script>
-
-
-
 @endpush

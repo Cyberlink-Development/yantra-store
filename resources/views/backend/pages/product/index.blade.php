@@ -1,4 +1,8 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'Product List','actionLabel'=>'Create',
+      'actionLink'=>route('product.create'),'backLabel'=>'','backLink'=>''])
+@endsection
 @section('content')
 
     <div class="card">

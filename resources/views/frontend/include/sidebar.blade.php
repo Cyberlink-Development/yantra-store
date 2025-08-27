@@ -13,61 +13,31 @@
             <div class="accordion mt-n1" id="shop-categories">
                 <form id="filterForm">
                     <!-- Branc-->
-                    <div class="card border-bottom">
-                        <div class="card-header">
-                            <h3 class="accordion-heading">
-                                <a class="{{ isFilterByCategory('brands') ? '' : 'collapsed' }}" href="#shoes" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="shoes">Brands
-                                    <span class="accordion-indicator"></span>
-                                </a>
-                            </h3>
-                        </div>
-                        <div class="collapse {{ isFilterByCategory('brands') ? 'show' : '' }}" id="shoes" data-parent="#shop-categories">
-                            <div class="card-body">
-                                <div class="widget widget-links cz-filter">
-                                    <ul class="widget-list cz-filter-list pt-1" style="height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
-                                        <li class="widget-list-item cz-filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input filter-input" type="checkbox" name="dell" value="dell" id="ex-check-1" {{ isFilterChecked('brands', 'dell') ? 'checked' : '' }} data-category="brands" >
-                                                <label class="custom-control-label" for="ex-check-1">Dell</label>
-                                            </div>
-                                        </li>
-                                        <li class="widget-list-item cz-filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input filter-input" type="checkbox" name="acer" value="acer" id="ex-check-2" data-category="brands" {{ isFilterChecked('brands', 'acer') ? 'checked' : '' }} >
-                                                <label class="custom-control-label" for="ex-check-2">Acer</label>
-                                            </div>
-                                        </li>
-                                        <li class="widget-list-item cz-filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input filter-input" type="checkbox" id="ex-check-3" data-category="brands" >
-                                                <label class="custom-control-label" for="ex-check-3">Lenevo</label>
-                                            </div>
-                                        </li>
-                                        <li class="widget-list-item cz-filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input filter-input" type="checkbox" id="ex-check-0">
-                                                <label class="custom-control-label" for="ex-check-0">Dell</label>
-                                            </div>
-                                        </li>
-                                        <li class="widget-list-item cz-filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input filter-input" type="checkbox" id="ex-check-9">
-                                                <label class="custom-control-label" for="ex-check-9">Acer</label>
-                                            </div>
-                                        </li>
-                                        <li class="widget-list-item cz-filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input filter-input" type="checkbox" id="ex-check-90">
-                                                <label class="custom-control-label" for="ex-check-90">Lenevo</label>
-                                            </div>
-                                        </li>
-                                    </ul>
+                    @if($brands->count() > 0)
+                        <div class="card border-bottom">
+                            <div class="card-header">
+                                <h3 class="accordion-heading"><a class="collapsed" href="#brands" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="brands">Brands<span class="accordion-indicator"></span></a></h3>
+                            </div>
+                            <div class="collapse" id="brands" data-parent="#shop-categories">
+                                <div class="card-body">
+                                    <div class="widget widget-links cz-filter">
+                                        <ul class="widget-list cz-filter-list pt-1" style="height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
+                                            @foreach($brands as $row)
+                                                <li class="widget-list-item cz-filter-item">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input filter-input" type="checkbox" id="brand-{{ $row->id }}"  data-category="brand" value="{{ $row->slug }}">
+                                                        <label class="custom-control-label" for="brand-{{ $row->id }}">{{$row->brand_name}}</label>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                     <!-- type-->
-                    <div class="card border-bottom">
+                    <!-- <div class="card border-bottom">
                         <div class="card-header">
                             <h3 class="accordion-heading">
                                 <a class="collapsed" href="#type" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="shoes">Type
@@ -120,11 +90,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- type-->
 
                     <!-- type-->
-                    <div class="card border-bottom">
+                    <!-- <div class="card border-bottom">
                         <div class="card-header">
                             <h3 class="accordion-heading"><a class="collapsed" href="#Processor" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="shoes">Processor<span class="accordion-indicator"></span></a></h3>
                         </div>
@@ -173,7 +143,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Price range-->
                     @php

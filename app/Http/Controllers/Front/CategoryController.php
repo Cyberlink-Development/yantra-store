@@ -84,7 +84,7 @@ class CategoryController extends FrontController
         })->active();
 
         // Apply filters (also do the validation for filters if possible)
-        // $filtersRaw = $request->input('filterby', '');
+        $filtersRaw = $request->input('filterby', '');
         // if (!$this->validateFilters($filtersRaw)) {
         //     return $request->ajax()
         //     ? response()->json(['error' => true, 'message' => 'Invalid filter parameters'])
@@ -129,7 +129,8 @@ class CategoryController extends FrontController
                 'page' => $page
             ]);
         }
-        return view($this->frontendPagePath . 'product-list', compact( 'category', 'products','maxPrice'));
+        $brands = Brand::active()->get();
+        return view($this->frontendPagePath . 'product-list', compact( 'category','brands', 'products','maxPrice'));
     }
 
     public function brand_list(Request $request)
@@ -277,23 +278,26 @@ class CategoryController extends FrontController
     private function applyFilters($query, Request $request)
     {
         $filtersRaw = $request->input('filterby', '');
-        // if ($filtersRaw) {
-        //     $filterGroups = explode(';', $filtersRaw);
+        if ($filtersRaw) {
+            $filterGroups = explode(';', $filtersRaw);
 
-        //     foreach ($filterGroups as $group) {
-        //         [$category, $values] = explode(':', $group);
-        //         $valuesArray = explode(',', $values);
+            foreach ($filterGroups as $group) {
+                [$category, $values] = explode(':', $group);
+                $valuesArray = explode(',', $values);
 
-        //         // Example: filter brand
-        //         if ($category === 'brand') {
-        //             $query->whereIn('brand', $valuesArray);
-        //         }
-        //         // Example: filter color
-        //         if ($category === 'color') {
-        //             $query->whereIn('color', $valuesArray);
-        //         }
-        //     }
-        // }
+                // Example: filter brand
+                if ($category === 'brand') {
+                    // $query->whereIn('brand', $valuesArray);
+                    $query->whereHas('brands', function($q) use ($valuesArray) {
+                        $q->active()->whereIn('slug', $valuesArray);
+                    });
+                }
+                // Example: filter color
+                if ($category === 'color') {
+                    $query->whereIn('color', $valuesArray);
+                }
+            }
+        }
 
         // Handle price
         if ($request->filled('minPrice')) {

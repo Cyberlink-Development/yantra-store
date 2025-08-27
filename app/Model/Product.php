@@ -11,7 +11,7 @@ use App\Model\Tag\Tag;
 class Product extends Model
 {
     use HasSlug;
-    protected $fillable = ['latest','hot'];
+    protected $fillable = ['product_name','price','stock','discount_price','short_description','long_description','latest','hot'];
     protected $appends = ['average_rating','star_ratings','main_image','hover_image']; //average_rating to automatically appear when returning JSON (e.g., API) we need to append it
     public function scopeActive($query){
         return $query->where('status', '1');
