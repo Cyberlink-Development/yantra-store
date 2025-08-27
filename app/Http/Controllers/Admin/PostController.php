@@ -49,9 +49,9 @@ class PostController extends Controller
         }
         $templates = $file1;
         $posttype = PostType::where('uri',$uri)->first();
-        $ordering = Post::max('post_order');
+        $ordering = Post::where('post_type', $posttype->id)->max('post_order') ?? 0;
         $ordering = $ordering + 1;
-
+// dd('test');
         return view('backend.cms.posts.create',compact('posttype','ordering','templates'));
     }
 

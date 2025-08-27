@@ -25,76 +25,39 @@
 
   <div class="container-fluid  px-4 px-md-5">
     <div class="row">
-      <div class="text-center mt-5">
+      <!-- <div class="text-center mt-5">
         <h2 class=" h3">
-          Help Center – Frequently Asked Questions
+          {{ $data->caption }}
         </h2>
-      </div>
+      </div> -->
 
-      <div class="col-12 mt-3">
-        <div class="accordion border-bottom pb-4" id="order1">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="accordion-heading"><a class="collapsed" href="#faq1" role="button" data-toggle="collapse"
-                  aria-expanded="true" aria-controls="faq1">01. What types of electronics do you sell?<span
-                    class="accordion-indicator"></span></a></h3>
-            </div>
-            <div class="collapse show" id="faq1" data-parent="#order1">
-              <div class="card-body font-size-sm">
-                <p>We offer a wide range of electronics including smartphones, laptops, tablets, smartwatches, audio
-                  devices, gaming accessories, home appliances, and more from top brands.</p>
+      <div class="col-12 mt-5">
+        @foreach($posts as $row)
+          <div class="accordion border-bottom pb-4" id="order1">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="accordion-heading">
+                  <a class="{{ $loop->first ? '' : 'collapsed' }}" href="#faq{{ $loop->iteration }}" 
+                    role="button" data-toggle="collapse" aria-expanded="{{ $loop->first ? 'true' : 'false' }}" 
+                    aria-controls="faq{{ $loop->iteration }}">
+                    {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}. {{ $row->post_title }}
+                    <span class="accordion-indicator"></span>
+                  </a>
+                </h3>
+              </div>
+              <div class="collapse {{ $loop->first ? 'show' : '' }}" id="faq{{ $loop->iteration }}" data-parent="#order1">
+                <div class="card-body font-size-sm">
+                  <p>{!! $row->post_content !!}</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="accordion border-bottom pb-4" id="order2">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="accordion-heading"><a class="collapsed" href="#faq2" role="button" data-toggle="collapse"
-                  aria-expanded="true" aria-controls="faq1">02. Are your products original and brand new?<span
-                    class="accordion-indicator"></span></a></h3>
-            </div>
-            <div class="collapse " id="faq2" data-parent="#order2">
-              <div class="card-body font-size-sm">
-                <p>We offer a wide range of electronics including smartphones, laptops, tablets, smartwatches, audio
-                  devices, gaming accessories, home appliances, and more from top brands.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="accordion border-bottom pb-4" id="order3">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="accordion-heading"><a class="collapsed" href="#faq3" role="button" data-toggle="collapse"
-                  aria-expanded="true" aria-controls="faq1">03. Do you offer warranty on your products?<span
-                    class="accordion-indicator"></span></a></h3>
-            </div>
-            <div class="collapse " id="faq3" data-parent="#order3">
-              <div class="card-body font-size-sm">
-                <p>We offer a wide range of electronics including smartphones, laptops, tablets, smartwatches, audio
-                  devices, gaming accessories, home appliances, and more from top brands.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="accordion border-bottom pb-4" id="order4">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="accordion-heading"><a class="collapsed" href="#faq4" role="button" data-toggle="collapse"
-                  aria-expanded="true" aria-controls="faq1">04. How can I track my order?<span
-                    class="accordion-indicator"></span></a></h3>
-            </div>
-            <div class="collapse " id="faq4" data-parent="#order4">
-              <div class="card-body font-size-sm">
-                <p>We offer a wide range of electronics including smartphones, laptops, tablets, smartwatches, audio
-                  devices, gaming accessories, home appliances, and more from top brands.</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        @endforeach
       </div>
     </div>
-
+    <div class="large-top">
+        {!! $posts->links('frontend.include.pagination') !!}
+    </div>
 
   </div>
 
