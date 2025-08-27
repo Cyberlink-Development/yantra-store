@@ -1,4 +1,7 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'Edit Post','backLabel'=>'List','backLink'=>route('admin.post.index',$posttype->uri) ])
+@endsection
 @section('content')
 <div class="container">
     <form method="post" class="form-group" action="{{ route('admin.post.update', [$posttype->uri, $post->id]) }}" enctype="multipart/form-data">
@@ -11,7 +14,7 @@
                         <!-- general form elements -->
                         <div class="box">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Edit Post</h3>
+                                <!-- <h3 class="box-title">Edit Post</h3> -->
                             </div>
                             <hr>
 
@@ -25,13 +28,6 @@
                                         value="{{ old('post_title', $post->post_title) }}" />
                                 </div>
 
-                                {{-- Sub Title --}}
-                                <div class="form-group">
-                                    <label>Sub Title</label>
-                                    <input type="text" name="sub_title" class="form-control" 
-                                        value="{{ old('sub_title', $post->sub_title) }}" />
-                                </div>
-
                                 {{-- URI --}}
                                 <div class="form-group">
                                     <label>URI</label>
@@ -39,84 +35,73 @@
                                         value="{{ old('uri', $post->uri) }}" readonly />
                                 </div>
 
-                                {{-- PRICE --}}
-                                <div class="form-group">
-                                    <label>Price</label>
-                                    <input type="number" id="price" name="price" class="form-control" 
-                                        value="{{ old('price',$post->price) }}"/>
-                                </div>
+                                @if(Request::segment(3) !== 'FAQs')
+                                    {{-- Sub Title --}}
+                                    <div class="form-group">
+                                        <label>Sub Title</label>
+                                        <input type="text" name="sub_title" class="form-control" 
+                                            value="{{ old('sub_title', $post->sub_title) }}" />
+                                    </div>
 
-                                {{-- Post Order --}}
-                                <div class="form-group">
-                                    <label>Post Order</label>
-                                    <input type="number" name="post_order" class="form-control" 
-                                        value="{{ old('post_order', $post->post_order) }}" />
-                                </div>
+                                    {{-- Associated Title --}}
+                                    <div class="form-group">
+                                        <label>Associated Title</label>
+                                        <input type="text" name="associated_title" class="form-control" 
+                                            value="{{ old('associated_title', $post->associated_title) }}" />
+                                    </div>
 
-                                {{-- Banner --}}
-                                <div class="form-group">
-                                    <label>Banner</label>
-                                    @if($post->banner)
-                                        <div class="mb-2" id="post-banner">
-                                            <div style="position: relative; display: inline-block;">
-                                                <img src="{{ asset('uploads/banners/'.$post->banner) }}" alt="banner" height="80">
+                                    {{-- Post Excerpt --}}
+                                    <div class="form-group">
+                                        <label>Post Excerpt</label>
+                                        <textarea name="post_excerpt" class="form-control" rows="3">{{ old('post_excerpt', $post->post_excerpt) }}</textarea>
+                                    </div>
 
-                                                <button type="button" class="btn btn-sm btn-danger" id="delete-banner" style="position: absolute; top: -10px; right: -10px; border-radius: 50%;">
-                                                    &times;
-                                                </button>
+                                    {{-- PRICE --}}
+                                    <div class="form-group">
+                                        <label>Price</label>
+                                        <input type="number" id="price" name="price" class="form-control" 
+                                            value="{{ old('price',$post->price) }}"/>
+                                    </div>
+
+                                    {{-- Banner --}}
+                                    <div class="form-group">
+                                        <label>Banner</label>
+                                        @if($post->banner)
+                                            <div class="mb-2" id="post-banner">
+                                                <div style="position: relative; display: inline-block;">
+                                                    <img src="{{ asset('uploads/banners/'.$post->banner) }}" alt="banner" height="80">
+
+                                                    <button type="button" class="btn btn-sm btn-danger" id="delete-banner" style="position: absolute; top: -10px; right: -10px; border-radius: 50%;">
+                                                        &times;
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    @endif
-                                    <input type="file" name="banner" class="form-control-file" />
-                                </div>
+                                        @endif
+                                        <input type="file" name="banner" class="form-control-file" />
+                                    </div>
 
-                                {{-- Thumbnail --}}
-                                <div class="form-group">
-                                    <label>Thumbnail</label>
-                                    @if($post->thumbnail)
-                                        <div class="mb-2" id="post-thumbnail" >
-                                            <div style="position: relative; display: inline-block;">
-                                                <img src="{{ asset('uploads/thumbnails/'.$post->thumbnail) }}" alt="Thumbnail" height="80">
+                                    {{-- Thumbnail --}}
+                                    <div class="form-group">
+                                        <label>Thumbnail</label>
+                                        @if($post->thumbnail)
+                                            <div class="mb-2" id="post-thumbnail" >
+                                                <div style="position: relative; display: inline-block;">
+                                                    <img src="{{ asset('uploads/thumbnails/'.$post->thumbnail) }}" alt="Thumbnail" height="80">
 
-                                                <button type="button" class="btn btn-sm btn-danger" id="delete-thumbnail" style="position: absolute; top: -10px; right: -10px; border-radius: 50%;">
-                                                    &times;
-                                                </button>
+                                                    <button type="button" class="btn btn-sm btn-danger" id="delete-thumbnail" style="position: absolute; top: -10px; right: -10px; border-radius: 50%;">
+                                                        &times;
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    @endif
-                                    <input type="file" name="thumbnail" class="form-control-file" />
-                                </div>
+                                        @endif
+                                        <input type="file" name="thumbnail" class="form-control-file" />
+                                    </div>
+                                @endif
 
                                 {{-- Post Content --}}
                                 <div class="form-group">
                                     <label>Content</label>
-                                    <textarea name="post_content" class="form-control" rows="5">{{ old('post_content', $post->post_content) }}</textarea>
-                                </div>
-
-                                {{-- Post Excerpt --}}
-                                <div class="form-group">
-                                    <label>Post Excerpt</label>
-                                    <textarea name="post_excerpt" class="form-control" rows="3">{{ old('post_excerpt', $post->post_excerpt) }}</textarea>
-                                </div>
-
-                                {{-- Meta Keyword --}}
-                                <div class="form-group">
-                                    <label>Meta Keyword</label>
-                                    <input type="text" name="meta_keyword" class="form-control" 
-                                        value="{{ old('meta_keyword', $post->meta_keyword) }}" />
-                                </div>
-
-                                {{-- Meta Description --}}
-                                <div class="form-group">
-                                    <label>Meta Description</label>
-                                    <textarea name="meta_description" class="form-control" rows="3">{{ old('meta_description', $post->meta_description) }}</textarea>
-                                </div>
-
-                                {{-- Associated Title --}}
-                                <div class="form-group">
-                                    <label>Associated Title</label>
-                                    <input type="text" name="associated_title" class="form-control" 
-                                        value="{{ old('associated_title', $post->associated_title) }}" />
+                                    <textarea name="post_content" class="form-control tiny-mce" rows="5">{{ old('post_content', $post->post_content) }}</textarea>
                                 </div>
 
                                 {{-- External Link --}}
@@ -136,6 +121,13 @@
                                             @endforeach  
                                         @endif 
                                     </select>
+                                </div>
+
+                                {{-- Post Order --}}
+                                <div class="form-group">
+                                    <label>Post Order</label>
+                                    <input type="number" name="post_order" class="form-control" 
+                                        value="{{ old('post_order', $post->post_order) }}" />
                                 </div>
 
                                 {{-- Status --}}
@@ -163,6 +155,19 @@
                                         <option value="1" {{ old('is_footer', $post->is_footer) == 1 ? 'selected' : '' }}>Yes</option>
                                         <option value="0" {{ old('is_footer', $post->is_footer) == 0 ? 'selected' : '' }}>No</option>
                                     </select>
+                                </div>
+
+                                {{-- Meta Keyword --}}
+                                <div class="form-group">
+                                    <label>Meta Keyword</label>
+                                    <input type="text" name="meta_keyword" class="form-control" 
+                                        value="{{ old('meta_keyword', $post->meta_keyword) }}" />
+                                </div>
+
+                                {{-- Meta Description --}}
+                                <div class="form-group">
+                                    <label>Meta Description</label>
+                                    <textarea name="meta_description" class="form-control" rows="3">{{ old('meta_description', $post->meta_description) }}</textarea>
                                 </div>
                             </div>
 

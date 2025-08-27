@@ -1,4 +1,7 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'Edit Posttype','backLabel'=>'List','backLink'=>route('type.posttype.index')])
+@endsection
 @section('content')
 
 <div class="container">
@@ -11,7 +14,7 @@
                     <div class="card-body">
                         <div class="box">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Edit Post Type</h3>
+                                <!-- <h3 class="box-title">Edit Post Type</h3> -->
                             </div>
                             <hr>
 
@@ -52,7 +55,7 @@
 
                                 <div class="form-group">
                                     <label>Content</label>
-                                    <textarea name="posttype_content" class="form-control" rows="5">{{ old('posttype_content', $postType->posttype_content) }}</textarea>
+                                    <textarea name="posttype_content" class="form-control tiny-mce" rows="5">{{ old('posttype_content', $postType->posttype_content) }}</textarea>
                                 </div>
 
                                 <div class="form-group">

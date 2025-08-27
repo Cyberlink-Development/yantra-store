@@ -1,15 +1,15 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'All Posttypes','actionLabel'=>'Create','actionLink'=> route('type.posttype.create') ])
+@endsection
 @section('content') 
 
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <div class="box-header d-flex justify-content-between align-items-center mb-3">
+                <!-- <div class="box-header d-flex justify-content-between align-items-center mb-3">
                     <h3 class="box-title">All Post Types</h3>
-                    <a href="{{ route('type.posttype.create') }}" class="btn btn-primary">
-                        CREATE
-                    </a>
-                </div>
+                </div> -->
                 <div class="box-body">
                     <table id="package_table" class="table table-bordered datatable123">
                         <thead>

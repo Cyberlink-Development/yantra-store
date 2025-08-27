@@ -32,9 +32,9 @@
             <div class="p-5" style="border-left: 1px solid #e5e4e4c7;">
                 <h1 class="mb-3">{{ $data->associated_title }}</h1>
                 <p class="text-muted">{{$data->post_excerpt}}</p>
-                <h4 class="mt-4">Our Cloud Services Include:</h4>
 
-                <p>{{ $data->post_content }}</p>
+                <p>{!! $data->post_content !!}</p>
+                
                 <div class="container">
                     <div class="row d-flex" style="gap:10px;">
                       @if($data->price)

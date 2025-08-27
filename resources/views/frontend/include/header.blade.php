@@ -193,7 +193,7 @@
                                         <i class="navbar-tool-icon czi-user"></i>
                                     </div>
                                     <div class="navbar-tool-text ml-1">
-                                        <small>Hello, Sign in</small>My Account
+                                        <small> Sign in</small>My Account
                                     </div>
                                 </a>
                             @endif

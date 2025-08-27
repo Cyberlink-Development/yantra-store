@@ -43,8 +43,8 @@
 
 
                 <li class="nav-header" style="padding-top:.5rem!important;">CMS</li>
-                <li class="nav-item has-treeview {{ in_array($currentRoute, ['type.posttype.index']) || Request::segment(3) =='Services' || Request::segment(2) =='type' ? 'menu-open' : '' }}">
-                    <a href="" class="nav-link {{ in_array($currentRoute, ['type.posttype.index']) || Request::segment(2) =='type' || Request::segment(3) =='Services' ? 'active' : '' }}">
+                <li class="nav-item has-treeview {{ Request::segment(2) =='posts' || Request::segment(2) =='type' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) =='type' || Request::segment(2) =='posts' ? 'active' : '' }}">
                         <i class="nav-icon fa fa-sliders"></i>
                         <p>
                             PostType
@@ -53,8 +53,8 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('type.posttype.index') }}" class="nav-link ml-3 {{ $currentRoute == 'type.posttype.index' ? 'active' : '' }}">
-                                <i class="fa fa-plus nav-icon"></i>
+                            <a href="{{ route('type.posttype.index') }}" class="nav-link ml-3 {{ Request::segment(2) =='type' ? 'active' : '' }}">
+                                <i class="fa fa-list nav-icon"></i>
                                 <p>List</p>
                             </a>
                         </li>
@@ -68,7 +68,7 @@
                                     @else
                                         <a href="{{ url('admin/type/' . $row->id . '/edit') }}" class="nav-link ml-3">
                                     @endif
-                                        <i class="fa fa-list nav-icon"></i>
+                                        <i class="fa fa-plus nav-icon"></i>
                                         <p>{{ $row->post_type }}</p>
                                     </a>
                                 </li>
@@ -81,7 +81,7 @@
                 <li class="nav-header" style="padding-top:.5rem!important;">PRODUCTS</li>
                 <li class="nav-item has-treeview {{ in_array($currentRoute, ['add-size', 'add-color']) ? 'menu-open' : '' }}">
                     <a href="" class="nav-link {{ in_array($currentRoute, ['add-size', 'add-color']) ? 'active' : '' }}">
-                        <i class="nav-icon fa fa-sliders"></i>
+                        <i class="nav-icon fa fa-tags"></i>
                         <p>
                             Product Attributes
                             <i class="fas fa-angle-left right"></i>
