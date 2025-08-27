@@ -42,7 +42,7 @@
         <div class="row">
             <!-- Sidebar-->
             <aside class="col-lg-3  mt-n5">
-                @include('frontend.include.sidebar',['maxPrice' => $maxPrice])
+                @include('frontend.include.sidebar',['maxPrice' => $maxPrice,'brands' => $brands])
             </aside>
             <!-- Content  -->
             <section class="col-lg-9" id="productList">

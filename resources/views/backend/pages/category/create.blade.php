@@ -3,6 +3,12 @@
     @include('backend.layouts.breadcrum', ['title' => 'Category Create','backLabel'=>'List','backLink'=>route('category.index')])
 @endsection
 @section('content')
+    <style>
+        .control-label{
+            font-weight: 500!important;
+            font-size: 1rem;
+        }
+    </style>
     <div class="container">
         <form method="post" class="form-group" action="{{route('category.store')}}" enctype="multipart/form-data">
             @csrf
@@ -56,7 +62,7 @@
                         </div>
                     </div>
                     <div class="card" style="box-shadow:none; border:none;">
-                        <div class="card-body" style="padding:. 5rem;">
+                        <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div class="form-group m-0">
                                     <label for="status" class="control-label m-0">Status:</label>
@@ -70,7 +76,7 @@
                         </div>
                     </div>
                     <div class="card" style="box-shadow:none; border:none;">
-                        <div class="card-body" style="padding:. 5rem;">
+                        <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div class="form-group m-0">
                                     <label for="is_header" class="control-label m-0">Is Header:</label>
@@ -84,7 +90,7 @@
                         </div>
                     </div>
                     <div class="card" style="box-shadow:none; border:none;">
-                        <div class="card-body" style="padding:. 5rem;">
+                        <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div class="form-group m-0">
                                     <label for="in_slider" class="control-label m-0">In Slider:</label>
@@ -98,7 +104,7 @@
                         </div>
                     </div>
                     <div class="card" style="box-shadow:none; border:none;">
-                        <div class="card-body" style="padding:. 5rem;">
+                        <div class="card-body">
                             <div class="form-group">
                                 <label for="banner">Banner:</label>
                                 <input type="file" name="banner" class="form-control" id="banner" style="height:auto; padding:0;">
@@ -107,7 +113,7 @@
                         </div>
                     </div>
                     <div class="card" style="box-shadow:none; border:none;">
-                        <div class="card-body" style="padding:. 5rem;">
+                        <div class="card-body">
                             <div class="form-group">
                                 <label for="thumbnail">Thumbnail:</label>
                                 <input type="file" name="image" class="form-control" id="thumbnail" style="height:auto; padding:0;">
@@ -141,4 +147,5 @@
                 </div>
             </div>
         </form>
+    </div>
 @stop

@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\Admin\Tags\TagController;
-// use App\Http\Controllers\Admin\Ads\AdController;
+// use App\Http\Controllers\Admin\AdController;
 
 /******************** By Sangam Starts ***********/
 // use App\Http\Controllers\Admin\CategoryController;
@@ -225,7 +225,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::group(['prefix' => 'product'], function () {
         Route::get('index', 'ProductController@index')->name('product.index');
         Route::get('create', 'ProductController@create')->name('product.create');
-        Route::post('store-product', 'ProductController@store')->name('store-product');
+        Route::post('store', 'ProductController@store')->name('product.store');
         Route::any('show-product/{slug?}', 'ProductController@show_product')->name('show-product');
         Route::get('edit/{id}', 'ProductController@edit')->name('product.edit');
         Route::post('update/{id?}', 'ProductController@update')->name('product.update');
