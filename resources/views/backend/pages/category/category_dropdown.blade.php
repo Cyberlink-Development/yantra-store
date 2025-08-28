@@ -7,7 +7,7 @@
         @include('backend.pages.category.category_dropdown', [
             'category' => $child,
             'depth' => $depth + 1,
-            'assignedCategories' => $assignedCategories ?? ''
+            'assignedCategories' => $assignedCategories ?? []
         ])
     @endforeach
 @endif

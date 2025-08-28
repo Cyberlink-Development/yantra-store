@@ -18,8 +18,17 @@
                 <tr>
                     <td>{{++$key}}</td>
                     <td>{{$value->order_track}} </td>
-                    <td>{{$value->users->first_name}} {{$value->users->last_name}} </td>
-                    <td>@if($value->status==0)
+                    <td>
+                        @if($value->users?->first_name)
+                            {{$value->users?->first_name}} {{$value->users?->last_name}}
+                        @elseif($value->addresses?->first_name)
+                            {{ $value->addresses?->first_name }} {{ $value->addresses?->last_name }}
+                        @else
+                            Anonymous
+                        @endif
+                    </td>
+                    <td>
+                        @if($value->status==0)
                             <span class="badge badge-danger">Pending</span>
                         @endif
                         @if(($value->status==1))

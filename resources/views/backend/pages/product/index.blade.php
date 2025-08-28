@@ -39,27 +39,26 @@
                         </td>
                         <td>
                             @if($product->status==1)
-                                <button class="btn btn-success btn btn-sm" name="active"><i
-                                        class="fa fa-check"></i>
+                                <button class="btn btn-success btn btn-sm" name="active">
+                                    <i class="fa fa-check"></i>
                                 </button>
                             @else
-                                <button class="btn btn-danger btn btn-sm" name="inactive"><i
-                                        class="fa fa-times"></i>
+                                <button class="btn btn-danger btn btn-sm" name="inactive">
+                                    <i class="fa fa-times"></i>
                                 </button>
-                                @endif
+                            @endif
                         </td>
                         <td>
                             @foreach($product->categories as $value)
-{{--                            {{ $product->categories ? $product->categories->first()->name : '-' }}--}}
                                 <li>{{$value->name}}</li>
-                                @endforeach
+                            @endforeach
                         </td>
-
-
                         <td>
-                            <img src="{{asset('/images/products/'.$img->get_main_image($product->id))}}" width="100px" alt="product">
+                            <img src="{{$img->get_main_image($product->id) ? asset('/images/products/'.$img->get_main_image($product->id)) : asset('images/default-thumbnail.jpeg')}}" width="100px" alt="product">
                         </td>
-                        <td>@if($product->size_variation == 0)
+                        <td>
+                            {{ $product->stock }}
+                            {{--@if($product->size_variation == 0)
                                 @foreach($product->colorstocks as $stock)
                                     <li>
                                         {{ $stock->title }}&nbsp;:&nbsp;{{ $stock->pivot->stock }}
@@ -76,7 +75,7 @@
                                         @endforeach
                                     </ul>
                                @endif
-                            @endif
+                            @endif --}}
                         </td>
                         <td>
                             <a href="{{route('all-review', $product->id)}}">{{$product->reviews->count()}}</a>

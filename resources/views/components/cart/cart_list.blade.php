@@ -21,7 +21,7 @@
         <section class="col-lg-8">
             <div class="d-none d-md-flex justify-content-between align-items-center mt-5">
                 <h2 class="h4 mb-0">Your Cart Products</h2>
-                <a class="btn btn-primary btn-sm pl-2" href="list.php">
+                <a class="btn btn-primary btn-sm pl-2" href="{{url('/')}}">
                     <i class="czi-arrow-left mr-2"></i>Continue shopping
                 </a>
             </div>

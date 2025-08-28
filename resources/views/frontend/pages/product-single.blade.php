@@ -1,12 +1,12 @@
 @extends('frontend.include.master')
 @section('meta-keywords')
     @if ($data->seo)
-        {!! strip_tags($data->seo->seo_keyword) !!}
+        {!! strip_tags($data->seo?->seo_keyword) !!}
     @endif
 @endsection
 @section('meta-description')
     @if ($data->seo)
-        {!! strip_tags($data->seo->seo_description) !!}
+        {!! strip_tags($data->seo?->seo_description) !!}
     @endif
 @endsection
 @section('title', $data->product_name)
@@ -298,7 +298,7 @@
                                     </h3>
                                 </div>
                                 <div class="collapse show" id="productInfo" data-parent="#productPanels">
-                                    <div class="card-body p-0">
+                                    <div class="card-body">
                                         {!! $data->short_description !!}
                                     </div>
                                 </div>

@@ -72,7 +72,7 @@
                     </ul>
                     <div class="d-flex justify-content-between">
                         <p class=" font-weight-bold text-center ">Grand Total:</p>
-                        <p class=" font-weight-bold text-center" id="grand-total">{{ $total }}</p>
+                        <p class=" font-weight-bold text-center" id="grand-total">Rs. {{ number_format($total,2) }}</p>
                     </div>
                 </div>
             </aside>
@@ -115,16 +115,22 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <!-- <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-country">Country<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" id="checkout-country" name="country" required>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-province">Province<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" id="checkout-province" name="province" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="checkout-address-1">Address 1<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" id="checkout-address-1" name="address_1" required>
                             </div>
                         </div>
                     </div>
@@ -143,18 +149,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="checkout-address-1">Address 1<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-address-1" name="address_1" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
+                        <!-- <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-address-2">Address 2</label>
                                 <input class="form-control" type="text" id="checkout-address-2" name="address_2">
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="checkout-shipping">Shipping Area<span class="text-danger">*</span></label>
@@ -244,7 +244,8 @@
 
     function updateGrandTotal() {
         let totalAfterDiscount = subtotal - discountAmount;
-        grandTotalEl.textContent = "Rs. " + (totalAfterDiscount + shippingPrice);
+        let grandTotal = totalAfterDiscount + shippingPrice;
+        grandTotalEl.textContent = "Rs. " + grandTotal.toFixed(2);
     }
 
     // Shipping select
@@ -289,21 +290,18 @@
                     discountAmount = parseFloat(data.discount.discount);
                     discountEl.textContent = "Rs. " + discountAmount.toFixed(2);
                 }
-
                 discountEl.dataset.discount = discountAmount; // store for reference
                 updateGrandTotal();
-
                 discountHidden.value = data.discount.id;
-
                 successSpan.textContent = data.message;
-
+                ajax_response(data);
             } else {
                 discountAmount = 0;
                 discountEl.textContent = "Rs. 0";
                 updateGrandTotal();
                 discountHidden.value = '';
-
                 errorSpan.textContent = data.message;
+                ajax_response(data);
             }
         } catch (err) {
             discountAmount = 0;
