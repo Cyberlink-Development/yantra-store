@@ -44,7 +44,7 @@
                             </div>
                         @endforeach
                     </div>
-                    
+
                     <div class="accordion mb-3" id="order-options">
                         <div class="card">
                             <div class="card-header">
@@ -69,13 +69,13 @@
                         </div>
                     </div>
                     <ul class="list-unstyled font-size-sm pb-2 border-bottom">
-                        <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Subtotal:</span><span class="text-right">Rs. {{ $cartPrice['subTotal'] }}</span></li>
+                        <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Subtotal:</span><span class="text-right">Rs. {{ number_format($cartPrice['subTotal'],2) }}</span></li>
                         <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Discount:</span><span class="text-right" id="discount-code">Rs. 0</span></li>
                         <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Shipping:</span><span class="text-right" id="shipping-price">Rs. 0</span></li>
                     </ul>
                     <div class="d-flex justify-content-between">
                         <p class=" font-weight-bold text-center ">Grand Total:</p>
-                        <p class=" font-weight-bold text-center" id="grand-total"> {{ $final }}</p>
+                        <p class=" font-weight-bold text-center" id="grand-total">Rs. {{ number_format($final,2) }}</p>
                     </div>
                 </div>
             </aside>
@@ -117,16 +117,45 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <!-- <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-country">Country<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" id="checkout-country" name="country" value="{{ $userInfo->country ?? '' }}" required>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-province">Province<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-province" name="province" value="{{ $userInfo->province ?? '' }}" required>
+                                <select class="form-control custom-select" id="checkout-province" name="province" required>
+                                    <option value="" selected hidden>Choose Province</option>
+                                    <option value="Province 1" {{$userInfo->province == 'Province 1' ? 'selected' : ''}}>
+                                        Province 1
+                                    </option>
+                                    <option value="Madhesh Province" {{$userInfo->province == 'Madhesh Province' ? 'selected' : ''}}>
+                                        Madhesh Province
+                                    </option>
+                                    <option value="Bagmati Province" {{$userInfo->province == 'Bagmati Province' ? 'selected' : ''}}>
+                                        Bagmati Province
+                                    </option>
+                                    <option value="Gandaki Province" {{$userInfo->province == 'Gandaki Province' ? 'selected' : ''}}>
+                                        Gandaki Province
+                                    </option>
+                                    <option value="Lumbini Province" {{$userInfo->province == 'Lumbini Province' ? 'selected' : ''}}>
+                                        Lumbini Province
+                                    </option>
+                                    <option value="Karnali Province" {{$userInfo->province == 'Karnali Province' ? 'selected' : ''}}>
+                                        Karnali Province
+                                    </option>
+                                    <option value="Sudurpashchim Province" {{$userInfo->province == 'Sudurpashchim Province' ? 'selected' : ''}}>
+                                        Sudurpashchim Province
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="checkout-address-1">Address <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" id="checkout-address-1" name="address_1" value="{{ $userInfo->address1 ?? '' }}" required>
                             </div>
                         </div>
                     </div>
@@ -145,18 +174,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="checkout-address-1">Address 1<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="checkout-address-1" name="address_1" value="{{ $userInfo->address1 ?? '' }}" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
+                        <!-- <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="checkout-address-2">Address 2</label>
                                 <input class="form-control" type="text" id="checkout-address-2" name="address_2" value="{{ $userInfo->address2 ?? '' }}">
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="checkout-shipping">Shipping Area<span class="text-danger">*</span></label>
@@ -296,7 +319,8 @@
 
     function updateGrandTotal() {
         let totalAfterDiscount = subtotal - discountAmount;
-        grandTotalEl.textContent = "Rs. " + (totalAfterDiscount + shippingPrice);
+        let grandTotal = totalAfterDiscount + shippingPrice;
+        grandTotalEl.textContent = "Rs. " + grandTotal.toFixed(2);
     }
 
     // Shipping select
@@ -341,21 +365,18 @@
                     discountAmount = parseFloat(data.discount.discount);
                     discountEl.textContent = "Rs. " + discountAmount.toFixed(2);
                 }
-
                 discountEl.dataset.discount = discountAmount; // store for reference
                 updateGrandTotal();
-
                 discountHidden.value = data.discount.id;
-
                 successSpan.textContent = data.message;
-
+                ajax_response(data);
             } else {
                 discountAmount = 0;
                 discountEl.textContent = "Rs. 0";
                 updateGrandTotal();
                 discountHidden.value = '';
-
                 errorSpan.textContent = data.message;
+                ajax_response(data);
             }
         } catch (err) {
             discountAmount = 0;

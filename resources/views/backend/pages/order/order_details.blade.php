@@ -22,16 +22,27 @@
                         <div class="col-sm-4 invoice-col">
                             <h4> Customer Info:</h4>
                             <address>
-                                <strong>{{$order->users->first_name}} {{$order->users->last_name}}</strong><br>
-                                <i class="fa fa-phone"></i>{{$order->users->phone}}<br>
-                                <i class="fa fa-envelope"></i>{{$order->users->email}}
+                                <strong>
+                                    @if($order->users?->first_name)
+                                        {{$order->users?->first_name}} {{$order->users?->last_name}}
+                                    @elseif($order->addresses?->first_name)
+                                        {{ $order->addresses?->first_name }} {{ $order->addresses?->last_name }}
+                                    @else
+                                        Anonymous
+                                    @endif
+                                </strong>
+                                <br>
+                                <i class="fa fa-phone"></i> {{$order->users?->phone ?? $order->addressses?->phone ?? 'N/A'}}<br>
+                                <i class="fa fa-envelope"></i> {{$order->users?->email ?? $order->addressses?->email ?? 'N/A'}}
                             </address>
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-4 invoice-col">
                             <h4> ShippingInfo</h4>
                             <address>
-                                <strong>{{$order->addresses->first()->first_name}} {{$order->addresses->first()->last_name}}</strong>
+                                <strong>
+                                    {{$order->addresses->first()->first_name}} {{$order->addresses->first()->last_name}}
+                                </strong>
                                 <br>
                                 <i class="fa fa-location-arrow"></i>  {{$order->addresses->first()->address1}}
                                 <br>

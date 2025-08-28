@@ -48,6 +48,10 @@
                                             <label for="name" class="control-label">Product Name</label>
                                             <input class="form-control" placeholder="Enter product name" name="product_name" type="text" value="{{$data->product_name}}" required>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="name" class="control-label">SKU</label>
+                                            <input class="form-control" placeholder="Enter product stock knowing unit" name="sku" type="text" value="{{$data->sku}}">
+                                        </div>
                                         <div class="row">
                                             <div class="form-group col-md-6">
                                                 <label for="price" class="control-label">Price</label>
@@ -69,11 +73,11 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="shortDescription" class="control-label">Short Description</label>
+                                            <label for="shortDescription" class="control-label">Specification</label>
                                             <textarea name="short_description" id="shortDescription" rows="3" class="form-control tiny-mce">{{ $data->short_description }}</textarea>
                                         </div>
                                         <div class="form-group">
-                                            <label id="longDescription" class="control-label">Long Description</label>
+                                            <label id="longDescription" class="control-label">Description</label>
                                             <textarea name="long_description" id="longDescription" rows="3" class="form-control tiny-mce">{{ $data->long_description }}</textarea>
                                         </div>
                                     </div>
@@ -140,11 +144,11 @@
                                 <div class="box">
                                     <div class="form-group">
                                         <label>Meta Title</label>
-                                        <input type="text" name="meta_title" id="meta_title" class="form-control" value="{{ $data->seo->meta_title }}">
+                                        <input type="text" name="meta_title" id="meta_title" class="form-control" value="{{ $data->seo?->meta_title }}">
                                     </div>
                                     <div class="form-group">
                                         <label>Meta Description</label>
-                                        <textarea name="meta_description" id="desc" rows="3" class="form-control">{{ $data->seo->meta_description }}</textarea>
+                                        <textarea name="meta_description" id="desc" rows="3" class="form-control">{{ $data->seo?->meta_description }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -201,7 +205,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div class="form-group m-0">
-                                    <label for="is_popular" class="control-label m-0">Popular(Products for you?):</label>
+                                    <label for="is_popular" class="control-label m-0">Popular(Products for you)?:</label>
                                     <input type="checkbox" id="is_popular" name="is_popular" {{$data->is_popular == 'popular' ? 'checked' : ''}} />
                                 </div>
                             </div>
@@ -447,7 +451,8 @@
                     success: function (data) {
                         ajax_response(data);
                         if (data.success == true) {
-                            location.reload();
+                            // location.reload();
+                            window.location.href = "{{ route('product.index') }}";
                         }
                         $("#loading-image").hide();
                     }

@@ -48,6 +48,10 @@
                                             <label for="name" class="control-label">Product Name</label>
                                             <input class="form-control" placeholder="Enter product name" name="product_name" type="text" required>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="name" class="control-label">SKU</label>
+                                            <input class="form-control" placeholder="Enter product stock knowing unit" name="sku" type="text">
+                                        </div>
                                         <div class="row">
                                             <div class="form-group col-md-6">
                                                 <label for="price" class="control-label">Price</label>
@@ -69,11 +73,11 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="shortDescription" class="control-label">Short Description</label>
+                                            <label for="shortDescription" class="control-label">Specification</label>
                                             <textarea name="short_description" id="shortDescription" rows="3" class="form-control tiny-mce"></textarea>
                                         </div>
                                         <div class="form-group">
-                                            <label id="longDescription" class="control-label">Long Description</label>
+                                            <label id="longDescription" class="control-label">Description</label>
                                             <textarea name="long_description" id="longDescription" rows="3" class="form-control tiny-mce"></textarea>
                                         </div>
                                     </div>
@@ -198,7 +202,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div class="form-group m-0">
-                                    <label for="is_popular" class="control-label m-0">Popular(Products for you?):</label>
+                                    <label for="is_popular" class="control-label m-0">Popular(Products for you)?:</label>
                                     <input type="checkbox" id="is_popular" name="is_popular" />
                                 </div>
                             </div>
@@ -221,7 +225,7 @@
                                 <select class="form-control" name="category[]" id="category" multiple="multiple" required>
                                     <option disabled value="">Select Category</option>
                                     @foreach($cat as $value)
-                                        @include('backend.pages.category.category_dropdown',['category'=>$value,'depth'=>0])
+                                        @include('backend.pages.category.category_dropdown',['category'=>$value,'depth'=>0,'assignedCategories' => []])
                                     @endforeach
                                 </select>
                             </div>
@@ -378,12 +382,9 @@
 
             $('form').on('submit',function (e) {
                 e.preventDefault();
-
                 // let main_img=$("input[name='is_main']:checked").val();
                 let myform = document.getElementById('add_product');
                 let formData = new FormData(myform);
-
-
                 // showLoading();
                 $.ajax({
                     type: 'POST',
@@ -399,13 +400,12 @@
                         ajax_response(data);
                         if (data.success == true) {
                             document.getElementById("add_product"). reset();
+                            window.location.href = "{{ route('product.index') }}";
                         }
                         $("#loading-image").hide();
                     }
                 });
-
             });
-
         });
     </script>
 @endpush
