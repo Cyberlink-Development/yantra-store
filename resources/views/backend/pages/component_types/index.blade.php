@@ -1,11 +1,14 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'All Component Types','actionLabel'=>'Create', 'actionLink'=> route('add-componenttype') ])
+@endsection
 @section('content') 
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <div class="box-header">
+                <!-- <div class="box-header">
                     <h3 class="box-title">All Component Types</h3>
-                </div>
+                </div> -->
                 <div class="box-body">
                     <table id="package_table" class="table table-bordered datatable123">
                         <thead>
@@ -22,15 +25,9 @@
                                     <td>{{$key+=1}}</td>
                                     <td>{{$value->name}}</td>
                                     <td>
-                                        @if(($value->status)==0)
-                                            <button class="btn btn-sm btn-danger btn btn-sm" name="inactive"><i
-                                                    class="fa fa-times"></i>
-                                            </button>
-                                        @else
-                                            <button class="btn btn-sm btn-success btn btn-sm" name="active"><i
-                                                    class="fa fa-check"></i>
-                                            </button>
-                                        @endif
+                                        <input type="checkbox" class="toggle-home" data-id="{{ $value->id }}" name="status"
+                                            onclick="updateStatus(this, {{$value->id}},'{{getModelPathFromData($value)}}')"
+                                            {{ $value->status == '1' ? 'checked' : '' }}>
                                     </td>
                                     <td>
                                         <a class="btn btn-danger btn btn-sm confirm" href="{{route('delete-componenttype',$value->id)}}"  onclick="return confirm('Confirm Delete?')"><i class="fa fa fa-trash"></i> </a>
