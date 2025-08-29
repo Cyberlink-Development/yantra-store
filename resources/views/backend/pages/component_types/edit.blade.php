@@ -7,42 +7,51 @@
         <form method="post" class="form-group" action="{{route('update-componenttype',$data->id)}}" enctype="multipart/form-data">
             @csrf
             <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
+                <!-- LEFT SIDE -->
+                <div class="col-md-8">
+                    <div class="card" style="box-shadow:none; border:none;">
                         <div class="card-body">
-                            <!-- general form elements -->
                             <div class="box">
-                                <div class="box-header with-border">
-                                </div>
-                                <hr>
-                                <!-- form start -->
                                 <div class="box-body">
                                     <div class="form-group">
                                         <label>Name</label>
-                                        <input name="name" class="form-control" value="{{ old('name', $data->name) }}" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Hierarchy Level</label>
-                                        <input name="level" class="form-control" value="{{ old('level', $data->level) }}" />
+                                        <input type="text" id="name" name="name" class="form-control" 
+                                            value="{{ old('name', $data->name) }}">
                                     </div>
 
-                                    <div class="form-group special-link">
-                                        <label for="status" class="control-label">Status:</label>
-                                        <select class="form-control" name="status">
-                                            <option value="0" {{ $data->status == 0 ? 'selected' : '' }}>Off</option>
-                                            <option value="1" {{ $data->status == 1 ? 'selected' : '' }}>On</option>
-                                        </select>
+                                    <div class="form-group">
+                                        <label>Hierarchy Level</label>
+                                        <input type="number" id="level" name="level" class="form-control" 
+                                            value="{{ old('level', $data->level) }}">
                                     </div>
                                 </div>
-                                <!-- /.box-body -->
-                                <div class="box-footer">
-                                    <input class="btn btn-danger btn-xs pull-right" type="submit" value="Save">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDE -->
+                <div class="col-md-4">
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body" style="padding:.5rem;">
+                            <button class="btn btn-primary btn-xs pull-right">Update</button>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div class="form-group m-0">
+                                    <label for="status" class="control-label m-0">Status:</label>
+                                    <input type="hidden" name="status" value="0">
+                                    <input type="checkbox" id="status" name="status" value="1"
+                                        {{ old('status', $data->status) ? 'checked' : '' }}>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </form>
     </div>
 @stop

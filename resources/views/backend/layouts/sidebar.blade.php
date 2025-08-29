@@ -184,8 +184,8 @@
 
                     </ul>
                 </li>
-                <li class="nav-item has-treeview {{ Request::segment(2) == 'product' ? 'menu-open' : '' }}">
-                    <a href="" class="nav-link {{ Request::segment(2) == 'product' ? 'active' : '' }}">
+                <li class="nav-item has-treeview {{ in_array($currentRoute, ['product.create', 'product.index']) ? 'menu-open' : '' }} ">
+                    <a href="" class="nav-link {{ in_array($currentRoute, ['product.create', 'product.index']) ? 'active' : '' }}">
                         <i class="nav-icon fa fa-cube"></i>
                         <p>
                             Product
@@ -208,7 +208,7 @@
                     </ul>
                 </li>
                 <li class="nav-item has-treeview">
-                    <a href="{{ url('admin/banner') }}" class="nav-link">
+                    <a href="{{ url('admin/banner') }}" class="nav-link {{ Request::segment(2) == 'banner' ? 'active' : '' }}">
                         <i class="nav-icon fa fa-image"></i>
                         <p>
                             Banners
@@ -217,7 +217,7 @@
                     </a>
                 </li>
                 <li class="nav-item has-treeview">
-                    <a href="{{ route('ads.index') }}" class="nav-link">
+                    <a href="{{ route('ads.index') }}" class="nav-link {{ Request::segment(2) == 'ads' ? 'active' : '' }}">
                         <i class="nav-icon fa fa-bullseye"></i>
                         <p>Ads</p>
                     </a>
@@ -350,8 +350,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item has-treeview">
-                    <a href="" class="nav-link">
+                <li class="nav-item has-treeview {{ Request::segment(2) == 'orders' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) == 'orders' ? 'active' : '' }}">
                         <i class="nav-icon fa fa-shopping-cart"></i>
                         <p>
                             Orders
@@ -360,7 +360,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('view-orders') }}" class="nav-link ml-3">
+                            <a href="{{ route('view-orders') }}" class="nav-link ml-3 {{ Request::segment(2) == 'orders' ? 'active' : '' }}">
                                 <i class="fa fa-paper-plane"></i>
                                 <p>All Orders</p>
                             </a>
@@ -443,17 +443,17 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('setting.index') }}" class="nav-link">
+                    <a href="{{ route('setting.index') }}" class="nav-link {{ Request::segment(2) =='Setting' ? 'active' : '' }}">
                         <i class="fa fa-wrench"></i>
                         <p>Setting</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="{{ route('admin-password') }}" class="nav-link">
                         <i class="fa fa-key"></i>
                         <p>Change Password</p>
                     </a>
-                </li>
+                </li> -->
 
                 <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link">

@@ -30,8 +30,8 @@
                                             {{ $value->status == '1' ? 'checked' : '' }}>
                                     </td>
                                     <td>
-                                        <a class="btn btn-danger btn btn-sm confirm" href="{{route('delete-componenttype',$value->id)}}"  onclick="return confirm('Confirm Delete?')"><i class="fa fa fa-trash"></i> </a>
                                         <a class="btn btn-outline-primary btn btn-sm confirm"  href="{{route('edit-componenttype',$value->id)}}"><i class="fa fa fa-edit"></i> </a>
+                                        <a class="btn btn-danger btn btn-sm confirm" href="{{route('delete-componenttype',$value->id)}}"  onclick="return confirm('Confirm Delete?')"><i class="fa fa fa-trash"></i> </a>
                                     </td>
                                 </tr>
                             @endforeach
