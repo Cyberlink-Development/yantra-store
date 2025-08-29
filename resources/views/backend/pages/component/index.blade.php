@@ -1,4 +1,7 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'All Active Componenttypes' ])
+@endsection
 @section('content') 
     <div class="col-md-12">
         <div class="card">

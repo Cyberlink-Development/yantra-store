@@ -2,6 +2,7 @@
 
 namespace App\View\Composers;
 
+use App\Model\ComponentType;
 use App\Model\PostType;
 use Illuminate\View\View;
 use App\Model\Setting;
@@ -13,11 +14,13 @@ class GlobalComposer
         $postType_menus = PostType::where('status',1)->orderBy('ordering', 'asc')->get();
         $header = PostType::where('status',1)->where('is_header',1)->orderBy('ordering', 'asc')->get();
         $footer = PostType::where('status',1)->where('is_footer',1)->orderBy('ordering', 'asc')->get();
+        $activeComponentType = ComponentType::where('status',1)->orderBy('level', 'desc')->get();
         $view->with([
             'setting'=>$setting,
             'postType_menus' => $postType_menus,
             'posttypeHeader' => $header,
             'posttypeFooter' => $footer,
+            'activeComponentType' => $activeComponentType,
         ]);
     }
 }

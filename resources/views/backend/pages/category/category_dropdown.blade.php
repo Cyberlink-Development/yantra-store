@@ -1,3 +1,9 @@
+@php
+    $assignedCategories = $assignedCategories ?? [];
+    $parentId = $parentId ?? null;
+    $dataId = $dataId ?? null;
+@endphp
+
 <option value="{{ $category->id }}" {{ !empty($parentId) && ($parentId == $category->id) ? 'selected' : '' }} {{ !empty($dataId) && ($dataId == $category->id) ? 'disabled' : ''  }} {{ $assignedCategories &&  in_array($category->id, $assignedCategories ?? []) ? 'selected' : '' }}>
     {{ str_repeat('-', $depth) }} {{ $category->name }}
 </option>

@@ -1,4 +1,7 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'Edit ComponentType' , 'backLabel'=>'View All','backLink'=>  route('show-componenttype') ])
+@endsection
 @section('content')
     <div class="container">
         <form method="post" class="form-group" action="{{route('update-componenttype',$data->id)}}" enctype="multipart/form-data">
@@ -10,7 +13,6 @@
                             <!-- general form elements -->
                             <div class="box">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Edit Category</h3>
                                 </div>
                                 <hr>
                                 <!-- form start -->
@@ -18,6 +20,10 @@
                                     <div class="form-group">
                                         <label>Name</label>
                                         <input name="name" class="form-control" value="{{ old('name', $data->name) }}" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Hierarchy Level</label>
+                                        <input name="level" class="form-control" value="{{ old('level', $data->level) }}" />
                                     </div>
 
                                     <div class="form-group special-link">

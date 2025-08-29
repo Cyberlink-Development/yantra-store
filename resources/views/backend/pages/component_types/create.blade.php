@@ -1,4 +1,7 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'Add New ComponentType' , 'backLabel'=>'View All','backLink'=>  route('show-componenttype') ])
+@endsection
 @section('content')
     <div class="container">
         <form method="post" class="form-group" action="{{route('store-componenttype')}}" enctype="multipart/form-data">
@@ -10,7 +13,6 @@
                             <!-- general form elements -->
                             <div class="box">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Add Component Type</h3>
                                 </div>
                                 <hr>
                                 
@@ -18,6 +20,10 @@
                                     <div class="form-group">
                                         <label>Name</label>
                                         <input name="name" rows="3" class="form-control" value="{{old('name')}}" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Hierarchy Level</label>
+                                        <input name="level" rows="3" class="form-control" value="{{old('level')}}" />
                                     </div>
 
                                     <div class="form-group special-link">

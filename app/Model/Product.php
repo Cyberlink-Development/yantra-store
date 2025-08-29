@@ -160,4 +160,15 @@ class Product extends Model
         }
     }
 
+    public function compatibleProducts()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'product_compatibilities',
+            'product_id',
+            'compatible_product_id'
+        );
+    }
+
+
 }

@@ -53,7 +53,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('type.posttype.index') }}" class="nav-link ml-3 {{ Request::segment(2) =='type' ? 'active' : '' }}">
+                            <a href="{{ route('type.posttype.index') }}" class="nav-link ml-3 {{ $currentRoute == 'type.posttype.index' ? 'active' : '' }}">
                                 <i class="fa fa-list nav-icon"></i>
                                 <p>List</p>
                             </a>
@@ -64,9 +64,9 @@
                             @foreach ($postType_menus as $row)
                                 <li class="nav-item">
                                     @if (has_posts($row->id))
-                                        <a href="{{ url('admin/posts/' . $row->uri) }}" class="nav-link ml-3 {{ Request::segment(3) == $row->uri ? 'active' : '' }}">
+                                        <a href="{{ url('admin/posts/' . $row->uri) }}" class="nav-link ml-3 {{ Request::segment(3) == $row->uri || Request::segment(3) == $row->id ? 'active' : '' }}">
                                     @else
-                                        <a href="{{ url('admin/type/' . $row->id . '/edit') }}" class="nav-link ml-3">
+                                        <a href="{{ url('admin/type/' . $row->id . '/edit') }}" class="nav-link ml-3 {{ Request::segment(3) == $row->uri || Request::segment(3) == $row->id ? 'active' : '' }}">
                                     @endif
                                         <i class="fa fa-plus nav-icon"></i>
                                         <p>{{ $row->post_type }}</p>
@@ -159,8 +159,8 @@
 
                     </ul>
                 </li>
-                <li class="nav-item has-treeview {{ in_array($currentRoute, ['add-componenttype', 'show-componenttype']) ? 'menu-open' : '' }}">
-                    <a href="" class="nav-link {{ in_array($currentRoute, ['add-componenttype', 'show-componenttype']) ? 'active' : '' }}">
+                <li class="nav-item has-treeview {{ Request::segment(2) == 'componenttype' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) == 'componenttype' ? 'active' : '' }}">
                         <i class="nav-icon fa fa-puzzle-piece"></i>
                         <p>
                             Component Type
@@ -171,21 +171,21 @@
                         <li class="nav-item">
                             <a href="{{ route('add-componenttype') }}" class="nav-link ml-3 {{ $currentRoute == 'add-componenttype' ? 'active' : '' }}">
                                 <i class="fa fa-plus nav-icon"></i>
-                                <p>Add Component Type</p>
+                                <p>Add Type</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a href="{{ route('show-componenttype') }}" class="nav-link ml-3 {{ $currentRoute == 'show-componenttype' ? 'active' : '' }}">
                                 <i class="fa fa-list nav-icon"></i>
-                                <p>View Component Types</p>
+                                <p>View Types</p>
                             </a>
                         </li>
 
                     </ul>
                 </li>
-                <li class="nav-item has-treeview {{ in_array($currentRoute, ['product.create', 'product.index']) ? 'menu-open' : '' }}">
-                    <a href="" class="nav-link {{ in_array($currentRoute, ['product.create', 'product.index']) ? 'active' : '' }}">
+                <li class="nav-item has-treeview {{ Request::segment(2) == 'product' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) == 'product' ? 'active' : '' }}">
                         <i class="nav-icon fa fa-cube"></i>
                         <p>
                             Product
@@ -257,9 +257,9 @@
 
 
                 <li class="nav-header" style="padding-top:.5rem!important;">BUILD CUSTOM PC</li>
-                <li class="nav-item has-treeview {{ in_array($currentRoute, ['show-active-componenttype']) ? 'menu-open' : '' }}">
-                    <a href="" class="nav-link {{ in_array($currentRoute, ['show-active-componenttype']) ? 'active' : '' }}">
-                        <i class="nav-icon fa fa-microchip"></i>
+                <li class="nav-item has-treeview {{ Request::segment(2) =='component' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) =='component' ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-cogs"></i>
                         <p>
                             Component
                             <i class="fas fa-angle-left right"></i>
@@ -267,11 +267,19 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('show-active-componenttype') }}" class="nav-link ml-3 {{ $currentRoute == 'show-active-componenttype' ? 'active' : '' }}" >
+                            <a href="{{ route('show-active-componenttype') }}" class="nav-link ml-3 {{ $currentRoute == 'show-active-componenttype' ? 'active' : '' }} " >
                                 <i class="fa fa-list nav-icon"></i>
-                                <p>View Component </p>
+                                <p>View All</p>
                             </a>
                         </li>
+                        @foreach($activeComponentType as $row)
+                            <li class="nav-item">
+                                <a href="{{route('view-component',$row->id)}}" class="nav-link ml-3 {{ (Request::segment(2) =='component' && Request::segment(4) == $row->id) ? 'active' : '' }}" >
+                                    <i class="fa fa-microchip nav-icon"></i>
+                                    <p>{{$row->name}}</p>
+                                </a>
+                            </li>
+                        @endforeach
 
                     </ul>
                 </li>

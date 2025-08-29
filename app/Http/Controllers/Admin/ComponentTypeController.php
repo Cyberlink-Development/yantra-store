@@ -16,18 +16,20 @@ class ComponentTypeController extends BackendController
 
     public function create()
     {
-        return view($this->backendComponentPath.'create');
+        return view($this->backendComponentTypePath.'create');
     }
     
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:component_types,name|max:100',
+            'name' => 'required|string|max:100|unique:component_types,name',
+            'level' => 'required|numeric',
         ]);
 
         ComponentType::create([
             'name' => $request->name,
             'status' => $request->status,
+            'level' =>$request->level
         ]);
 
         return redirect()->back()->with('success', 'Component Type added successfully.');
@@ -36,7 +38,7 @@ class ComponentTypeController extends BackendController
     public function edit($id)
     {
         $data = ComponentType::findOrFail($id);
-        return view($this->backendComponentPath.'edit', compact('data'));
+        return view($this->backendComponentTypePath.'edit', compact('data'));
 
     }
 
@@ -44,6 +46,7 @@ class ComponentTypeController extends BackendController
     {
         $request->validate([
             'name' => 'required|max:100|unique:component_types,name,' . $id,
+            'level' => 'required|numeric',
         ]);
 
         $componentType = ComponentType::findOrFail($id);
@@ -51,6 +54,7 @@ class ComponentTypeController extends BackendController
         $componentType->update([
             'name' => $request->name,
             'status' => $request->status,
+            'level' => $request->level,
         ]);
 
         return redirect()->route('show-componenttype')->with('success', 'Component Type updated successfully.');

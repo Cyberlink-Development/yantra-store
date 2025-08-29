@@ -1,4 +1,7 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'Components' , 'backLabel'=>'View All','backLink'=> route('show-active-componenttype')])
+@endsection
 @section('content') 
     <div class="col-md-12">
         <div class="card">
@@ -21,7 +24,7 @@
                                     <td>{{$key+=1}}</td>
                                     <td>{{$value->product_name}}</td>
                                     <td>
-                                        <a class="btn btn-outline-primary btn btn-sm confirm"  href="{{route('create-component',$value->id)}}"><i class="fa fa fa-edit"></i> </a>
+                                        <a class="btn btn-outline-primary btn btn-sm confirm"  href="{{route('create-component',[$id, $value->id])}}"><i class="fa fa fa-edit"></i> </a>
                                     </td>
                                 </tr>
                             @endforeach
