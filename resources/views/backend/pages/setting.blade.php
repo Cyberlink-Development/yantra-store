@@ -52,6 +52,14 @@
                                                 <label for="address" class="control-label">Address</label>
                                                 <input type="text" name="address" id="addresss" class="form-control" placeholder="Address" value="{{ $data->address }}">
                                             </div>
+                                            <div class="form-group">
+                                                <label for="welcome_text" class="control-label">Welcome Text</label>
+                                                <textarea type="text" name="welcome_text" id="welcome_text" class="form-control tiny-mce" placeholder="Address" >{{ $data->welcome_text }}</textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="copyright_text" class="control-label">Copyright Text</label>
+                                                <textarea type="text" name="copyright_text" id="copyright_texts" class="form-control tiny-mce" placeholder="copyright_text">{{ $data->copyright_text }}</textarea>
+                                            </div>
                                         </div>
                                         <div class="tab-pane" id="social" role="tabpanel">
                                             <div class="form-group">
@@ -118,22 +126,6 @@
                             @endif
                         </div>
                     </div>
-                    <div class="card" style="box-shadow:none; border:none;">
-                        <div class="card-body" style="padding:. 5rem;">
-                            <div class="form-group">
-                                <label for="welcomeText">Welcome Text</label>
-                                <textarea name="welcome_text" id="welcomeText" rows="2" class="form-control tiny-mce-1">{{ $data->welcome_text }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card" style="box-shadow:none; border:none;">
-                        <div class="card-body" style="padding:. 5rem;">
-                            <div class="form-group">
-                                <label for="copyright">Copyright Text</label>
-                                <textarea name="copyright_text" id="copyright" rows="2" class="form-control tiny-mce">{{ $data->copyright_text }}</textarea>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </form>
@@ -179,18 +171,4 @@
     </script>
 @endsection
 @section('custom-scripts')
-    <script>
-        tinymce.remove('.tiny-mce'); // remove global init
-        tinymce.init({
-            selector: '.tiny-mce-1',
-            height: 200,
-        });
-        tinymce.init({
-            selector: '.tiny-mce',
-            height: 200,
-            menubar: false,
-            toolbar: 'code',
-            plugins: 'code'
-        });
-    </script>
 @endsection
