@@ -234,6 +234,19 @@
                     <div class="card" style="box-shadow:none; border:none;">
                         <div class="card-body">
                             <div class="d-flex justify-content-between" style="flex-direction: column;">
+                                <label for="brand_id" class="control-label mb-1">Brands:</label>
+                                <select class="form-control" name="brand_id">
+                                    <option selected="selected" value="">Select Brand</option>
+                                    @foreach($brands as $row)
+                                        <option value="{{$row->id}}">{{$row->brand_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between" style="flex-direction: column;">
                                 <label for="component_type" class="control-label mb-1">Component Type:</label>
                                 <select class="form-control" name="component_type">
                                     <option selected="selected" value="">Select Component Type</option>

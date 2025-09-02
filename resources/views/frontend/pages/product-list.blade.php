@@ -1,12 +1,12 @@
 @extends('frontend.include.master')
-@section('meta-keywords') {!! strip_tags($category->first()->seo_keyword) !!} @endsection
-@section('meta-description') {!! strip_tags($category->first()->seo_description) !!} @endsection
+@section('meta_title') {!! strip_tags($category->first()->meta_title) !!} @endsection
+@section('meta_description') {!! strip_tags($category->first()->meta_description) !!} @endsection
 @section('title', $category->first()->name)
 @section('image')
     @if ($category->first()->image)
-        {{ asset('images/categories/' . $category->first()->image) }}
+        {{ asset('uploads/banners/' . $category->first()->image) }}
     @else
-        {{ asset('images/logo.png') }}
+        {{ asset('theme-assets/img/logo/'.$setting->logo_white) }}
     @endif
 @endsection
 @section('short_description', strip_tags($category->first()->description))<!-- Page Title-->

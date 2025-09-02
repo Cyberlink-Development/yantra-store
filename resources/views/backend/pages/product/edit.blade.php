@@ -101,32 +101,58 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($data->images as $img)
+                                                @if($data->images->count() > 0)
+                                                    @foreach($data->images as $img)
+                                                        <tr>
+                                                            <td style="text-align: left;">
+                                                                <input type="button" class="tdAdd" value="Add Row"/>
+                                                            </td>
+                                                            <td>
+                                                                @if($data->images->isNotempty())
+                                                                    <img src="{{asset('images/products/'.$img->image)}}" width="150px">
+                                                                @else
+                                                                    <input type="file" name="image[]" disabled/>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                <input value="" name="is_main" class="is_main radio1" type="radio" data-id="{{$img->id}}" {{$img->is_main == 1 ? 'checked' : ''}} />Is Main?
+                                                            </td>
+                                                            <td>
+                                                                @if(count($data->images) > 1)
+                                                                    <button class="remove_image btn btn-danger" id="{{ $img->id }}">
+                                                                        Remove
+                                                                    </button>
+                                                                @else
+                                                                    -
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
                                                     <tr>
-                                                        <td style="text-align: left;">
-                                                            <input type="button" class="tdAdd" value="Add Row"/>
-                                                        </td>
-                                                        <td>
-                                                            @if($data->images->isNotempty())
-                                                                <img src="{{asset('images/products/'.$img->image)}}" width="150px">
-                                                            @else
-                                                                <input type="file" name="image[]" disabled/>
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            <input value="" name="is_main" class="is_main radio1" type="radio" data-id="{{$img->id}}" {{$img->is_main == 1 ? 'checked' : ''}} />Is Main?
-                                                        </td>
-                                                        <td>
-                                                            @if(count($data->images) > 1)
-                                                                <button class="remove_image btn btn-danger" id="{{ $img->id }}">
-                                                                    Remove
-                                                                </button>
-                                                            @else
-                                                                -
-                                                            @endif
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                                    <td style="text-align: left;">
+                                                        <input type="button" class="tdAdd" value="Add Row" />
+                                                    <td>
+                                                        <input type="file" name="image[]"/>
+                                                    </td>
+                                                    <td>
+                                                        <input value="1" class="radio1" type="radio" checked name="is_main"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: left;">
+                                                        <input type="button" class="tdAdd" value="Add Row" />
+                                                    <td>
+                                                        <input type="file" name="image[]"/>
+                                                    </td>
+                                                    <td>
+                                                        <input value="1" class="radio1" type="radio"  name="is_main"/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="button" value="Delete" class="ibtnDel"/>
+                                                    </td>
+                                                </tr>
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -236,6 +262,21 @@
                                             'depth' => 0,
                                             'assignedCategories' => $assignedCategories
                                         ])
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between" style="flex-direction: column;">
+                                <label for="brand_id" class="control-label mb-1">Brands:</label>
+                                <select class="form-control" name="brand_id">
+                                    <option value="">Select Brand</option>
+                                    @foreach($brands as $row)
+                                        <option value="{{ $row->id }}" {{ $data->brand_id == $row->id ? 'selected' : '' }}>
+                                            {{ $row->brand_name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -510,9 +551,4 @@
                 });
         });
     </script>
-
-
-
-
 @endpush
-

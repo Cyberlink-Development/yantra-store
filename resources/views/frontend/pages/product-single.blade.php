@@ -1,16 +1,16 @@
 @extends('frontend.include.master')
-@section('meta-keywords')
+@section('meta_title')
     @if ($data->seo)
-        {!! strip_tags($data->seo?->seo_keyword) !!}
+        {!! strip_tags($data->seo?->meta_title) !!}
     @endif
 @endsection
-@section('meta-description')
+@section('meta_description')
     @if ($data->seo)
-        {!! strip_tags($data->seo?->seo_description) !!}
+        {!! strip_tags($data->seo?->meta_description) !!}
     @endif
 @endsection
 @section('title', $data->product_name)
-@section('image', asset('images/products/' . $data->images->where('is_main', 1)->first()->image))
+@section('image', asset('images/products/' . $data->images?->where('is_main', 1)->first()?->image))
 @section('short_description', strip_tags($data->short_description))
 
 @section('content')
@@ -167,7 +167,7 @@
                                 </div>
                                 <div>
                                     @if($data->discount_price && $data->price)
-                                        <div class="ribbon-detail"> 🔥 {{getDiscountPercentage($data->price,$data->discount_price)}} <br> OFF</div>
+                                        <div class="ribbon-detail"> ðŸ”¥ {{getDiscountPercentage($data->price,$data->discount_price)}} <br> OFF</div>
                                     @endif
                                     @if(Auth::check())
                                         <button class="btn-wishlist wishlist-btn mr-0 mr-lg-n3 " type="button" data-toggle="tooltip" title="Add to wishlist" data-product-id="{{ $data->id }}"><i class="czi-heart {{ inWishlist($data->id) ? 'text-danger' : '' }}"></i></button>

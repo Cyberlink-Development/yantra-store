@@ -24,6 +24,8 @@ class CartController extends FrontController
             Validator::make($request->all(), [
                 'quantity' => 'required|numeric|min:1'
             ]);
+
+
             // $validator = Validator::make($request->all(), [
             //     'quantity' => 'required|numeric|min:1'
             // ]);
@@ -34,40 +36,54 @@ class CartController extends FrontController
             // }
             $product = Product::where('id', $request->product_id)->first();
             $quantity = $request->quantity;
+            $productStock = $product->stock;
 
-            // Check if demand exceeds available stock
-            foreach (Cart::content() as $cartItem) {
-                $productStock = $product->stock;
-                try {
-                    if ($cartItem->id == $product->id) {
-                        if ($quantity + $cartItem->qty > $productStock) {
-                            $quantity = $productStock - $cartItem->qty;
-                        }
-                    }
-                } catch (Exception $e) {
-                    echo $e;
-                }
-            }
-            if ($quantity == 0) {
+            if ($productStock == 0) {
                 return response()->json([
                     'error' => true,
                     'message' => "Stock not available"
                 ]);
             }
+            if ($quantity == 0) {
+                return response()->json([
+                    'error' => true,
+                    'message' => "Quantity must be greater than 0"
+                ]);
+            }
+            // dd($request->all());
+            // Check if demand exceeds available stock
+            foreach (Cart::content() as $cartItem) {
 
+                try {
+                    if ($cartItem->id == $product->id) {
+                        if ($quantity + $cartItem->qty > $productStock) {
+                            // $quantity = $productStock - $cartItem->qty;
+                            return response()->json([
+                                'error' => true,
+                                'message' => "Quantity exeeds the available stock"
+                            ]);
+                        }
+                    }
+                } catch (Exception $e) {
+                    return response()->json([
+                        'error' => true,
+                        'message' => "Quantity exeeds the available stock"
+                    ]);
+                }
+            }
             Cart::add([
                 'id' => $request->product_id,
                 'name' => $product->product_name,
                 'qty' => $quantity,
-                'price' => Auth::check() && Auth::user()->roles == 'wholeseller' ? $product->wholesale_price : $product->discount_price,
+                'price' => Auth::check() && Auth::user()->roles == 'wholeseller' ? $product->wholesale_price : ($product->discount_price ?? $product->price),
                 'options' =>
                 [
-                    'image' => $product->images->where('is_main', '=', 1)->first()->image,
+                    'image' => $product->images?->where('is_main', '=', 1)->first()?->image,
                     'color' => $request->color,
                     'size' =>  $request->size,
                     'slug' =>   $product->slug,
                     'stock' =>  $product->stock,
-                    'brand' =>  $product->brands
+                    'brand' =>  $product->brands()->first()
                 ],
             ]);
             return response()->json([
