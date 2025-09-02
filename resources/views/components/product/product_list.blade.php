@@ -40,11 +40,9 @@
                         @if($row->discount_price && $row->price)
                             <div class="ribbon"> {{getDiscountPercentage($row->price,$row->discount_price)}} <br> OFF</div>
                         @endif
-                        @if($row->stock > 0)
-                            <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left" onclick="addToCart(event,{{ $row->id }})">
-                                <i class="czi-cart"></i>
-                            </button>
-                        @endif
+                        <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left" onclick="addToCart(event,{{ $row->id }})">
+                            <i class="czi-cart"></i>
+                        </button>
                     @endif
                     <a class="card-img-top d-block overflow-hidden" href="{{route('product-single',$row->slug)}}">
                         <div class="image-hover-box">

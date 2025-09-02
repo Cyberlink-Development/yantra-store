@@ -44,10 +44,10 @@ class ProductController extends BackendController
     {
         $pro = Product::all();
         $size = Size::all();
-        $brand = Brand::all();
+        $brands = Brand::all();
         $color = Color::all();
         $comp_type = ComponentType::all();
-        return view($this->backendproductPath . 'create', compact('size', 'brand', 'color','comp_type'));
+        return view($this->backendproductPath . 'create', compact('size', 'brands', 'color','comp_type'));
     }
 
     public function store(Request $request)
@@ -61,7 +61,7 @@ class ProductController extends BackendController
                 'long_description' => 'string|nullable',
                 'short_description' => 'string|nullable',
                 'category' => 'required|exists:categories,id',
-                'image' => 'array|nullable',
+                'image' => 'required|array|min:1',
                 'image.*' => 'mimes:jpg,png,jpeg,webp,gif|max:2048',
             ]);
             $product = new Product();
@@ -82,7 +82,7 @@ class ProductController extends BackendController
             $product->sku = $request->sku;
             $product->weight = $request->weight;
             $product->video = $request->video;
-            $product->brand_id = $request->brand;
+            $product->brand_id = $request->brand_id;
             $product->model_name = $request->model_name;
             $product->component_type = $request->component_type;
             $product->size_variation = $request->size_type;
@@ -210,10 +210,10 @@ class ProductController extends BackendController
     public function edit(Request $request){
         $data = Product::where('id', '=', $request->id)->first();
         $size = Size::all();
-        $brand = Brand::all();
+        $brands = Brand::all();
         $color = Color::all();
         $comp_type = ComponentType::all();
-        return view($this->backendproductPath . 'edit', compact('data', 'size', 'brand', 'color','comp_type'));
+        return view($this->backendproductPath . 'edit', compact('data', 'size', 'brands', 'color','comp_type'));
     }
 
     public function update(Request $request)
@@ -227,7 +227,7 @@ class ProductController extends BackendController
                 'long_description' => 'string|nullable',
                 'short_description' => 'string|nullable',
                 'category' => 'required|exists:categories,id',
-                'image' => 'array|nullable',
+                // 'image' => 'required|array|min:1',
                 'image.*' => 'mimes:jpg,png,jpeg,webp,gif|max:2048',
             ]);
             $product = Product::findorfail($request->id);
@@ -246,7 +246,7 @@ class ProductController extends BackendController
             $product->on_sale = $request->has('on_sale') ? 1 : 0;
             $product->sku = $request->sku;
             $product->video = $request->video;
-            $product->brand_id = $request->brand;
+            $product->brand_id = $request->brand_id;
             $product->model_name = $request->model_name;
             $product->component_type = $request->component_type;
             $product->weight = $request->weight;

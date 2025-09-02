@@ -2,15 +2,30 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Yantra Store</title>
-        <!-- SEO Meta Tags-->
-        <meta name="description" content="YantraNetwork">
-        <meta name="keywords" content="YantraNetwork">
+        <meta name="title" content="@yield('meta_title')">
+        <meta name="description" content="@yield('meta_description')">
         <meta name="author" content="YantraNetwork">
-        <!-- Viewport-->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="theme-color" content="#ffffff">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta property="og:title" content="@yield('title')" />
+        <meta property="og:url" content="{{url()->current()}}" />
+        <meta property="og:description" content="@yield('meta_description')" />
+        <meta property="og:image" content="@yield('image')" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="{{$setting->site_name}}" />
+        <meta property="twitter:card" content="" />
+        <meta property="twitter:site" content="{{$setting->site_name}}" />
+        <meta property="twitter:title" content="@yield('title')" />
+        <meta property="twitter:description" content="@yield('meta_description')" />
+        <meta property="twitter:image" content="@yield('image')" />
+        <meta property="twitter:url" content="{{url()->current()}}" />
+        <meta name="twitter:image:alt" content="" />
+
+        <title>{{$setting->title}}</title>
+
+
         <!-- Vendor Styles including: Font Icons, Plugins, etc.-->
         <link rel="stylesheet" media="screen" href="{{ asset('theme-assets/vendor/simplebar/dist/simplebar.min.css') }}" />
         <link rel="stylesheet" media="screen" href="{{ asset('theme-assets/vendor/tiny-slider/dist/tiny-slider.css') }}" />
@@ -18,7 +33,6 @@
         <link rel="stylesheet" media="screen" href="{{ asset('theme-assets/vendor/lightgallery.js/dist/css/lightgallery.min.css') }}" />
         <link rel="stylesheet" media="screen" href="{{ asset('theme-assets/vendor/nouislider/distribute/nouislider.min.css') }}" />
 
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- Main Theme Styles + Bootstrap-->
         <link rel="stylesheet" media="screen" href="{{ asset('theme-assets/css/theme.min.css') }}">
