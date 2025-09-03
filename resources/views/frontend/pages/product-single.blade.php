@@ -167,7 +167,7 @@
                                 </div>
                                 <div>
                                     @if($data->discount_price && $data->price)
-                                        <div class="ribbon-detail"> ðŸ”¥ {{getDiscountPercentage($data->price,$data->discount_price)}} <br> OFF</div>
+                                        <div class="ribbon-detail">  🔥 {{getDiscountPercentage($data->price,$data->discount_price)}} <br> OFF</div>
                                     @endif
                                     @if(Auth::check())
                                         <button class="btn-wishlist wishlist-btn mr-0 mr-lg-n3 " type="button" data-toggle="tooltip" title="Add to wishlist" data-product-id="{{ $data->id }}"><i class="czi-heart {{ inWishlist($data->id) ? 'text-danger' : '' }}"></i></button>
@@ -306,7 +306,10 @@
                         </div>
                     </div>
                     @if($data->long_description)
-                        <div class="tab-pane fade" id="tab2" role="tabpanel">
+                        <div class="tab-pane fade" id="tab2" role="tabpanel" style="background: white;
+    border: 1px solid rgba(0, 0, 0, 0.085);
+    padding: 20px;
+    border-radius: 8px;">
                             {!! $data->long_description !!}
                         </div>
                     @endif

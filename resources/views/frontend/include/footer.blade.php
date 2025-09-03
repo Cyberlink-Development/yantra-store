@@ -2,12 +2,12 @@
 <footer class="bg-dark ">
     <div class="container-fluid bg-dark text-secondary mt-5 ">
         <div class="row px-xl-5 pt-5">
-            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
+            <div class="col-lg-3 col-md-12 mb-5 pr-3 pr-xl-5">
                 <!-- <h2 class="text-white">LOGO HERE</h2> -->
                 <a href="{{url('/')}}"><img src="{{ asset('theme-assets/img/logo-white.jpg') }}" style="max-height: 100px" alt="{{$setting->site_name}}"></a>
                 {!! $setting->welcome_text !!}
             </div>
-            <div class="col-lg-8 col-md-12">
+            <div class="col-lg-9 col-md-12">
                 <div class="row">
                 <div class="col-md-4 mb-5">
                     <h5 class="text-secondary text-uppercase mb-4">LINKS</h5>
@@ -44,13 +44,13 @@
             </div>
         </div>
       <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
-         <div class="col-md-6 px-xl-0">
+         <!-- <div class="col-md-6 px-xl-0">
             <div class="mb-md-0 text-center text-md-left text-secondary d-flex ">
-               <!-- <div class="mr-2"><a href="terms.php" class="text-white">Terms & Conditions</a></div>
-              <div class="mr-2"><a href="faq.php" class="text-white"> FAQ's</a></div> -->
+               <div class="mr-2"><a href="terms.php" class="text-white">Terms & Conditions</a></div>
+              <div class="mr-2"><a href="faq.php" class="text-white"> FAQ's</a></div>
             </div>
-         </div>
-         <div class="col-md-6 px-xl-0 text-center text-md-right">
+         </div> -->
+         <div class="col-md-12 px-xl-0 text-center ">
             <!-- <img class="img-fluid" src="img/payments.png" alt=""> -->
             {!! $setting->copyright_text  !!}
          </div>
