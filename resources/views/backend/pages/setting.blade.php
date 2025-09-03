@@ -20,6 +20,9 @@
                                         <li class="nav-item custom-nav-item">
                                             <a class="custom-nav-btn" data-toggle="tab" href="#social" role="tab">Social Media Info</a>
                                         </li>
+                                        <li class="nav-item custom-nav-item">
+                                            <a class="custom-nav-btn" data-toggle="tab" href="#flash" role="tab">Flash Sale Timer</a>
+                                        </li>
                                     </ul>
 
                                 </div>
@@ -75,6 +78,34 @@
                                             <div class="form-group">
                                                 <label for="facebookLink" class="control-label">Facebook Link</label>
                                                 <input class="form-control" id="facebookLink" placeholder="Facebook link" name="twitter_link" type="url" value="{{ $data->twitter_link }}">
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="flash" role="tabpanel">
+                                            <!-- <div class="form-group">
+                                                <label for="days" class="control-label">Days</label>
+                                                <input class="form-control" id="days" placeholder="Days" name="days" type="number" value="{{ $data->days }}">
+                                            </div>
+                                            <hr>
+                                            <div class="form-group">
+                                                <label for="hours" class="control-label">Hours</label>
+                                                <input class="form-control" id="hours" placeholder="Hours" name="hours" type="number" value="{{ $data->hours }}">
+                                            </div>
+                                            <hr>
+                                            <div class="form-group">
+                                                <label for="minutes" class="control-label">Minutes</label>
+                                                <input class="form-control" id="minutes" placeholder="Minutes" name="minutes" type="number" value="{{ $data->minutes }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="seconds" class="control-label">Seconds</label>
+                                                <input class="form-control" id="seconds" placeholder="Seconds" name="seconds" type="number" value="{{ $data->seconds }}">
+                                            </div> -->
+                                            <div class="form-group">
+                                                <label for="flashEndsAt" class="control-label">Flash Ends At</label>
+                                                <input class="form-control" id="flashEndsAt" placeholder="Flash end timer" name="flash_ends_at" type="datetime-local"  value="{{ $setting->flash_ends_at ? $setting->flash_ends_at->format('Y-m-d\TH:i') : '' }}">
+                                            </div>
+                                            <div class="form-group">
+                                                Enable Timer :
+                                                <input class="" id="falsh_enable" placeholder="" name="flash_enable" type="checkbox" value="{{ $data->falsh_enable }}" {{ $data->flash_enable == 1 ? 'checked' : '' }}>
                                             </div>
                                         </div>
                                     </div>

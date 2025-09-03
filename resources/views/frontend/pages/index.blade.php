@@ -92,27 +92,29 @@
                     <div>
                         <span class="sales-badge mb-0 ml-1">Fla<span class="bolt">&#9889</span>h sale</span>
                     </div>
-                    <div class="timer">
-                        <div class="text-center">
-                            <div class="time-box" id="days">00</div>
-                            <span class="cz-handheld-toolbar-label">DAYS</span>
+                    @if($setting->flash_enable && $setting->flash_ends_at)
+                        <div class="timer" id="countdown">
+                            <div class="text-center">
+                                <div class="time-box" id="days">00</div>
+                                <span class="cz-handheld-toolbar-label">DAYS</span>
+                            </div>
+                            <div class="colon">:</div>
+                            <div class="text-center">
+                                <div class="time-box" id="hours">00</div>
+                                <span class="cz-handheld-toolbar-label">HOURS</span>
+                            </div>
+                            <div class="colon">:</div>
+                            <div class="text-center">
+                                <div class="time-box" id="minutes">00</div>
+                                <span class="cz-handheld-toolbar-label">MINUTE</span>
+                            </div>
+                            <div class="colon">:</div>
+                            <div class="text-center">
+                                <div class="time-box" id="seconds">00</div>
+                                <span class="cz-handheld-toolbar-label">SECONDS</span>
+                            </div>
                         </div>
-                        <div class="colon">:</div>
-                        <div class="text-center">
-                            <div class="time-box" id="hours">00</div>
-                            <span class="cz-handheld-toolbar-label">HOURS</span>
-                        </div>
-                        <div class="colon">:</div>
-                        <div class="text-center">
-                            <div class="time-box" id="minutes">00</div>
-                            <span class="cz-handheld-toolbar-label">MINUTE</span>
-                        </div>
-                        <div class="colon">:</div>
-                        <div class="text-center">
-                            <div class="time-box" id="seconds">00</div>
-                            <span class="cz-handheld-toolbar-label">SECONDS</span>
-                        </div>
-                    </div>
+                    @endif
                 </div>
             </div>
             <div class="custom-cols-5 pt-4 m-n3">
@@ -1160,5 +1162,47 @@
                 }
             });
         }
+    </script>
+
+    <script>
+        //Flash timer countdown
+        $(function () {
+            // Parse flash_end_at from Laravel to JS Date
+            let endTime = new Date("{{ $setting->flash_ends_at->toIsoString() }}"); // ISO string ensures UTC
+
+            function format(num) {
+                return String(num).padStart(2, '0'); // always 2 digits
+            }
+
+            function updateCountdown() {
+                let now = new Date();
+                let diff = endTime - now; // difference in milliseconds
+
+                if(diff <= 0) {
+                    // Timer reached 0
+                    $("#days, #hours, #minutes, #seconds").text("00");
+                    clearInterval(timer);
+                    // Optional: show message
+                    // $("#countdown").html("<span>Offer Expired</span>");
+                    return;
+                }
+
+                let totalSeconds = Math.floor(diff / 1000);
+                let days = Math.floor(totalSeconds / (24 * 3600));
+                let hours = Math.floor((totalSeconds % (24 * 3600)) / 3600);
+                let minutes = Math.floor((totalSeconds % 3600) / 60);
+                let seconds = totalSeconds % 60;
+
+                $("#days").text(format(days));
+                $("#hours").text(format(hours));
+                $("#minutes").text(format(minutes));
+                $("#seconds").text(format(seconds));
+            }
+
+            // Initial update
+            updateCountdown();
+            // Update every second
+            let timer = setInterval(updateCountdown, 1000);
+        });
     </script>
 @stop

@@ -244,6 +244,7 @@ class CheckoutController extends Controller
 
                 // dd('test post',$shipping, $request->all(),$cartItem,$cartPrice,$grandTotal,$discount_amount);
 
+
                 $order = Order::create([
                     'subtotal'       => $subTotal,
                     'grand_total'    => $grandTotal,
@@ -282,11 +283,21 @@ class CheckoutController extends Controller
                         'discount'  => 0,
                         'total'     => (float)$item->price * (int)$item->qty,
                     ]);
-
+                    Log::error('Each product quantity :: ',$item->qty);
                     $product = Product::findOrFail($item->id);
+                    Log::error('Product details ',$product);
+                    Log::error('Product details stock before',$product->stock);
+
                     $product->decrement('stock', $item->qty);
+                    Log::error('Product details stock after',$product->stock);
                 }
 
+                 Log::error($subTotal);
+                Log::error($grandTotal);
+                Log::error($user->id);
+                Log::error($shipping->id);
+                Log::error($discount_amount);
+                Log::error($subTotal);
                 if($promo_discount){
                     $promo_discount->increment('used');
                 }
@@ -331,6 +342,12 @@ class CheckoutController extends Controller
         $product = Product::where('slug',$slug)->first();
         if (!$product) {
             abort(404);
+        }
+        if(!($product->stock > 0 && $product->stock >= $quantity)){
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => 'Quantity exceeds the available stock'
+            ]);
         }
         if($product->discount_price){
             $total = (int)$quantity * (float)$product->discount_price;

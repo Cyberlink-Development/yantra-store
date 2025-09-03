@@ -678,5 +678,24 @@
             });
         }
     </script>
+    <script>
+        function addToCart(e,productId){
+            e.preventDefault();
+            $.ajax({
+                url: "{{ route('cart-add') }}",
+                type:'POST',
+                data: {
+                    'product_id' : productId,
+                    'quantity' : 1,
+                    '_token': '{{ csrf_token() }}'
+                },
+                success:function(res){
+                    ajax_response(res);
+                    $('#cartNav').html(res.view);
+                    $('#mblCart .badge').text(res.newItemCount);
+                }
+            });
+        }
+    </script>
 
 @endpush
