@@ -4,7 +4,7 @@
         <div class="row px-xl-5 pt-5">
             <div class="col-lg-3 col-md-12 mb-5 pr-3 pr-xl-5">
                 <!-- <h2 class="text-white">LOGO HERE</h2> -->
-                <a href="{{url('/')}}"><img src="{{ asset('theme-assets/img/logo-white.jpg') }}" style="max-height: 100px" alt="{{$setting->site_name}}"></a>
+                <a href="{{url('/')}}"><img src="{{ asset('theme-assets/img/transparent.png') }}" style="max-height: 100px" alt="{{$setting->site_name}}"></a>
                 {!! $setting->welcome_text !!}
             </div>
             <div class="col-lg-9 col-md-12">

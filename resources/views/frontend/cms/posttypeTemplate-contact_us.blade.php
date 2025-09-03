@@ -78,7 +78,7 @@
       </div>
     </div>
     <div class="row text-center mt-4">
-      <div class="col-md-4 col-6 info-box p-2">
+      <div class="col-md-6 col-lg-4 info-box p-2">
         <div class=" shadow rounded bg-primary mb-2 p-4">
           <div><i class="czi-phone text-white" style="font-size:35px"></i></div>
           <h6 class="fw-bold mt-2 text-white">Call us directly</h6>
@@ -86,7 +86,7 @@
           <p class="text-white">Phone secondary: {{$setting->phone2}}</p>
         </div>
       </div>
-      <div class="col-md-4 col-6 info-box p-2">
+      <div class="col-md-6 col-lg-4 info-box p-2">
         <div class=" shadow rounded bg-primary mb-2 p-4">
           <div><i class="czi-message text-white" style="font-size:35px"></i></div>
           <h6 class="fw-bold mt-2 text-white">Send a message</h6>
@@ -94,7 +94,7 @@
           <p class="text-white">Email: {{$setting->email_secondary}}</p>
         </div>
       </div>
-      <div class="col-md-4 col-6 info-box p-2">
+      <div class="col-md-6 col-lg-4 info-box p-2">
         <div class=" shadow rounded bg-primary mb-2 p-4">
           <div><i class="czi-location text-white" style="font-size:35px"></i></div>
           <h6 class="fw-bold mt-2 text-white">Store location</h6>

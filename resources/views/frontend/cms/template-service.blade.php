@@ -25,8 +25,8 @@
 <!-- Page Content-->
   <section class="container-fluid px-4 px-md-5 mt-4">
     <div class="row mb-3 bg-white shadow rounded">
-        <div class="col-md-4 p-0">
-            <img src="{{ $data->banner ? asset('uploads/banners/'.$data->banner) : asset('theme-assets/img/service/cloud.png')}}" alt="" class="service-img">
+        <div class="col-md-4 p-0 d-flex justify-content-center align-items-center">
+            <img src="{{ $data->banner ? asset('uploads/banners/'.$data->banner) : asset('theme-assets/img/service/cloud.png')}}" alt="" class="service-img" style="height: 308px; width:100%; object-fit:contain;">
         </div>
         <div class="col-md-8">
             <div class="p-5" style="border-left: 1px solid #e5e4e4c7;">
