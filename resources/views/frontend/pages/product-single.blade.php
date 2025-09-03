@@ -193,7 +193,7 @@
                             <div class="font-size-sm mb-4">
                                 <span class="text-muted" id="colorOption">**Price is inclusive of VAT**</span>
                             </div>
-                            <div class="position-relative mr-n4 mb-3" style="top:-4px;">
+                            <div class="position-relative mr-n4 mb-3" style="top:-23px;">
                                 @if($data->stock > 0)
                                     <div class="product-badge product-available mt-n1">
                                         <i class="czi-security-check"></i>In Stock Avaliable
@@ -242,7 +242,7 @@
                             <!-- Sharing-->
                             <h6 class="d-inline-block align-middle font-size-base my-2 mr-2">Share:</h6>
                             <a class="share-btn sb-twitter mr-2 my-2" href="#">
-                                <i lass="czi-twitter"></i>Twitter
+                                <i class="czi-twitter"></i>Twitter
                             </a>
                             <a class="share-btn sb-instagram mr-2 my-2" href="#">
                                 <i class="czi-instagram"></i>Instagram
