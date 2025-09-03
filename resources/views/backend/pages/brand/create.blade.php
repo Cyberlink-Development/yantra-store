@@ -1,4 +1,7 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title'=>'Create Brand','backLabel'=>'Back','backLink'=> route('brand-index') ])
+@endsection
 @section('content')
     <div class="container">
         <form method="post" class="form-group" action="{{ route('add-brand') }}" enctype="multipart/form-data">
@@ -39,12 +42,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="box-footer">
-                        <a href="{{ route('brand-index') }}" class="btn btn-primary">List</a>
-                    </div>
-
                 </div>
             </div>
         </form>

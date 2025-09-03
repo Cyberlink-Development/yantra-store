@@ -79,7 +79,7 @@
 
 
                 <li class="nav-header" style="padding-top:.5rem!important;">PRODUCTS</li>
-                <li class="nav-item has-treeview {{ in_array($currentRoute, ['add-size', 'add-color']) ? 'menu-open' : '' }}">
+                <!-- <li class="nav-item has-treeview {{ in_array($currentRoute, ['add-size', 'add-color']) ? 'menu-open' : '' }}">
                     <a href="" class="nav-link {{ in_array($currentRoute, ['add-size', 'add-color']) ? 'active' : '' }}">
                         <i class="nav-icon fa fa-tags"></i>
                         <p>
@@ -103,7 +103,7 @@
                         </li>
 
                     </ul>
-                </li>
+                </li> -->
 
 
 
@@ -111,7 +111,7 @@
                     <a href="" class="nav-link {{ in_array($currentRoute, ['brand-index', 'brand-discounts.index']) ? 'active' : '' }}">
                         <i class="nav-icon fa fa-briefcase"></i>
                         <p>
-                            Brand
+                            Brands
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -119,15 +119,15 @@
                         <li class="nav-item">
                             <a href="{{ route('brand-index') }}" class="nav-link ml-3 {{ $currentRoute == 'brand-index' ? 'active' : '' }}">
                                 <i class="fa fa-plus nav-icon"></i>
-                                <p>Add Brand</p>
+                                <p>All Brands</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a href="{{ route('brand-discounts.index') }}" class="nav-link ml-3 {{ $currentRoute == 'brand-discounts.index' ? 'active' : '' }}">
                                 <i class="fa fa-list nav-icon"></i>
                                 <p>Brand Discount</p>
                             </a>
-                        </li>
+                        </li> -->
 
                     </ul>
                 </li>

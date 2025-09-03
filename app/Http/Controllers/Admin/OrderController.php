@@ -11,6 +11,9 @@ use Barryvdh\DomPDF\Facade;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\ValidationException;
+use Exception;
+use Log;
 
 class OrderController extends BackendController
 {
@@ -26,9 +29,9 @@ class OrderController extends BackendController
     public function order_details(Request $request)
     {
         if ($request->isMethod('get')) {
-            $order = Order::where('id', $request->id)->first();
+            $order = Order::where('id', $request->id)->with('shippings')->first();
             $detail = OrderDetail::where('order_id', $request->id)->get();
-//          dd($detail->products);
+        //  dd($order);
             $img = new Product();
 
             return view($this->backendPagePath . 'order/order_details', compact('order', 'detail', 'img'));
@@ -38,13 +41,21 @@ class OrderController extends BackendController
 
     public function order_status(Request $request)
     {
-        $id = $request->id;
         if ($request->isMethod('post')) {
-            $data['status'] = $request->orders_status;
-            $status = Order::findorfail($id);
-            if ($status->update($data)) {
-                Session::flash('success', 'Status updated');
-                return redirect()->back();
+            try{
+                $data['status'] = $request->orders_status;
+                $status = Order::findorfail($request->id);
+                $status->update($data);
+                return redirect()->back()->with([
+                    'success' => true,
+                    'message' => 'Status updated successfully.'
+                ]);
+            } catch (Exception $e) {
+                Log::error('Error while updating :- ' . $e->getMessage());
+                return redirect()->back()->withInput()->with([
+                    'error' => true,
+                    'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                ]);
             }
         }
     }
