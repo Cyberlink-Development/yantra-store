@@ -388,10 +388,16 @@ class ProductController extends BackendController
         $productOrder = OrderDetail::where('product_id', $product->id)->first();
         $productWishlist = Wishlist::where('product_id', $product->id)->first();
         if($productWishlist){
-            return back()->with('error', 'This product is placed in wishlist.');
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => 'This product is placed in wishlist.'
+            ]);
         }
         if($productOrder){
-            return back()->with('error', 'This product is placed as order.');
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => 'This product is placed as order.'
+            ]);
         }
         if($product->images)
         {
@@ -409,7 +415,10 @@ class ProductController extends BackendController
         $product->reviews()->delete();
         $product->categories()->detach();
         $product->delete();
-        return redirect()->back()->with('success', 'Product Deleted Successfully');
+        return redirect()->back()->with([
+            'success' => true,
+            'message' => 'Product Deleted Successfully'
+        ]);
     }
 
 
@@ -425,14 +434,20 @@ class ProductController extends BackendController
             }
             $image->save();
         }
-        return response()->json(['status' => 'success', 'message' => 'Main image changed successfully']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Main image changed successfully'
+        ]);
     }
 
     public function delete($id)
     {
         $image = Image::findOrFail($id);
         if($image->products->images->count()<=1){
-            return response()->json(['status' => 'error', 'message' => 'You cannot delete the image!']);
+            return response()->json([
+                'error' => true,
+                'message' => 'You cannot delete the image!'
+            ]);
         }
          $filename = $image->image;
          $deletePath = public_path('images/products/' . $filename);
@@ -442,7 +457,10 @@ class ProductController extends BackendController
         // unlink(public_path() . '/images/products/' . $filename);
         $image->delete();
         $images = Image::where('product_id', $image->product_id)->first()->update(['is_main' => 1]);
-        return response()->json(['status' => 'success', 'message' => 'Image has been deleted successfully!']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Image has been deleted successfully!'
+        ]);
 
     }
 

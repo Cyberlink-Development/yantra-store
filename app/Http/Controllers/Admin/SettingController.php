@@ -46,6 +46,13 @@ class SettingController extends BackendController
             $data->copyright_text = $request->copyright_text;
             $data->meta_title = $request->meta_title;
             $data->meta_description = $request->meta_description;
+            $data->days = $request->days;
+            $data->hours = $request->hours;
+            $data->minutes = $request->minutes;
+            $data->seconds = $request->seconds;
+            $data->flash_ends_at = $request->input('flash_ends_at');
+            $data->flash_enable = $request->has('flash_enable') ? 1 : 0;
+
             if($data->save()){
                 return redirect()->back()->with([
                     'success'=> true,

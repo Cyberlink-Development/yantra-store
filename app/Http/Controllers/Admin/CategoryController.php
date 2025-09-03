@@ -163,18 +163,32 @@ class CategoryController extends BackendController
     {
         $id=$request->id;
         $category = Category::findOrFail($id);
-//        dd($category->children);
+        if (!$category) {
+            // For normal redirect
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => 'Category not found'
+            ]);
+        }
         if ($category->products->count() > 0) {
-            return redirect()->back()->with('error', 'Delete Products of this Category First');
+            return redirect()->back()->with([
+                'warning' => true,
+                'message' => 'Delete Products of this Category First'
+            ]);
         }
         if ($category->children->isNotEmpty()) {
-            return redirect()->back()->with('error', 'Delete Child Categories First');
+            return redirect()->back()->with([
+                'warning' => true,
+                'message' => 'Delete Child Categories First'
+            ]);
         }
         $this->delete_file($id);
         $this->delete_banner($id);
         $category->delete();
-        return redirect()->back()->with('success', 'Category Deleted!');
-
+        return redirect()->back()->with([
+            'success' => true,
+            'message' => 'Category Deleted!'
+        ]);
     }
 
 
@@ -187,7 +201,10 @@ class CategoryController extends BackendController
         $this->delete_file($id);
         $category->save();
 
-        return response()->json(['status' => 'success', 'message' => 'Image deleted successfully']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Image deleted successfully'
+        ]);
     }
 
     public function delete_banner($id)
@@ -198,7 +215,12 @@ class CategoryController extends BackendController
         if (file_exists($deletePath) && is_file($deletePath)) {
             unlink($deletePath);
         }
-        return true;
+        // return true;
+        return response()->json([
+            'success' => true,
+            'message' => 'Banner deleted successfully'
+        ]);
+
     }
 
     public function category_banner_delete($id){
@@ -207,7 +229,10 @@ class CategoryController extends BackendController
         $this->delete_banner($id);
         $category->save();
 
-        return response()->json(['status' => 'success', 'message' => 'Image deleted successfully']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Image deleted successfully'
+        ]);
     }
 
 }
