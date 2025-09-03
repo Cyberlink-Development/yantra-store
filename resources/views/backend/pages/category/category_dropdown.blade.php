@@ -1,19 +1,27 @@
 @php
+    $excludeIds = $excludeIds ?? [];
+    $depth = $depth ?? 0;
+    $selectedId = $selectedId ?? null;
     $assignedCategories = $assignedCategories ?? [];
-    $parentId = $parentId ?? null;
-    $dataId = $dataId ?? null;
 @endphp
 
-<option value="{{ $category->id }}" {{ !empty($parentId) && ($parentId == $category->id) ? 'selected' : '' }} {{ !empty($dataId) && ($dataId == $category->id) ? 'disabled' : ''  }} {{ $assignedCategories &&  in_array($category->id, $assignedCategories ?? []) ? 'selected' : '' }}>
+<option value="{{ $category->id }}"
+        {{ in_array($category->id, $excludeIds) ? 'disabled' : '' }}
+        {{-- for single category (like Category Edit) --}}
+        {{ $category->id == $selectedId ? 'selected' : '' }}
+        {{-- for multiple categories (like Product Edit) --}}
+        {{ in_array($category->id, $assignedCategories) ? 'selected' : '' }}>
     {{ str_repeat('-', $depth) }} {{ $category->name }}
 </option>
 
-@if ($category->subCategory && $category->subCategory->isNotEmpty())
-    @foreach ($category->subCategory as $child)
+@if($category->children && $category->children->isNotEmpty())
+    @foreach($category->children as $child)
         @include('backend.pages.category.category_dropdown', [
             'category' => $child,
             'depth' => $depth + 1,
-            'assignedCategories' => $assignedCategories ?? []
+            'excludeIds' => $excludeIds,
+            'selectedId' => $selectedId,
+            'assignedCategories' => $assignedCategories,
         ])
     @endforeach
 @endif

@@ -28,9 +28,10 @@ class CategoryController extends BackendController
     }
 
     public function create(){
-        $category = $this->category->getCategories();
+        // $category = $this->category->getCategories();
+        $categories = Category::with('children')->where('parent_id', 0)->where('status', 1)->get();
         $table = $this->category->getAll();
-        return view($this->backendcategoryPath . 'create', compact('category', 'table'));
+        return view($this->backendcategoryPath . 'create', compact('categories', 'table'));
     }
 
     public function store(Request $request)
@@ -87,8 +88,17 @@ class CategoryController extends BackendController
 
     public function edit($id){
         $data = Category::where('id',$id)->first();
-        $category = $this->category->getCategories();
-        return view($this->backendcategoryPath . 'edit',compact('category','data'));
+        // $category = $this->category->getCategories();
+        $excludeIds = array_merge([$data->id], $data->getDescendantIds());
+
+        $categories = Category::with('children')
+                          ->where('parent_id', 0)
+                          ->where('status', 1)
+                          ->whereNotIn('id', $excludeIds)
+                          ->get();
+        $selectedId = $data->parent_id;
+        // dd($category,$categories);
+        return view($this->backendcategoryPath . 'edit',compact('categories','data','selectedId','excludeIds'));
     }
 
     public function update(Request $request)
