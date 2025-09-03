@@ -32,13 +32,18 @@
                                         <label for="caption" class="control-label">Caption</label>
                                         <input class="form-control" placeholder="Caption" name="caption" type="text">
                                     </div>
-                                    @if($category)
+                                    @if($categories)
                                         <div class="form-group">
                                             <label for="name" class="control-label">Parent Category</label>
                                             <select name="parent_id" id="parent" class="form-control select2">
                                                 <option value="0">Select Parent Category</option>
-                                                @foreach($category as $value)
-                                                    @include('backend.pages.category.category_dropdown',['category'=>$value, 'depth' => 0])
+                                                @foreach($categories as $category)
+                                                    @include('backend.pages.category.category_dropdown', [
+                                                        'category' => $category,
+                                                        'depth' => 0,
+                                                        'excludeIds' => $excludeIds ?? [],
+                                                        'selectedId' => $selectedId ?? null
+                                                    ])
                                                 @endforeach
                                             </select>
                                         </div>

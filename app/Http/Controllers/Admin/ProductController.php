@@ -47,7 +47,8 @@ class ProductController extends BackendController
         $brands = Brand::all();
         $color = Color::all();
         $comp_type = ComponentType::all();
-        return view($this->backendproductPath . 'create', compact('size', 'brands', 'color','comp_type'));
+        $categories = Category::with('children')->where('parent_id', 0)->where('status', 1)->get();
+        return view($this->backendproductPath . 'create', compact('size', 'brands', 'color','comp_type','categories'));
     }
 
     public function store(Request $request)
@@ -213,7 +214,9 @@ class ProductController extends BackendController
         $brands = Brand::all();
         $color = Color::all();
         $comp_type = ComponentType::all();
-        return view($this->backendproductPath . 'edit', compact('data', 'size', 'brands', 'color','comp_type'));
+        $categories = Category::with('children')->where('parent_id', 0)->where('status', 1)->get();
+        $assignedCategories = $data->categories->pluck('id')->toArray();
+        return view($this->backendproductPath . 'edit', compact('data', 'size', 'brands', 'color','comp_type','categories','assignedCategories'));
     }
 
     public function update(Request $request)

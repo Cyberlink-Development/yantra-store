@@ -32,10 +32,10 @@
                                         <label for="caption" class="control-label">Caption</label>
                                         <input class="form-control" placeholder="Caption" name="caption" type="text" value="{{$data->caption}}">
                                     </div>
-                                    @if($category->count() > 0 )
+                                    @if($categories->count() > 0 )
                                         <div class="form-group">
                                             <label for="name" class="control-label">Parent Category</label>
-                                            <!-- <select name="parent_id" id="parent"class="form-control select2">
+                                            {{--  <select name="parent_id" id="parent"class="form-control select2">
                                                 <option value="0">Select Parent Category
                                                 </option>
                                                 @foreach($category as $value)
@@ -45,12 +45,17 @@
                                                             @include('backend.pages.category.category_dropdown',['category'=>$value, 'depth' => 0])
 
                                                 @endforeach
-                                            </select> -->
+                                            </select> --}}
 
                                             <select name="parent_id" id="parent" class="form-control select2">
                                                 <option value="0">Select Parent Category</option>
-                                                @foreach($category as $value)
-                                                    @include('backend.pages.category.category_dropdown',['category'=>$value, 'depth' => 0, 'dataId' => $data->id, 'parentId' => $data->parent_id])
+                                                @foreach($categories as $category)
+                                                    @include('backend.pages.category.category_dropdown', [
+                                                        'category' => $category,
+                                                        'depth' => 0,
+                                                        'excludeIds' => $excludeIds ?? [],
+                                                        'selectedId' => $selectedId ?? null
+                                                    ])
                                                 @endforeach
                                             </select>
 

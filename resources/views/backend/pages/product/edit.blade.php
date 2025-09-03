@@ -253,14 +253,12 @@
                                 <label for="category" class="control-label mb-1">Category:</label>
                                 <select class="form-control" name="category[]" id="category" multiple="multiple" required>
                                     <option disabled value="">Select Category</option>
-                                    @php
-                                        $assignedCategories = $data->categories->pluck('id')->toArray();
-                                    @endphp
-                                    @foreach($cat as $category)
+                                    @foreach($categories as $category)
                                         @include('backend.pages.category.category_dropdown', [
                                             'category' => $category,
                                             'depth' => 0,
-                                            'assignedCategories' => $assignedCategories
+                                            'excludeIds' => [],
+                                            'assignedCategories' => $assignedCategories ?? []
                                         ])
                                     @endforeach
                                 </select>

@@ -47,4 +47,30 @@ class Category extends Model
         // return 1;
         return Category::find($this->parent_id);
     }
+
+    public function getDescendantIds()
+    {
+        $all = [];
+
+        foreach ($this->children as $child) {
+            $all[] = $child->id;
+            $all = array_merge($all, $child->getDescendantIds());
+        }
+
+        return $all;
+    }
+
+    public static function getCategoriesExceptSubtree($currentCategoryId)
+    {
+        $currentCategory = self::with('children')->find($currentCategoryId);
+
+        if (!$currentCategory) return self::where('status', 1)->get();
+
+        $excludeIds = $currentCategory->getDescendantIds();
+        $excludeIds[] = $currentCategory->id;
+
+        return self::whereNotIn('id', $excludeIds)
+                ->where('status', 1)
+                ->get();
+    }
 }

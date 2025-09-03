@@ -222,10 +222,14 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between" style="flex-direction: column;">
                                 <label for="category" class="control-label mb-1">Category:</label>
-                                <select class="form-control" name="category[]" id="category" multiple="multiple" required>
-                                    <option disabled value="">Select Category</option>
-                                    @foreach($cat as $value)
-                                        @include('backend.pages.category.category_dropdown',['category'=>$value,'depth'=>0,'assignedCategories' => []])
+                                <select name="category[]" id="category" class="form-control select2" multiple>
+                                    @foreach($categories as $category)
+                                        @include('backend.pages.category.category_dropdown', [
+                                            'category' => $category,
+                                            'depth' => 0,
+                                            'excludeIds' => [],
+                                            'assignedCategories' => $assignedCategories ?? []
+                                        ])
                                     @endforeach
                                 </select>
                             </div>
