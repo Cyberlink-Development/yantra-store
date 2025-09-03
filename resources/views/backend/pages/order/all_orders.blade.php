@@ -1,7 +1,10 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title'=>'View Orders'])
+@endsection
 @section('content')
     <div class="container">
-        <h3 class="blockquote" style="text-align: center">View Orders</h3>
+        <!-- <h3 class="blockquote" style="text-align: center">View Orders</h3> -->
         <table id="example" class="table table-striped table-bordered datatable" style="width:100%">
             <thead>
             <tr>

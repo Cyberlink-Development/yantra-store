@@ -1,9 +1,10 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'All Brands','actionLabel'=>'Create','actionLink'=> route('add-brand') ])
+@endsection
 @section('content')
 
     <div class="container">
-        <h3 class="blockquote" style="text-align: center">View Brands / <a href="{{ route('add-brand') }}"
-                class="btn btn-primary btn-sm">Create</a></h3>
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">

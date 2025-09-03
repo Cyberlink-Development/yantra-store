@@ -1,13 +1,16 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title'=>'Order Detail','backLabel'=>'Back','backLink'=> route('view-orders') ])
+@endsection
 @section('content')
     {{--sadas--}}
     <div class="container">
         <div class="card">
             <div class="card-header">
 
-                <h2 class="page-header" style="padding-bottom: 25px; margin-top:0;">
-                    <i class="fa fa-globe"></i> Order ID#{{$order->order_track}}
-                    <small style="text-align: right">Ordered Date:{{$order->created_at->format('M d Y')}} </small>
+                <h2 class="page-header" style="padding-bottom: 5px; margin-top:0;">
+                    Order ID: {{$order->order_track}} <br>
+                    <small style="text-align: right">Ordered Date: {{$order->created_at->format('M d Y')}} </small>
                 </h2>
 
 
@@ -86,10 +89,10 @@
                                     <th><i class="fa fa-image"></i></th>
                                     <th>Product Name</th>
                                     <th>Quantity</th>
-                                    <th>Color</th>
-                                    <th>Size</th>
+                                    <!-- <th>Color</th>
+                                    <th>Size</th> -->
                                     <th>Unit Price</th>
-                                    <th>Net Weight</th>
+                                    <!-- <th>Net Weight</th> -->
                                     <th>Total</th>
                                 </tr>
                                 </thead>
@@ -100,7 +103,7 @@
                                         <td><img src="{{asset('/images/products/'.$img->get_main_image($value->products->id))}}" width="80px"></td>
                                         <td>{{$value->products->product_name}}</td>
                                         <td>{{$value->quantity}}</td>
-                                        <td>      @if($value->color != '')
+                                        <!-- <td>      @if($value->color != '')
                                                 <div class="foo blue"
                                                      style="  background: {{$value->color}}; float: left;width: 20px; height: 20px;margin: 5px;border: 1px solid rgba(0, 0, 0, .2);
                                                          "></div>
@@ -108,10 +111,10 @@
                                                 null
                                             @endif
                                         </td>
-                                        <td>{{$value->size != '' ? $value->size : "Free Size"}}</td>
-                                        <td>$ {{$value->price}}</td>
-                                        <td>{{$value->products->weight}} gm</td>
-                                        <td class="price">$ {{$value->total}}</td>
+                                        <td>{{$value->size != '' ? $value->size : "Free Size"}}</td> -->
+                                        <td>Rs {{$value->price}}</td>
+                                        <!-- <td>{{$value->products->weight}} gm</td> -->
+                                        <td class="price">Rs {{$value->total}}</td>
                                     </tr>
                                 @endforeach
 
@@ -135,7 +138,7 @@
                                     @csrf
                                     <div class="form-group">
                                         <label>Payment Status:</label>
-                                        <select class="form-control select2" id="status_id" name="orders_status"
+                                        <select class="form-control " id="status_id" name="orders_status"
                                                 style="width: 100%;">
                                             <option selected disabled>--Select Order Status--</option>
                                             <option @if($order->status==0) selected @endif value="0">Pending</option>
@@ -147,8 +150,8 @@
                                               style="font-weight: normal;font-size: 11px;margin-bottom: 0;">Choose status</span>
                                     </div>
                                     <div class="col-xs-12">
-                                        <a href="{{route('view-orders')}}" class="btn btn-default"><i
-                                                class="fa fa-angle-left"></i> Back</a>
+                                        <!-- <a href="{{route('view-orders')}}" class="btn btn-default"><i
+                                                class="fa fa-angle-left"></i> Back</a> -->
                                         <button type="submit" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i>
                                             Submit
                                         </button>
@@ -160,27 +163,27 @@
 
                                 <div class="table-responsive ">
                                     <table id="info" class="table order-table">
-                                        <tr>
+                                        <!-- <tr>
                                             <th style="width:50%">Weight:</th>
                                             <td class="sub">{{$order->weight}} gm</td>
-                                        </tr>
+                                        </tr> -->
                                         <tr>
                                             <th style="width:50%">Subtotal:</th>
-                                            <td class="sub">$ {{$order->subtotal}}</td>
+                                            <td class="sub">Rs {{$order->subtotal}}</td>
                                         </tr>
-                                        <tr>
+                                        <!-- <tr>
                                             <th>Tax:</th>
                                             <td class="vat">$ {{$order->tax}}</td>
-                                        </tr>
-                                        @if($order->shippingInfo)
+                                        </tr> -->
+                                        @if($order->shippings)
                                         <tr>
                                             <th>Shipping Cost:</th>
-                                            <td class="charge">$ {{$order->shippingInfo->price}}</td>
+                                            <td class="charge">Rs {{$order->shippings->shipping_price}}</td>
                                         </tr>
                                         @endif
                                         <tr>
                                             <th>Total:</th>
-                                            <td class="grand">$ {{$order->grand_total}}</td>
+                                            <td class="grand">Rs {{$order->grand_total}}</td>
                                         </tr>
                                     </table>
                                 </div>
