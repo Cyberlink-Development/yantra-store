@@ -80,7 +80,7 @@ Route::group(['namespace' => 'Front'], function () {
     Route::get('blog-all', 'FrontController@blog_all')->name('blog-all');
 
 
-//checkout details//
+    //checkout details//
     Route::get('/checkout-address', 'CheckoutController@checkout_address')->name('checkout-address');
     Route::post('/checkout-page', 'CheckoutController@checkout_address')->name('checkout-page');
     Route::post('/apply-promo', 'CheckoutController@applyPromo')->name('checkout.applyPromo');
@@ -109,6 +109,10 @@ Route::group(['namespace' => 'Front'], function () {
     Route::get('payment/verify/', 'PaymentController@verification')->name('payment-verify');
     Route::get('/payment-method','PaymentController@payment_method')->name('payment.method');
     Route::post('/payment-method','PaymentController@payment_method')->name('payment.method');
+
+    //Build Custom PC
+    Route::get('custom-pc', 'CustomPcController@index')->name('custom.pc');
+
     //user dashboard
     Route::group(['prefix' => 'user','middleware' => ['auth']], function () {
         Route::get('/account-dashboard', 'UserController@user_dashboard')->name('user-dashboard');

@@ -12,4 +12,10 @@ class ComponentType extends Model
     protected $table = 'component_types';
     
     protected $fillable=['name','status','level'];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'component_type', 'id') ->where('price', '>', 0);
+    }
+
 }
