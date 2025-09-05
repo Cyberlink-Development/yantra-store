@@ -278,8 +278,9 @@
                                                         @endif
                                                     </li>
                                                 @endforeach
-                                                {{-- <li class="nav-item"><a class="nav-link" href="list.php">Television</a> --}}
-                                                </li>
+                                                <!-- <li class="nav-item">
+                                                    <a class="nav-link" href="{{ route('custom.pc') }}">Custom PC</a>
+                                                </li> -->
                                             </ul>
                                         </div>
                                         <!-- </nav> -->

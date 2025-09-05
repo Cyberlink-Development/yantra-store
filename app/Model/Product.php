@@ -116,6 +116,10 @@ class Product extends Model
     public function orderDetails(){
        return $this->hasMany(OrderDetail::class,'product_id');
     }
+    public function componentType()
+    {
+        return $this->belongsTo(ComponentType::class, 'component_type', 'id');
+    }
 
     public function wishlists(){
         return $this->hasMany(Wishlist::class,'product_id');
@@ -160,6 +164,7 @@ class Product extends Model
         }
     }
 
+    // Relationship to get products this product is compatible with
     public function compatibleProducts()
     {
         return $this->belongsToMany(
@@ -170,5 +175,24 @@ class Product extends Model
         );
     }
 
+    // Relationship to get products that are compatible with this product (reverse)
+    public function compatibleWithProducts()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'product_compatibilities',
+            'compatible_product_id',
+            'product_id'
+        );
+    }
+
+    // Helper method to get all compatible products (both directions)
+    public function getAllCompatibleProducts()
+    {
+        $forward = $this->compatibleProducts;
+        $reverse = $this->compatibleWithProducts;
+        
+        return $forward->merge($reverse)->unique('id');
+    }
 
 }
