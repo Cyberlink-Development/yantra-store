@@ -21,7 +21,7 @@
 
                                     <div class="form-group">
                                         <label>Hierarchy Level</label>
-                                        <input type="number" id="level" name="level" class="form-control" value="{{ old('level') }}">
+                                        <input type="number" id="level" name="level" class="form-control" value="{{ old('level',$level) }}">
                                     </div>
                                 </div>
                             </div>

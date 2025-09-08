@@ -19,7 +19,10 @@ class ComponentTypeController extends BackendController
 
     public function create()
     {
-        return view($this->backendComponentTypePath.'create');
+        $level = ComponentType::max('level') ?? 0;
+        $level = $level + 1;
+        // dd($level);
+        return view($this->backendComponentTypePath.'create',compact('level'));
     }
     
     public function store(Request $request)
