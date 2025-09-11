@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <ul class="list-unstyled font-size-sm pb-2 border-bottom">
-                        <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Subtotal:</span><span class="text-right">Rs. {{ number_format($cartPrice['subTotal'],2) }}</span></li>
+                        <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Subtotal:</span><span class="text-right">Rs. {{ number_format((float)$cartPrice['subTotal'],2) }}</span></li>
                         <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Discount:</span><span class="text-right" id="discount-code">Rs. 0</span></li>
                         <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Shipping:</span><span class="text-right" id="shipping-price">Rs. 0</span></li>
                     </ul>

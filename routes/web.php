@@ -63,11 +63,12 @@ Route::group(['namespace' => 'Front'], function () {
     Route::get('/popular-products', 'CategoryController@popular_products')->name('popular-products');
 
     Route::post('/cart', 'CartController@add_cart')->name('cart-add');
+    Route::post('/cart/multiple', 'CartController@add_multiple')->name('cart-add-multiple');
     Route::get('/cart-filter', 'CartController@cart_filter')->name('cart-filter');
     Route::get('/cart-page', 'CartController@cart_item')->name('cart-item');
     Route::get('/cart-remove/{id?}', 'CartController@cart_remove')->name('cart-remove');
     Route::post('/cart-update/{id?}', 'CartController@cart_update')->name('cart-update');
-    
+
     //search results
     Route::get('search-results', 'SearchController@search_results')->name('search-results');
     Route::post('search-results', 'SearchController@search_results')->name('search-results');
