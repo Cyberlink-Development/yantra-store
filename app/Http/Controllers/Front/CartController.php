@@ -105,6 +105,53 @@ class CartController extends FrontController
             ]);
         }
     }
+    public function add_multiple(Request $request)
+    {
+        $products = $request->input('products', []);
+
+        if (!is_array($products) || empty($products)) {
+            return response()->json([
+                'error' => true,
+                'message' => "No products provided"
+            ]);
+        }
+
+        foreach ($products as $item) {
+            $product = Product::find($item['product_id']);
+            if (!$product) continue;
+
+            $quantity = $item['quantity'] ?? 1;
+            if ($product->stock < $quantity) {
+                return response()->json([
+                    'error' => true,
+                    'message' => "{$product->product_name} has insufficient stock"
+                ]);
+            }
+
+            Cart::add([
+                'id' => $product->id,
+                'name' => $product->product_name,
+                'qty' => $quantity,
+                'price' => Auth::check() && Auth::user()->roles == 'wholeseller'
+                    ? $product->wholesale_price
+                    : ($product->discount_price ?? $product->price),
+                'options' => [
+                    'image' => $product->images?->where('is_main', 1)->first()?->image,
+                    'slug'  => $product->slug,
+                    'stock' => $product->stock,
+                    'brand' => $product->brands()->first()
+                ],
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Products added to cart successfully',
+            'view' => view('components.cart.cart_nav')->render(),
+            'newItemCount' => Cart::count()
+        ]);
+    }
+
 
     public function cart_item()
     {

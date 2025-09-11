@@ -83,10 +83,10 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Component Rows -->
     @foreach ($componentTypes->sortBy('level') as $row)
-        <div class="row bg-white rounded-lg px-0 px-md-3 py-3 mb-3" 
+        <div class="row bg-white rounded-lg px-0 px-md-3 py-3 mb-3"
              id="component-row-{{ $row->id }}"
              data-level="{{ $row->level }}"
              @if($row->level > 1) style="opacity: 0.5;" @endif>
@@ -105,8 +105,8 @@
             </div>
             <div class="col-md-6 d-flex justify-content-between justify-content-md-end align-items-center" id="component-{{ $row->id }}-select">
                 <span class="mr-2">No {{ $row->name }} Selected</span>
-                <a class="btn btn-primary btn-sm pl-2" 
-                   href="#modal-{{ $row->id }}" 
+                <a class="btn btn-primary btn-sm pl-2"
+                   href="#modal-{{ $row->id }}"
                    data-toggle="modal"
                    @if($row->level > 1) disabled @endif>
                     <i class="czi-add mr-2"></i>Select
@@ -135,7 +135,7 @@
             </div>
         </div>
     @endforeach
-    
+
     <div class="d-flex justify-content-center align-items-center">
         <a class="btn btn-primary pl-2" href="" id="complete-button" style="display:none;">Complete Selection to Buy</a>
     </div>
@@ -144,7 +144,7 @@
     let selectedProducts = {};
     let componentLevels = {};
     let allProducts = {};
-    
+
     // Initialize component levels and products
     @foreach ($componentTypes as $row)
         componentLevels[{{ $row->id }}] = {{ $row->level }};
@@ -166,13 +166,13 @@
                             ->where('product_id', $product->id)
                             ->pluck('compatible_product_id')
                             ->toArray();
-                        
+
                         // Products that are compatible with this product (compatible_product_id -> product_id)
                         $reverseCompatibleIds = \DB::table('product_compatibilities')
                             ->where('compatible_product_id', $product->id)
                             ->pluck('product_id')
                             ->toArray();
-                        
+
                         // Merge both arrays and remove duplicates
                         $allCompatibleIds = array_unique(array_merge($compatibleIds, $reverseCompatibleIds));
                     @endphp
@@ -187,13 +187,13 @@
     function loadCompatibleProducts(componentId) {
         const modalBody = document.getElementById(`modal-body-${componentId}`);
         const loading = document.getElementById(`loading-${componentId}`);
-        
+
         // Show loading
         loading.style.display = 'block';
-        
+
         // Get compatible products
         let compatibleProducts = allProducts[componentId];
-        
+
         // If this is level 2 or higher, filter by compatibility
         if (componentLevels[componentId] > 1) {
             const selectedLevel1Products = getSelectedProductsOfLevel(componentLevels[componentId] - 1);
@@ -201,19 +201,19 @@
                 modalBody.innerHTML = '<p class="text-center text-danger">Please select a Level ' + (componentLevels[componentId] - 1) + ' component first.</p>';
                 return;
             }
-            
+
             // Filter products based on compatibility
             compatibleProducts = allProducts[componentId].filter(product => {
-                return selectedLevel1Products.some(selectedProduct => 
-                    product.compatibleWith.includes(selectedProduct.id) || 
+                return selectedLevel1Products.some(selectedProduct =>
+                    product.compatibleWith.includes(selectedProduct.id) ||
                     selectedProduct.compatibleWith.includes(product.id)
                 );
             });
         }
-        
+
         // Hide loading
         loading.style.display = 'none';
-        
+
         // Generate product HTML
         let productsHtml = '';
         if (compatibleProducts.length === 0) {
@@ -251,10 +251,10 @@
                 `;
             });
         }
-        
+
         modalBody.innerHTML = productsHtml;
     }
-    
+
     // Get selected products of a specific level
     function getSelectedProductsOfLevel(level) {
         const selectedOfLevel = [];
@@ -266,7 +266,7 @@
         }
         return selectedOfLevel;
     }
-    
+
     // Handle modal show event
     @foreach ($componentTypes as $row)
         $('#modal-{{ $row->id }}').on('show.bs.modal', function() {
@@ -309,7 +309,7 @@
     function resetSelection(containerId) {
         const componentId = parseInt(containerId.replace('component-', ''));
         const container = document.getElementById(`${containerId}-select`);
-        
+
         container.innerHTML = `
             <span class="mr-2">No Product Selected</span>
             <a class="btn btn-primary btn-sm pl-2" href="#modal-${containerId.replace('component-', '')}" data-toggle="modal">
@@ -319,7 +319,7 @@
 
         // Remove product
         delete selectedProducts[containerId];
-        
+
         // Reset all higher level components
         resetHigherLevelComponents(componentLevels[componentId]);
 
@@ -329,14 +329,14 @@
         // Update total
         updateTotal();
     }
-    
+
     function resetHigherLevelComponents(level) {
         for (let componentId in componentLevels) {
             if (componentLevels[componentId] > level) {
                 const containerId = `component-${componentId}`;
                 if (selectedProducts[containerId]) {
                     delete selectedProducts[containerId];
-                    
+
                     const container = document.getElementById(`${containerId}-select`);
                     container.innerHTML = `
                         <span class="mr-2">No Product Selected</span>
@@ -348,20 +348,20 @@
             }
         }
     }
-    
+
     function updateComponentAvailability() {
         for (let componentId in componentLevels) {
             const level = componentLevels[componentId];
             const row = document.getElementById(`component-row-${componentId}`);
-            
+
             // Check if row exists
             if (!row) continue;
-            
+
             const selectButton = row.querySelector('a[data-toggle="modal"]');
-            
+
             // Check if select button exists
             if (!selectButton) continue;
-            
+
             if (level === 1) {
                 // Level 1 components are always available
                 row.style.opacity = '1';
@@ -370,7 +370,7 @@
             } else {
                 // Check if previous level has selections
                 const hasRequiredSelections = getSelectedProductsOfLevel(level - 1).length > 0;
-                
+
                 if (hasRequiredSelections) {
                     row.style.opacity = '1';
                     selectButton.removeAttribute('disabled');
@@ -390,7 +390,7 @@
                 }
             }
         }
-        
+
         // Show/hide complete button
         const totalSelected = Object.keys(selectedProducts).length;
         const completeButton = document.getElementById('complete-button');
@@ -451,11 +451,46 @@
             }
         });
     }
-    
+
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
         updateComponentAvailability();
     });
+
+    document.getElementById('complete-button').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (Object.keys(selectedProducts).length === 0) {
+            toastr.warning("Please select at least one product before proceeding.");
+            return;
+        }
+
+        let productsToAdd = Object.values(selectedProducts).map(p => ({
+            product_id: p.id,
+            quantity: 1
+        }));
+
+        $.ajax({
+            url: "{{ route('cart-add-multiple') }}",
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                products: productsToAdd
+            },
+            success: function(res) {
+                ajax_response(res);
+                $('#cartNav').html(res.view);
+                $('#mblCart .badge').text(res.newItemCount);
+                window.location.href = "{{ route('cart-item') }}";
+
+                toastr.success("Your custom PC has been added to the cart!");
+            },
+            error: function() {
+                toastr.error("Something went wrong while adding products.");
+            }
+        });
+    });
+
 
 </script>
 @endsection

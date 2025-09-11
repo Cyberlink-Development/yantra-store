@@ -21,8 +21,6 @@ use Illuminate\Validation\ValidationException;
 use Exception;
 use Log;
 
-
-
 class ProductController extends BackendController
 {
     protected $category;
@@ -341,6 +339,46 @@ class ProductController extends BackendController
                     ]);
                 }
             }
+            // TODO: COMPATIBILITY CLEANUP
+
+
+            // // Save the old component type before changing
+            // $oldComponentTypeId = $product->component_type;
+            // $oldLevel = $product->componentType->level ?? null;
+
+            // $product->component_type = $request->component_type;
+            // $product->save();
+
+            // // COMPATIBILITY CLEANUP - ONLY IF COMPONENT TYPE CHANGED
+            // if ($oldComponentTypeId != $product->component_type) {
+            //     $newLevel = $product->componentType->level ?? null;
+
+            //     // Get all compatibilities involving this product
+            //     $compatibilities = \App\Model\ProductCompatibility::where('product_id', $product->id)
+            //         ->orWhere('compatible_product_id', $product->id)
+            //         ->get();
+
+            //     foreach ($compatibilities as $compatibility) {
+            //         // Determine the "other" product in the pair
+            //         $otherId = $compatibility->product_id == $product->id
+            //             ? $compatibility->compatible_product_id
+            //             : $compatibility->product_id;
+
+            //         $otherProduct = \App\Model\Product::find($otherId);
+            //         if (!$otherProduct) {
+            //             $compatibility->delete();
+            //             continue;
+            //         }
+
+            //         $otherLevel = $otherProduct->componentType->level ?? null;
+
+            //         // Remove only if the other product is now in the SAME level
+            //         if ($otherLevel === $newLevel) {
+            //             $compatibility->delete();
+            //         }
+            //     }
+            // }
+
 
             return $isAjax ? response()->json([
                 'success' => true,

@@ -184,8 +184,8 @@
 
                     </ul>
                 </li>
-                <li class="nav-item has-treeview {{ in_array($currentRoute, ['product.create', 'product.index']) ? 'menu-open' : '' }} ">
-                    <a href="" class="nav-link {{ in_array($currentRoute, ['product.create', 'product.index']) ? 'active' : '' }}">
+                <li class="nav-item has-treeview {{ Request::segment(2) =='product' ? 'menu-open' : '' }} ">
+                    <a href="" class="nav-link {{ Request::segment(2) =='product' ? 'active' : '' }}">
                         <i class="nav-icon fa fa-cube"></i>
                         <p>
                             Product
@@ -376,6 +376,7 @@
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
+
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ route('quotation-all','product') }}" class="nav-link ml-3 {{ Request::segment(3) == 'product' || Request::segment(5) == 'product' ? 'active' : '' }}">
