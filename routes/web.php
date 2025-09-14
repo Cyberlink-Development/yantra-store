@@ -86,6 +86,10 @@ Route::group(['namespace' => 'Front'], function () {
     Route::post('/checkout-page', 'CheckoutController@checkout_address')->name('checkout-page');
     Route::post('/apply-promo', 'CheckoutController@applyPromo')->name('checkout.applyPromo');
 
+    // Checkout For Services
+    Route::get('/checkout-services/{uri}', 'CheckoutController@service_checkout')->name('checkout-services');
+    Route::post('/checkout-service', 'CheckoutController@service_checkout_success')->name('checkout-services-success');
+
     // Checkout Without Login
     Route::get('/checkout/{uri}', 'CheckoutController@direct_checkout')->name('checkout-process');
     Route::post('/checkout-success', 'CheckoutController@direct_checkout_success')->name('checkout-success');

@@ -13,6 +13,9 @@ use App\Model\PaymentMethod;
 use App\Model\Shipping;
 use App\Model\Size;
 use App\Model\Stock;
+use App\Model\Post;
+use App\Model\ServiceOrder;
+use App\Model\ServiceOrderAddress;
 use App\Model\Color;
 use App\Model\Product;
 use App\Weight;
@@ -33,7 +36,7 @@ class CheckoutController extends Controller
     public function __construct()
     {
         // $this->middleware('auth')->except(['checkout_address']);
-        $this->middleware('auth')->except(['direct_checkout','direct_checkout_success','applyPromo']);
+        $this->middleware('auth')->except(['direct_checkout','direct_checkout_success','applyPromo','service_checkout','service_checkout_success']);
     }
 
     // Function to get cities using ajax, when country field changes
@@ -386,7 +389,10 @@ class CheckoutController extends Controller
                                         ->first();
             if ($promo_discount)
             {
-                $alreadyUsed = OrderAddress::where('email', $request->email)
+                $orderIds = OrderAddress::where('email', $request->email)->pluck('order_id');
+
+                // Check if any of those orders have this discount_id
+                $alreadyUsed = Order::whereIn('id', $orderIds)
                     ->where('discount_id', $promo_discount->id)
                     ->exists();
 
@@ -485,6 +491,136 @@ class CheckoutController extends Controller
             'message' => 'Order placed successfully!'
         ]);
     }
+
+    public function service_checkout( $uri )
+    {
+        $service = Post::where('uri',$uri)->first();
+        if (!$service) {
+            abort(404);
+        }
+
+        $total = $service->price ? (float)$service->price : 0;
+        if (empty($service->price)) {
+            abort(404, 'Invalid service price');
+        }
+        // dd($service);
+        return view('frontend/pages/checkout/checkout-services',compact('service','total'));
+    }
+
+    public function service_checkout_success(Request $request)
+    {
+        try{
+            $request->validate([
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required',
+                'phone' => 'required',
+                'city'=>'required',
+            ]);
+            DB::beginTransaction();
+
+            $used_message = 0;
+            $service = Post::where('id',$request->service_id)->first();
+            $promo_discount = Discount::where('id', $request->discount_id)
+                                        ->where('status', 1)
+                                        ->whereColumn('usage_limit', '>', 'used')
+                                        ->where(function($q){
+                                            $q->whereNull('expiry_date')->orWhere('expiry_date', '>=', today());
+                                        })
+                                        ->first();
+            if ($promo_discount)
+            {
+                $orderIds = OrderAddress::where('email', $request->email)->pluck('order_id');
+
+                // Check if any of those orders have this discount_id
+                $alreadyUsed = Order::whereIn('id', $orderIds)
+                    ->where('discount_id', $promo_discount->id)
+                    ->exists();
+
+                if ($alreadyUsed) {
+                    $promo_discount = null;
+                    $used_message = 1;
+                }
+            }
+            $discount_amount = (float) 0;
+            if($service->discount_price){
+                $sell_price = (float)$service->discount_price;
+            } else {
+                $sell_price = (float)$service->price;
+            }
+
+            $subTotal = (float)$sell_price;
+            if($promo_discount){
+                if($promo_discount->type === 'flat'){
+                    $discount_amount = $promo_discount->discount;
+                } else {
+                    $discount_amount = $subTotal * $promo_discount->discount * 0.01;
+                }
+                $discount_amount = min($discount_amount, $subTotal);
+            }
+            $grandTotal = $subTotal - (float) $discount_amount;
+
+            // dd('test post',$shipping, $request->all(),$subTotal, $grandTotal ,$promo_discount,$discount_amount);
+
+            $order = ServiceOrder::create([
+                'user_id'        => Auth::id(),
+                'service_id'     => $request->service_id,
+                'price'          => $sell_price,
+                'subtotal'       => $subTotal,
+                'grand_total'    => $grandTotal,
+                'order_track'    => 'OT' . mt_rand(100, 999). '-' . time(),
+                'status'         => 0,
+                'discount'       => $discount_amount,
+                'discount_id'    => $promo_discount->id ?? NULL,
+                'payment_type'   => $request->payment,
+                'notes'          => $request->message,
+            ]);
+            $userInfo = ServiceOrderAddress::create([
+                'first_name' => $request->first_name,
+                'last_name'  => $request->last_name,
+                'email'      => $request->email,
+                'phone'      => $request->phone,
+                'country'    => $request->country,
+                'province'   => $request->province,
+                'city'       => $request->city,
+                'zip_code'   => $request->zip_code,
+                'address1'   => $request->address,
+                'address2'   => $request->address_2,
+                'order_id'   => $order->id,
+            ]);
+            if($promo_discount){
+                $promo_discount->increment('used');
+            }
+
+            DB::commit();
+
+            $data = ['email' => $request->email, 'order' => $order,'user' => $userInfo,'used_msg' => $used_message];
+
+        }catch(ValidationException $e){
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => $e->validator->errors()->all()
+            ]);
+        }catch(Exception $e){
+            DB::rollBack();
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+            ]);
+        }
+
+        try {
+            // return new OrderMail($data);
+            // Mail::to($user->email)->queue(new OrderMail($data));
+        } catch (Exception $e) {
+            Log::error("Order email failed for order {$order->id}: " . $e->getMessage());
+        }
+        return redirect('/')->with([
+            'success' => true,
+            'message' => 'Order placed successfully!'
+        ]);
+    }
+
     public function applyPromo(Request $request)
     {
         try{
