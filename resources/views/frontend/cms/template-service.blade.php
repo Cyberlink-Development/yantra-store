@@ -31,20 +31,24 @@
         <div class="col-md-8">
             <div class="p-5" style="border-left: 1px solid #e5e4e4c7;">
                 <h1 class="mb-3">{{ $data->associated_title }}</h1>
-                <p class="text-muted">{{$data->post_excerpt}}</p>
+                <p class="text-muted">{{ $data->post_excerpt }}</p>
 
                 <p>{!! $data->post_content !!}</p>
-                
+
                 <div class="container">
                     <div class="row d-flex" style="gap:10px;">
-                      @if($data->price)
+                      @if($data->price > 0)
                         <div class=" p-0">
                           <div class="price-badge text-center" style="width:175px;">Rs. {{ $data->price }}</div>
                         </div>
+                        <div class=" p-0">
+                            <a href="{{ route('checkout-services', $data->uri) }}" class="quote-badge text-center" style="width:175px;">Purchase Now</a>
+                        </div>
+                      @else
+                        <div class=" p-0">
+                            <a href="#quote" data-toggle="modal" class="quote-badge text-center" style="width:175px;">Get A Quote</a>
+                        </div>
                       @endif
-                      <div class=" p-0">
-                        <a href="#quote" data-toggle="modal" class="quote-badge text-center" style="width:175px;">{{$data->price ? 'Purchase Now' : 'Get A Quote'}}</a>
-                      </div>
                     </div>
                 </div>
             </div>
