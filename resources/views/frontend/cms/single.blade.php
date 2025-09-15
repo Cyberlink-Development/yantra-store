@@ -38,7 +38,7 @@
                 <div class="container">
                     <div class="row d-flex" style="gap:10px;">
                       <div class=" p-0">
-                        <div class="price-badge text-center" style="width:175px;">Rs. {{ $data->price }}</div>
+                        <div class="price-badge text-center" style="width:175px;">Rs. {{ number_format($data->price) }}</div>
                       </div>
                       <div class=" p-0">
                         <a href="#quote" data-toggle="modal" class="quote-badge text-center" style="width:175px;">Get A Quote</a>

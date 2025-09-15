@@ -86,9 +86,9 @@
                         <div class="d-flex justify-content-between">
                             <div class="product-price">
                                 @if($isPriced)
-                                    <span class="font-midnight">Rs. {{ $row->discount_price ?? $row->price }}</span>
+                                    <span class="font-midnight">Rs. {{ number_format($row->discount_price) ?? number_format($row->price) }}</span>
                                     @if($row->discount_price)
-                                        <del class="font-size-sm text-danger">Rs. {{ $row->price }}</del>
+                                        <del class="font-size-sm text-danger">Rs. {{ number_format($row->price) }}</del>
                                     @endif
                                 @else
                                     <span class="font-midnight" style="visibility: hidden;"> Rs</span>

@@ -360,9 +360,17 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('view-orders') }}" class="nav-link ml-3 {{ Request::segment(2) == 'orders' ? 'active' : '' }}">
+                            <a href="{{ route('view-orders') }}" class="nav-link ml-3 {{ Request::segment(3) == 'all-orders' || Request::segment(3) == 'order-details' ? 'active' : '' }}">
                                 <i class="fa fa-paper-plane"></i>
-                                <p>All Orders</p>
+                                <p>Product Orders</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('service_orders') }}" class="nav-link ml-3 {{ Request::segment(3) == 'service-orders' || Request::segment(3) == 'service-order-details' ? 'active' : '' }}">
+                                <i class="fa fa-paper-plane"></i>
+                                <p>Service Orders</p>
                             </a>
                         </li>
                     </ul>
@@ -436,6 +444,12 @@
                 <!--        <p>FAQ'S</p>-->
                 <!--    </a>-->
                 <!--</li>-->
+                <li class="nav-item">
+                    <a href="{{ route('all_reviews') }}" class="nav-link {{ Request::segment(2) =='review' ? 'active' : '' }}">
+                        <i class="fa fa-star"></i>
+                        <p>Reviews</p>
+                    </a>
+                </li>
 
                 <li class="nav-item">
                     <a href="{{ route('contact.index') }}" class="nav-link {{ Request::segment(2) =='contact_inquiry' ? 'active' : '' }}">

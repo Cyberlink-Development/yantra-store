@@ -1,35 +1,32 @@
 @extends('backend.layouts.master')
 @section('breadcrum')
-    @include('backend.layouts.breadcrum', ['title' => 'Reviews','backLabel'=>'View All','backLink'=>route('all_reviews') ])
+    @include('backend.layouts.breadcrum', ['title' => 'All Reviews'])
 @endsection
 @section('content') 
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <div class="box-header">
-                    <h4 class="box-title">Product Name: </h4>
-                    <h6>{{$product->product_name}} </h6>
-                </div>
-                <br>
                 <div class="box-body">
                     <table id="package_table" class="table table-bordered datatable123">
                         <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>E-mail</th>
-                            <th>Rating</th>
-                            <th>Show</th>
-                            <th>Created At</th>
-                            <th class="sorting-false">Action</th>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 15%;">Name</th>
+                            <th style="width: 50%;">Product Name</th>
+                            <th style="width: 15%;">Rating</th>
+                            <th style="width: 5%;">Status</th>
+                            <th style="width: 10%;" class="sorting-false">Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($product->reviews as $key=>$value)
+                            @foreach($reviews as $key=>$value)
                             <tr>
                                 <td>{{$key+=1}}</td>
                                 <td>{{$value->name}}</td>
-                                <td>{{$value->email}}</td>
+                                <td>
+                                    <a href="{{route('all-review', $value->product_id)}}" style="color: black; text-decoration: none;" onmouseover="this.style.color='blue'" onmouseout="this.style.color='black'">
+                                        {{$value->product->product_name}}</td>
+                                    </a>
                                 <td>
                                     @for($i=0; $i<(int)$value->rating; $i++)
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -37,15 +34,9 @@
                                 </td>
                                 <td>
                                     <input type="checkbox" class="toggle-show" data-id="{{ $value->id }}" name="show" onclick="updateStatus(this, {{$value->id}},'{{getModelPathFromData($value)}}')" {{ $value->show == '1' ? 'checked' : '' }}>
-                                    <!-- @if($value->show)
-                                    <a href="{{route('update-review', [$value->id, 0])}}">Click here to Hide</a>
-                                    @else
-                                    <a href="{{route('update-review', [$value->id, 1])}}">Click here to Show</a>
-                                    @endif -->
                                 </td>
-                                <td>{{$value->created_at->format('d M Y')}}</td>
                                 <td>
-                                    <a class="btn btn-outline-primary btn btn-sm confirm view" 
+                                    <a class="btn btn-outline-primary btn btn-sm view"
                                         data-name="{{$value->name}}" 
                                         data-email="{{$value->email}}" 
                                         data-message="{{$value->message}}" 
@@ -59,6 +50,7 @@
                                 </td>
                             </tr>
                         @endforeach
+
                         </tbody>
                     </table>
                 </div>
@@ -76,7 +68,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -92,8 +84,6 @@
 
 @stop
 @push('scripts')
-   
-
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script>
         $('.datatable123').DataTable({

@@ -41,7 +41,7 @@
                   <div class="row">
                     @if ($row->price)
                       <div class="col-12 p-0">
-                          <div class="price-badge text-center">Rs. {{$row->price}}</div>
+                          <div class="price-badge text-center">Rs. {{number_format($row->price)}}</div>
                       </div>
                     @endif
                     <div class="col-12 p-0">

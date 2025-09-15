@@ -38,7 +38,8 @@
                             <input type="checkbox" name="is_featured" {{ $product->is_featured == 1 ? 'checked' : '' }} />
                         </td>
                         <td>
-                            @if($product->status==1)
+                            <input type="checkbox" class="toggle-status" data-id="{{ $product->id }}" name="status" onclick="updateStatus(this, {{$product->id}},'{{getModelPathFromData($product)}}')" {{ $product->status == '1' ? 'checked' : '' }}>
+                            <!-- @if($product->status==1)
                                 <button class="btn btn-success btn btn-sm" name="active">
                                     <i class="fa fa-check"></i>
                                 </button>
@@ -46,7 +47,7 @@
                                 <button class="btn btn-danger btn btn-sm" name="inactive">
                                     <i class="fa fa-times"></i>
                                 </button>
-                            @endif
+                            @endif -->
                         </td>
                         <td>
                             @foreach($product->categories as $value)

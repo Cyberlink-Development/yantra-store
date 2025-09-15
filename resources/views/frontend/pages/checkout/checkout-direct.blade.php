@@ -66,7 +66,7 @@
                     </div>
 
                     <ul class="list-unstyled font-size-sm pb-2 border-bottom">
-                        <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Subtotal:</span><span class="text-right">Rs. {{ $total }}</span></li>
+                        <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Subtotal:</span><span class="text-right">Rs. {{ number_format($total) }}</span></li>
                         <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Discount:</span><span class="text-right" id="discount-code">Rs. 0</span></li>
                         <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Shipping:</span><span class="text-right" id="shipping-price">Rs. 0</span></li>
                     </ul>
@@ -161,7 +161,7 @@
                                 <select class="form-control custom-select" id="checkout-shipping" name="shipping" required>
                                     <option value="" selected hidden>Choose Shipping Area</option>
                                     @foreach ($shipping as $row )
-                                        <option value="{{ $row->id }}" data-price="{{ $row->shipping_price }}">{{$row->shipping_location}} (Rs. {{ $row->shipping_price }})</option>
+                                        <option value="{{ $row->id }}" data-price="{{ $row->shipping_price }}">{{$row->shipping_location}} (Rs. {{ number_format($row->shipping_price) }})</option>
                                     @endforeach
                                 </select>
                             </div>

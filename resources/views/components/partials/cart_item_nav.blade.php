@@ -12,7 +12,7 @@
                     <a href="{{ route('product-single', $row->options->slug) }}">{{ $row->name }}</a>
                 </h6>
                 <div class="widget-product-meta">
-                    <span class="text-accent mr-2">Rs. {{ $row->price }}</span>
+                    <span class="text-accent mr-2">Rs. {{ number_format($row->price) }}</span>
                     <span class="text-muted">x {{ $row->qty }}</span>
                 </div>
             </div>

@@ -45,8 +45,8 @@
                                     @if($value->options->brand)
                                         <div class="font-size-sm"><span class="text-muted mr-2">Brand:</span>{{$value->options->brand->brand_name}}</div>
                                     @endif
-                                    <div class="font-size-md font-secondary pt-2"><span class="text-muted mr-2 font-size-sm">Per Item:</span>Rs.{{ $value->price }}</div>
-                                    <div class="font-size-lg font-secondary pt-2"><span class="text-muted mr-2 font-size-sm">Total:</span>Rs.{{ $value->price * $value->qty }}</div>
+                                    <div class="font-size-md font-secondary pt-2"><span class="text-muted mr-2 font-size-sm">Per Item:</span>Rs.{{ number_format($value->price) }}</div>
+                                    <div class="font-size-lg font-secondary pt-2"><span class="text-muted mr-2 font-size-sm">Total:</span>Rs.{{ number_format($value->price * $value->qty) }}</div>
                                 </div>
                             </div>
                             <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 9rem;">

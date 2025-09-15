@@ -1,4 +1,7 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'Quotation'])
+@endsection
 @section('content')
     {{--sadas--}}
     <div class="container">

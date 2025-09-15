@@ -9,9 +9,15 @@ use App\Model\Review;
 
 class ReviewController extends Controller
 {
+    public function index()
+    {
+        $reviews = Review::with('product')->orderBy('created_at','desc')->get();
+        // dd($reviews);
+        return view('backend.pages.reviews.index', compact('reviews'));
+    }
     public function all_review($id){
         $product = Product::find($id);
-
+        // dd('test');
         return view('backend.pages.product.reviews', compact('product'));
     }
 
@@ -19,7 +25,10 @@ class ReviewController extends Controller
         $review = Review::find($id);
         $review->delete();
 
-        return back()->with('success', 'Review successfully deleted');
+        return back()->with([
+            'success'=> true,
+            'message' => 'Review successfully deleted.']
+        );
     }
 
     public function update_review($id, $value){
