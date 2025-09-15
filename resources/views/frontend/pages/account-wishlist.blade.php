@@ -53,8 +53,8 @@
                                 @if(get_brand_name($product->brand_id))
                                     <div class="font-size-sm"><span class="text-muted mr-2">Brand:</span>{{get_brand_name($product->brand_id) }}</div>
                                 @endif
-                                <div class="font-size-lg font-secondary pt-2">Rs. {{ $product->discount_price }}</div>
-                                <del class="font-size-sm text-danger">Rs. {{ $product->price }}</del>
+                                <div class="font-size-lg font-secondary pt-2">Rs. {{ number_format($product->discount_price) }}</div>
+                                <del class="font-size-sm text-danger">Rs. {{ number_format($product->price) }}</del>
                             </div>
                         </div>
                         <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center wishlist-item" >

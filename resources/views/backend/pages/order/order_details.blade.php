@@ -112,9 +112,9 @@
                                             @endif
                                         </td>
                                         <td>{{$value->size != '' ? $value->size : "Free Size"}}</td> -->
-                                        <td>Rs {{$value->price}}</td>
+                                        <td>Rs {{number_format($value->price)}}</td>
                                         <!-- <td>{{$value->products->weight}} gm</td> -->
-                                        <td class="price">Rs {{$value->total}}</td>
+                                        <td class="price">Rs {{number_format($value->total)}}</td>
                                     </tr>
                                 @endforeach
 
@@ -169,21 +169,21 @@
                                         </tr> -->
                                         <tr>
                                             <th style="width:50%">Subtotal:</th>
-                                            <td class="sub">Rs {{$order->subtotal}}</td>
+                                            <td class="sub">Rs {{number_format($order->subtotal)}}</td>
                                         </tr>
-                                        <!-- <tr>
-                                            <th>Tax:</th>
-                                            <td class="vat">$ {{$order->tax}}</td>
-                                        </tr> -->
+                                        <tr>
+                                            <th>Discount:</th>
+                                            <td class="vat">Rs. {{$order->discount}}</td>
+                                        </tr>
                                         @if($order->shippings)
                                         <tr>
                                             <th>Shipping Cost:</th>
-                                            <td class="charge">Rs {{$order->shippings->shipping_price}}</td>
+                                            <td class="charge">Rs {{number_format($order->shippings->shipping_price)}}</td>
                                         </tr>
                                         @endif
                                         <tr>
                                             <th>Total:</th>
-                                            <td class="grand">Rs {{$order->grand_total}}</td>
+                                            <td class="grand">Rs {{number_format($order->grand_total)}}</td>
                                         </tr>
                                     </table>
                                 </div>

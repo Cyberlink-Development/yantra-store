@@ -333,6 +333,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
         Route::any('order-delete/{id}', 'OrderController@order_delete')->name('order-delete');
         Route::any('order-status', 'OrderController@order_status')->name('order-status');
         Route::get('generate-pdf/{id}','OrderController@generatePDF')->name('pdf-generate');
+        // Services Orders
+        Route::get('/service-orders', 'OrderController@service_orders')->name('service_orders');
+        Route::any('service-order-details/{id}', 'OrderController@service_order_details')->name('service_order_details');
+        Route::any('service-order-delete/{id}', 'OrderController@service_order_delete')->name('service-order-delete');
+        Route::any('service-order-status', 'OrderController@service_order_status')->name('service_order_status');
 
     });
 
@@ -364,6 +369,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
 
     // Review routes
     Route::group(['prefix' => 'review'], function () {
+        Route::get('/all-reviews', 'ReviewController@index')->name('all_reviews');
         Route::get('/all-review/{id}', 'ReviewController@all_review')->name('all-review');
         Route::get('/delete-review/{id}', 'ReviewController@delete_review')->name('delete-review');
         Route::get('/update-review/{id}/{value}', 'ReviewController@update_review')->name('update-review');

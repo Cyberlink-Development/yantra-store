@@ -19,7 +19,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="h3 m-0">Get a Quote</h2>
+                    <h2 class="h3 m-0">GET A QUOTE</h2>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 </div>
@@ -181,9 +181,9 @@
                             <div class="d-flex justify-content-between mt-3">
                                 <div style="font-size:25px;">
                                     @if($data->discount_price || $data->price)
-                                        <span class="font-midnight">Rs.{{ $data->discount_price ?? $data->price }}</span>
+                                        <span class="font-midnight">Rs.{{ number_format($data->discount_price) ?? number_format($data->price) }}</span>
                                         @if($data->discount_price)
-                                            <del class="font-size-sm text-danger">Rs. {{ $data->price }}</del>
+                                            <del class="font-size-sm text-danger">Rs. {{ number_format($data->price) }}</del>
                                         @endif
                                     @else
                                         <span class="font-midnight" style="visibility: hidden;"> Rs</span>
@@ -229,10 +229,10 @@
                                         </a>
                                     @else
                                         <!-- <a class="btn btn-primary btn-shadow btn-block mt-0" id="buy_now_btn">
-                                            <i class="czi-bag font-size-lg mr-2"></i>Get a quote
+                                            <i class="czi-bag font-size-lg mr-2"></i>GET A QUOTE
                                         </a> -->
                                         <a href="#quote" data-toggle="modal" data-item-id="{{ $data->id }}" data-price="{{ $data->price }}" data-name="{{ $data->product_name }}" data-type="product" class="btn btn-secondary btn-shadow btn-block mt-0 btn-hover-white">
-                                            Get a quote
+                                            GET A QUOTE
                                             <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
                                         </a>
                                     @endif
@@ -479,9 +479,9 @@
                                     <div class="d-flex justify-content-between">
                                         <div class="product-price">
                                             @if($isPriced)
-                                                <span class="font-midnight">Rs. {{ $row->discount_price ?? $row->price }}</span>
+                                                <span class="font-midnight">Rs. {{ number_format($row->discount_price) ?? number_format($row->price) }}</span>
                                                 @if($row->discount_price)
-                                                    <del class="font-size-sm text-danger">Rs. {{ $row->price }}</del>
+                                                    <del class="font-size-sm text-danger">Rs. {{ number_format($row->price) }}</del>
                                                 @endif
                                             @else
                                                 <span class="font-midnight" style="visibility: hidden;"> Rs</span>

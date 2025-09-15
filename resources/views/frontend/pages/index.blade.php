@@ -175,9 +175,9 @@
                                 <div class="d-flex justify-content-between">
                                     <div class="product-price">
                                         @if($isPriced)
-                                            <span class="font-midnight">Rs. {{ $row->discount_price ?? $row->price }}</span>
+                                            <span class="font-midnight">Rs. {{ number_format($row->discount_price) ?? number_format($row->price) }}</span>
                                             @if($row->discount_price)
-                                                <del class="font-size-sm text-danger">Rs. {{ $row->price }}</del>
+                                                <del class="font-size-sm text-danger">Rs. {{ number_format($row->price) }}</del>
                                             @endif
                                         @else
                                             <span class="font-midnight" style="visibility: hidden;"> Rs</span>
@@ -203,7 +203,7 @@
                                     <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class="font-size-md mb-2 text-white text-center pt-2">
-                                                Get a quote
+                                                GET A QUOTE
                                             </h3>
                                         </div>
                                         <div>
@@ -291,9 +291,9 @@
                                 <div class="d-flex justify-content-between">
                                     <div class="product-price">
                                         @if($isPriced)
-                                            <span class="font-midnight">Rs. {{ $row->discount_price ?? $row->price }}</span>
+                                            <span class="font-midnight">Rs. {{ number_format($row->discount_price) ?? number_format($row->price) }}</span>
                                             @if($row->discount_price)
-                                                <del class="font-size-sm text-danger">Rs. {{ $row->price }}</del>
+                                                <del class="font-size-sm text-danger">Rs. {{ number_format($row->price) }}</del>
                                             @endif
                                         @else
                                             <span class="font-midnight" style="visibility: hidden;">Rs</span>
@@ -319,7 +319,7 @@
                                     <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class=" font-size-md mb-2 text-white text-center pt-2">
-                                                Get a quote
+                                                GET A QUOTE
                                             </h3>
                                         </div>
                                         <div>
@@ -423,9 +423,9 @@
                                 <div class="d-flex justify-content-between">
                                     <div class="product-price">
                                         @if($isPriced)
-                                            <span class="font-midnight">Rs. {{ $row->discount_price ?? $row->price }}</span>
+                                            <span class="font-midnight">Rs. {{ number_format($row->discount_price) ?? number_format($row->price) }}</span>
                                             @if($row->discount_price)
-                                                <del class="font-size-sm text-danger">Rs. {{ $row->price }}</del>
+                                                <del class="font-size-sm text-danger">Rs. {{ number_format($row->price) }}</del>
                                             @endif
                                         @else
                                             <span class="font-midnight" style="visibility: hidden;">Rs.</span>
@@ -451,7 +451,7 @@
                                     <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class=" font-size-md mb-2 text-white text-center pt-2">
-                                                Get a quote
+                                                GET A QUOTE
                                             </h3>
                                         </div>
                                         <div>
@@ -593,9 +593,9 @@
                                 <div class="d-flex justify-content-between">
                                     <div class="product-price">
                                         @if($isPriced)
-                                            <span class="font-midnight">Rs. {{ $row->discount_price ?? $row->price }}</span>
+                                            <span class="font-midnight">Rs. {{ number_format($row->discount_price) ?? number_format($row->price) }}</span>
                                             @if($row->discount_price)
-                                                <del class="font-size-sm text-danger">Rs. {{ $row->price }}</del>
+                                                <del class="font-size-sm text-danger">Rs. {{ number_format($row->price) }}</del>
                                             @endif
                                         @else
                                             <span class="font-midnight" style="visibility:hidden;">Rs.</span>
@@ -621,7 +621,7 @@
                                     <div class="py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class="font-size-md mb-2 text-white text-center pt-2">
-                                                Get a quote
+                                                GET A QUOTE
                                             </h3>
                                         </div>
                                         <div>
@@ -741,9 +741,9 @@
                                                             <div class="d-flex justify-content-between">
                                                                 <div class="product-price">
                                                                     @if($isPriced)
-                                                                        <span class="font-midnight">Rs. {{ $row->discount_price ?? $row->price }}</span>
+                                                                        <span class="font-midnight">Rs. {{ number_format($row->discount_price) ?? number_format($row->price) }}</span>
                                                                         @if($row->discount_price)
-                                                                            <del class="font-size-sm text-danger">Rs. {{ $row->price }}</del>
+                                                                            <del class="font-size-sm text-danger">Rs. {{ number_format($row->price) }}</del>
                                                                         @endif
                                                                     @else
                                                                         <span class="font-midnight" style="visibility: hidden;"> Rs</span>
@@ -887,9 +887,9 @@
                                 <div class="d-flex justify-content-between">
                                     <div class="product-price">
                                         @if($isPriced)
-                                            <span class="font-midnight">Rs. {{ $row->discount_price ?? $row->price }}</span>
+                                            <span class="font-midnight">Rs. {{ number_format($row->discount_price) ?? number_format($row->price) }}</span>
                                             @if($row->discount_price)
-                                                <del class="font-size-sm text-danger">Rs. {{ $row->price }}</del>
+                                                <del class="font-size-sm text-danger">Rs. {{ number_format($row->price) }}</del>
                                             @endif
                                         @else
                                             <span class="font-midnight" style="visibility: hidden;"> Rs</span>
@@ -915,7 +915,7 @@
                                     <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class=" font-size-md mb-2 text-white text-center pt-2">
-                                                Get a quote
+                                                GET A QUOTE
                                             </h3>
                                         </div>
                                         <div>
@@ -966,7 +966,7 @@
                             <div class="row">
                                 @if ($row->price)
                                     <div class="col-12 p-0">
-                                        <div class="price-badge text-center">Rs. {{$row->price}}</div>
+                                        <div class="price-badge text-center">Rs. {{ number_format($row->price) }}</div>
                                     </div>
                                 @endif
                                 <div class="col-12 p-0">

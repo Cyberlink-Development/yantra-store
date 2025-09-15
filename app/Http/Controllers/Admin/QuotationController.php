@@ -25,7 +25,10 @@ class QuotationController extends Controller
         $quotation = Quotation::find($id);
         $quotation->delete();
 
-        return back()->with('success', 'Quotation successfully deleted');
+        return back()->with([
+            'success'=> true,
+            'message' => 'Quotation successfully deleted.']
+        );
     }
 
     public function view_quotation($id,$uri){

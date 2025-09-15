@@ -1,11 +1,11 @@
 @extends('backend.layouts.master')
+@section('breadcrum')
+    @include('backend.layouts.breadcrum', ['title' => 'Quotations'])
+@endsection
 @section('content') 
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <div class="box-header">
-                    <h3 class="box-title">Quotations</h3>
-                </div>
                 <div class="box-body">
                     <table id="package_table" class="table table-bordered datatable123">
                         <thead>
@@ -52,9 +52,13 @@
                         <tr>
                         <th>#</th>
                             <th>{{$title}}</th>
+                            @if ($title === 'Service')
+                                <th>
+                                    Type
+                                </th>
+                            @endif
                             <th>Name</th>
                             <th>E-mail</th>
-                           
                             <th>Country</th>
                             <th>Created At</th>
                             <th class="sorting-false">Action</th>
