@@ -29,18 +29,18 @@
                                         <input class="form-control" placeholder="Sub Title" name="sub_title" type="text">
                                     </div>
 
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label for="type" class="control-label">Discount Type</label>
                                         <select name="type" id="type" class="form-control">
                                             <option value="">-- Select Type --</option>
                                             <option value="1">Percentage</option>
                                             <option value="0">Flat</option>
                                         </select>
-                                    </div>
+                                    </div> -->
 
                                     <div class="form-group">
                                         <label for="discount" class="control-label">Discount</label>
-                                        <input id="discount" class="form-control" placeholder="Enter discount value" name="discount" type="number" min="0" disabled>
+                                        <input id="discount" class="form-control" placeholder="Enter discount value" name="discount" type="number" min="0" max="99.99">
                                     </div>
                                 </div>
                             </div>

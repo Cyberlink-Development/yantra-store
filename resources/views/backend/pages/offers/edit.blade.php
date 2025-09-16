@@ -29,18 +29,18 @@
                                         <label for="sub_title" class="control-label">Sub Title</label>
                                         <input class="form-control" placeholder="Sub Title" name="sub_title" type="text" value="{{ old('sub_title', $offer->sub_title) }}">
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label for="type" class="control-label">Discount Type</label>
                                         <select name="type" id="type" class="form-control">
                                             <option value="">-- Select Type --</option>
                                             <option value="1" {{ old('type', $offer->type ?? null) === 1 ? 'selected' : '' }}>Percentage</option>
                                             <option value="0" {{ old('type', $offer->type ?? null) === 0 ? 'selected' : '' }}>Flat</option>
                                         </select>
-                                    </div>
+                                    </div> -->
 
                                     <div class="form-group">
-                                        <label for="discount" class="control-label">Discount</label>
-                                        <input class="form-control" placeholder="Enter discount value" name="discount" id="discount" type="number" min="0" value="{{ old('discount', $offer->discount ?? null) }}" disabled>
+                                        <label for="discount" class="control-label">Discount Percent</label>
+                                        <input class="form-control" placeholder="Enter discount value" name="discount" id="discount" type="number" min="0" max="99.99" value="{{ old('discount', $offer->discount ?? null) }}" >
                                     </div>
                                 </div>
                             </div>
