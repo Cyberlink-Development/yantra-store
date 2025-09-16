@@ -6,6 +6,7 @@ use App\Model\Brand;
 use App\Model\Color;
 use App\Model\ComponentType;
 use App\Model\Image;
+use App\Model\OffersModel;
 use App\Model\Product;
 use App\Model\Size;
 use App\Model\Stock;
@@ -43,14 +44,16 @@ class ProductController extends BackendController
         $pro = Product::all();
         $size = Size::all();
         $brands = Brand::all();
+        $offers = OffersModel::all();
         $color = Color::all();
         $comp_type = ComponentType::all();
         $categories = Category::with('children')->where('parent_id', 0)->where('status', 1)->get();
-        return view($this->backendproductPath . 'create', compact('size', 'brands', 'color','comp_type','categories'));
+        return view($this->backendproductPath . 'create', compact('size', 'brands','offers', 'color','comp_type','categories'));
     }
 
     public function store(Request $request)
     {
+        dd($request->all());
         $isAjax = $request->ajax();
         try{
             $request->validate([
@@ -68,6 +71,7 @@ class ProductController extends BackendController
             $product->price = $request->price;
             $product->stock = $request->stock;
             $product->discount_price = $request->discount_price;
+            $product->discount_percent = $request->discount_percent;
             $product->wholesale_price = $request->wholesale_price;
             $product->short_description = $request->short_description;
             $product->long_description = $request->long_description;
@@ -82,6 +86,7 @@ class ProductController extends BackendController
             $product->weight = $request->weight;
             $product->video = $request->video;
             $product->brand_id = $request->brand_id;
+            $product->offer_id = $request->offer_id;
             $product->model_name = $request->model_name;
             $product->component_type = $request->component_type;
             $product->size_variation = $request->size_type;
@@ -210,11 +215,12 @@ class ProductController extends BackendController
         $data = Product::where('id', '=', $request->id)->first();
         $size = Size::all();
         $brands = Brand::all();
+        $offers = OffersModel::all();
         $color = Color::all();
         $comp_type = ComponentType::all();
         $categories = Category::with('children')->where('parent_id', 0)->where('status', 1)->get();
         $assignedCategories = $data->categories->pluck('id')->toArray();
-        return view($this->backendproductPath . 'edit', compact('data', 'size', 'brands', 'color','comp_type','categories','assignedCategories'));
+        return view($this->backendproductPath . 'edit', compact('data', 'size', 'brands','offers', 'color','comp_type','categories','assignedCategories'));
     }
 
     public function update(Request $request)
@@ -235,6 +241,7 @@ class ProductController extends BackendController
             $product->product_name = $request->product_name;
             $product->price = $request->price;
             $product->discount_price = $request->discount_price;
+            $product->discount_percent = $request->discount_percent;
             $product->stock = $request->stock;
             $product->short_description = $request->short_description;
             $product->long_description = $request->long_description;
@@ -248,6 +255,7 @@ class ProductController extends BackendController
             $product->sku = $request->sku;
             $product->video = $request->video;
             $product->brand_id = $request->brand_id;
+            $product->offer_id = $request->offer_id;
             $product->model_name = $request->model_name;
             $product->component_type = $request->component_type;
             $product->weight = $request->weight;

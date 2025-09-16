@@ -86,30 +86,30 @@
                         <div class="row">
                             <input class="form-control" type="hidden" id="checkout-fn" name="service_id" value="{{ $service->id }}" required>
                             <input type="hidden" name="discount_id" id="discount-id" value="">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label for="checkout-fn">First Name <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" id="checkout-fn" name="first_name" required>
+                                    <label for="checkout-fn">Full Name <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" id="checkout-fn" name="first_name" value="{{ old('first_name', $user->first_name ?? '') }}" required>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <!-- <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="checkout-ln">Last Name<span class="text-danger">*</span></label>
                                     <input class="form-control" type="text" id="checkout-ln" name="last_name" required>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="checkout-email">E-mail Address<span class="text-danger">*</span></label>
-                                    <input class="form-control" type="email" id="checkout-email" name="email"  required>
+                                    <input class="form-control" type="email" id="checkout-email" name="email" value="{{ $user->email }}" readonly>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="checkout-phone">Phone Number<span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" id="checkout-phone" name="phone" required>
+                                    <input class="form-control" type="text" id="checkout-phone" name="phone" value="{{ $user->phone }}" required>
                                 </div>
                             </div>
                         </div>
@@ -117,13 +117,37 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="checkout-country">Country<span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" id="checkout-country" name="country" required>
+                                    <input class="form-control" type="text" id="checkout-country" name="country" value="{{ $userInfo->country }}" required>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="checkout-province">Province<span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" id="checkout-province" name="province" required>
+                                    <!-- <input class="form-control" type="text" id="checkout-province" name="province" required> -->
+                                    <select class="form-control custom-select" id="checkout-province" name="province" required>
+                                        <option value="" selected hidden>Choose Province</option>
+                                        <option value="Province 1" {{$userInfo->province == 'Province 1' ? 'selected' : ''}}>
+                                            Province 1
+                                        </option>
+                                        <option value="Madhesh Province" {{$userInfo->province == 'Madhesh Province' ? 'selected' : ''}}>
+                                            Madhesh Province
+                                        </option>
+                                        <option value="Bagmati Province" {{$userInfo->province == 'Bagmati Province' ? 'selected' : ''}}>
+                                            Bagmati Province
+                                        </option>
+                                        <option value="Gandaki Province" {{$userInfo->province == 'Gandaki Province' ? 'selected' : ''}}>
+                                            Gandaki Province
+                                        </option>
+                                        <option value="Lumbini Province" {{$userInfo->province == 'Lumbini Province' ? 'selected' : ''}}>
+                                            Lumbini Province
+                                        </option>
+                                        <option value="Karnali Province" {{$userInfo->province == 'Karnali Province' ? 'selected' : ''}}>
+                                            Karnali Province
+                                        </option>
+                                        <option value="Sudurpashchim Province" {{$userInfo->province == 'Sudurpashchim Province' ? 'selected' : ''}}>
+                                            Sudurpashchim Province
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -131,13 +155,13 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="checkout-city">City<span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" id="checkout-city" name="city" required>
+                                    <input class="form-control" type="text" id="checkout-city" name="city" value="{{ $userInfo->city ?? '' }}" required>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="checkout-zip">ZIP Code<span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" id="checkout-zip" name="zip_code" required>
+                                    <input class="form-control" type="text" id="checkout-zip" name="zip_code" value="{{ $userInfo->zip_code ?? '' }}" required>
                                 </div>
                             </div>
                         </div>
@@ -145,7 +169,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label for="checkout-address">Address<span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" id="address" name="address">
+                                    <input class="form-control" type="text" id="address" name="address" value="{{ $userInfo->address1 ?? '' }}" required>
                                 </div>
                             </div>
                             <div class="col-sm-12">

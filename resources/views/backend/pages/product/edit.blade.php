@@ -53,13 +53,19 @@
                                             <input class="form-control" placeholder="Enter product stock knowing unit" name="sku" type="text" value="{{$data->sku}}">
                                         </div>
                                         <div class="row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group col-md-4">
                                                 <label for="price" class="control-label">Price</label>
-                                                <input class="form-control" placeholder="price" name="price" type="number" value="{{$data->price}}">
+                                                <input id="price" class="form-control" placeholder="Price" name="price" type="number" step="0.01" min="0" value="{{ old('price', $data->price) }}">
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="discount_price" class="control-label">Disocunt Price</label>
-                                                <input class="form-control" placeholder="Discount price" name="discount_price" type="number" value="{{$data->discount_price}}">
+
+                                            <div class="form-group col-md-4">
+                                                <label for="discount_percent" class="control-label">Discount Percent</label>
+                                                <input id="discount_percent" class="form-control" placeholder="Percentage" name="discount_percent" type="number" step="0.01" min="0" max="100" value="{{ old('discount_percent', $data->discount_percent) }}">
+                                            </div>
+
+                                            <div class="form-group col-md-4">
+                                                <label for="discount_price" class="control-label">Discount Price</label>
+                                                <input id="discount_price" class="form-control" placeholder="Discount price" name="discount_price" type="number" value="{{ old('discount_price', $data->discount_price) }}" readonly>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -196,19 +202,19 @@
                                     <label for="status" class="control-label m-0">Status:</label>
                                     <input type="checkbox" id="status" name="status" {{$data->status == 1 ? 'checked' : ''}} />
                                 </div>
-                                <div class="form-group m-0">
-                                    <label for="is_featured" class="control-label m-0">Is Feature?</label>
-                                    <input type="checkbox" id="is_featured" name="is_featured" {{$data->is_featured == 1 ? 'checked' : ''}} />
-                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="card" style="box-shadow:none; border:none;">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
-                                <div class="form-group m-0">
+                                <!-- <div class="form-group m-0">
                                     <label for="hot" class="control-label m-0">Hot Deals?:</label>
                                     <input type="checkbox" id="hot" name="hot" {{$data->hot == 1 ? 'checked' : ''}} />
+                                </div> -->
+                                <div class="form-group m-0">
+                                    <label for="is_featured" class="control-label m-0">Is Feature?</label>
+                                    <input type="checkbox" id="is_featured" name="is_featured" {{$data->is_featured == 1 ? 'checked' : ''}} />
                                 </div>
                                 <div class="form-group m-0">
                                     <label for="latest" class="control-label m-0">Latest ?</label>
@@ -217,7 +223,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card" style="box-shadow:none; border:none;">
+                    <!-- <div class="card" style="box-shadow:none; border:none;">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div class="form-group m-0">
@@ -226,7 +232,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="card" style="box-shadow:none; border:none;">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
@@ -237,7 +243,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card" style="box-shadow:none; border:none;">
+                    <!-- <div class="card" style="box-shadow:none; border:none;">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div class="form-group m-0">
@@ -246,7 +252,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="card" style="box-shadow:none; border:none;">
                         <div class="card-body">
                             <div class="d-flex justify-content-between" style="flex-direction: column;">
@@ -274,6 +280,21 @@
                                     @foreach($brands as $row)
                                         <option value="{{ $row->id }}" {{ $data->brand_id == $row->id ? 'selected' : '' }}>
                                             {{ $row->brand_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="box-shadow:none; border:none;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between" style="flex-direction: column;">
+                                <label for="offer_id" class="control-label mb-1">Offers:</label>
+                                <select class="form-control" name="offer_id">
+                                    <option value="">Select Offer</option>
+                                    @foreach($offers as $row)
+                                        <option value="{{ $row->id }}" {{ $data->offer_id == $row->id ? 'selected' : '' }}>
+                                            {{ $row->title }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -547,6 +568,30 @@
                         alert("It failed");
                     }
                 });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const priceInput = document.getElementById('price');
+            const discountPercentInput = document.getElementById('discount_percent');
+            const discountPriceInput = document.getElementById('discount_price');
+
+            function calculateDiscountPrice() {
+                const price = parseFloat(priceInput.value) || 0;
+                const discountPercent = parseFloat(discountPercentInput.value) || 0;
+
+                // Cap discount percent at 100
+                const validDiscount = discountPercent > 100 ? 100 : discountPercent;
+
+                const discountPrice = price - (price * validDiscount / 100);
+                discountPriceInput.value = discountPrice.toFixed(2);
+            }
+
+            // Trigger calculation on page load in case values exist
+            calculateDiscountPrice();
+
+            priceInput.addEventListener('input', calculateDiscountPrice);
+            discountPercentInput.addEventListener('input', calculateDiscountPrice);
         });
     </script>
 @endpush
