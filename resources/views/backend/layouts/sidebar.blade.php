@@ -159,6 +159,40 @@
 
                     </ul>
                 </li>
+
+                <li class="nav-item has-treeview {{ Request::segment(2) == 'offers' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) == 'offers' ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-gift"></i>
+                        <p>
+                            Offers
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <!-- <li class="nav-item">
+                            <a href="{{ route('offers.create') }}" class="nav-link ml-3 {{ Request::segment(2) == 'offers' && (Request::segment(3) == 'create' || Request::segment(3) == 'edit') ? 'active' : '' }}">
+                                <i class="fa fa-plus nav-icon"></i>
+                                <p>Add Offers</p>
+                            </a>
+                        </li> -->
+
+                        <li class="nav-item">
+                            <a href="{{ route('offers.index') }}" class="nav-link ml-3 {{ Request::segment(2) == 'offers' && (Request::segment(3) == 'index')  ? 'active' : '' }}">
+                                <i class="fa fa-list nav-icon"></i>
+                                <p>All Offers</p>
+                            </a>
+                        </li>
+                        @foreach ($allOffers as $offer)
+                            <li class="nav-item">
+                                <a href="{{ route('offers.show',$offer->id) }}" class="nav-link ml-3 {{ Request::segment(2) == 'offers' && Request::segment(4) == $offer->id  ? 'active' : '' }}">
+                                    <i class="fa fa-bolt nav-icon"></i>
+                                    <p>{{ $offer->title }}</p>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </li>
+
                 <li class="nav-item has-treeview {{ Request::segment(2) == 'componenttype' ? 'menu-open' : '' }}">
                     <a href="" class="nav-link {{ Request::segment(2) == 'componenttype' ? 'active' : '' }}">
                         <i class="nav-icon fa fa-puzzle-piece"></i>

@@ -230,6 +230,15 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
         Route::get('category-image-delete/{id}', 'CategoryController@category_image_delete')->name('category-image-delete');
         Route::get('category-banner-delete/{id}', 'CategoryController@category_banner_delete')->name('category-banner-delete');
     });
+    Route::group(['prefix' => 'offers'], function () {
+        Route::get('index', 'OffersController@index')->name('offers.index');
+        Route::get('show/{id}', 'OffersController@show')->name('offers.show');
+        Route::get('create', 'OffersController@create')->name('offers.create');
+        Route::post('store', 'OffersController@store')->name('offers.store');
+        Route::get('edit/{id}', 'OffersController@edit')->name('offers.edit');
+        Route::any('update/{id}', 'OffersController@update')->name('offers.update');
+        Route::any('delete-offers/{id}', 'OffersController@destroy')->name('offers-delete');
+    });
 
     Route::group(['prefix' => 'product'], function () {
         Route::get('index', 'ProductController@index')->name('product.index');

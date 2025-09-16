@@ -2,6 +2,7 @@
 
 use App\Model\Brand;
 use App\Model\ComponentType;
+use App\Model\OffersModel;
 use App\Model\Post;
 use App\Model\PostType;
 use App\Model\Product;
@@ -186,6 +187,20 @@ function getDiscountPercentage($price,$discountPrice){
     }
     $percentage = (($price - $discountPrice) * 100) / $price;
     return number_format($percentage,2).'%';
+}
+function getAmountAfterDiscount($price,$discountPrice){
+    if($discountPrice <= 0){
+        return $price;
+    }
+    $amount = ($price - ($price * $discountPrice *0.01)) ;
+    return number_format($amount);
+}
+function getDiscountOffer($id){
+    $offer = OffersModel::where('id',$id)->where('status','1')->first();
+    if($offer && $offer->discount > 0){
+        return $offer->discount;
+    }
+    return false;
 }
 
 function getStarRatings($rating){

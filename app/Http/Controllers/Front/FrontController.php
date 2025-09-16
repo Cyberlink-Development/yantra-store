@@ -68,10 +68,11 @@ class FrontController extends Controller
         $categoriesSlider = Category::active()->where('in_slider', '1')->latest()->get();
         $categoriesMovingText = Category::active()->where('in_moving_text','1')->latest()->get();
 
-        $flashSales = Product::where('on_sale','1')->active()
-                        ->with(['categories' => function ($query){
-                          $query->where('in_moving_text','!=','1');
-                        }])->latest()->take(5)->get();
+        // $flashSales = Product::where('on_sale','1')->active()
+        //                 ->with(['categories' => function ($query){
+        //                   $query->where('in_moving_text','!=','1');
+        //                 }])->latest()->take(5)->get();
+        $flashSales = Product::where('offer_id','3')->latest()->take(5)->get();
         $latestProducts = Product::where('latest','1')->active()
                         ->with(['categories' => function ($query){
                           $query->where('in_moving_text','!=','1');
@@ -80,18 +81,20 @@ class FrontController extends Controller
                         ->with(['categories' => function ($query){
                           $query->where('in_moving_text','!=','1');
                         }])->latest()->take(15)->get();
-        $goneInSeconds = Product::where('is_special','1')->active()
-                        ->with(['categories' => function ($query){
-                          $query->where('in_moving_text','!=','1');
-                        }])->latest()->get();
+        // $goneInSeconds = Product::where('is_special','1')->active()
+        //                 ->with(['categories' => function ($query){
+        //                   $query->where('in_moving_text','!=','1');
+        //                 }])->latest()->get();
+        $goneInSeconds = Product::where('offer_id','4')->latest()->get();
         $featuresProducts = Product::where('is_featured','1')->active()
                         ->with(['categories' => function ($query){
                           $query->where('in_moving_text','!=','1');
                         }])->latest()->take(5)->get();
-        $hotProducts = Product::where('hot','1')->active()
-                        ->with(['categories' => function ($query){
-                          $query->where('in_moving_text','!=','1');
-                        }])->latest()->take(5)->get();
+        // $hotProducts = Product::where('hot','1')->active()
+        //                 ->with(['categories' => function ($query){
+        //                   $query->where('in_moving_text','!=','1');
+        //                 }])->latest()->take(5)->get();
+        $hotProducts = Product::where('offer_id','1')->latest()->take(5)->get();
         $brands=Brand::active()->latest()->get();
         /********************** By Sangam Ends **************************/
 
@@ -110,7 +113,7 @@ class FrontController extends Controller
         
         $post_type = PostType::where('id', '4')->first();
         $services = Post::where(['post_type' => $post_type->id, 'status' => '1'])->orderBy('post_order', 'asc')->paginate(8);
-// dd($service);
+// dd($flashSales);
         return view('frontend.pages.index',compact('banners','ads','categories','categoriesSlider','categoriesMovingText','flashSales','latestProducts','featuresProducts','hotProducts','productsForYou','goneInSeconds','brands',  'new','best','featured_category','featured_category2', 'latest_blogs','post_type','services'));
     }
 

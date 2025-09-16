@@ -36,7 +36,7 @@ class CheckoutController extends Controller
     public function __construct()
     {
         // $this->middleware('auth')->except(['checkout_address']);
-        $this->middleware('auth')->except(['direct_checkout','direct_checkout_success','applyPromo','service_checkout','service_checkout_success']);
+        $this->middleware('auth')->except(['direct_checkout','direct_checkout_success','applyPromo']);
     }
 
     // Function to get cities using ajax, when country field changes
@@ -295,12 +295,12 @@ class CheckoutController extends Controller
                     Log::error('Product details stock after',$product->stock);
                 }
 
-                 Log::error($subTotal);
-                Log::error($grandTotal);
-                Log::error($user->id);
-                Log::error($shipping->id);
-                Log::error($discount_amount);
-                Log::error($subTotal);
+                // Log::error($subTotal);
+                // Log::error($grandTotal);
+                // Log::error($user->id);
+                // Log::error($shipping->id);
+                // Log::error($discount_amount);
+                // Log::error($subTotal);
                 if($promo_discount){
                     $promo_discount->increment('used');
                 }
@@ -498,13 +498,20 @@ class CheckoutController extends Controller
         if (!$service) {
             abort(404);
         }
+        $user = Auth::user();
+        $userInfo = null;
+        $userOrder = ServiceOrder::where('user_id',$user->id)->latest()->first();
+        if($userOrder)
+        {
+            $userInfo = $userOrder->address;
+        }
 
         $total = $service->price ? (float)$service->price : 0;
         if (empty($service->price)) {
             abort(404, 'Invalid service price');
         }
-        // dd($service);
-        return view('frontend/pages/checkout/checkout-services',compact('service','total'));
+        // dd($user);
+        return view('frontend/pages/checkout/checkout-services',compact('service','total','user','userInfo'));
     }
 
     public function service_checkout_success(Request $request)
@@ -530,10 +537,10 @@ class CheckoutController extends Controller
                                         ->first();
             if ($promo_discount)
             {
-                $orderIds = OrderAddress::where('email', $request->email)->pluck('order_id');
+                $orderIds = ServiceOrderAddress::where('email', $request->email)->pluck('order_id');
 
                 // Check if any of those orders have this discount_id
-                $alreadyUsed = Order::whereIn('id', $orderIds)
+                $alreadyUsed = ServiceOrder::whereIn('id', $orderIds)
                     ->where('discount_id', $promo_discount->id)
                     ->exists();
 

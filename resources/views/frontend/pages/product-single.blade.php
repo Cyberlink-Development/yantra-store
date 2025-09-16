@@ -165,9 +165,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                @php
+                                    $isDiscounted = getDiscountOffer($data->offer_id);
+                                @endphp
                                 <div>
-                                    @if($data->discount_price && $data->price)
-                                        <div class="ribbon-detail">  🔥 {{getDiscountPercentage($data->price,$data->discount_price)}} <br> OFF</div>
+                                    @if($data->price)
+                                        @if ($isDiscounted)
+                                            <div class="ribbon-detail"> {{ $isDiscounted }}% <br> OFF</div>
+                                        @else
+                                            @if($data->discount_price != $data->price)
+                                                <div class="ribbon-detail">  🔥 {{getDiscountPercentage($data->price,$data->discount_price)}} <br> OFF</div>
+                                            @endif
+                                        @endif
                                     @endif
                                     @if(Auth::check())
                                         <button class="btn-wishlist wishlist-btn mr-0 mr-lg-n3 " type="button" data-toggle="tooltip" title="Add to wishlist" data-product-id="{{ $data->id }}"><i class="czi-heart {{ inWishlist($data->id) ? 'text-danger' : '' }}"></i></button>
@@ -181,9 +190,14 @@
                             <div class="d-flex justify-content-between mt-3">
                                 <div style="font-size:25px;">
                                     @if($data->discount_price || $data->price)
-                                        <span class="font-midnight">Rs.{{ number_format($data->discount_price) ?? number_format($data->price) }}</span>
-                                        @if($data->discount_price)
+                                        @if ($isDiscounted)
+                                            <span class="font-midnight">Rs. {{ getAmountAfterDiscount($data->price , $isDiscounted) }}</span>
                                             <del class="font-size-sm text-danger">Rs. {{ number_format($data->price) }}</del>
+                                        @else
+                                            <span class="font-midnight">Rs.{{ number_format($data->discount_price) ?? number_format($data->price) }}</span>
+                                            @if($data->discount_price != $data->price)
+                                                <del class="font-size-sm text-danger">Rs. {{ number_format($data->price) }}</del>
+                                            @endif
                                         @endif
                                     @else
                                         <span class="font-midnight" style="visibility: hidden;"> Rs</span>
@@ -426,12 +440,17 @@
                     @foreach($relatedProducts as $row)
                         @php
                             $isPriced = ($row->discount_price || $row->price);
+                            $isDiscounted = getDiscountOffer($row->offer_id);
                         @endphp
                         <div class="col-5th col-lg px-1  mb-4">
                             <div class="card product-card translate p-0">
                                 @if($isPriced)
-                                    @if($row->discount_price && $row->price)
-                                        <div class="ribbon"> {{getDiscountPercentage($row->price,$row->discount_price)}} <br> OFF</div>
+                                    @if ($isDiscounted)
+                                        <div class="ribbon"> {{ $isDiscounted }}% <br> OFF</div>
+                                    @else
+                                        @if($row->discount_price != $row->price)
+                                            <div class="ribbon"> {{getDiscountPercentage($row->price,$row->discount_price)}} <br> OFF</div>
+                                        @endif
                                     @endif
                                     <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left" onclick="addToCart(event,{{ $row->id }})">
                                         <i class="czi-cart"></i>
@@ -479,9 +498,14 @@
                                     <div class="d-flex justify-content-between">
                                         <div class="product-price">
                                             @if($isPriced)
-                                                <span class="font-midnight">Rs. {{ number_format($row->discount_price) ?? number_format($row->price) }}</span>
-                                                @if($row->discount_price)
+                                                @if ($isDiscounted)
+                                                    <span class="font-midnight">Rs. {{ getAmountAfterDiscount($row->price , $isDiscounted) }}</span>
                                                     <del class="font-size-sm text-danger">Rs. {{ number_format($row->price) }}</del>
+                                                @else
+                                                    <span class="font-midnight">Rs. {{ number_format($row->discount_price) ?? number_format($row->price) }}</span>
+                                                    @if($row->price != $row->discount_price)
+                                                        <del class="font-size-sm text-danger">Rs. {{ number_format($row->price) }}</del>
+                                                    @endif
                                                 @endif
                                             @else
                                                 <span class="font-midnight" style="visibility: hidden;"> Rs</span>

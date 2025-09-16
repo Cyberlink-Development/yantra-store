@@ -33,12 +33,17 @@
         @foreach ($products as $row)
             @php
                 $isPriced = ($row->discount_price || $row->price);
+                $isDiscounted = getDiscountOffer($row->offer_id);
             @endphp
             <div class="col-md-3 col-6 px-1 px-md-2 mb-4">
                 <div class="card product-card translate p-0">
                     @if($isPriced)
-                        @if($row->discount_price && $row->price)
-                            <div class="ribbon"> {{getDiscountPercentage($row->price,$row->discount_price)}} <br> OFF</div>
+                        @if ($isDiscounted)
+                            <div class="ribbon"> {{ $isDiscounted }}% <br> OFF</div>
+                        @else
+                            @if($row->discount_price != $row->price)
+                                <div class="ribbon"> {{getDiscountPercentage($row->price,$row->discount_price)}} <br> OFF</div>
+                            @endif
                         @endif
                         <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left" onclick="addToCart(event,{{ $row->id }})">
                             <i class="czi-cart"></i>
@@ -86,9 +91,14 @@
                         <div class="d-flex justify-content-between">
                             <div class="product-price">
                                 @if($isPriced)
-                                    <span class="font-midnight">Rs. {{ number_format($row->discount_price) ?? number_format($row->price) }}</span>
-                                    @if($row->discount_price)
+                                    @if ($isDiscounted)
+                                        <span class="font-midnight">Rs. {{ getAmountAfterDiscount($row->price , $isDiscounted) }}</span>
                                         <del class="font-size-sm text-danger">Rs. {{ number_format($row->price) }}</del>
+                                    @else
+                                        <span class="font-midnight">Rs. {{ number_format($row->discount_price) ?? number_format($row->price) }}</span>
+                                        @if($row->price != $row->discount_price)
+                                            <del class="font-size-sm text-danger">Rs. {{ number_format($row->price) }}</del>
+                                        @endif
                                     @endif
                                 @else
                                     <span class="font-midnight" style="visibility: hidden;"> Rs</span>
