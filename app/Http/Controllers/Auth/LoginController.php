@@ -50,9 +50,9 @@ class LoginController extends Controller
     }
     public function adminAuthenticate(Request $request)
     {
-        // $g_recaptcha_response = $request->input('g_recaptcha_response');
-        // $result = $this->getCaptcha($g_recaptcha_response);
-        // if($result->success == true && $result->score > 0.5){
+        $g_recaptcha_response = $request->input('g_recaptcha_response');
+        $result = $this->getCaptcha($g_recaptcha_response);
+        if($result->success == true && $result->score > 0.5){
             try {
                 $request->validate([
                     'email' => 'required|email',
@@ -99,12 +99,12 @@ class LoginController extends Controller
                     'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
                 ]);
             }
-        // } else {
-        //     return redirect()->back()->with([
-        //         'error' => true,
-        //         'message' => 'You are Robot.'
-        //     ]);
-        // }
+        } else {
+            return redirect()->back()->with([
+                'error' => true,
+                'message' => 'You are Robot.'
+            ]);
+        }
     }
     public function login_page(Request $request)
     {
