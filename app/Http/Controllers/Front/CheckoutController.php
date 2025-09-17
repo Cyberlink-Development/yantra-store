@@ -757,4 +757,11 @@ class CheckoutController extends Controller
         return view('frontend/pages/checkout/order-tracking',compact('details','order'));
 
     }
+    private function getCaptcha($secretKey)
+    {
+        $secret_key = env('SECRET_KEY');
+        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $secret_key . "&response={$secretKey}");
+        $result = json_decode($response);
+        return $result;
+    }
 }
