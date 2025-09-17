@@ -61,6 +61,7 @@
                         <h2 class="mb-4">Login </h2>
                         <form action={{ route('admin.authenticate') }} method="post">
                             @csrf
+                            <input type="hidden" id="g_recaptcha_response" name="g_recaptcha_response">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email address</label>
                                 <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" />
@@ -81,5 +82,13 @@
                 </div>
             </div>
         </div>
+        <script src="https://www.google.com/recaptcha/api.js?render={{env('SITE_KEY')}}"></script>
+        <script>
+            grecaptcha.ready(function () {
+                grecaptcha.execute('<?php echo env("SITE_KEY"); ?>', {action: 'homepage'}).then(function (token) {
+                    document.getElementById('g_recaptcha_response').value = token;
+                });
+            });
+        </script>
     </body>
 </html>
