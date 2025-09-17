@@ -1085,9 +1085,10 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="quote-service">Selected Item*</label>
-                                    <select class="custom-select" id="quote-service" >
+                                    <select class="custom-select" id="quote-service" style="max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" data-toggle="tooltip" data-placement="top" title="" disabled>
                                         <!-- Option will be filled dynamically -->
                                     </select>
+                                    <input type="hidden" name="selected_item" id="hidden-quote-service">
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -1151,9 +1152,10 @@
             modal.find('#quote-type').val(type);
 
             // Set name in dropdown
-            modal.find('#quote-service').html(
+            modal.find('#quote-service').attr("title", itemName).html(
                 `<option value="${itemId}" selected>${itemName}</option>`
             );
+            modal.find('#hidden-quote-service').val(itemId);
 
             // Set correct ID field
             if (type === 'product') {

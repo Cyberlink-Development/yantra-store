@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\OrderMail;
 use App\Model\Country;
 use App\Model\Discount;
+use App\Model\OffersModel;
 use App\Model\Order;
 use App\Model\OrderAddress;
 use App\Model\OrderDetail;
@@ -276,6 +277,13 @@ class CheckoutController extends Controller
                 ]);
 
                 foreach ($cartItem as $item) {
+                    $product = Product::where('id', $item->id)->first();
+                    $offer = OffersModel::where('id',$product->offer_id)->first();
+                    $discount = 0;
+                    if($offer && $offer->discount)
+                    {
+                        $discount = $offer->discount;
+                    }
                     OrderDetail::create([
                         'order_id'  => $order->id,
                         'product_id'=> $item->id,
@@ -283,24 +291,12 @@ class CheckoutController extends Controller
                         'quantity'  => $item->qty,
                         'size'      => $item->options['size'],
                         'color'     => $item->options['color'],
-                        'discount'  => 0,
+                        'discount'  => $discount,
                         'total'     => (float)$item->price * (int)$item->qty,
                     ]);
-                    Log::error('Each product quantity :: ',$item->qty);
-                    $product = Product::findOrFail($item->id);
-                    Log::error('Product details ',$product);
-                    Log::error('Product details stock before',$product->stock);
-
+                    // Log::error('Each product quantity :: ',$item->qty);
                     $product->decrement('stock', $item->qty);
-                    Log::error('Product details stock after',$product->stock);
                 }
-
-                // Log::error($subTotal);
-                // Log::error($grandTotal);
-                // Log::error($user->id);
-                // Log::error($shipping->id);
-                // Log::error($discount_amount);
-                // Log::error($subTotal);
                 if($promo_discount){
                     $promo_discount->increment('used');
                 }
@@ -352,10 +348,14 @@ class CheckoutController extends Controller
                 'message' => 'Quantity exceeds the available stock'
             ]);
         }
-        if($product->discount_price){
-            $total = (int)$quantity * (float)$product->discount_price;
-        } else {
-            $total = (int)$quantity * (float)$product->price;
+        $offer = OffersModel::where('id',$product->offer_id)->first();
+        $productPrice = $product->discount_price ?? $product->price;
+        if($offer && $offer->discount)
+        {
+            $productPrice = $product->price - ($product->price * $offer->discount * 0.01);
+            $total = (int)$quantity * (float)$productPrice;
+        }else {
+            $total = (int)$quantity * (float)$productPrice;
         }
         $shipping = Shipping::where('status', 1)->get();
 
@@ -402,11 +402,15 @@ class CheckoutController extends Controller
                 }
             }
             $discount_amount = (float) 0;
-            if($product->discount_price){
-                $sell_price = (float)$product->discount_price;
-            } else {
-                $sell_price = (float)$product->price;
+            $discountInProduct = (float) 0;
+            $offer = OffersModel::where('id',$product->offer_id)->first();
+            $productPrice = $product->discount_price ?? $product->price;
+            if($offer && $offer->discount)
+            {
+                $discountInProduct = $offer->discount;
+                $productPrice = $product->price - ($product->price * $offer->discount * 0.01);
             }
+            $sell_price = (float)$productPrice;
 
             $subTotal = (int)$request->quantity * (float)$sell_price;
             if($promo_discount){
@@ -455,7 +459,7 @@ class CheckoutController extends Controller
                 'quantity'   => $request->quantity,
                 'size'       => $request->size,
                 'color'      => $request->color,
-                'discount'   => 0,
+                'discount'   => $discountInProduct,
                 'total'      => $subTotal,
             ]);
             $product->decrement('stock', $request->quantity);
