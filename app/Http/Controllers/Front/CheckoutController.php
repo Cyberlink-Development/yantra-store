@@ -198,140 +198,150 @@ class CheckoutController extends Controller
 
         if ($request->isMethod('post'))
         {
-            try{
-                $request->validate([
-                    'first_name' => 'required',
-                    'email' => 'required',
-                    'phone' => 'required',
-                    // 'country'=>'required',
-                    'city'=>'required',
-                ]);
-
-                DB::beginTransaction();
-
-                $user = Auth::user();
-                $used_message = (int)0;
-                $promo_discount = Discount::where('id', $request->discount_id)
-                                            ->where('status', 1)
-                                            ->whereColumn('usage_limit', '>', 'used')
-                                            ->where(function($q){
-                                                $q->whereNull('expiry_date')->orWhere('expiry_date', '>=', today());
-                                            })
-                                            ->first();
-
-                if ($promo_discount)
-                {
-                    $alreadyUsed = Order::where('user_id', $user->id)
-                        ->where('discount_id', $promo_discount->id)
-                        ->exists();
-
-                    if ($alreadyUsed) {
-                        $promo_discount = null;
-                        $used_message = 1;
-                    }
-                }
-                $discount_amount = (float) 0;
-                $cartPrice = ['subTotal' => Cart::subtotal(), 'count' => Cart::count()];
-                $cartItem = Cart::content();
-                $shipping = Shipping::where('id', $request->shipping)->first();
-                $subTotal = (float) str_replace(',', '', Cart::subtotal());
-
-                if($promo_discount){
-                    if($promo_discount->type === 'flat'){
-                        $discount_amount = $promo_discount->discount;
-                    } else {
-                        $discount_amount = $subTotal * $promo_discount->discount * 0.01;
-                    }
-                    $discount_amount = min($discount_amount, $subTotal);
-                }
-                $grandTotal = $subTotal + (float) $shipping->shipping_price - (float) $discount_amount;
-
-                // dd('test post',$shipping, $request->all(),$cartItem,$cartPrice,$grandTotal,$discount_amount);
-
-
-                $order = Order::create([
-                    'subtotal'       => $subTotal,
-                    'grand_total'    => $grandTotal,
-                    'user_id'        => $user->id,
-                    'shipping_id'    => $shipping->id,
-                    'order_track'    => 'OT' . $user->id . '-' . time(),
-                    'status'         => 0,
-                    'discount'       => $discount_amount,
-                    'discount_id'    => $promo_discount->id ?? NULL,
-                    'payment_type'   => $request->payment,
-                    'order_note'     => $request->message,
-                ]);
-
-                $userInfo = OrderAddress::create([
-                    'first_name' => $request->first_name,
-                    'last_name'  => $request->last_name,
-                    'email'      => $request->email,
-                    'phone'      => $request->phone,
-                    'country'    => $request->country,
-                    'province'   => $request->province,
-                    'city'       => $request->city,
-                    'zip_code'   => $request->zip_code,
-                    'address1'   => $request->address_1,
-                    'address2'   => $request->address_2,
-                    'order_id'   => $order->id,
-                ]);
-
-                foreach ($cartItem as $item) {
-                    $product = Product::where('id', $item->id)->first();
-                    $offer = OffersModel::where('id',$product->offer_id)->first();
-                    $discount = 0;
-                    if($offer && $offer->discount)
-                    {
-                        $discount = $offer->discount;
-                    }
-                    OrderDetail::create([
-                        'order_id'  => $order->id,
-                        'product_id'=> $item->id,
-                        'price'     => $item->price,
-                        'quantity'  => $item->qty,
-                        'size'      => $item->options['size'],
-                        'color'     => $item->options['color'],
-                        'discount'  => $discount,
-                        'total'     => (float)$item->price * (int)$item->qty,
+            $g_recaptcha_response = $request->input('g_recaptcha_response');
+            $result = $this->getCaptcha($g_recaptcha_response);
+            if($result->success == true && $result->score > 0.5){
+                try{
+                    $request->validate([
+                        'first_name' => 'required',
+                        'email' => 'required',
+                        'phone' => 'required',
+                        // 'country'=>'required',
+                        'city'=>'required',
                     ]);
-                    // Log::error('Each product quantity :: ',$item->qty);
-                    $product->decrement('stock', $item->qty);
+
+                    DB::beginTransaction();
+
+                    $user = Auth::user();
+                    $used_message = (int)0;
+                    $promo_discount = Discount::where('id', $request->discount_id)
+                                                ->where('status', 1)
+                                                ->whereColumn('usage_limit', '>', 'used')
+                                                ->where(function($q){
+                                                    $q->whereNull('expiry_date')->orWhere('expiry_date', '>=', today());
+                                                })
+                                                ->first();
+
+                    if ($promo_discount)
+                    {
+                        $alreadyUsed = Order::where('user_id', $user->id)
+                            ->where('discount_id', $promo_discount->id)
+                            ->exists();
+
+                        if ($alreadyUsed) {
+                            $promo_discount = null;
+                            $used_message = 1;
+                        }
+                    }
+                    $discount_amount = (float) 0;
+                    $cartPrice = ['subTotal' => Cart::subtotal(), 'count' => Cart::count()];
+                    $cartItem = Cart::content();
+                    $shipping = Shipping::where('id', $request->shipping)->first();
+                    $subTotal = (float) str_replace(',', '', Cart::subtotal());
+
+                    if($promo_discount){
+                        if($promo_discount->type === 'flat'){
+                            $discount_amount = $promo_discount->discount;
+                        } else {
+                            $discount_amount = $subTotal * $promo_discount->discount * 0.01;
+                        }
+                        $discount_amount = min($discount_amount, $subTotal);
+                    }
+                    $grandTotal = $subTotal + (float) $shipping->shipping_price - (float) $discount_amount;
+
+                    // dd('test post',$shipping, $request->all(),$cartItem,$cartPrice,$grandTotal,$discount_amount);
+
+
+                    $order = Order::create([
+                        'subtotal'       => $subTotal,
+                        'grand_total'    => $grandTotal,
+                        'user_id'        => $user->id,
+                        'shipping_id'    => $shipping->id,
+                        'order_track'    => 'OT' . $user->id . '-' . time(),
+                        'status'         => 0,
+                        'discount'       => $discount_amount,
+                        'discount_id'    => $promo_discount->id ?? NULL,
+                        'payment_type'   => $request->payment,
+                        'order_note'     => $request->message,
+                    ]);
+
+                    $userInfo = OrderAddress::create([
+                        'first_name' => $request->first_name,
+                        'last_name'  => $request->last_name,
+                        'email'      => $request->email,
+                        'phone'      => $request->phone,
+                        'country'    => $request->country,
+                        'province'   => $request->province,
+                        'city'       => $request->city,
+                        'zip_code'   => $request->zip_code,
+                        'address1'   => $request->address_1,
+                        'address2'   => $request->address_2,
+                        'order_id'   => $order->id,
+                    ]);
+
+                    foreach ($cartItem as $item) {
+                        $product = Product::where('id', $item->id)->first();
+                        $offer = OffersModel::where('id',$product->offer_id)->first();
+                        $discount = 0;
+                        if($offer && $offer->discount)
+                        {
+                            $discount = $offer->discount;
+                        }
+                        OrderDetail::create([
+                            'order_id'  => $order->id,
+                            'product_id'=> $item->id,
+                            'price'     => $item->price,
+                            'quantity'  => $item->qty,
+                            'size'      => $item->options['size'],
+                            'color'     => $item->options['color'],
+                            'discount'  => $discount,
+                            'total'     => (float)$item->price * (int)$item->qty,
+                        ]);
+                        // Log::error('Each product quantity :: ',$item->qty);
+                        $product->decrement('stock', $item->qty);
+                    }
+                    if($promo_discount){
+                        $promo_discount->increment('used');
+                    }
+
+                    DB::commit();
+
+                    $data = ['email' => $user->email, 'order' => $order,'user' => $userInfo,'used_msg' => $used_message];
+
+                    if(!isset($request->is_order)){
+                        Cart::destroy();
+                    }
+
+                }catch(ValidationException $e){
+                    return redirect()->back()->with([
+                        'error' => true,
+                        'message' => $e->validator->errors()->all()
+                    ]);
+                }catch(Exception $e){
+                    DB::rollBack();
+                    return redirect()->back()->with([
+                        'error' => true,
+                        'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                    ]);
                 }
-                if($promo_discount){
-                    $promo_discount->increment('used');
+
+                try {
+                    return new OrderMail($data);
+                    // Mail::to($user->email)->send(new OrderMail($data));
+                } catch (Exception $e) {
+                    Log::error("Order email failed for order {$order->id}: " . $e->getMessage());
                 }
-
-                DB::commit();
-
-                $data = ['email' => $user->email, 'order' => $order,'user' => $userInfo,'used_msg' => $used_message];
-
-                if(!isset($request->is_order)){
-                    Cart::destroy();
-                }
-
-            }catch(ValidationException $e){
+                return redirect('/')->with([
+                    'success' => true,
+                    'message' => 'Order placed successfully!'
+                ]);
+            
+            } else {
                 return redirect()->back()->with([
                     'error' => true,
-                    'message' => $e->validator->errors()->all()
-                ]);
-            }catch(Exception $e){
-                DB::rollBack();
-                return redirect()->back()->with([
-                    'error' => true,
-                    'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                    'message' => 'You are Robot.'
                 ]);
             }
-
-            try {
-                return new OrderMail($data);
-                // Mail::to($user->email)->send(new OrderMail($data));
-            } catch (Exception $e) {
-                Log::error("Order email failed for order {$order->id}: " . $e->getMessage());
-            }
-            return redirect('/')->with([
-                'success' => true,
-                'message' => 'Order placed successfully!'
-            ]);
         }
     }
 
@@ -361,139 +371,149 @@ class CheckoutController extends Controller
 
         // dd('test get',$slug, $quantity,$product,$total);
 
-        return view('frontend/pages/checkout/checkout-direct', compact('product','quantity','total','shipping'));
+        return view('frontend/pages/checkout/checkout-direct', compact('product','quantity','total','shipping','productPrice'));
     }
 
     public function direct_checkout_success(Request $request)
     {
-        try{
-            $request->validate([
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'email' => 'required',
-                'phone' => 'required',
-                // 'country'=>'required',
-                'city'=>'required',
-            ]);
-            DB::beginTransaction();
+        $g_recaptcha_response = $request->input('g_recaptcha_response');
+        $result = $this->getCaptcha($g_recaptcha_response);
+        if($result->success == true && $result->score > 0.5){
+            try{
+                $request->validate([
+                    'first_name' => 'required',
+                    'last_name' => 'required',
+                    'email' => 'required',
+                    'phone' => 'required',
+                    // 'country'=>'required',
+                    'city'=>'required',
+                ]);
+                DB::beginTransaction();
 
-            $used_message = 0;
-            $product = Product::where('id',$request->product_id)->first();
-            $shipping = Shipping::where('id', $request->shipping)->first();
-            $promo_discount = Discount::where('id', $request->discount_id)
-                                        ->where('status', 1)
-                                        ->whereColumn('usage_limit', '>', 'used')
-                                        ->where(function($q){
-                                            $q->whereNull('expiry_date')->orWhere('expiry_date', '>=', today());
-                                        })
-                                        ->first();
-            if ($promo_discount)
-            {
-                $orderIds = OrderAddress::where('email', $request->email)->pluck('order_id');
+                $used_message = 0;
+                $product = Product::where('id',$request->product_id)->first();
+                $shipping = Shipping::where('id', $request->shipping)->first();
+                $promo_discount = Discount::where('id', $request->discount_id)
+                                            ->where('status', 1)
+                                            ->whereColumn('usage_limit', '>', 'used')
+                                            ->where(function($q){
+                                                $q->whereNull('expiry_date')->orWhere('expiry_date', '>=', today());
+                                            })
+                                            ->first();
+                if ($promo_discount)
+                {
+                    $orderIds = OrderAddress::where('email', $request->email)->pluck('order_id');
 
-                // Check if any of those orders have this discount_id
-                $alreadyUsed = Order::whereIn('id', $orderIds)
-                    ->where('discount_id', $promo_discount->id)
-                    ->exists();
+                    // Check if any of those orders have this discount_id
+                    $alreadyUsed = Order::whereIn('id', $orderIds)
+                        ->where('discount_id', $promo_discount->id)
+                        ->exists();
 
-                if ($alreadyUsed) {
-                    $promo_discount = null;
-                    $used_message = 1;
+                    if ($alreadyUsed) {
+                        $promo_discount = null;
+                        $used_message = 1;
+                    }
                 }
-            }
-            $discount_amount = (float) 0;
-            $discountInProduct = (float) 0;
-            $offer = OffersModel::where('id',$product->offer_id)->first();
-            $productPrice = $product->discount_price ?? $product->price;
-            if($offer && $offer->discount)
-            {
-                $discountInProduct = $offer->discount;
-                $productPrice = $product->price - ($product->price * $offer->discount * 0.01);
-            }
-            $sell_price = (float)$productPrice;
-
-            $subTotal = (int)$request->quantity * (float)$sell_price;
-            if($promo_discount){
-                if($promo_discount->type === 'flat'){
-                    $discount_amount = $promo_discount->discount;
-                } else {
-                    $discount_amount = $subTotal * $promo_discount->discount * 0.01;
+                $discount_amount = (float) 0;
+                $discountInProduct = (float) 0;
+                $offer = OffersModel::where('id',$product->offer_id)->first();
+                $productPrice = $product->discount_price ?? $product->price;
+                if($offer && $offer->discount)
+                {
+                    $discountInProduct = $offer->discount;
+                    $productPrice = $product->price - ($product->price * $offer->discount * 0.01);
                 }
-                $discount_amount = min($discount_amount, $subTotal);
+                $sell_price = (float)$productPrice;
+
+                $subTotal = (int)$request->quantity * (float)$sell_price;
+                if($promo_discount){
+                    if($promo_discount->type === 'flat'){
+                        $discount_amount = $promo_discount->discount;
+                    } else {
+                        $discount_amount = $subTotal * $promo_discount->discount * 0.01;
+                    }
+                    $discount_amount = min($discount_amount, $subTotal);
+                }
+                $grandTotal = $subTotal + (float) $shipping->shipping_price - (float) $discount_amount;
+
+                // dd('test post',$shipping, $request->all(),$subTotal, $grandTotal ,$promo_discount,$discount_amount);
+
+                $order = Order::create([
+                    'user_id'        => Auth::id(),
+                    'subtotal'       => $subTotal,
+                    'grand_total'    => $grandTotal,
+                    'shipping_id'    => $shipping->id,
+                    'order_track'    => 'OT' . mt_rand(100, 999). '-' . time(),
+                    'status'         => 0,
+                    'discount'       => $discount_amount,
+                    'discount_id'    => $promo_discount->id ?? NULL,
+                    'payment_type'   => $request->payment,
+                    'order_note'     => $request->message,
+                ]);
+
+                $userInfo = OrderAddress::create([
+                    'first_name' => $request->first_name,
+                    'last_name'  => $request->last_name,
+                    'email'      => $request->email,
+                    'phone'      => $request->phone,
+                    'country'    => $request->country,
+                    'province'   => $request->province,
+                    'city'       => $request->city,
+                    'zip_code'   => $request->zip_code,
+                    'address1'   => $request->address_1,
+                    'address2'   => $request->address_2,
+                    'order_id'   => $order->id,
+                ]);
+
+                OrderDetail::create([
+                    'order_id'   => $order->id,
+                    'product_id' => $product->id,
+                    'price'      => $sell_price,
+                    'quantity'   => $request->quantity,
+                    'size'       => $request->size,
+                    'color'      => $request->color,
+                    'discount'   => $discountInProduct,
+                    'total'      => $subTotal,
+                ]);
+                $product->decrement('stock', $request->quantity);
+                if($promo_discount){
+                    $promo_discount->increment('used');
+                }
+
+                DB::commit();
+
+                $data = ['email' => $request->email, 'order' => $order,'user' => $userInfo,'used_msg' => $used_message];
+
+            }catch(ValidationException $e){
+                return redirect()->back()->with([
+                    'error' => true,
+                    'message' => $e->validator->errors()->all()
+                ]);
+            }catch(Exception $e){
+                DB::rollBack();
+                return redirect()->back()->with([
+                    'error' => true,
+                    'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                ]);
             }
-            $grandTotal = $subTotal + (float) $shipping->shipping_price - (float) $discount_amount;
 
-            // dd('test post',$shipping, $request->all(),$subTotal, $grandTotal ,$promo_discount,$discount_amount);
-
-            $order = Order::create([
-                'user_id'        => Auth::id(),
-                'subtotal'       => $subTotal,
-                'grand_total'    => $grandTotal,
-                'shipping_id'    => $shipping->id,
-                'order_track'    => 'OT' . mt_rand(100, 999). '-' . time(),
-                'status'         => 0,
-                'discount'       => $discount_amount,
-                'discount_id'    => $promo_discount->id ?? NULL,
-                'payment_type'   => $request->payment,
-                'order_note'     => $request->message,
-            ]);
-
-            $userInfo = OrderAddress::create([
-                'first_name' => $request->first_name,
-                'last_name'  => $request->last_name,
-                'email'      => $request->email,
-                'phone'      => $request->phone,
-                'country'    => $request->country,
-                'province'   => $request->province,
-                'city'       => $request->city,
-                'zip_code'   => $request->zip_code,
-                'address1'   => $request->address_1,
-                'address2'   => $request->address_2,
-                'order_id'   => $order->id,
-            ]);
-
-            OrderDetail::create([
-                'order_id'   => $order->id,
-                'product_id' => $product->id,
-                'price'      => $sell_price,
-                'quantity'   => $request->quantity,
-                'size'       => $request->size,
-                'color'      => $request->color,
-                'discount'   => $discountInProduct,
-                'total'      => $subTotal,
-            ]);
-            $product->decrement('stock', $request->quantity);
-            if($promo_discount){
-                $promo_discount->increment('used');
+            try {
+                return new OrderMail($data);
+                // Mail::to($user->email)->send(new OrderMail($data));
+            } catch (Exception $e) {
+                Log::error("Order email failed for order {$order->id}: " . $e->getMessage());
             }
-
-            DB::commit();
-
-            $data = ['email' => $request->email, 'order' => $order,'user' => $userInfo,'used_msg' => $used_message];
-
-        }catch(ValidationException $e){
+            return redirect('/')->with([
+                'success' => true,
+                'message' => 'Order placed successfully!'
+            ]);
+            
+        } else {
             return redirect()->back()->with([
                 'error' => true,
-                'message' => $e->validator->errors()->all()
-            ]);
-        }catch(Exception $e){
-            DB::rollBack();
-            return redirect()->back()->with([
-                'error' => true,
-                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                'message' => 'You are Robot.'
             ]);
         }
-
-        try {
-            return new OrderMail($data);
-            // Mail::to($user->email)->send(new OrderMail($data));
-        } catch (Exception $e) {
-            Log::error("Order email failed for order {$order->id}: " . $e->getMessage());
-        }
-        return redirect('/')->with([
-            'success' => true,
-            'message' => 'Order placed successfully!'
-        ]);
     }
 
     public function service_checkout( $uri )
@@ -520,116 +540,125 @@ class CheckoutController extends Controller
 
     public function service_checkout_success(Request $request)
     {
-        try{
-            $request->validate([
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'email' => 'required',
-                'phone' => 'required',
-                'city'=>'required',
-            ]);
-            DB::beginTransaction();
+        $g_recaptcha_response = $request->input('g_recaptcha_response');
+        $result = $this->getCaptcha($g_recaptcha_response);
+        if($result->success == true && $result->score > 0.5){
+            try{
+                $request->validate([
+                    'first_name' => 'required',
+                    'last_name' => 'required',
+                    'email' => 'required',
+                    'phone' => 'required',
+                    'city'=>'required',
+                ]);
+                DB::beginTransaction();
 
-            $used_message = 0;
-            $service = Post::where('id',$request->service_id)->first();
-            $promo_discount = Discount::where('id', $request->discount_id)
-                                        ->where('status', 1)
-                                        ->whereColumn('usage_limit', '>', 'used')
-                                        ->where(function($q){
-                                            $q->whereNull('expiry_date')->orWhere('expiry_date', '>=', today());
-                                        })
-                                        ->first();
-            if ($promo_discount)
-            {
-                $orderIds = ServiceOrderAddress::where('email', $request->email)->pluck('order_id');
+                $used_message = 0;
+                $service = Post::where('id',$request->service_id)->first();
+                $promo_discount = Discount::where('id', $request->discount_id)
+                                            ->where('status', 1)
+                                            ->whereColumn('usage_limit', '>', 'used')
+                                            ->where(function($q){
+                                                $q->whereNull('expiry_date')->orWhere('expiry_date', '>=', today());
+                                            })
+                                            ->first();
+                if ($promo_discount)
+                {
+                    $orderIds = ServiceOrderAddress::where('email', $request->email)->pluck('order_id');
 
-                // Check if any of those orders have this discount_id
-                $alreadyUsed = ServiceOrder::whereIn('id', $orderIds)
-                    ->where('discount_id', $promo_discount->id)
-                    ->exists();
+                    // Check if any of those orders have this discount_id
+                    $alreadyUsed = ServiceOrder::whereIn('id', $orderIds)
+                        ->where('discount_id', $promo_discount->id)
+                        ->exists();
 
-                if ($alreadyUsed) {
-                    $promo_discount = null;
-                    $used_message = 1;
+                    if ($alreadyUsed) {
+                        $promo_discount = null;
+                        $used_message = 1;
+                    }
                 }
-            }
-            $discount_amount = (float) 0;
-            if($service->discount_price){
-                $sell_price = (float)$service->discount_price;
-            } else {
-                $sell_price = (float)$service->price;
-            }
-
-            $subTotal = (float)$sell_price;
-            if($promo_discount){
-                if($promo_discount->type === 'flat'){
-                    $discount_amount = $promo_discount->discount;
+                $discount_amount = (float) 0;
+                if($service->discount_price){
+                    $sell_price = (float)$service->discount_price;
                 } else {
-                    $discount_amount = $subTotal * $promo_discount->discount * 0.01;
+                    $sell_price = (float)$service->price;
                 }
-                $discount_amount = min($discount_amount, $subTotal);
+
+                $subTotal = (float)$sell_price;
+                if($promo_discount){
+                    if($promo_discount->type === 'flat'){
+                        $discount_amount = $promo_discount->discount;
+                    } else {
+                        $discount_amount = $subTotal * $promo_discount->discount * 0.01;
+                    }
+                    $discount_amount = min($discount_amount, $subTotal);
+                }
+                $grandTotal = $subTotal - (float) $discount_amount;
+
+                // dd('test post',$shipping, $request->all(),$subTotal, $grandTotal ,$promo_discount,$discount_amount);
+
+                $order = ServiceOrder::create([
+                    'user_id'        => Auth::id(),
+                    'service_id'     => $request->service_id,
+                    'price'          => $sell_price,
+                    'subtotal'       => $subTotal,
+                    'grand_total'    => $grandTotal,
+                    'order_track'    => 'OT' . mt_rand(100, 999). '-' . time(),
+                    'status'         => 0,
+                    'discount'       => $discount_amount,
+                    'discount_id'    => $promo_discount->id ?? NULL,
+                    'payment_type'   => $request->payment,
+                    'notes'          => $request->message,
+                ]);
+                $userInfo = ServiceOrderAddress::create([
+                    'first_name' => $request->first_name,
+                    'last_name'  => $request->last_name,
+                    'email'      => $request->email,
+                    'phone'      => $request->phone,
+                    'country'    => $request->country,
+                    'province'   => $request->province,
+                    'city'       => $request->city,
+                    'zip_code'   => $request->zip_code,
+                    'address1'   => $request->address,
+                    'address2'   => $request->address_2,
+                    'order_id'   => $order->id,
+                ]);
+                if($promo_discount){
+                    $promo_discount->increment('used');
+                }
+
+                DB::commit();
+
+                $data = ['email' => $request->email, 'order' => $order,'user' => $userInfo,'used_msg' => $used_message];
+
+            }catch(ValidationException $e){
+                return redirect()->back()->with([
+                    'error' => true,
+                    'message' => $e->validator->errors()->all()
+                ]);
+            }catch(Exception $e){
+                DB::rollBack();
+                return redirect()->back()->with([
+                    'error' => true,
+                    'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                ]);
             }
-            $grandTotal = $subTotal - (float) $discount_amount;
 
-            // dd('test post',$shipping, $request->all(),$subTotal, $grandTotal ,$promo_discount,$discount_amount);
-
-            $order = ServiceOrder::create([
-                'user_id'        => Auth::id(),
-                'service_id'     => $request->service_id,
-                'price'          => $sell_price,
-                'subtotal'       => $subTotal,
-                'grand_total'    => $grandTotal,
-                'order_track'    => 'OT' . mt_rand(100, 999). '-' . time(),
-                'status'         => 0,
-                'discount'       => $discount_amount,
-                'discount_id'    => $promo_discount->id ?? NULL,
-                'payment_type'   => $request->payment,
-                'notes'          => $request->message,
-            ]);
-            $userInfo = ServiceOrderAddress::create([
-                'first_name' => $request->first_name,
-                'last_name'  => $request->last_name,
-                'email'      => $request->email,
-                'phone'      => $request->phone,
-                'country'    => $request->country,
-                'province'   => $request->province,
-                'city'       => $request->city,
-                'zip_code'   => $request->zip_code,
-                'address1'   => $request->address,
-                'address2'   => $request->address_2,
-                'order_id'   => $order->id,
-            ]);
-            if($promo_discount){
-                $promo_discount->increment('used');
+            try {
+                // return new OrderMail($data);
+                // Mail::to($user->email)->queue(new OrderMail($data));
+            } catch (Exception $e) {
+                Log::error("Order email failed for order {$order->id}: " . $e->getMessage());
             }
-
-            DB::commit();
-
-            $data = ['email' => $request->email, 'order' => $order,'user' => $userInfo,'used_msg' => $used_message];
-
-        }catch(ValidationException $e){
+            return redirect('/')->with([
+                'success' => true,
+                'message' => 'Order placed successfully!'
+            ]);
+        }else{
             return redirect()->back()->with([
                 'error' => true,
-                'message' => $e->validator->errors()->all()
-            ]);
-        }catch(Exception $e){
-            DB::rollBack();
-            return redirect()->back()->with([
-                'error' => true,
-                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                'message' => 'You are Robot.'
             ]);
         }
-
-        try {
-            // return new OrderMail($data);
-            // Mail::to($user->email)->queue(new OrderMail($data));
-        } catch (Exception $e) {
-            Log::error("Order email failed for order {$order->id}: " . $e->getMessage());
-        }
-        return redirect('/')->with([
-            'success' => true,
-            'message' => 'Order placed successfully!'
-        ]);
     }
 
     public function applyPromo(Request $request)

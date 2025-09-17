@@ -32,6 +32,7 @@
           <!-- Profile form-->
           <form class="mt-5" action="{{ route('user-profile') }}" method="POST" enctype="multipart/form-data">
             @csrf
+            <input type="hidden" id="g_recaptcha_response" name="g_recaptcha_response">
             <div class="bg-primary rounded-lg p-4 mb-4">
               <div class="media align-items-center">
                 @if ( $user->image)
@@ -89,5 +90,12 @@
         </section>
     </div>
 </div>
-
+<script src="https://www.google.com/recaptcha/api.js?render={{env('SITE_KEY')}}"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('<?php echo env("SITE_KEY"); ?>', {action: 'homepage'}).then(function (token) {
+            document.getElementById('g_recaptcha_response').value = token;
+        });
+    });
+</script>
 @stop

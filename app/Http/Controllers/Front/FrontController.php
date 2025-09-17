@@ -170,95 +170,108 @@ class FrontController extends Controller
 
     public function quotation_submit(Request $request)
     {
-        try{
-            $request->validate([
-                'full_name' => 'required',
-                'email' => 'required',
-                'phone'=>'required|max:10',
-                'country'=>'required',
-                'type'   => 'required|in:service,product',
-                'service_id' => 'nullable|required_if:type,service|exists:cl_posts,id',
-                'product_id' => 'nullable|required_if:type,product|exists:products,id',
-                'price' => 'nullable',
-            ]);
+        // dd($request->all());
+        $g_recaptcha_response = $request->input('g_recaptcha_response');
+        $result = $this->getCaptcha($g_recaptcha_response);
+        if($result->success == true && $result->score > 0.5){
+            try{
+                $request->validate([
+                    'full_name' => 'required',
+                    'email' => 'required',
+                    'phone'=>'required|max:10',
+                    'country'=>'required',
+                    'type'   => 'required|in:service,product',
+                    'service_id' => 'nullable|required_if:type,service|exists:cl_posts,id',
+                    'product_id' => 'nullable|required_if:type,product|exists:products,id',
+                    'price' => 'nullable',
+                ]);
 
-            $quote = Quotation::create([
-                'full_name' => $request->full_name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'country' => $request->country,
-                'type' => $request->type,
-                'service_id'=> $request->service_id ?? null,
-                'product_id'=> $request->product_id ?? null,
-                'message'=> $request->message,
-                'price'=> $request->price,
-            ]);
+                $quote = Quotation::create([
+                    'full_name' => $request->full_name,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'country' => $request->country,
+                    'type' => $request->type,
+                    'service_id'=> $request->service_id ?? null,
+                    'product_id'=> $request->product_id ?? null,
+                    'message'=> $request->message,
+                    'price'=> $request->price,
+                ]);
 
-            if ($quote ) {
-                return new QuotationMail( $quote->id);
-                // Mail::send(new QuotationMail( $quote->id));
+                if ($quote ) {
+                    return new QuotationMail( $quote->id);
+                    // Mail::send(new QuotationMail( $quote->id));
+                }
+                return redirect('/')->with([
+                    'success' => true,
+                    'message' => 'Quotation Sent Successfully. One of our member will contact you soon.'
+                ]);
+            }catch(ValidationException $e){
+                return redirect()->back()->with([
+                    'error' => true,
+                    'message' => $e->validator->errors()->all()
+                ]);
+            }catch(Exception $e){
+                return redirect()->back()->with([
+                    'error' => true,
+                    'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                ]);
             }
-            return redirect('/')->with([
-                'success' => true,
-                'message' => 'Quotation Sent Successfully. One of our member will contact you soon.'
-            ]);
-        }catch(ValidationException $e){
+        } else {
             return redirect()->back()->with([
                 'error' => true,
-                'message' => $e->validator->errors()->all()
-            ]);
-        }catch(Exception $e){
-            return redirect()->back()->with([
-                'error' => true,
-                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                'message' => 'You are Robot.'
             ]);
         }
     }
 
     public function contact_us(Request $request)
-    {  
+    {
         $g_recaptcha_response = $request->input('g_recaptcha_response');
         $result = $this->getCaptcha($g_recaptcha_response);
         if($result->success == true && $result->score > 0.5){
-        try{
-            $request->validate([
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'email'=>'required|email',
-                'phone'=>'required',
-            ]);
-            
-            $create = Contact::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'number' => $request->phone,
-                'subject' => $request->subject,
-                'message' => $request->message,
-                'country' => $request->country,
-            ]);
+            try{
+                $request->validate([
+                    'first_name' => 'required',
+                    'last_name' => 'required',
+                    'email'=>'required|email',
+                    'phone'=>'required',
+                ]);
+                
+                $create = Contact::create([
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'email' => $request->email,
+                    'number' => $request->phone,
+                    'subject' => $request->subject,
+                    'message' => $request->message,
+                    'country' => $request->country,
+                ]);
 
-            if ($create ) {
-                return new ContactMail();
-                // Mail::send(new ContactMail());
+                if ($create ) {
+                    return new ContactMail();
+                    // Mail::send(new ContactMail());
+                }
+                $name = $request->first_name;
+                $message = "<p>Thanks for contacting us. One of our team will be in touch with you soon.</p>";
+                return view('frontend.cms.inquiry-success', compact('message', 'name'));
+            }catch(ValidationException $e){
+                return redirect()->back()->with([
+                    'error' => true,
+                    'message' => $e->validator->errors()->all()
+                ]);
+            }catch(Exception $e){
+                return redirect()->back()->with([
+                    'error' => true,
+                    'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                ]);
             }
-            $name = $request->first_name;
-            $message = "<p>Thanks for contacting us. One of our team will be in touch with you soon.</p>";
-            return view('frontend.cms.inquiry-success', compact('message', 'name'));
-        }catch(ValidationException $e){
+        } else {
             return redirect()->back()->with([
                 'error' => true,
-                'message' => $e->validator->errors()->all()
-            ]);
-        }catch(Exception $e){
-            return redirect()->back()->with([
-                'error' => true,
-                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                'message' => 'You are Robot.'
             ]);
         }
-          } else {
-                return back()->with('error', 'Please Try Again');
-            }
     }
 
     private function getCaptcha($secretKey)

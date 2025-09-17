@@ -50,50 +50,59 @@ class LoginController extends Controller
     }
     public function adminAuthenticate(Request $request)
     {
-        try {
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required'
-            ]);
+        $g_recaptcha_response = $request->input('g_recaptcha_response');
+        $result = $this->getCaptcha($g_recaptcha_response);
+        if($result->success == true && $result->score > 0.5){
+            try {
+                $request->validate([
+                    'email' => 'required|email',
+                    'password' => 'required'
+                ]);
 
-            $credentials = $request->only('email', 'password');
-            $remember = $request->filled('remember');
-            $user = User::where('email', $credentials['email'])->first();
-            if (!$user) {
-                return back()->with([
-                    'error' => true,
-                    'message' => "User doesn't exist."
-                ]);
-            }
-            if (!Auth::attempt($credentials, $remember)) {
-                return back()->with([
-                    'error' => true,
-                    'message' => "Incorrect password or unauthorized access."
-                ]);
-            }
+                $credentials = $request->only('email', 'password');
+                $remember = $request->filled('remember');
+                $user = User::where('email', $credentials['email'])->first();
+                if (!$user) {
+                    return back()->with([
+                        'error' => true,
+                        'message' => "User doesn't exist."
+                    ]);
+                }
+                if (!Auth::attempt($credentials, $remember)) {
+                    return back()->with([
+                        'error' => true,
+                        'message' => "Incorrect password or unauthorized access."
+                    ]);
+                }
 
-            $authUser = Auth::user();
-            if ($authUser->verified != '1' || $authUser->roles !== 'admin') {
-                Auth::logout();
+                $authUser = Auth::user();
+                if ($authUser->verified != '1' || $authUser->roles !== 'admin') {
+                    Auth::logout();
+                    return back()->with([
+                        'error' => true,
+                        'message' => "You do not have permission to access this page."
+                    ]);
+                }
+                return redirect()->route('dashboard')->with([
+                    'success' => true,
+                    'message' => 'Welcome to dashboard'
+                ]);
+            } catch (ValidationException $e) {
                 return back()->with([
                     'error' => true,
-                    'message' => "You do not have permission to access this page."
+                    'message' => $e->validator->errors()->all()
+                ]);
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+                return back()->with([
+                    'error' => true,
+                    'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
                 ]);
             }
-            return redirect()->route('dashboard')->with([
-                'success' => true,
-                'message' => 'Welcome to dashboard'
-            ]);
-        } catch (ValidationException $e) {
-            return back()->with([
+        } else {
+            return redirect()->back()->with([
                 'error' => true,
-                'message' => $e->validator->errors()->all()
-            ]);
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return back()->with([
-                'error' => true,
-                'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                'message' => 'You are Robot.'
             ]);
         }
     }
