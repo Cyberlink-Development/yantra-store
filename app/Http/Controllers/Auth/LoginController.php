@@ -50,6 +50,7 @@ class LoginController extends Controller
     }
     public function adminAuthenticate(Request $request)
     {
+        dd($request->all());
         $g_recaptcha_response = $request->input('g_recaptcha_response');
         $result = $this->getCaptcha($g_recaptcha_response);
         if($result->success == true && $result->score > 0.5){
@@ -105,6 +106,13 @@ class LoginController extends Controller
                 'message' => 'You are Robot.'
             ]);
         }
+    }
+    private function getCaptcha($secretKey)
+    {
+        $secret_key = env('SECRET_KEY');
+        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $secret_key . "&response={$secretKey}");
+        $result = json_decode($response);
+        return $result;
     }
     public function login_page(Request $request)
     {

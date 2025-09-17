@@ -42,6 +42,14 @@
                 }
             }
         </style>
+        <script src="https://www.google.com/recaptcha/api.js?render={{env('SITE_KEY')}}"></script>
+        <script>
+            grecaptcha.ready(function () {
+                grecaptcha.execute('<?php echo env("SITE_KEY"); ?>', {action: 'homepage'}).then(function (token) {
+                    document.getElementById('g_recaptcha_response').value = token;
+                });
+            });
+        </script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"/>
 
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -82,13 +90,5 @@
                 </div>
             </div>
         </div>
-        <script src="https://www.google.com/recaptcha/api.js?render={{env('SITE_KEY')}}"></script>
-        <script>
-            grecaptcha.ready(function () {
-                grecaptcha.execute('<?php echo env("SITE_KEY"); ?>', {action: 'homepage'}).then(function (token) {
-                    document.getElementById('g_recaptcha_response').value = token;
-                });
-            });
-        </script>
     </body>
 </html>
