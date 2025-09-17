@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Model\OffersModel;
 use App\Model\Product;
 use App\Model\Stock;
 use App\Model\Wishlist;
@@ -37,7 +38,12 @@ class CartController extends FrontController
             $product = Product::where('id', $request->product_id)->first();
             $quantity = $request->quantity;
             $productStock = $product->stock;
-
+            $offer = OffersModel::where('id',$product->offer_id)->first();
+            $productPrice = $product->discount_price ?? $product->price;
+            if($offer && $offer->discount)
+            {
+                $productPrice = $product->price - ($product->price * $offer->discount * 0.01);
+            }
             if ($productStock == 0) {
                 return response()->json([
                     'error' => true,
@@ -50,7 +56,7 @@ class CartController extends FrontController
                     'message' => "Quantity must be greater than 0"
                 ]);
             }
-            // dd($request->all());
+            // dd($request->all(),$product,$productPrice);
             // Check if demand exceeds available stock
             foreach (Cart::content() as $cartItem) {
 
@@ -75,7 +81,7 @@ class CartController extends FrontController
                 'id' => $request->product_id,
                 'name' => $product->product_name,
                 'qty' => $quantity,
-                'price' => Auth::check() && Auth::user()->roles == 'wholeseller' ? $product->wholesale_price : ($product->discount_price ?? $product->price),
+                'price' => Auth::check() && Auth::user()->roles == 'wholeseller' ? $product->wholesale_price : $productPrice,
                 'options' =>
                 [
                     'image' => $product->images?->where('is_main', '=', 1)->first()?->image,
@@ -127,14 +133,19 @@ class CartController extends FrontController
                     'message' => "{$product->product_name} has insufficient stock"
                 ]);
             }
-
+            $offer = OffersModel::where('id',$product->offer_id)->first();
+            $productPrice = $product->discount_price ?? $product->price;
+            if($offer && $offer->discount)
+            {
+                $productPrice = $product->price - ($product->price * $offer->discount * 0.01);
+            }
             Cart::add([
                 'id' => $product->id,
                 'name' => $product->product_name,
                 'qty' => $quantity,
                 'price' => Auth::check() && Auth::user()->roles == 'wholeseller'
                     ? $product->wholesale_price
-                    : ($product->discount_price ?? $product->price),
+                    : $productPrice,
                 'options' => [
                     'image' => $product->images?->where('is_main', 1)->first()?->image,
                     'slug'  => $product->slug,
