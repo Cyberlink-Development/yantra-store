@@ -167,51 +167,60 @@ class UserController extends Controller
             return view('frontend/pages/account-profile',compact('wishlist','order','user'));
         }
         if ($request->isMethod('post')) {
-            try{
-                $request->validate([
-                    'first_name' => 'required',
-                    // 'last_name' => 'required',
-                    // 'email'=>'required|email',
-                    'phone'=>'required',
-                    'address'=>'required',
-                    'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-                ]);
-                
-                $user =Auth::user();
-                $data = [
-                    'first_name' => $request->first_name,
-                    // 'last_name' => $request->last_name,
-                    // 'email' => $request->email,
-                    'phone' => $request->phone,
-                    'country'=>$request->address
-                ];
+            $g_recaptcha_response = $request->input('g_recaptcha_response');
+            $result = $this->getCaptcha($g_recaptcha_response);
+            if($result->success == true && $result->score > 0.5){
+                try{
+                    $request->validate([
+                        'first_name' => 'required',
+                        // 'last_name' => 'required',
+                        // 'email'=>'required|email',
+                        'phone'=>'required',
+                        'address'=>'required',
+                        'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                    ]);
+                    
+                    $user =Auth::user();
+                    $data = [
+                        'first_name' => $request->first_name,
+                        // 'last_name' => $request->last_name,
+                        // 'email' => $request->email,
+                        'phone' => $request->phone,
+                        'country'=>$request->address
+                    ];
 
-                if ($request->hasFile('profile_image')) {
-                    if ($user->image && Storage::disk('public')->exists($user->image)) {
-                        Storage::disk('public')->delete($user->image);
+                    if ($request->hasFile('profile_image')) {
+                        if ($user->image && Storage::disk('public')->exists($user->image)) {
+                            Storage::disk('public')->delete($user->image);
+                        }
+
+                        $file = $request->file('profile_image');
+                        $path = $file->store('profile_images', 'public');
+                        $data['image'] = $path;
                     }
 
-                    $file = $request->file('profile_image');
-                    $path = $file->store('profile_images', 'public');
-                    $data['image'] = $path;
+                    $user->update($data);
+                    
+                    return redirect()->back()->with([
+                        'success' => true,
+                        'message' => 'Profile Updated Successfully'
+                    ]);
+                } catch (ValidationException $e) {
+                    return back()->with([
+                        'error' => true,
+                        'message' => $e->validator->errors()->all()
+                    ]);
+                } catch (Exception $e) {
+                    Log::error($e->getMessage());
+                    return back()->with([
+                        'error' => true,
+                        'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                    ]);
                 }
-
-                $user->update($data);
-                
+            } else {
                 return redirect()->back()->with([
-                    'success' => true,
-                    'message' => 'Profile Updated Successfully'
-                ]);
-            } catch (ValidationException $e) {
-                return back()->with([
                     'error' => true,
-                    'message' => $e->validator->errors()->all()
-                ]);
-            } catch (Exception $e) {
-                Log::error($e->getMessage());
-                return back()->with([
-                    'error' => true,
-                    'message' => app()->isLocal() ? $e->getMessage() : 'Something went wrong. Please try again.'
+                    'message' => 'You are Robot.'
                 ]);
             }
         }

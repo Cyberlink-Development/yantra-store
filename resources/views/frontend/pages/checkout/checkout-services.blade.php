@@ -84,6 +84,7 @@
                     <form action="{{ route('checkout-services-success') }}" Method="post">
                         @csrf
                         <div class="row">
+                            <input type="hidden" id="g_recaptcha_response" name="g_recaptcha_response">
                             <input class="form-control" type="hidden" id="checkout-fn" name="service_id" value="{{ $service->id }}" required>
                             <input type="hidden" name="discount_id" id="discount-id" value="">
                             <div class="col-sm-12">
@@ -224,6 +225,14 @@
 
 @endsection
 @push('scripts')
+<script src="https://www.google.com/recaptcha/api.js?render={{env('SITE_KEY')}}"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('<?php echo env("SITE_KEY"); ?>', {action: 'homepage'}).then(function (token) {
+            document.getElementById('g_recaptcha_response').value = token;
+        });
+    });
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
     const subtotalEl = document.getElementById("subtotal");

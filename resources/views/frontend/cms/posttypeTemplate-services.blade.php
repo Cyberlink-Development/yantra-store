@@ -78,6 +78,7 @@
           <form action="{{route('quotation-submit')}}" method="post">
             @csrf
             <div class="row">
+              <input type="hidden" id="g_recaptcha_response" name="g_recaptcha_response">
               <input class="form-control" type="hidden" name="type" value="service">
               <input class="form-control" type="hidden" name="price" id="quote-price">
               <input class="form-control" type="hidden" name="service_id" id="quote-service-id">
@@ -155,5 +156,13 @@
       modal.find('#quote-price').val(price || '');
     });
   </script>
+  <script src="https://www.google.com/recaptcha/api.js?render={{env('SITE_KEY')}}"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('<?php echo env("SITE_KEY"); ?>', {action: 'homepage'}).then(function (token) {
+            document.getElementById('g_recaptcha_response').value = token;
+        });
+    });
+</script>
 
 @endpush

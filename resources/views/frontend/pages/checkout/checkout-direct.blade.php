@@ -36,7 +36,8 @@
                                     <a href="{{route('product-single',$product->slug)}}">{{ $product->product_name }}</a>
                                 </h6>
                                 <div class="widget-product-meta">
-                                    <span class="font-secondary mr-2">Rs {{ $product->discount_price ?? $product->price }}</span><span class="text-muted">x {{ $quantity }}</span>
+                                    <!-- <span class="font-secondary mr-2">Rs {{ $product->discount_price ?? $product->price }}</span><span class="text-muted">x {{ $quantity }}</span> -->
+                                    <span class="font-secondary mr-2">Rs {{ $productPrice }}</span><span class="text-muted">x {{ $quantity }}</span>
                                 </div>
                             </div>
                         </div>
@@ -84,6 +85,7 @@
                 <form action="{{ route('checkout-success') }}" Method="post">
                     @csrf
                     <div class="row">
+                        <input type="hidden" id="g_recaptcha_response" name="g_recaptcha_response">
                         <input class="form-control" type="hidden" id="checkout-fn" name="product_id" value="{{ $product->id }}" required>
                         <input class="form-control" type="hidden" id="checkout-fn" name="quantity" value="{{ $quantity }}" required>
                         <input type="hidden" name="discount_id" id="discount-id" value="">
@@ -230,6 +232,14 @@
 
 @endsection
 @push('scripts')
+<script src="https://www.google.com/recaptcha/api.js?render={{env('SITE_KEY')}}"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('<?php echo env("SITE_KEY"); ?>', {action: 'homepage'}).then(function (token) {
+            document.getElementById('g_recaptcha_response').value = token;
+        });
+    });
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
     const shippingSelect = document.getElementById("checkout-shipping");

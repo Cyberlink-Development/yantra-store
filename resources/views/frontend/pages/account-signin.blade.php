@@ -16,6 +16,7 @@
                 <div class="modal-body tab-content py-4">
                     <form method="post" action="{{route('login')}}" class="needs-validation tab-pane fade show active" autocomplete="off" novalidate id="signin-tab-2">
                         @csrf
+                        <input type="hidden" id="g_recaptcha_response" name="g_recaptcha_response">
                         <div class="form-group">
                             <label for="si-email">Email address</label>
                             <input class="form-control" type="email" id="si-email" name="email"
@@ -105,4 +106,12 @@
             </div>
         </div>
     </section>
+<script src="https://www.google.com/recaptcha/api.js?render={{env('SITE_KEY')}}"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('<?php echo env("SITE_KEY"); ?>', {action: 'homepage'}).then(function (token) {
+            document.getElementById('g_recaptcha_response').value = token;
+        });
+    });
+</script>
 @endsection

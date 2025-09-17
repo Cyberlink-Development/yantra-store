@@ -87,6 +87,7 @@
                 <form action="{{ route('checkout-page') }}" Method="post">
                     @csrf
                     <div class="row">
+                        <input type="hidden" id="g_recaptcha_response" name="g_recaptcha_response">
                         <input type="hidden" name="user_id" value="{{ $user->id }}">
                         <input type="hidden" name="discount_id" id="discount-id" value="">
                         <div class="col-sm-12">
@@ -305,6 +306,14 @@
 
 @endsection
 @push('scripts')
+<script src="https://www.google.com/recaptcha/api.js?render={{env('SITE_KEY')}}"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('<?php echo env("SITE_KEY"); ?>', {action: 'homepage'}).then(function (token) {
+            document.getElementById('g_recaptcha_response').value = token;
+        });
+    });
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
     const shippingSelect = document.getElementById("checkout-shipping");
