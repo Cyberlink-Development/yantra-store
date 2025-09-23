@@ -53,7 +53,7 @@ class ProductController extends BackendController
 
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $isAjax = $request->ajax();
         try{
             $request->validate([
