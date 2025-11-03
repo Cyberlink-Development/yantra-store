@@ -15,6 +15,7 @@
                         <tr>
                             <th>#</th>
                             <th>Name</th>
+                            <th>Level</th>
                             <th>Status</th>
                             <th class="sorting-false">Action</th>
                         </tr>
@@ -24,6 +25,7 @@
                                 <tr>
                                     <td>{{$key+=1}}</td>
                                     <td>{{$value->name}}</td>
+                                    <td>{{$value->level}}</td>
                                     <td>
                                         <input type="checkbox" class="toggle-home" data-id="{{ $value->id }}" name="status"
                                             onclick="updateStatus(this, {{$value->id}},'{{getModelPathFromData($value)}}')"

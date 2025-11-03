@@ -187,17 +187,9 @@
     function loadCompatibleProducts(componentId) {
         const modalBody = document.getElementById(`modal-body-${componentId}`);
         const loading = document.getElementById(`loading-${componentId}`);
-        
-        // Check if elements exist
-        if (!modalBody) {
-            console.error(`Modal body not found for component ${componentId}`);
-            return;
-        }
 
         // Show loading
-        if (loading) {
-            loading.style.display = 'block';
-        }
+        loading.style.display = 'block';
 
         // Get compatible products
         let compatibleProducts = allProducts[componentId];
@@ -220,6 +212,7 @@
         }
 
         // Hide loading
+        loading.style.display = 'none';
 
         // Generate product HTML
         let productsHtml = '';
@@ -261,28 +254,6 @@
 
         modalBody.innerHTML = productsHtml;
     }
-
-    // Clean up modal state when it's hidden
-    @foreach ($componentTypes as $row)
-        $('#modal-{{ $row->id }}').on('hidden.bs.modal', function() {
-            // Remove any lingering backdrops
-            $('.modal-backdrop').remove();
-            // Reset body classes
-            $('body').removeClass('modal-open');
-            // Reset body padding
-            $('body').css('padding-right', '');
-        });
-    @endforeach
-    // Alternative: Add a global handler for all modals
-    $(document).on('hidden.bs.modal', '.modal', function() {
-        $('.modal-backdrop').remove();
-        $('body').removeClass('modal-open');
-        $('body').css('padding-right', '');
-    });
-    // Remove focus from modal elements before closing to prevent aria-hidden warning
-    $(document).on('hide.bs.modal', '.modal', function() {
-        $(this).find(':focus').blur();
-    });
 
     // Get selected products of a specific level
     function getSelectedProductsOfLevel(level) {
@@ -332,16 +303,7 @@
         updateTotal();
 
         // Close modal
-        // Properly close the modal
-        const modalId = `#modal-${containerId.replace('component-', '')}`;
-        $(modalId).modal('hide');
-        
-        // Force cleanup after a short delay
-        setTimeout(function() {
-            $('.modal-backdrop').remove();
-            $('body').removeClass('modal-open');
-            $('body').css('padding-right', '');
-        }, 300);
+        $(`#modal-${containerId.replace('component-', '')}`).modal('hide');
     }
 
     function resetSelection(containerId) {
