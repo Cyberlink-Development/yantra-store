@@ -278,9 +278,9 @@
                                                         @endif
                                                     </li>
                                                 @endforeach
-                                                <!-- <li class="nav-item">
+                                                <li class="nav-item">
                                                     <a class="nav-link" href="{{ route('custom.pc') }}">Custom PC</a>
-                                                </li> -->
+                                                </li>
                                             </ul>
                                         </div>
                                         <!-- </nav> -->
