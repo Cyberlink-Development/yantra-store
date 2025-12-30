@@ -1,0 +1,198 @@
+<?php
+
+namespace App\Model;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
+use App\Model\Tag\Tag;
+
+class Product extends Model
+{
+    use HasSlug;
+    protected $fillable = ['product_name','price','stock','discount_price','short_description','long_description','latest','hot'];
+    protected $appends = ['average_rating','star_ratings','main_image','hover_image']; //average_rating to automatically appear when returning JSON (e.g., API) we need to append it
+    public function scopeActive($query){
+        return $query->where('status', '1');
+    }
+    public function getMainImageAttribute()
+    {
+        return $this->images()->orderByDesc('is_main')->first();
+    }
+
+    public function getHoverImageAttribute()
+    {
+        return $this->images()->orderByDesc('is_main')->skip(1)->first();
+    }
+    public function getAverageRatingAttribute(){
+        //For active ratings only
+        if($this->relationLoaded('reviews')){
+            return round($this->reviews->avg('rating'), 2) ?? 0;
+        }
+        return round($this->reviews()->active()->avg('rating'), 2) ?? 0;
+    }
+    public function getStarRatingsAttribute(){
+        $rating = $this->average_rating;
+        $fullStars = floor($rating);
+        $decimal = $rating - $fullStars;
+        if($decimal >= 0.75){
+            $fullStars += 1;
+            $halfStars = 0;
+        }elseif($decimal >= 0.25){
+            $halfStars = 1;
+        }else{
+            $halfStars = 0;
+        }
+        $emptyStars = 5 - $fullStars - $halfStars;
+        return [
+            'full' => $fullStars,
+            'half' => $halfStars,
+            'empty' => $emptyStars,
+        ];
+    }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class,'product_id')->orderBy('created_at', 'desc');
+    }
+    public function tag()
+    {
+        return $this->belongsTo(Tag::class);
+    }
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('product_name')
+            ->saveSlugsTo('slug');
+    }
+
+    public function descriptions()
+    {
+        return $this->hasMany('App\Model\Description','product_id');
+    }
+    public function categories()
+    {
+        return $this->belongsToMany('App\Model\Category','product_categories');
+    }
+    public function brands()
+    {
+        return $this->belongsTo('App\Model\Brand','brand_id');
+    }
+    public function componenttypes()
+    {
+        return $this->belongsTo('App\Model\ComponentType','component_type');
+    }
+
+    public function stocks(){
+        return $this->hasMany(Stock::class,'product_id');
+    }
+
+    public function colorstocks()
+    {
+        return $this->belongsToMany('App\Model\Color','color_stocks')->withPivot('stock');
+    }
+
+    public function seo(){
+        return $this->hasOne(Seo::class,'product_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class, 'product_id');
+    }
+
+    public function get_main_image($id)
+    {
+        $main_image="";
+        $product= Product::findOrFail($id);
+        $images = $product->images;
+        foreach ($images as $image){
+            if($image->is_main == 1){
+                $main_image = $image->image;
+            }
+        }
+        return $main_image;
+    }
+    public function orderDetails(){
+       return $this->hasMany(OrderDetail::class,'product_id');
+    }
+    public function componentType()
+    {
+        return $this->belongsTo(ComponentType::class, 'component_type', 'id');
+    }
+
+    public function wishlists(){
+        return $this->hasMany(Wishlist::class,'product_id');
+    }
+
+    public function uniqueStockColor(){
+        return Stock::where('product_id', $this->id)->select('color_id')->distinct()->get();
+    }
+
+    public function uniqueStockSize(){
+        return Stock::where('product_id', $this->id)->select('size_id')->distinct()->get();
+    }
+
+    public function totalStock($color=null, $size=null){
+        if($this->size_variation==1){
+
+            if($color && $size){
+                return $this->stocks()
+                            ->where([['color_id', $color],
+                                    ['size_id', $size]])->sum('stock');
+            }
+
+            // When color is passed
+            if($color){
+                return $this->stocks()->where('color_id', $color)->sum('stock');
+            }
+
+            if($size){
+                return $this->stocks()->where('size_id', $size)->sum('stock');
+            }
+
+            return $this->stocks()->sum('stock');
+
+        }else{
+
+            // When color is passed
+            if($color){
+                return $this->colorstocks()->where('color_id', $color)->sum('stock');
+            }
+
+            return $this->colorstocks()->sum('stock');
+        }
+    }
+
+    // Relationship to get products this product is compatible with
+    public function compatibleProducts()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'product_compatibilities',
+            'product_id',
+            'compatible_product_id'
+        );
+    }
+
+    // Relationship to get products that are compatible with this product (reverse)
+    public function compatibleWithProducts()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'product_compatibilities',
+            'compatible_product_id',
+            'product_id'
+        );
+    }
+
+    // Helper method to get all compatible products (both directions)
+    public function getAllCompatibleProducts()
+    {
+        $forward = $this->compatibleProducts;
+        $reverse = $this->compatibleWithProducts;
+        
+        return $forward->merge($reverse)->unique('id');
+    }
+
+}

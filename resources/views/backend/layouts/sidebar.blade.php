@@ -1,0 +1,531 @@
+@php
+    $currentRoute = Route::currentRouteName();
+@endphp
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4 position-relative" style="width:19rem; overflow-x:hidden;">
+    <!-- Brand Logo -->
+    <a href="{{ url('/') }}" target="_blank" class="brand-link" style="background-color: #ffffff; position: relative;">
+        @if($setting && $setting->logo_white)
+            <img src="{{asset('theme-assets/img/logo/'. $setting->logo_white)}}" alt="{{$setting->title}}" class="brand-image img-circle elevation-3" style="opacity:1;    max-height: none; height: 3.5rem;">
+        @else
+            <span class="brand-text font-weight-light"> {{ $setting && $setting->title ? $setting->title : config('app.name') }}</span>
+        @endif
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar" style="margin-top:0;">
+        <!-- Sidebar user panel (optional) -->
+        <?php /*?> ?>
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="{{ asset('images/user.png') }}" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="" class="d-block">Admin</a>
+            </div>
+        </div>
+        <?php */?>
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+                <li class="nav-item">
+                    <a href="{{ route('dashboard') }}" class="nav-link {{ in_array($currentRoute, ['dashboard']) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Dashboard
+                            <!-- <i class="right fas fa-angle-left"></i> -->
+                        </p>
+                    </a>
+                </li>
+
+
+                <li class="nav-header" style="padding-top:.5rem!important;">CMS</li>
+                <li class="nav-item has-treeview {{ Request::segment(2) =='posts' || Request::segment(2) =='type' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) =='type' || Request::segment(2) =='posts' ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-sliders"></i>
+                        <p>
+                            PostType
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('type.posttype.index') }}" class="nav-link ml-3 {{ $currentRoute == 'type.posttype.index' ? 'active' : '' }}">
+                                <i class="fa fa-list nav-icon"></i>
+                                <p>List</p>
+                            </a>
+                        </li>
+
+
+                        @if ($postType_menus)
+                            @foreach ($postType_menus as $row)
+                                <li class="nav-item">
+                                    @if (has_posts($row->id))
+                                        <a href="{{ url('admin/posts/' . $row->uri) }}" class="nav-link ml-3 {{ Request::segment(3) == $row->uri || Request::segment(3) == $row->id ? 'active' : '' }}">
+                                    @else
+                                        <a href="{{ url('admin/type/' . $row->id . '/edit') }}" class="nav-link ml-3 {{ Request::segment(3) == $row->uri || Request::segment(3) == $row->id ? 'active' : '' }}">
+                                    @endif
+                                        <i class="fa fa-plus nav-icon"></i>
+                                        <p>{{ $row->post_type }}</p>
+                                    </a>
+                                </li>
+                            @endforeach
+                        @endif
+                    </ul>
+                </li>
+
+
+                <li class="nav-header" style="padding-top:.5rem!important;">PRODUCTS</li>
+                <!-- <li class="nav-item has-treeview {{ in_array($currentRoute, ['add-size', 'add-color']) ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ in_array($currentRoute, ['add-size', 'add-color']) ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-tags"></i>
+                        <p>
+                            Product Attributes
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('add-size') }}" class="nav-link ml-3 {{ $currentRoute == 'add-size' ? 'active' : '' }}">
+                                <i class="fa fa-plus nav-icon"></i>
+                                <p>Add Size</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('add-color') }}" class="nav-link ml-3 {{ $currentRoute == 'add-color' ? 'active' : '' }}">
+                                <i class="fa fa-plus nav-icon"></i>
+                                <p>Add Color</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li> -->
+
+
+
+                <li class="nav-item has-treeview {{ in_array($currentRoute, ['brand-index', 'brand-discounts.index']) ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ in_array($currentRoute, ['brand-index', 'brand-discounts.index']) ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-briefcase"></i>
+                        <p>
+                            Brands
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('brand-index') }}" class="nav-link ml-3 {{ $currentRoute == 'brand-index' ? 'active' : '' }}">
+                                <i class="fa fa-plus nav-icon"></i>
+                                <p>All Brands</p>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a href="{{ route('brand-discounts.index') }}" class="nav-link ml-3 {{ $currentRoute == 'brand-discounts.index' ? 'active' : '' }}">
+                                <i class="fa fa-list nav-icon"></i>
+                                <p>Brand Discount</p>
+                            </a>
+                        </li> -->
+
+                    </ul>
+                </li>
+
+
+                <li class="nav-item has-treeview {{ in_array($currentRoute, ['category.create', 'category.index']) ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ in_array($currentRoute, ['category.create', 'category.index']) ? 'active' : '' }}">
+                        <!-- <i class="nav-icon fa fa-tags"></i> -->
+                        <i class="nav-icon fa fa-folder"></i>
+                        <p>
+                            Category
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('category.create') }}" class="nav-link ml-3 {{ $currentRoute == 'category.create' ? 'active' : '' }}">
+                                <i class="fa fa-plus nav-icon"></i>
+                                <p>Add Category</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('category.index') }}" class="nav-link ml-3 {{ $currentRoute == 'category.index' ? 'active' : '' }}">
+                                <i class="fa fa-list nav-icon"></i>
+                                <p>All Category</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li class="nav-item has-treeview {{ Request::segment(2) == 'offers' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) == 'offers' ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-gift"></i>
+                        <p>
+                            Offers
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <!-- <li class="nav-item">
+                            <a href="{{ route('offers.create') }}" class="nav-link ml-3 {{ Request::segment(2) == 'offers' && (Request::segment(3) == 'create' || Request::segment(3) == 'edit') ? 'active' : '' }}">
+                                <i class="fa fa-plus nav-icon"></i>
+                                <p>Add Offers</p>
+                            </a>
+                        </li> -->
+
+                        <li class="nav-item">
+                            <a href="{{ route('offers.index') }}" class="nav-link ml-3 {{ Request::segment(2) == 'offers' && (Request::segment(3) == 'index')  ? 'active' : '' }}">
+                                <i class="fa fa-list nav-icon"></i>
+                                <p>All Offers</p>
+                            </a>
+                        </li>
+                        @foreach ($allOffers as $offer)
+                            <li class="nav-item">
+                                <a href="{{ route('offers.show',$offer->id) }}" class="nav-link ml-3 {{ Request::segment(2) == 'offers' && Request::segment(4) == $offer->id  ? 'active' : '' }}">
+                                    <i class="fa fa-bolt nav-icon"></i>
+                                    <p>{{ $offer->title }}</p>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </li>
+
+                <li class="nav-item has-treeview {{ Request::segment(2) == 'componenttype' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) == 'componenttype' ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-puzzle-piece"></i>
+                        <p>
+                            Component Type
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview {{ in_array($currentRoute, ['add-componenttype', 'show-componenttype']) ? 'active' : '' }}">
+                        <li class="nav-item">
+                            <a href="{{ route('add-componenttype') }}" class="nav-link ml-3 {{ $currentRoute == 'add-componenttype' ? 'active' : '' }}">
+                                <i class="fa fa-plus nav-icon"></i>
+                                <p>Add Type</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('show-componenttype') }}" class="nav-link ml-3 {{ $currentRoute == 'show-componenttype' ? 'active' : '' }}">
+                                <i class="fa fa-list nav-icon"></i>
+                                <p>View Types</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview {{ Request::segment(2) =='product' ? 'menu-open' : '' }} ">
+                    <a href="" class="nav-link {{ Request::segment(2) =='product' ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-cube"></i>
+                        <p>
+                            Product
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('product.create') }}" class="nav-link ml-3 {{ $currentRoute == 'product.create' ? 'active' : '' }}">
+                                <i class="fa fa-plus nav-icon"></i>
+                                <p>Add Product</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('product.index') }}" class="nav-link ml-3 {{ $currentRoute == 'product.index' ? 'active' : '' }}">
+                                <i class="fa fa-list nav-icon"></i>
+                                <p>All Products</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="{{ url('admin/banner') }}" class="nav-link {{ Request::segment(2) == 'banner' ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-image"></i>
+                        <p>
+                            Banners
+                            <!-- <i class="fas fa-angle-left right"></i> -->
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="{{ route('ads.index') }}" class="nav-link {{ Request::segment(2) == 'ads' ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-bullseye"></i>
+                        <p>Ads</p>
+                    </a>
+                </li>
+                {{--<li class="nav-item has-treeview">
+                    <a href="{{ route('tags.index') }}" class="nav-link">
+                        <i class="nav-icon fa fa-tags"></i>
+                        <p>Tags</p>
+                    </a>
+                </li>--}}
+                <li class="nav-item has-treeview">
+                    <a href="{{ route('admin.discount') }}" class="nav-link {{ Request::segment(2) =='discount' ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-percent"></i>
+                        <p>Discount Code</p>
+                    </a>
+                </li>
+
+
+                {{--                <li class="nav-header">USERS</li> --}}
+                {{--                <li class="nav-item has-treeview"> --}}
+                {{--                    <a href="" class="nav-link"> --}}
+                {{--                        <i class="nav-icon fa fa-user"></i> --}}
+                {{--                        <p> --}}
+                {{--                            Wholesale Users --}}
+                {{--                            <i class="fas fa-angle-left right"></i> --}}
+                {{--                        </p> --}}
+                {{--                    </a> --}}
+                {{--                    <ul class="nav nav-treeview"> --}}
+                {{--                        <li class="nav-item"> --}}
+                {{--                            <a href="{{route('wholesale-user')}}" class="nav-link"> --}}
+                {{--                                <i class="fa fa-paper-plane"></i> --}}
+                {{--                                <p>Add User</p> --}}
+                {{--                            </a> --}}
+                {{--                        </li> --}}
+                {{--                    </ul> --}}
+                {{--                </li> --}}
+
+
+                <li class="nav-header" style="padding-top:.5rem!important;">BUILD CUSTOM PC</li>
+                <li class="nav-item has-treeview {{ Request::segment(2) =='component' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) =='component' ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-cogs"></i>
+                        <p>
+                            Component
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('show-active-componenttype') }}" class="nav-link ml-3 {{ $currentRoute == 'show-active-componenttype' ? 'active' : '' }} " >
+                                <i class="fa fa-list nav-icon"></i>
+                                <p>View All</p>
+                            </a>
+                        </li>
+                        @foreach($activeComponentType as $row)
+                            <li class="nav-item">
+                                <a href="{{route('view-component',$row->id)}}" class="nav-link ml-3 {{ (Request::segment(2) =='component' && Request::segment(4) == $row->id) ? 'active' : '' }}" >
+                                    <i class="fa fa-microchip nav-icon"></i>
+                                    <p>{{$row->name}}</p>
+                                </a>
+                            </li>
+                        @endforeach
+
+                    </ul>
+                </li>
+
+                <li class="nav-header" style="padding-top:.5rem!important;">ORDERS</li>
+
+                <!-- <li class="nav-item has-treeview">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon fa fa-money"></i>
+                        <p>
+                           Payment Methods
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('payment.method') }}" class="nav-link">
+                                <i class="fa fa-paper-plane"></i>
+                                <p>Payment Methods</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li> -->
+
+                {{-- <li class="nav-item has-treeview">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon far fa-envelope"></i>
+                        <p>
+                            Shipping Rates
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('add-location')}}" class="nav-link">
+                                <i class="fa fa-paper-plane"></i>
+                                <p>Add Shipping Location</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('add-country')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add Country</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('add-city')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add City</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li> --}}
+                <li class="nav-item has-treeview {{ Request::segment(2) =='shipping' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) =='shipping' ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-dollar-sign"></i>
+                        <p>
+                            Shipping Rates
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('add-price') }}" class="nav-link ml-3 {{ Request::segment(2) =='shipping' ? 'active' : '' }}">
+                                <i class="fa fa-paper-plane"></i>
+                                <p>Add Shipping Price</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview {{ Request::segment(2) == 'orders' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) == 'orders' ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-shopping-cart"></i>
+                        <p>
+                            Orders
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('view-orders') }}" class="nav-link ml-3 {{ Request::segment(3) == 'all-orders' || Request::segment(3) == 'order-details' ? 'active' : '' }}">
+                                <i class="fa fa-paper-plane"></i>
+                                <p>Product Orders</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('service_orders') }}" class="nav-link ml-3 {{ Request::segment(3) == 'service-orders' || Request::segment(3) == 'service-order-details' ? 'active' : '' }}">
+                                <i class="fa fa-paper-plane"></i>
+                                <p>Service Orders</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item has-treeview  {{ Request::segment(2) =='quotation' ? 'menu-open' : '' }}">
+                    <a href="" class="nav-link {{ Request::segment(2) =='quotation' ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-sticky-note"></i>
+                        <p>
+                            Quotations
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('quotation-all','product') }}" class="nav-link ml-3 {{ Request::segment(3) == 'product' || Request::segment(5) == 'product' ? 'active' : '' }}">
+                                <i class="fa fa-cube"></i>
+                                <p>Product Quotations</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('quotation-all','service') }}" class="nav-link ml-3 {{ Request::segment(3) == 'service' || Request::segment(5) == 'service' ? 'active' : '' }}">
+                                <i class="fa fa-handshake"></i>
+                                <p>Service Quotations</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-header" style="padding-top:.5rem!important;">MISCELLANEOUS</li>
+
+                {{-- <li class="nav-item has-treeview">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon fa fa-newspaper-o"></i>
+                        <p>
+                            Blog
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('add-blog') }}" class="nav-link ml-3">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add Blog</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('all-blogs') }}" class="nav-link ml-3">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>All Blogs</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li> --}}
+
+                {{-- <li class="nav-item">
+                    <a href="{{ route('quotation-all') }}" class="nav-link">
+                        <i class="fas fa-sticky-note"></i>
+                        <p>Quotations</p>
+                    </a>
+                </li> --}}
+
+                <!--<li class="nav-item">-->
+                <!--    <a href="{{ route('faq') }}" class="nav-link">-->
+                <!--        <i class="fa fa-question"></i>-->
+                <!--        <p>FAQ'S</p>-->
+                <!--    </a>-->
+                <!--</li>-->
+                <li class="nav-item">
+                    <a href="{{ route('all_reviews') }}" class="nav-link {{ Request::segment(2) =='review' ? 'active' : '' }}">
+                        <i class="fa fa-star"></i>
+                        <p>Reviews</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('contact.index') }}" class="nav-link {{ Request::segment(2) =='contact_inquiry' ? 'active' : '' }}">
+                        <i class="fa fa-comments"></i>
+                        <p>Contact Inquiry</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('setting.index') }}" class="nav-link {{ Request::segment(2) =='Setting' ? 'active' : '' }}">
+                        <i class="fa fa-wrench"></i>
+                        <p>Setting</p>
+                    </a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a href="{{ route('admin-password') }}" class="nav-link">
+                        <i class="fa fa-key"></i>
+                        <p>Change Password</p>
+                    </a>
+                </li> -->
+
+                <li class="nav-item">
+                    <a href="{{ route('logout') }}" class="nav-link">
+                        <i class="fa fa-power-off"></i>
+                        <p>Logout</p>
+                    </a>
+                </li>
+            </ul>
+
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(function () {
+                let activeItem = document.querySelector('.nav-link.active');
+                if (activeItem) {
+                    activeItem.scrollIntoView({ block: "center", inline: "nearest" });
+                }
+            }, 2000);
+        });
+    </script>
+
+
+</aside>

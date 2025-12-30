@@ -1,0 +1,130 @@
+@extends('frontend.include.master')
+@section('content')
+
+<!-- Page Title-->
+<div class=" bg-primary pt-4 pb-4">
+    <div class="container py-2 py-lg-3">
+        <div class="row">
+            <div class="col-lg-12 d-flex justify-content-center align-item-center  mb-3 mb-lg-0 pt-lg-2 ">
+                <div>
+                    <nav aria-label="breadcrumb text-center">
+                        <ol class="breadcrumb  flex-lg-nowrap justify-content-center">
+                            <li class="breadcrumb-item"><a class="text-nowrap text-white" href="{{url('/')}}"><i class="czi-home"></i>Home</a></li>
+                            <li class="breadcrumb-item text-nowrap active text-white" aria-current="page">{{$post_type->post_type}}</li>
+                        </ol>
+                    </nav>
+                    <div class=" pr-lg-4 text-center">
+                        <h1 class="h3 mb-0 text-white">{{$data->post_title}}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page Content-->
+  <section class="container-fluid px-4 px-md-5 mt-4">
+    <div class="row mb-3 bg-white shadow rounded">
+        <div class="col-md-4 p-0 d-flex justify-content-center align-items-center">
+            <img src="{{ $data->banner ? asset('uploads/banners/'.$data->banner) : asset('theme-assets/img/service/cloud.png')}}" alt="" class="service-img" style="height: 308px; width:100%; object-fit:contain;">
+        </div>
+        <div class="col-md-8">
+            <div class="p-5" style="border-left: 1px solid #e5e4e4c7;">
+                <h1 class="mb-3">{{ $data->associated_title }}</h1>
+                <p class="text-muted">{{ $data->post_excerpt }}</p>
+
+                <p>{!! $data->post_content !!}</p>
+
+                <div class="container">
+                    <div class="row d-flex" style="gap:10px;">
+                      @if($data->price > 0)
+                        <div class=" p-0">
+                          <div class="price-badge text-center" style="width:175px;">Rs. {{ number_format($data->price) }}</div>
+                        </div>
+                        <div class=" p-0">
+                            <a href="{{ route('checkout-services', $data->uri) }}" class="quote-badge text-center" style="width:175px;">Purchase Now</a>
+                        </div>
+                      @else
+                        <div class=" p-0">
+                            <a href="#quote" data-toggle="modal" class="quote-badge text-center" style="width:175px;">Get A Quote</a>
+                        </div>
+                      @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+
+
+  <!--quote modal-->
+  <div class="modal fade" id="quote" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="h3 m-0">{{ $data->price ? 'Purchase' : 'Get a Quote'}}</h2>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body tab-content py-4">
+              <form action="{{route('quotation-submit')}}" method="post">
+                @csrf
+                  <div class="row">
+                    <input type="hidden" id="g_recaptcha_response" name="g_recaptcha_response">
+                    <input class="form-control" type="hidden" name="type" value="service">
+                    <input class="form-control" type="hidden" name="price" value="{{ $data->price }}">
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="quote-name">Full Name*</label>
+                            <input class="form-control" type="text" name="full_name" id="quote-name"  required>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="quote-email">Email address*</label>
+                            <input class="form-control" type="email" name="email" id="quote-email"  required>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="quote-phone">Phone*</label>
+                            <input class="form-control" type="number" name="phone" id="quote-phone"  required>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="quote-address">Address*</label>
+                            <input class="form-control" type="text" name="country" id="quote-address"  required>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="quote-service">Service*</label>
+                          <input class="form-control" type="text" value="{{ $data->post_title }}" readonly>
+                          <input type="hidden" name="service_id" value="{{ $data->id }}">
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="form-group">
+                            <label class="mb-3" for="message">Message</label>
+                            <textarea class="form-control" rows="4" name="message" id="messasge"></textarea>
+                          </div>
+                      </div>
+                  </div>
+              <button class="btn btn-primary btn-block btn-shadow" type="submit">Send the quote</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+@endsection
+@push('scripts')
+<script src="https://www.google.com/recaptcha/api.js?render={{env('SITE_KEY')}}"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('<?php echo env("SITE_KEY"); ?>', {action: 'homepage'}).then(function (token) {
+            document.getElementById('g_recaptcha_response').value = token;
+        });
+    });
+</script>
+@endpush
