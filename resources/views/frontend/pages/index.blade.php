@@ -3,7 +3,7 @@
     <!-- Hero slider start -->
     @if($banners->count() > 0)
         <section class="cz-carousel cz-controls-lg">
-            <div class="cz-carousel-inner" data-carousel-options='{"mode": "gallery",  "autoplay": true, "autoplayTimeout": 4000, "autoplayHoverPause": false, "responsive": {"0":{"nav":true, "controls": true},"992":{"nav":false, "controls": true}}}'>
+            <div class="cz-carousel-inner" data-carousel-options='{"mode": "gallery", "responsive": {"0":{"nav":true, "controls": true},"992":{"nav":false, "controls": true}}}'>
                 @foreach($banners as $row)
                     <div>
                         @php
@@ -17,10 +17,14 @@
                                 <img src="{{ $imagePath }}" alt="{{ $row->title }}">
                             </a>
                         @else
-                            <img src="{{ $imagePath }}" alt="{{ $row->title }}">
+                            <img src="{{ $imagePath }}">
                         @endif
                     </div>
                 @endforeach
+                <!-- <div class="bg-responsive-height">
+                    <div data-vbg-autoplay="true" data-vbg="https://youtu.be/gVBELZqOOIE">
+                    </div>
+                </div> -->
             </div>
         </section>
     @endif
@@ -62,7 +66,7 @@
                         }'
                     >
                         @foreach ($categoriesSlider as $row)
-                            <div>
+                            <!-- <div>
                                 <div class=" py-4 d-flex bg-image rounded align-items-center">
                                     <div class="col-6 col-xl-5 pr-0">
                                         <img class="img-fluid" src="{{$row->banner ? asset('uploads/banners/'.$row->banner) : asset('theme-assets/img/default-thumbnail.jpeg')}}" alt="{{$row->name}}">
@@ -74,6 +78,17 @@
                                         <a class="btn-offer" href="{{ route('product-list', $row->slug) }}">Shop Now <i class="czi-arrow-right-circle ml-2"></i></a>
                                     </div>
                                 </div>
+                            </div> -->
+                            <div>
+                                <a href="{{ route('product-list', $row->slug) }}">
+                                    <div class="position-relative text-center category-box" >
+                                        <img src="{{$row->banner ? asset('uploads/banners/'.$row->banner) : asset('theme-assets/img/default-thumbnail.jpeg')}}" alt="{{$row->name}}" class="category-img" alt="Image">
+                                        <div class="overlay-title">
+                                            <div >Shop Now <i class="czi-arrow-right-circle ml-2"></i></div>
+                                        </div>
+                                    </div>
+                                    <div class="cat-title">{{$row->caption}}</div>
+                                </a>
                             </div>
                         @endforeach
                     </div>
@@ -83,6 +98,154 @@
         </section>
     @endif
     <!-- Categories end-->
+
+
+    <!-- black friday start -->
+    @if($blackFriday->count() > 0 && $setting->black_enable && $setting->flash_ends_at)
+        <section class="container-fluid px-4 px-md-5 mt-4">
+            <div class="row d-flex align-items-center justify-content-center mb-4">
+                <div class="col-md-12 text-center">
+                    <div>
+                        <span class="black-friday-badge mb-0 ml-1">★ Black <span >friday</span> ★ </span>
+                    </div>
+                    @if($setting->black_enable && $setting->flash_ends_at)
+                        <div class="black-friday-timer timer" id="countdown">
+                            <div class="text-center">
+                                <div class="black-friday-time-box">00</div>
+                                <span class="cz-handheld-toolbar-label">DAYS</span>
+                            </div>
+                            <div class="colon">:</div>
+                            <div class="text-center">
+                                <div class="black-friday-time-box" id="hours">00</div>
+                                <span class="cz-handheld-toolbar-label">HOURS</span>
+                            </div>
+                            <div class="colon">:</div>
+                            <div class="text-center">
+                                <div class="black-friday-time-box" id="minutes">00</div>
+                                <span class="cz-handheld-toolbar-label">MINUTE</span>
+                            </div>
+                            <div class="colon">:</div>
+                            <div class="text-center">
+                                <div class="black-friday-time-box" id="seconds">00</div>
+                                <span class="cz-handheld-toolbar-label">SECONDS</span>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <div class="custom-cols-5 pt-4 m-n3">
+                <!-- Product-->
+                @foreach($blackFriday as $row)
+                    @php
+                        $isPriced = ($row->discount_price || $row->price);
+                        $isDiscounted = getDiscountOffer($row->offer_id);
+                    @endphp
+                    <div class="col-5th px-1 mb-4">
+                        <div class="card product-card translate p-0">
+                            @if($isPriced)
+                                @if ($isDiscounted)
+                                    <div class="ribbon"> {{ $isDiscounted }}% <br> OFF</div>
+                                @else
+                                    @if($row->discount_price != $row->price)
+                                        <div class="ribbon"> {{getDiscountPercentage($row->price,$row->discount_price)}} <br> OFF</div>
+                                    @endif
+                                @endif
+                                <button class="btn-cart btn-sm" type="button" data-toggle="tooltip" data-placement="left" onclick="addToCart(event,{{ $row->id }})">
+                                    <i class="czi-cart"></i>
+                                </button>
+                            @endif
+                            <a class="card-img-top d-block overflow-hidden" href="{{route('product-single',$row->slug)}}">
+                                <div class="image-hover-box">
+                                    @php
+                                        $main = $row->main_image ?? $row->hover_image;
+                                        $hover = $row->hover_image;
+                                    @endphp
+                                    @if($main)
+                                        <img src="{{ asset('images/products/' . $main->image) }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                    @else
+                                        <img src="{{ asset('theme-assets/img/default-thumbnail.jpeg') }}" alt="{{ $row->product_name }}" class="main-img img-fluid">
+                                    @endif
+                                    @if($hover)
+                                        <img src="{{ asset('images/products/' . $hover->image) }}" alt="{{ $row->product_name }}" class="hover-img img-fluid">
+                                    @endif
+                                </div>
+                            </a>
+                            <div class="card-body py-2">
+                                @if($row->categories->count() > 0)
+                                    <a href="{{ route('product-list', $row->categories->first()->slug) }}" class="product-meta d-block font-size-xs pb-1">{{$row->categories->first()->name}}</a>
+                                @endif
+                                <h3 class="product-title font-size-sm mb-2">
+                                    <a href="{{route('product-single',$row->slug)}}" class="two-line">{{ $row->product_name }}</a>
+                                </h3>
+                                <div class="mb-2">
+                                    <div class="star-list d-flex">
+                                        @php
+                                            $stars = $row->star_ratings;
+                                        @endphp
+                                        @for ($i = 0; $i < $stars['full']; $i++)
+                                            <i class="sr-star czi-star-filled active-star"></i>
+                                        @endfor
+                                        @if ($stars['half'])
+                                            <i class="sr-star czi-star-half active-star"></i>
+                                        @endif
+                                        @for ($i = 0; $i < $stars['empty']; $i++)
+                                            <i class="sr-star czi-star-filled inactive-star"></i>
+                                        @endfor
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="product-price">
+                                        @if($isPriced)
+                                            @if ($isDiscounted)
+                                                <span class="font-midnight">Rs. {{ getAmountAfterDiscount($row->price , $isDiscounted) }}</span>
+                                                <del class="font-size-sm text-danger">Rs. {{ number_format($row->price) }}</del>
+                                            @else
+                                                <span class="font-midnight">Rs. {{ number_format($row->discount_price) ?? number_format($row->price) }}</span>
+                                                @if($row->price != $row->discount_price)
+                                                    <del class="font-size-sm text-danger">Rs. {{ number_format($row->price) }}</del>
+                                                @endif
+                                            @endif
+                                        @else
+                                            <span class="font-midnight" style="visibility: hidden;"> Rs</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            @if($isPriced)
+                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}">
+                                    <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h3 class=" font-size-md mb-2 text-white text-center pt-2">
+                                                BUY NOW
+                                            </h3>
+                                        </div>
+                                        <div>
+                                            <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                            @else
+                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product">
+                                    <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h3 class="font-size-md mb-2 text-white text-center pt-2">
+                                                GET A QUOTE
+                                            </h3>
+                                        </div>
+                                        <div>
+                                            <i class="czi-arrow-right-circle ml-2 arrow-button"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+    @endif
+    <!-- black friday end -->
 
     <!-- Sales products start-->
     @if($flashSales->count() > 0)
@@ -556,14 +719,14 @@
                 </div>
             </div>
 
-            <div class="row pt-4 m-n3">
+            <div class="custom-cols-5 pt-4 m-n3">
                 <!-- Product-->
                 @foreach ($featuresProducts as $row)
                     @php
                         $isPriced = ($row->discount_price || $row->price);
                         $isDiscounted = getDiscountOffer($row->offer_id);
                     @endphp
-                    <div class="col-lg col-md-4 col-6 px-1 mb-4">
+                    <div class="col-5th px-1 mb-4">
                         <div class="card product-card translate p-0">
                             @if($isPriced)
                                 @if ($isDiscounted)
@@ -1106,6 +1269,13 @@
         </div>
     </div>
     <!--quote modal end-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/youtube-background@1.0.14/jquery.youtube-background.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('[data-vbg]').youtube_background(); // 실행
+    });
+    </script>
     <script>
         document.querySelectorAll('.image-hover-box').forEach(box => {
             const mainImg = box.querySelector('.main-img');

@@ -192,6 +192,14 @@
                             <div class="navbar-tool dropdown mr-3" id="cartNav">
                                 <x-cart.cart_nav />
                             </div>
+                            <a class="navbar-tool mr-0 mr-lg-3" href="{{ route('custom.pc') }}">
+                                <div class="navbar-tool-icon-box bg-secondary">
+                                    <i class="navbar-tool-icon czi-settings"></i>
+                                </div>
+                                <div class="navbar-tool-text ml-1">
+                                    <small>Customize</small>Your PC
+                                </div>
+                            </a>
                             @if(Auth::check())
                                 <a class="navbar-tool ml-2 ml-lg-0 mr-n1 mr-lg-2" href="{{route('user-dashboard')}}">
                                     <div class="navbar-tool-icon-box bg-secondary">
@@ -244,9 +252,9 @@
                                         </button> -->
                                         <div class="collapse navbar-collapse" id="navbar">
                                             <ul class="navbar-nav mr-auto flex-wrap">
-                                                <li class="nav-item">
+                                                <!-- <li class="nav-item">
                                                     <a class="nav-link" href="{{ route('index') }}">Home</a>
-                                                </li>
+                                                </li> -->
                                                 @foreach ($posttypeHeader as $row)
                                                     <li class="nav-item">
                                                         <a class="nav-link" href="{{route('page.posttype_detail',$row->uri)}}">{{ $row->post_type }}</a>
@@ -278,9 +286,9 @@
                                                         @endif
                                                     </li>
                                                 @endforeach
-                                                <li class="nav-item">
+                                                <!-- <li class="nav-item">
                                                     <a class="nav-link" href="{{ route('custom.pc') }}">Custom PC</a>
-                                                </li>
+                                                </li> -->
                                             </ul>
                                         </div>
                                         <!-- </nav> -->

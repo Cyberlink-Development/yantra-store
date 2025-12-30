@@ -52,6 +52,7 @@ class SettingController extends BackendController
             $data->seconds = $request->seconds;
             $data->flash_ends_at = $request->input('flash_ends_at');
             $data->flash_enable = $request->has('flash_enable') ? 1 : 0;
+            $data->black_enable = $request->has('black_enable') ? 1 : 0;
 
             if($data->save()){
                 return redirect()->back()->with([

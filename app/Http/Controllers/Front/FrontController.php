@@ -73,6 +73,7 @@ class FrontController extends Controller
         //                   $query->where('in_moving_text','!=','1');
         //                 }])->latest()->take(5)->get();
         $flashSales = Product::where('offer_id','1')->latest()->take(5)->get();
+        $blackFriday = Product::where('offer_id','4')->latest()->take(5)->get();
         $latestProducts = Product::where('latest','1')->active()
                         ->with(['categories' => function ($query){
                           $query->where('in_moving_text','!=','1');
@@ -110,11 +111,10 @@ class FrontController extends Controller
         $best=Product::wherein('id',$result)->get();
         $new=Product::orderby('created_at','desc')->take(5)->get();
 
-        
         $post_type = PostType::where('id', '4')->first();
         $services = Post::where(['post_type' => $post_type->id, 'status' => '1'])->orderBy('post_order', 'asc')->paginate(8);
 // dd($flashSales);
-        return view('frontend.pages.index',compact('banners','ads','categories','categoriesSlider','categoriesMovingText','flashSales','latestProducts','featuresProducts','hotProducts','productsForYou','goneInSeconds','brands',  'new','best','featured_category','featured_category2', 'latest_blogs','post_type','services'));
+        return view('frontend.pages.index',compact('banners','ads','categories','categoriesSlider','categoriesMovingText','flashSales','latestProducts','featuresProducts','hotProducts','productsForYou','goneInSeconds','brands',  'new','best','featured_category','featured_category2', 'latest_blogs','post_type','services','blackFriday'));
     }
 
     public function blog_single($slug){
@@ -237,7 +237,7 @@ class FrontController extends Controller
                     'email'=>'required|email',
                     'phone'=>'required',
                 ]);
-                
+
                 $create = Contact::create([
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,

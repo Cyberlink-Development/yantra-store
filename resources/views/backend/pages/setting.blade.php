@@ -21,7 +21,7 @@
                                             <a class="custom-nav-btn" data-toggle="tab" href="#social" role="tab">Social Media Info</a>
                                         </li>
                                         <li class="nav-item custom-nav-item">
-                                            <a class="custom-nav-btn" data-toggle="tab" href="#flash" role="tab">Flash Sale Timer</a>
+                                            <a class="custom-nav-btn" data-toggle="tab" href="#flash" role="tab">Offer Timer</a>
                                         </li>
                                     </ul>
 
@@ -100,12 +100,15 @@
                                                 <input class="form-control" id="seconds" placeholder="Seconds" name="seconds" type="number" value="{{ $data->seconds }}">
                                             </div> -->
                                             <div class="form-group">
-                                                <label for="flashEndsAt" class="control-label">Flash Ends At</label>
+                                                <label for="flashEndsAt" class="control-label">Offer Sales Ends At</label>
                                                 <input class="form-control" id="flashEndsAt" placeholder="Flash end timer" name="flash_ends_at" type="datetime-local"  value="{{ $setting->flash_ends_at ? $setting->flash_ends_at->format('Y-m-d\TH:i') : '' }}">
                                             </div>
                                             <div class="form-group">
-                                                Enable Timer :
-                                                <input class="" id="falsh_enable" placeholder="" name="flash_enable" type="checkbox" value="{{ $data->falsh_enable }}" {{ $data->flash_enable == 1 ? 'checked' : '' }}>
+                                                Enable Flash Timer :
+                                                <input class="" id="flash_enable" placeholder="" name="flash_enable" type="checkbox" value="{{ $data->flash_enable }}" {{ $data->flash_enable == 1 ? 'checked' : '' }}>
+                                                <br>
+                                                Enable Black Friday Timer :
+                                                <input class="" id="black_enable" placeholder="" name="black_enable" type="checkbox" value="{{ $data->black_enable }}" {{ $data->black_enable == 1 ? 'checked' : '' }}>
                                             </div>
                                         </div>
                                     </div>
@@ -198,6 +201,18 @@
                     }
                 }
             });
+        });
+
+        document.getElementById('flash_enable').addEventListener('change', function () {
+            if (this.checked) {
+                document.getElementById('black_enable').checked = false;
+            }
+        });
+
+        document.getElementById('black_enable').addEventListener('change', function () {
+            if (this.checked) {
+                document.getElementById('flash_enable').checked = false;
+            }
         });
     </script>
 @endsection

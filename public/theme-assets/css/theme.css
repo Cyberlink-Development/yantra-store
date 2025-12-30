@@ -4739,8 +4739,8 @@ input[type="button"].btn-block {
     position: absolute;
   }
   .navbar-expand-lg .navbar-nav .nav-link {
-    padding-right: 1.125rem;
-    padding-left: 1.125rem;
+    padding-right: 0.6rem;
+    padding-left: 0.6rem;
   }
   .navbar-expand-lg > .container,
   .navbar-expand-lg > .container-fluid, .navbar-expand-lg > .container-xl {
@@ -4850,6 +4850,7 @@ input[type="button"].btn-block {
 
 .navbar-light .navbar-brand:hover, .navbar-light .navbar-brand:focus {
   color: var(--primary);
+  font-size: 15px;
 }
 
 .navbar-light .navbar-nav .nav-link {
@@ -5350,6 +5351,16 @@ input[type="button"].btn-block {
     padding: 9px 15px;
     font-size: 17px;
 }
+.black-friday-badge{
+    background: black;
+    text-transform: uppercase;
+    color: white;
+    padding: 9px 15px;
+    font-size: 18px;
+    font-family: "Rubik", sans-serif;
+    font-weight: 600;
+    letter-spacing: 3px;
+}
 .price-badge,.quote-badge{
     text-transform: uppercase;
     color: white;
@@ -5430,6 +5441,34 @@ a.badge:hover, a.badge:focus {
   position: relative;
   top: -1px;
 }
+.category-box{
+    border: 1px solid #80808042;
+    padding: 8px;
+}
+    .overlay-title {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgb(88 10 10 / 80%);
+    padding: 7px;
+    color: #fff;
+    width: 100%;
+}
+.category-img{
+    height: 140px !important;
+    width: 100%;
+    object-fit:contain !important;
+}
+.cat-title{
+        text-align: center;
+    text-decoration: underline;
+    margin-top: 5px;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-family: "Rubik", sans-serif;
+    font-size: 18px;
+}
 .ribbon {
     position: absolute;
     top: 0;
@@ -5465,6 +5504,19 @@ a.badge:hover, a.badge:focus {
     right: 79px;
 }
 }
+.bg-responsive-height{
+  height: 78vh;
+}
+@media (max-width: 1024px){
+.bg-responsive-height{
+    height: 27vh !important;
+}
+}
+/* @media  (max-width: 575px){
+.bg-responsive-height{
+    height:25vh !important;
+}
+} */
 .badge-pill {
   padding-right: 0.6em;
   padding-left: 0.6em;
@@ -13239,15 +13291,14 @@ a.nav-link:hover .media-tab-media {
       font-weight: 900;
     }
 
-    .timer {
+    .timer,.black-friday-timer {
       margin-top: 15px;
       display: flex;
       gap: 3px;
       justify-content: center;
     }
 
-    .time-box {
-        background-color: var(--secondary);
+    .time-box,.black-friday-time-box {
     color: white;
     font-size: 1.3rem;
     border-radius: 10px;
@@ -13255,7 +13306,12 @@ a.nav-link:hover .media-tab-media {
     text-align: center;
     height: 31px;
     }
-
+    .time-box{
+      background-color: var(--secondary);
+    }
+    .black-friday-time-box{
+       background-color: black;
+    }
     .colon {
       font-size: 2rem;
     color: black;
