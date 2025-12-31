@@ -96,6 +96,7 @@ class BrandController extends BackendController
     public function brand_index(Request $request){
          if ($request->isMethod('get')) {
             $brand = Brand::all();
+            // dd($brand);
             return view( $this->backendbrandPath . 'index', compact('brand'));
 
         }

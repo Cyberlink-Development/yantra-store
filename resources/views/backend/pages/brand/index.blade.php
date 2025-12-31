@@ -8,7 +8,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <table id="example" class="table table-striped table-bordered datatable" style="width:100%">
+                    <table id="package_table" class="table table-bordered datatable" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Logo</th>
@@ -49,14 +49,13 @@
                                                 <div class="modal-header">
                                                     <h4 class="modal-title" align="center"><b>Edit Brand</b></h4>
 
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span></button>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
                                                 </div>
                                                 <div class="card-body">
 
-                                                    <form method="post" class="form-group"
-                                                        action="{{ route('edit-brand') }}" enctype="multipart/form-data">
+                                                    <form method="post" class="form-group" action="{{ route('edit-brand') }}" enctype="multipart/form-data">
                                                         @csrf
                                                         <input type="hidden" name="id" value="{{ $value->id }}">
 
@@ -94,16 +93,9 @@
                                                                                 <div class="form-group">
                                                                                     <label for="status"
                                                                                         class="control-label">Status</label>
-                                                                                    <select class="form-control"
-                                                                                        name="status" id="status">
-                                                                                        <option
-                                                                                            @if ($value->status == 0) selected @endif
-                                                                                            value="0">Inactive
-                                                                                        </option>
-                                                                                        <option
-                                                                                            @if ($value->status == 1) selected @endif
-                                                                                            value="1">Active
-                                                                                        </option>
+                                                                                    <select class="form-control" name="status" id="status">
+                                                                                        <<option value="0" {{ $value->status == 0 ? 'selected' : '' }}>Inactive</option>
+                                                                                        <option value="1" {{ $value->status == 1 ? 'selected' : '' }}>Active</option>
                                                                                     </select>
                                                                                 </div>
 
@@ -127,9 +119,6 @@
 
                                             </div>
                                         </div>
-
-                        </tbody>
-
                         </tr>
                         @endforeach
                         </tbody>

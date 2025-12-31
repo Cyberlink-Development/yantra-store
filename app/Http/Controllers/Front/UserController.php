@@ -21,17 +21,16 @@ class UserController extends Controller
 {
     public function orders()
     {
-        if (!Auth::check())
-        {
+        if (!Auth::check()) {
             return view('frontend.pages.account-signin');
         }
-        $allorders = Order::with('details.products')->where('user_id',Auth::id())->orderby('updated_at','desc');
+        $allorders = Order::with('details.products')->where('user_id', Auth::id())->orderby('updated_at', 'desc');
         $orders = $allorders->paginate(6);
         $order = $allorders->count();
-        $wishlist = Wishlist::where('user_id',Auth::id())->count();
+        $wishlist = Wishlist::where('user_id', Auth::id())->count();
         $user = Auth::user();
-// dd($orders);
-        return view('frontend/pages/account-orders', compact('order','wishlist','user','orders'));
+        // dd($orders);
+        return view('frontend/pages/account-orders', compact('order', 'wishlist', 'user', 'orders'));
     }
 
     public function add_wishlist(Request $request)
@@ -46,7 +45,7 @@ class UserController extends Controller
 
         $productId = $request->product_id;
         $exists = $user->wishlist()->where('product_id', $productId)->exists();
-        
+
         if ($exists) {
             $user->wishlist()->detach($productId);
             return response()->json([
@@ -65,18 +64,18 @@ class UserController extends Controller
     }
     public function wishlist()
     {
-        $order = Order::where('user_id',Auth::id())->orderby('updated_at','desc')->count();
-        $allwishlist = Wishlist::with('products')->where('user_id',Auth::id());
+        $order = Order::where('user_id', Auth::id())->orderby('updated_at', 'desc')->count();
+        $allwishlist = Wishlist::with('products')->where('user_id', Auth::id());
         $wishlists = $allwishlist->paginate(6);
         $wishlist = $allwishlist->count();
-        $user = User::where('id',Auth::user()->id)->first();
+        $user = User::where('id', Auth::user()->id)->first();
         // dd($wishlist);
-        return view('frontend/pages/account-wishlist', compact('wishlists','wishlist','user','order'));
+        return view('frontend/pages/account-wishlist', compact('wishlists', 'wishlist', 'user', 'order'));
     }
 
     public function wishlist_remove($id)
     {
-        try{
+        try {
             Wishlist::where('id', $id)->where('user_id', Auth::id())->delete();
             return response()->json([
                 'success' => true,
@@ -94,7 +93,7 @@ class UserController extends Controller
     public function order_details(Request $request)
     {
         $order_id = $request->id;
-        $order_details= OrderDetail::where('order_id',$order_id)->get();
+        $order_details = OrderDetail::where('order_id', $order_id)->get();
         return view('frontend/order_details_modal', compact('order_details'));
 
 
@@ -102,14 +101,13 @@ class UserController extends Controller
 
     public function user_dashboard(Request $request)
     {
-        if ($request->isMethod('get')) 
-        {
+        if ($request->isMethod('get')) {
             $address = Address::all();
-            $wishlist = Wishlist::where('user_id',Auth::user()->id)->count();
+            $wishlist = Wishlist::where('user_id', Auth::user()->id)->count();
             $order = Auth::user()->orders->count();
-            $user = User::where('id',Auth::user()->id)->first();
-            // dd($user,$address,$wishlist,$order);
-            return view('frontend/pages/account-dashboard', compact('address','wishlist','order','user'));
+            $user = User::where('id', Auth::user()->id)->first();
+            // dd($user);
+            return view('frontend/pages/account-dashboard', compact('address', 'wishlist', 'order', 'user'));
         }
 
     }
@@ -118,39 +116,18 @@ class UserController extends Controller
     {
         if ($request->isMethod('get')) {
             $address = Address::all();
-            $wishlist = Wishlist::where('user_id',Auth::user()->id)->get();
+            $wishlist = Wishlist::where('user_id', Auth::user()->id)->get();
             $order = Auth::user()->orders;
-            return view('frontend/pages/account-address', compact('address','wishlist','order'));
+            return view('frontend/pages/account-address', compact('address', 'wishlist', 'order'));
         }
 
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [
-//                'first_name' => 'required',
-//                'last_name' => 'required',
-//                'country' => 'required',
-//                'city' => 'required',
                 'zip_code' => 'required',
                 'address1' => 'required',
-//                'address2' => 'required',
             ])->validate();
+            $address = Address::updateorCreate(['user_id' => $request->user_id, 'address1' => $request->address1, 'address2' => $request->address2, 'zip_code' => $request->zip_code]);
 
-//            dd($request->all());
-            $address = Address::updateorCreate(['user_id' =>$request->user_id,'address1'=>$request->address1,'address2' =>$request->address2,'zip_code' =>$request->zip_code]);
-//               $address = Address::updateorCreate(['user_id' =>1,'address1'=>'tokyo','address2' =>'japan','zip_code' =>'54353']);
-
-
-//            $address->user_id = $request->user_id;
-////            $address->first_name = $request->first_name;
-////            $address->last_name = $request->last_name;
-////            $address->company = $request->company;
-////            $address->country = $request->country;
-////            $address->city = $request->city;
-//            $address->zip_code = $request->zip_code;
-//            $address->address1 = $request->address1;
-//            $address->address2 = $request->address2;
-//            if ($request->is_primary) {
-//                $address->is_primary = 1;
-//            }
             $address->save();
             return redirect()->back()->with('success', 'Address Saved');
 
@@ -161,32 +138,33 @@ class UserController extends Controller
     public function user_profile(Request $request)
     {
         if ($request->isMethod('get')) {
-            $wishlist = Wishlist::where('user_id',Auth::user()->id)->count();
+            $wishlist = Wishlist::where('user_id', Auth::user()->id)->count();
             $order = Auth::user()->orders->count();
-            $user = User::where('id',Auth::user()->id)->first();
-            return view('frontend/pages/account-profile',compact('wishlist','order','user'));
+            $user = User::where('id', Auth::user()->id)->first();
+            // dd($user);
+            return view('frontend/pages/account-profile', compact('wishlist', 'order', 'user'));
         }
         if ($request->isMethod('post')) {
             $g_recaptcha_response = $request->input('g_recaptcha_response');
             $result = $this->getCaptcha($g_recaptcha_response);
-            if($result->success == true && $result->score > 0.5){
-                try{
+            if ($result->success == true && $result->score > 0.5) {
+                try {
                     $request->validate([
                         'first_name' => 'required',
                         // 'last_name' => 'required',
                         // 'email'=>'required|email',
-                        'phone'=>'required',
-                        'address'=>'required',
+                        'phone' => 'required',
+                        'address' => 'required',
                         'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                     ]);
-                    
-                    $user =Auth::user();
+
+                    $user = Auth::user();
                     $data = [
                         'first_name' => $request->first_name,
                         // 'last_name' => $request->last_name,
                         // 'email' => $request->email,
                         'phone' => $request->phone,
-                        'country'=>$request->address
+                        'country' => $request->address
                     ];
 
                     if ($request->hasFile('profile_image')) {
@@ -200,7 +178,7 @@ class UserController extends Controller
                     }
 
                     $user->update($data);
-                    
+
                     return redirect()->back()->with([
                         'success' => true,
                         'message' => 'Profile Updated Successfully'
@@ -236,9 +214,9 @@ class UserController extends Controller
     public function change_password(Request $request)
     {
         if ($request->isMethod('get')) {
-            $wishlist = Wishlist::where('user_id',Auth::user()->id)->get();
+            $wishlist = Wishlist::where('user_id', Auth::user()->id)->get();
             $order = Auth::user()->orders;
-            return view('frontend/pages/change_password',compact('wishlist','order'));
+            return view('frontend/pages/change_password', compact('wishlist', 'order'));
         }
         if ($request->ajax()) {
             $messages = [
@@ -266,5 +244,12 @@ class UserController extends Controller
             return response()->json(['success' => 'Password changed'], 200);
         }
 
+    }
+    private function getCaptcha($secretKey)
+    {
+        $secret_key = env('SECRET_KEY');
+        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $secret_key . "&response={$secretKey}");
+        $result = json_decode($response);
+        return $result;
     }
 }
