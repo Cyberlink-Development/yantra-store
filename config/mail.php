@@ -14,7 +14,7 @@ return [
     */
 
     'default' => env('MAIL_MAILER', 'smtp'),
-    
+
      'stream' => [
     'ssl' => [
         'verify_peer' => false,
@@ -82,8 +82,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'test@demo5.lakhetech.com'),
-        'name' => env('MAIL_FROM_NAME', 'Mountain Handicraft'),
+        'address' => env('MAIL_FROM_ADDRESS', 'orders@yantranetwork.com'),
+        'name' => env('MAIL_FROM_NAME', 'Yantra Network Solution'),
     ],
 
     /*
