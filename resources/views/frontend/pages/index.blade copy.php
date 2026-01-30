@@ -171,7 +171,7 @@
                                     @endif
                                 </div>
                             </a>
-                            <div class="card-body">
+                            <div class="card-body py-2">
                                 @if($row->categories->count() > 0)
                                     <a href="{{ route('product-list', $row->categories->first()->slug) }}" class="product-meta d-block font-size-xs pb-1">{{$row->categories->first()->name}}</a>
                                 @endif
@@ -213,8 +213,8 @@
                                 </div>
                             </div>
                             @if($isPriced)
-                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}" style="display:block; padding: 0 20px 12px;">
-                                    <div class="btn btn-secondary" data-toggle="toast" data-target="#cart-toast"> <i class="czi-bag font-size-sm mr-1"></i>BUY NOW</div>
+                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}">
+                                    <div class="btn btn-secondary  mt-2" data-toggle="toast" data-target="#cart-toast"><i class="czi-cart font-size-sm mr-1"></i>BUY NOW</div>
                                     <!-- <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class=" font-size-md mb-2 text-white text-center pt-2">
@@ -227,8 +227,8 @@
                                     </div> -->
                                 </a>
                             @else
-                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product" style="display:block; padding: 0 20px 12px;">
-                                    <div class="btn btn-secondary" data-toggle="toast" data-target="#cart-toast"><i class="czi-calculator font-size-sm mr-1"></i>GET A QUOTE</div>
+                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product">
+                                    <div class="btn btn-secondary  mt-2" data-toggle="toast" data-target="#cart-toast"><i class="czi-cart font-size-sm mr-1"></i>GET A QUOTE</div>
                                     <!-- <div class=" py-2 px-4 book-btn d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class="font-size-md mb-2 text-white text-center pt-2">
@@ -319,7 +319,7 @@
                                     @endif
                                 </div>
                             </a>
-                            <div class="card-body">
+                            <div class="card-body py-2">
                                 @if($row->categories->count() > 0)
                                     <a href="{{ route('product-list', $row->categories->first()->slug) }}" class="product-meta d-block font-size-xs pb-1">{{$row->categories->first()->name}}</a>
                                 @endif
@@ -361,12 +361,12 @@
                                 </div>
                             </div>
                             @if($isPriced)
-                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}" style="display:block; padding: 0 20px 12px;">
-                                    <div class="btn btn-secondary" data-toggle="toast" data-target="#cart-toast"><i class="czi-bag font-size-sm mr-1"></i>BUY NOW</div>
+                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}">
+                                    <div class="btn btn-secondary  mt-2" data-toggle="toast" data-target="#cart-toast"><i class="czi-cart font-size-sm mr-1"></i>BUY NOW</div>
                                 </a>
                             @else
-                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product" style="display:block; padding: 0 20px 12px;">
-                                    <div class="btn btn-secondary" data-toggle="toast" data-target="#cart-toast"><i class="czi-calculator font-size-sm mr-1"></i>GET A QUOTE</div>
+                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product">
+                                    <div class="btn btn-secondary  mt-2" data-toggle="toast" data-target="#cart-toast"><i class="czi-cart font-size-sm mr-1"></i>GET A QUOTE</div>
                                 </a>
                             @endif
                         </div>
@@ -423,7 +423,7 @@
                                     @endif
                                 </div>
                             </a>
-                            <div class="card-body">
+                            <div class="card-body py-2">
                                 @if($row->categories->count() > 0)
                                     <a href="{{ route('product-list', $row->categories->first()->slug) }}" class="product-meta d-block font-size-xs pb-1">{{$row->categories->first()->name}}</a>
                                 @endif
@@ -465,12 +465,12 @@
                                 </div>
                             </div>
                             @if($isPriced)
-                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}" style="display:block; padding: 0 20px 12px;">
-                                    <div class="btn btn-secondary" data-toggle="toast" data-target="#cart-toast"><i class="czi-bag font-size-sm mr-1"></i>BUY NOW</div>
+                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}">
+                                    <div class="btn btn-secondary  mt-2" data-toggle="toast" data-target="#cart-toast"><i class="czi-cart font-size-sm mr-1"></i>BUY NOW</div>
                                 </a>
                             @else
-                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product" style="display:block; padding: 0 20px 12px;">
-                                    <div class="btn btn-secondary" data-toggle="toast" data-target="#cart-toast"><i class="czi-calculator font-size-sm mr-1"></i>GET A QUOTE</div>
+                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product">
+                                    <div class="btn btn-secondary  mt-2" data-toggle="toast" data-target="#cart-toast"><i class="czi-cart font-size-sm mr-1"></i>GET A QUOTE</div>
                                 </a>
                             @endif
                         </div>
@@ -542,7 +542,7 @@
                                     @endif
                                 </div>
                             </a>
-                            <div class="card-body">
+                            <div class="card-body py-2">
                                 @if($row->categories->count() > 0)
                                     <a href="{{ route('product-list', $row->categories->first()->slug) }}" class="product-meta d-block font-size-xs pb-1">{{$row->categories->first()->name}}</a>
                                 @endif
@@ -584,12 +584,12 @@
                                 </div>
                             </div>
                             @if($isPriced)
-                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}"  style="display:block; padding: 0 20px 12px;">
-                                    <div class="btn btn-secondary" data-toggle="toast" data-target="#cart-toast"><i class="czi-bag font-size-sm mr-1"></i>BUY NOW</div>
+                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}">
+                                    <div class="btn btn-secondary  mt-2" data-toggle="toast" data-target="#cart-toast"><i class="czi-cart font-size-sm mr-1"></i>BUY NOW</div>
                                 </a>
                             @else
-                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product" style="display:block; padding: 0 20px 12px;">
-                                    <div class="btn btn-secondary" data-toggle="toast" data-target="#cart-toast"><i class="czi-calculator font-size-sm mr-1"></i>GET A QUOTE</div>
+                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product">
+                                    <div class="btn btn-secondary  mt-2" data-toggle="toast" data-target="#cart-toast"><i class="czi-cart font-size-sm mr-1"></i>GET A QUOTE</div>
                                 </a>
                             @endif
                         </div>
@@ -704,7 +704,7 @@
                                     @endif
                                 </div>
                             </a>
-                            <div class="card-body">
+                            <div class="card-body py-2">
                                 @if($row->categories->count() > 0)
                                     <a href="{{ route('product-list', $row->categories->first()->slug) }}" class="product-meta d-block font-size-xs pb-1">{{$row->categories->first()->name}}</a>
                                 @endif
@@ -746,12 +746,12 @@
                                 </div>
                             </div>
                             @if($isPriced)
-                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}" style="display:block; padding: 0 20px 12px;">
-                                    <div class="btn btn-secondary" data-toggle="toast" data-target="#cart-toast"><i class="czi-bag font-size-sm mr-1"></i>BUY NOW</div>
+                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}">
+                                    <div class="btn btn-secondary  mt-2" data-toggle="toast" data-target="#cart-toast"><i class="czi-cart font-size-sm mr-1"></i>BUY NOW</div>
                                 </a>
                             @else
-                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product" style="display:block; padding: 0 20px 12px;">
-                                    <div class="btn btn-secondary" data-toggle="toast" data-target="#cart-toast"><i class="czi-calculator font-size-sm mr-1"></i>GET A QUOTE</div>
+                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product">
+                                    <div class="btn btn-secondary  mt-2" data-toggle="toast" data-target="#cart-toast"><i class="czi-cart font-size-sm mr-1"></i>GET A QUOTE</div>
                                 </a>
                             @endif
                         </div>
@@ -1000,7 +1000,7 @@
                                     @endif
                                 </div>
                             </a>
-                            <div class="card-body">
+                            <div class="card-body py-2">
                                 @if($row->categories->count() > 0)
                                     <a href="{{ route('product-list', $row->categories->first()->slug) }}" class="product-meta d-block font-size-xs pb-1">{{$row->categories->first()->name}}</a>
                                 @endif
@@ -1042,12 +1042,12 @@
                                 </div>
                             </div>
                             @if($isPriced)
-                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}" style="display:block; padding: 0 20px 12px;">
-                                    <div class="btn btn-secondary" data-toggle="toast" data-target="#cart-toast"><i class="czi-bag font-size-sm mr-1"></i>BUY NOW</div>
+                                <a href="javascript:void(0)" class="buy_now_btn" data-slug="{{ $row->slug }}">
+                                    <div class="btn btn-secondary  mt-2" data-toggle="toast" data-target="#cart-toast"><i class="czi-cart font-size-sm mr-1"></i>BUY NOW</div>
                                 </a>
                             @else
-                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product" style="display:block; padding: 0 20px 12px;">
-                                    <div class="btn btn-secondary" data-toggle="toast" data-target="#cart-toast"><i class="czi-calculator font-size-sm mr-1"></i>GET A QUOTE</div>
+                                <a href="#quote" data-toggle="modal" data-item-id="{{ $row->id }}" data-price="{{ $row->price }}" data-name="{{ $row->product_name }}" data-type="product">
+                                    <div class="btn btn-secondary  mt-2" data-toggle="toast" data-target="#cart-toast"><i class="czi-cart font-size-sm mr-1"></i>GET A QUOTE</div>
                                 </a>
                             @endif
                         </div>
@@ -1116,60 +1116,6 @@
 
     </section>
     <!--service section end-->
-
-    <!-- customer review -->
-    @if($reviews)
-        <section class="container py-5 my-5">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold mb-2">Customer Reviews</h2>
-                <!-- <p class="text-muted mb-0">{{ $reviews->count() }}+ customers trust our products</p> -->
-            </div>
-
-            <div class="row g-4">
-                <!-- Card -->
-                @foreach($reviews as $review)
-                    <div class="col-sm-6 col-lg-4 mb-4">
-                        <div class="card  border-0 rounded-5 shadow overflow-hidden p-xl-2">
-                            <div class="card-body position-relative z-1 pb-1 pb-lg-2 pb-xl-3">
-                                <div class="d-flex gap-1 text-warning mb-3">
-                                    @php
-                                        $stars = getStarRatings($review->rating);
-                                    @endphp
-                                    @for ($i = 0; $i < $stars['full']; $i++)
-                                        <i class="sr-star czi-star-filled active-star"></i>
-                                    @endfor
-                                    @if ($stars['half'])
-                                        <i class="sr-star czi-star-half active-star"></i>
-                                    @endif
-                                    @for ($i = 0; $i < $stars['empty']; $i++)
-                                        <i class="sr-star czi-star-filled inactive-star"></i>
-                                    @endfor
-                                </div>
-                                <!-- <h3 class="h5 pb-2 mb-1">Perfect for daily use!</h3> -->
-                                <p class="mb-0">
-                                    {{ $review->message }}
-                                </p>
-                            </div>
-                            <div class="card-footer position-relative z-1 d-flex align-items-center  bg-transparent border-0 py-4">
-                                <!-- Wrap the image with a "ratio" element to avoid content shifts on page load -->
-                                <div class="ratio ratio-1x1 flex-shrink-0 bg-body-secondary rounded-circle overflow-hidden mr-3" style="width: 44px">
-                                    <img src="{{asset('theme-assets/img/shop/reviews/01.jpg')}}" alt="Avatar">
-                                </div>
-                                <div class="fs-sm ps-2 ms-1">
-                                    <div class="font-w text-primary">{{ $review->name }}</div>
-                                    <div class="font-size-sm">{{ $review->created_at->format('M d, Y') }}</div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                @endforeach
-            </div>
-        </section>
-    @endif
-    <!-- end -->
-
     <!--quote modal start-->
     <div class="modal fade" id="quote" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">

@@ -3,7 +3,7 @@
         <div class="product-review pb-4 mb-4 border-bottom">
             <div class="d-flex justify-content-between mb-3">
                 <div class="media media-ie-fix align-items-center mr-4 pr-2">
-                    <img class="rounded-circle" width="50" src="img/shop/reviews/01.jpg" alt="Rafael Marquez" />
+                    <img class="rounded-circle" width="50" src="{{asset('theme-assets/img/shop/reviews/01.jpg')}}" alt="Rafael Marquez" />
                     <div class="media-body pl-3">
                         <h6 class="font-size-sm mb-0">{{$row->name}}</h6>
                         <span class="font-size-ms text-muted">{{ $row->created_at->format('M d, Y') }}</span>
