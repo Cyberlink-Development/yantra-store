@@ -14,6 +14,7 @@ use App\Model\Product;
 use App\Model\Blog;
 use App\Model\Post;
 use App\Model\PostType;
+use App\Model\Review;
 use App\Model\Quotation;
 use App\Model\Setting;
 use App\Model\Ad\Ad;
@@ -113,8 +114,10 @@ class FrontController extends Controller
 
         $post_type = PostType::where('id', '4')->first();
         $services = Post::where(['post_type' => $post_type->id, 'status' => '1'])->orderBy('post_order', 'asc')->paginate(8);
-// dd($flashSales);
-        return view('frontend.pages.index',compact('banners','ads','categories','categoriesSlider','categoriesMovingText','flashSales','latestProducts','featuresProducts','hotProducts','productsForYou','goneInSeconds','brands',  'new','best','featured_category','featured_category2', 'latest_blogs','post_type','services','blackFriday'));
+        $reviews = Review::where('show','1')->get();
+
+        // dd($review);
+        return view('frontend.pages.index',compact('banners','ads','categories','categoriesSlider','categoriesMovingText','flashSales','latestProducts','featuresProducts','hotProducts','productsForYou','goneInSeconds','brands',  'new','best','featured_category','featured_category2', 'latest_blogs','post_type','services','blackFriday','reviews'));
     }
 
     public function blog_single($slug){
