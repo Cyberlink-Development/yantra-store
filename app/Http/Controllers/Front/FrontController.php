@@ -25,6 +25,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Exception;
+use App\Services\ZohoMailService;
 
 class FrontController extends Controller
 {
@@ -202,8 +203,21 @@ class FrontController extends Controller
                 ]);
 
                 if ($quote ) {
-                    return new QuotationMail( $quote->id);
-                    // Mail::send(new QuotationMail( $quote->id));
+                    // return new QuotationMail( $quote->id);
+
+                    $quotation = Quotation::find($quote->id);
+                    $productName = Product::where('id', $quotation->product_id)->value('product_name');
+                    $serviceName = Post::where('id', $quotation->service_id)->value('post_title');
+
+                    app(ZohoMailService::class)->sendMail([
+                        'to'      => 'orders@yantranetwork.com',
+                        'subject' => 'New Quotation Request',
+                        'body'    => view('emails.quotation_mail', [
+                            'quotation'   => $quotation,
+                            'productName' => $productName,
+                            'serviceName' => $serviceName,
+                        ])->render(),
+                    ]);
                 }
                 return redirect('/')->with([
                     'success' => true,
@@ -241,6 +255,7 @@ class FrontController extends Controller
                     'phone'=>'required',
                 ]);
 
+                $data = Setting::where('id',1)->first();
                 $create = Contact::create([
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,
@@ -252,8 +267,16 @@ class FrontController extends Controller
                 ]);
 
                 if ($create ) {
-                    return new ContactMail();
+                    // return new ContactMail();
                     // Mail::send(new ContactMail());
+                    app(ZohoMailService::class)->sendMail([
+                        'to'      => 'orders@yantranetwork.com',
+                        'subject' => 'New Contact Inquiry',
+                        'body'    => view('emails.contact-mail', [
+                            'request' => $request,
+                            'data'    => $data,
+                        ])->render(),
+                    ]);
                 }
                 $name = $request->first_name;
                 $message = "<p>Thanks for contacting us. One of our team will be in touch with you soon.</p>";

@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Exception;
 use Log;
+use App\Services\ZohoMailService;
 
 class CheckoutController extends Controller
 {
@@ -326,8 +327,14 @@ class CheckoutController extends Controller
                 }
 
                 try {
-                    return new OrderMail($data);
+                    // return new OrderMail($data);
                     // Mail::to($user->email)->send(new OrderMail($data));
+                    app(ZohoMailService::class)->sendMail([
+                        'to'      => $data['email'],
+                        'cc'      => 'orders@yantranetwork.com',
+                        'subject' => 'Order Confirmation - Yantra Network',
+                        'body'    => view('emails.order_mail', ['content' => $data])->render(),
+                    ]);
                 } catch (Exception $e) {
                     Log::error("Order email failed for order {$order->id}: " . $e->getMessage());
                 }
@@ -335,7 +342,7 @@ class CheckoutController extends Controller
                     'success' => true,
                     'message' => 'Order placed successfully!'
                 ]);
-            
+
             } else {
                 return redirect()->back()->with([
                     'error' => true,
@@ -498,8 +505,14 @@ class CheckoutController extends Controller
             }
 
             try {
-                return new OrderMail($data);
+                // return new OrderMail($data);
                 // Mail::to($user->email)->send(new OrderMail($data));
+                app(ZohoMailService::class)->sendMail([
+                        'to'      => $data['email'],
+                        'cc'      => 'orders@yantranetwork.com',
+                        'subject' => 'Order Confirmation - Yantra Network',
+                        'body'    => view('emails.order_mail', ['content' => $data])->render(),
+                    ]);
             } catch (Exception $e) {
                 Log::error("Order email failed for order {$order->id}: " . $e->getMessage());
             }
@@ -507,7 +520,7 @@ class CheckoutController extends Controller
                 'success' => true,
                 'message' => 'Order placed successfully!'
             ]);
-            
+
         } else {
             return redirect()->back()->with([
                 'error' => true,
@@ -646,6 +659,12 @@ class CheckoutController extends Controller
             try {
                 // return new OrderMail($data);
                 // Mail::to($user->email)->queue(new OrderMail($data));
+                app(ZohoMailService::class)->sendMail([
+                        'to'      => $data['email'],
+                        'cc'      => 'orders@yantranetwork.com',
+                        'subject' => 'Order Confirmation - Yantra Network',
+                        'body'    => view('emails.order_mail', ['content' => $data])->render(),
+                    ]);
             } catch (Exception $e) {
                 Log::error("Order email failed for order {$order->id}: " . $e->getMessage());
             }

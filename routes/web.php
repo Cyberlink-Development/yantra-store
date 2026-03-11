@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\Admin\Tags\TagController;
+use App\Http\Controllers\ZohoMailController;
 // use App\Http\Controllers\Admin\AdController;
 
 /******************** By Sangam Starts ***********/
@@ -393,5 +394,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('banner/{id}/destroy','BannerController@destroy')->name('banner.delete');
 });
 
-
+// Route::get('/zoho/auth', [ZohoMailController::class, 'redirect']);
+// Route::get('/zoho/callback', [ZohoMailController::class, 'callback']);
 
